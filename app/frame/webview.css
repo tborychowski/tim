@@ -1,0 +1,130 @@
+body { min-width: auto !important; }
+
+.main-content { padding: 0; }
+
+.header,
+.site-footer,
+.flash-full.js-notice,
+.notification-actions .mute,
+.notification-center .tabnav,
+.repohead,
+.protip,
+.site-footer-container { display: none; }
+
+
+/* notifications full view */
+.container { width: auto; margin 0; padding: 0;  }
+.gut-md { width: auto; margin: 0; }
+.gut-md>.col-3 { display: none; }
+.gut-md>.col-9 { float: none !important; width: 100%; padding: 0 !important; }
+.gut-md>.col-9 .blankslate { background: none; box-shadow: none; border: 0; }
+
+.notifications-list .boxed-group-inner { border-width: 1px 0; }
+.notifications-list .boxed-group { margin-bottom: 0; }
+.notifications-list .boxed-group>h3 { border-width: 0 0 1px 0; position: sticky; }
+.notifications-list .paginate-container { margin: 0; }
+
+.notifications .list-group-item-name { max-width: 100%; margin-right: 220px; }
+.notifications .list-group-item-name a { max-width: 100%; }
+
+
+.issues-listing .border-right,
+.issues-listing .border-bottom,
+.issues-listing .border-left { border: none !important; }
+
+.issues-listing .subnav { display: none; }
+.issues-listing .table-list-header { border-width: 0 0 1px; border-radius: 0; margin: 0; }
+
+.js-issues-results { padding: 20px; }
+.timeline-new-comment { max-width: initial; }
+.previewable-comment-form textarea { max-height: initial; }
+
+.issues-reset-query-wrapper { margin-right: 0; }
+.discussion-timeline { width: calc(100% - 220px); }
+
+
+
+/* hide sidebar */
+/*
+.discussion-timeline { float: none; width: auto; }
+.discussion-sidebar { display: none; }
+*/
+
+
+/* fixed header for issue */
+/*
+#partial-discussion-header {
+	position: fixed;
+	z-index: 999;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 110px;
+	background: #fff;
+	padding: 20px 20px 0;
+	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+	overflow: hidden;
+}
+#partial-discussion-header .gh-header-title {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	display: block;
+	white-space: nowrap;
+	font-size: 23px;
+	line-height: 1.4;
+	width: calc(100% - 150px);
+}
+#discussion_bucket { margin-top: 110px; }
+
+
+/* fixed header for PR *
+.tabnav-pr {
+    position: fixed;
+    top: 110px;
+    margin: 0;
+    left: 0;
+    right: 0;
+    height: 45px;
+    background: #fff;
+    z-index: 1000;
+	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
+	overflow: hidden;
+	padding: 5px 10px 0;
+}
+#discussion_bucket.pull-request-tab-content,
+#commits_bucket.pull-request-tab-content { margin-top: 150px !important; }
+#files_bucket.pull-request-tab-content { margin-top: 170px !important; }
+
+.pull-request-tab-content { margin: 20px; }
+*/
+
+
+
+
+/* name, age, checkbox and avatars */
+@media (max-width: 850px) {
+	.main-content { padding: 0 10px; }
+	.one-fourth { display: none; }
+	.three-fourths { width: 100%; }
+	.notifications .list-group-item-name { max-width: auto; margin-right: 200px; }
+	.notification-actions>li.age { width: 100px; }
+}
+
+/* name, age and checkbox */
+@media (max-width: 550px) {
+	.notifications .list-group-item-name { margin-right: 130px; }
+	.notification-actions>li.age { width: 90px; }
+	.notification-actions>li.tooltipped { display: none; }
+}
+
+/* name and checkbox */
+@media (max-width: 450px) {
+	.notifications .list-group-item-name { margin-right: 25px; }
+	.notification-actions>li.age { display: none; }
+}
+
+/* just name */
+@media (max-width: 350px) {
+	.notification-actions { display: none; }
+	.notifications .list-group-item-name { margin-right: 0; }
+}

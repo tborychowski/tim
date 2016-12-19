@@ -1,0 +1,5 @@
+node_modules/
+storage/*.json
+config.json
+*.sublime-*
+.DS_Store

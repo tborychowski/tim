@@ -1,0 +1,26 @@
+{
+  "name": "github-browser",
+  "version": "1.0.0",
+  "description": "Github browser.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tborychowski/github-browser.git"
+  },
+  "scripts": {
+    "start": "electron index.js",
+    "package": "electron-packager . --platform=darwin"
+  },
+  "author": "Tom",
+  "license": "MIT",
+  "dependencies": {
+    "electron-window-state": "^4.0.1",
+    "ionicons": "^3.0.0",
+    "octonode": "^0.7.7",
+    "tingodb": "^0.4.2"
+  },
+  "devDependencies": {
+    "electron-packager": "^8.3.0",
+    "electron-prebuilt": "^1.4.11"
+  }
+}

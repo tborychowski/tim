@@ -1,0 +1,67 @@
+
+header {
+	-webkit-user-select: none;
+	-webkit-app-region: drag;
+	position: fixed;
+	z-index: 99;
+	height: 38px;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 7px 12px 0 245px;
+	border-bottom: 1px solid #c2c0c2;
+	text-align: right;
+	white-space: nowrap;
+}
+
+.window-inactive header {
+	background: #F6F6F6;
+	border-bottom: 1px solid #ddd;
+}
+
+
+.browser-nav {
+	float: left;
+}
+
+.addressbar {
+	width: 400px;
+	padding: 2px 5px;
+	margin-top: 1px;
+	font-size: 13px;
+	border-radius: 4px;
+	border: 1px solid #ccc;
+}
+.btn-go {
+	font-size: 13px;
+}
+
+header .icon-btn {
+	font-size: 22px;
+	color: #888;
+	transition: color .3s;
+	margin: 0 0 0 15px;
+	cursor: pointer;
+}
+
+header .icon-btn:hover { color: blue; }
+header .icon-btn:active { color: black; }
+header .browser-nav .icon-btn { margin: 0 15px 0 0; float: left; }
+
+
+.star-box { display: none; }
+.star-box .ion-ios-star { color: #FF9C20; }
+
+.star-box.is-issue { display: inline-block; }
+
+.star-box .js-star { display: inline; }
+.star-box .js-unstar { display: none; }
+
+.star-box.is-starred .js-star { display: none; }
+.star-box.is-starred .js-unstar { display: inline; }
+
+
+
+
+header button,
+header input { margin: 2px 3px; }

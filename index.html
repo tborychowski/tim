@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Issue Monitor</title>
+ 	<base href="./app/">
+ 	<link rel="stylesheet" href="app.css">
+ 	<link rel="stylesheet" href="../node_modules/ionicons/dist/css/ionicons.css">
+</head>
+<body>
+	<header id="header">
+		<div class="browser-nav">
+			<a href="#" class="btn icon-btn js-prev ion-ios-arrow-back" title="Back" data-go="prev"></a>
+			<a href="#" class="btn icon-btn js-next ion-ios-arrow-forward" title="Forward" data-go="next"></a>
+			<input class="addressbar" value="" />
+			<button type="submit" class="btn btn-go" data-go="go">Go</button>
+		</div>
+
+		<div class="star-box">
+			<a href="#" class="btn icon-btn js-star ion-ios-star-outline" title="Bookmark" data-go="star"></a>
+			<a href="#" class="btn icon-btn js-unstar ion-ios-star" title="Remove Bookmark" data-go="unstar"></a>
+		</div>
+
+		<a href="#" class="btn icon-btn js-copy ion-ios-link-outline" title="Copy link" data-go="copy"></a>
+		<a href="#" class="btn icon-btn js-browser ion-ios-compass-outline" title="Open in browser" data-go="browser"></a>
+	</header>
+
+	<aside id="sidebar">
+		<h2><a href="notifications" class="btn">Notifications</a></h2>
+		<div class="repo-list"></div>
+	</aside>
+
+	<section id="frame"></section>
+
+	<script src="app.js"></script>
+</body>
+</html>
