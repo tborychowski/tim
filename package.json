@@ -14,6 +14,7 @@
   "author": "Tom",
   "license": "MIT",
   "dependencies": {
+    "electron-config": "^0.2.1",
     "electron-window-state": "^4.0.1",
     "ionicons": "^3.0.0",
     "octonode": "^0.7.7",

@@ -11,7 +11,7 @@ const menuTemplate = [
 			{
 				label: 'Preferences...',
 				accelerator: 'CmdOrCtrl+,',
-				click () { win.webContents.send('open-settings'); }
+				click () { win.webContents.send('menu', 'open-settings'); }
 			},
 			{ type: 'separator' },
 			{ role: 'quit' }
@@ -36,6 +36,16 @@ const menuTemplate = [
 		submenu: [
 			{ role: 'reload' },
 			{ role: 'toggledevtools' },
+			{
+				label: 'Toggle Webview Developer Tools',
+				accelerator: '',
+				click () { win.webContents.send('menu', 'toggle-webview-devtools'); }
+			},
+			{
+				label: 'Clear Cookies',
+				accelerator: '',
+				click () { win.webContents.send('menu', 'clear-cookies'); }
+			},
 			{ type: 'separator' },
 			{ role: 'togglefullscreen' }
 		]

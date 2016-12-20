@@ -216,6 +216,15 @@ concat-stream@1.5.0:
     readable-stream "~2.0.0"
     typedarray "~0.0.5"
 
+conf@^0.11.1:
+  version "0.11.2"
+  resolved "https://registry.yarnpkg.com/conf/-/conf-0.11.2.tgz#879f479267600483e502583462ca4063fc9779b2"
+  dependencies:
+    dot-prop "^3.0.0"
+    env-paths "^0.3.0"
+    mkdirp "^0.5.1"
+    pkg-up "^1.0.0"
+
 core-util-is@~1.0.0:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.2.tgz#b5fd54220aa2bc5ab57aab7140c940754503c1a7"
@@ -288,11 +297,23 @@ delayed-stream@0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-0.0.5.tgz#d4b1f43a93e8296dfe02694f4680bc37a313c73f"
 
+dot-prop@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-3.0.0.tgz#1b708af094a49c9a0e7dbcad790aba539dac1177"
+  dependencies:
+    is-obj "^1.0.0"
+
 ecc-jsbn@~0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.1.tgz#0fc73a9ed5f0d53c38193398523ef7e543777505"
   dependencies:
     jsbn "~0.1.0"
+
+electron-config:
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/electron-config/-/electron-config-0.2.1.tgz#7e12c26412d06bf3ed3896d0479df162986b95ba"
+  dependencies:
+    conf "^0.11.1"
 
 electron-download@^3.0.0, electron-download@^3.0.1:
   version "3.0.1"
@@ -353,6 +374,10 @@ electron-window-state:
     deep-equal "^1.0.1"
     jsonfile "^2.2.3"
     mkdirp "^0.5.1"
+
+env-paths@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/env-paths/-/env-paths-0.3.1.tgz#c30ccfcbc30c890943dc08a85582517ef00da463"
 
 error-ex@^1.2.0:
   version "1.3.0"
@@ -639,6 +664,10 @@ is-my-json-valid@^2.12.0, is-my-json-valid@^2.12.4:
     generate-object-property "^1.1.0"
     jsonpointer "^4.0.0"
     xtend "^4.0.0"
+
+is-obj@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/is-obj/-/is-obj-1.0.1.tgz#3e4729ac1f5fde025cd7d83a896dab9f4f67db0f"
 
 is-property@^1.0.0:
   version "1.0.2"
@@ -972,6 +1001,12 @@ pinkie-promise@^2.0.0:
 pinkie@^2.0.0:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/pinkie/-/pinkie-2.0.4.tgz#72556b80cfa0d48a974e80e77248e80ed4f7f870"
+
+pkg-up@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/pkg-up/-/pkg-up-1.0.0.tgz#3e08fb461525c4421624a33b9f7e6d0af5b05a26"
+  dependencies:
+    find-up "^1.0.0"
 
 plist@^1.2.0:
   version "1.2.0"

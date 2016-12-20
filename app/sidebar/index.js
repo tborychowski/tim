@@ -1,7 +1,5 @@
 const $ = require('../util');
 const starsDB = require('../db/stars');
-const config = require('../../config.json');
-
 
 let isReady = false, el, reposEl;
 
@@ -14,19 +12,22 @@ function unstarIssue (issue) {
 	starsDB.remove(issue).then(getIssues);
 }
 
+function getIssues () {
+	starsDB.get().then(fillIssues);
+}
 
 
 function onClick (e) {
 	let target = $(e.target);
 	if (target.is('.btn')) {
-		$.trigger('frame/goto', target[0].getAttribute('href'));
+		$.trigger('change-url', target[0].getAttribute('href'));
 		e.preventDefault();
 	}
 }
 
 
 function getIssueHtml (issue) {
-	return `<li><a href="${issue.repo}/issues/${issue.id}" title="${issue.name}" class="btn">
+	return `<li><a href="${issue.repo}/${issue.id}" title="${issue.name}" class="btn">
 			<em>${issue.id}</em> ${issue.name}</a></li>`;
 }
 
@@ -47,20 +48,11 @@ function fillIssues (issues) {
 	});
 
 	const html = [];
-	for (let repo in remap) {
-		html.push(getRepoHtml(remap[repo]));
-	}
+	for (let repo in remap) html.push(getRepoHtml(remap[repo]));
+
 	reposEl.html(html.join(''));
 }
 
-
-function getIssues () {
-	const repos = config['repos'].map(repo => ({ repo }));
-	starsDB.get().then(issues => {
-		issues = [].concat(issues, repos);
-		fillIssues(issues);
-	});
-}
 
 
 function init () {

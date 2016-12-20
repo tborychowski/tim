@@ -2,3 +2,6 @@
 @import 'header/index.css';
 @import 'sidebar/index.css';
 @import 'frame/index.css';
+
+body { transition: opacity .5s ease-out, filter .5s ease-out; }
+.window-inactive { opacity: 0.5; filter: blur(0.9px); }

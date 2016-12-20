@@ -1,18 +1,19 @@
+const {session} = require('electron').remote;
 const $ = require('../util');
-const appState = require('../appstate');
-const config = require('../../config.json');
+const Config = require('electron-config');
+const config = new Config();
 
-const baseUrl = config.url.replace(/\/$/, '');
 const wpjs = `file://${__dirname}\\..\\..\\app\\frame\\webview.js`;
+const ses = session.fromPartition('persist:github');
+
 
 let webview, pageLoadCallback, isReady = false;
 
 
 const webviewHandlers = {
-	// isLogged: isLoggedIn => {},
 	domChanged: (url, issue) => {
-		appState.url = url;
-		appState.issue = issue;
+		config.set('state.url', url);
+		config.set('state.issue', issue);
 		$.trigger('issue/changed', issue);
 	},
 	docReady: res => {
@@ -24,18 +25,34 @@ const webviewHandlers = {
 };
 
 
-function onBeforeUrlChange (url) {
+function onMenuClick (target) {
+	const wv = webview[0];
+	if (target === 'toggle-webview-devtools') {
+		if (wv.isDevToolsOpened()) wv.closeDevTools();
+		else wv.openDevTools();
+	}
+	else if (target === 'clear-cookies') {
+		ses.clearStorageData(() => {
+			gotoUrl('notifications');
+		});
+	}
+}
+
+function gotoUrl (url) {
 	webview.addClass('loading');
 	if (typeof url !== 'string' || !url.length) return;
 
 	if (url === 'prev') setTimeout(() => { webview[0].goBack(); }, 400);
 	else if (url === 'next') setTimeout(() => { webview[0].goForward(); }, 400);
-	else webview[0].loadURL(`${baseUrl}/${url}`);
+	else {
+		console.log(url);
+		webview[0].loadURL(url);
+	}
 }
 
 
 function onUrlChanged () {
-	appState.url = webview[0].getURL();
+	config.set('state.url', webview[0].getURL());
 	setTimeout(() => { webview.removeClass('loading'); }, 100);
 }
 
@@ -45,12 +62,14 @@ function init () {
 	if (isReady) return;
 
 	const frame = $('#frame');
-	const html = `<webview id="webview" src="${baseUrl}/notifications" preload="${wpjs}" class="loading" partition="persist:github"></webview>`;
+	const html = `<webview id="webview" class="loading" preload="${wpjs}"
+		src="${config.get('baseUrl')}notifications" partition="persist:github"></webview>`;
 
 	frame.html(html);
 	webview = frame.find('#webview');
 
-	webview.on('will-navigate', onBeforeUrlChange);
+
+	webview.on('will-navigate', gotoUrl);
 	webview.on('dom-ready', onUrlChanged);
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
@@ -62,7 +81,8 @@ function init () {
 	// webview.on('dom-ready', () => { webview[0].openDevTools(); });
 
 
-	$.on('frame/goto', onBeforeUrlChange);
+	$.on('frame/goto', gotoUrl);
+	$.on('menu', onMenuClick);
 
 	isReady = true;
 }

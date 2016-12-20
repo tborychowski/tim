@@ -11,23 +11,27 @@
 <body>
 	<header id="header">
 		<div class="browser-nav">
-			<a href="#" class="btn icon-btn js-prev ion-ios-arrow-back" title="Back" data-go="prev"></a>
-			<a href="#" class="btn icon-btn js-next ion-ios-arrow-forward" title="Forward" data-go="next"></a>
-			<input class="addressbar" value="" />
-			<button type="submit" class="btn btn-go" data-go="go">Go</button>
+			<a href="#" class="header-btn js-prev ion-md-arrow-back" title="Back" data-go="prev"></a>
+			<a href="#" class="header-btn js-next ion-md-arrow-forward" title="Forward" data-go="next"></a>
+			<a href="#" class="header-btn js-refresh ion-md-refresh" title="Refresh" data-go="refresh"></a>
+			<input class="addressbar" value="" autofocus />
 		</div>
 
-		<div class="star-box">
-			<a href="#" class="btn icon-btn js-star ion-ios-star-outline" title="Bookmark" data-go="star"></a>
-			<a href="#" class="btn icon-btn js-unstar ion-ios-star" title="Remove Bookmark" data-go="unstar"></a>
-		</div>
 
-		<a href="#" class="btn icon-btn js-copy ion-ios-link-outline" title="Copy link" data-go="copy"></a>
-		<a href="#" class="btn icon-btn js-browser ion-ios-compass-outline" title="Open in browser" data-go="browser"></a>
+		<div class="header-right">
+			<div class="star-box">
+				<a href="#" class="header-btn js-star ion-md-star-outline" title="Bookmark" data-go="star"></a>
+				<a href="#" class="header-btn js-unstar ion-md-star" title="Remove Bookmark" data-go="unstar"></a>
+			</div>
+			<a href="#" class="header-btn js-copy ion-md-link" title="Copy link" data-go="copy"></a>
+			<a href="#" class="header-btn js-browser ion-md-compass" title="Open in browser" data-go="browser"></a>
+
+		</div>
 	</header>
 
 	<aside id="sidebar">
 		<h2><a href="notifications" class="btn">Notifications</a></h2>
+		add tabs for notifications/starred
 		<div class="repo-list"></div>
 	</aside>
 

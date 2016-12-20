@@ -8,49 +8,44 @@ header {
 	top: 0;
 	left: 0;
 	right: 0;
-	padding: 7px 12px 0 245px;
+	padding: 7px 12px 0 230px;
 	border-bottom: 1px solid #c2c0c2;
 	text-align: right;
 	white-space: nowrap;
 }
 
-.window-inactive header {
-	background: #F6F6F6;
-	border-bottom: 1px solid #ddd;
-}
+.window-inactive header { background: #F6F6F6; border-bottom: 1px solid #ddd; }
 
 
-.browser-nav {
-	float: left;
-}
+.browser-nav { float: left; }
+.btn-go { font-size: 13px; }
 
 .addressbar {
 	width: 400px;
 	padding: 2px 5px;
-	margin-top: 1px;
+	margin: 1px 0 0 15px;
 	font-size: 13px;
 	border-radius: 4px;
 	border: 1px solid #ccc;
 }
-.btn-go {
-	font-size: 13px;
-}
 
-header .icon-btn {
+.header-btn {
 	font-size: 22px;
 	color: #888;
 	transition: color .3s;
 	margin: 0 0 0 15px;
 	cursor: pointer;
+	margin: 0 0 0 15px;
+	float: left;
 }
+.header-btn:hover { color: blue; }
+.header-btn:active { color: black; }
 
-header .icon-btn:hover { color: blue; }
-header .icon-btn:active { color: black; }
-header .browser-nav .icon-btn { margin: 0 15px 0 0; float: left; }
+.header-right { float: right; }
 
-
-.star-box { display: none; }
-.star-box .ion-ios-star { color: #FF9C20; }
+/* STAR BOX */
+.star-box { display: none; float: left; }
+.star-box .js-unstar { color: #FF9C20; }
 
 .star-box.is-issue { display: inline-block; }
 
@@ -60,8 +55,3 @@ header .browser-nav .icon-btn { margin: 0 15px 0 0; float: left; }
 .star-box.is-starred .js-star { display: none; }
 .star-box.is-starred .js-unstar { display: inline; }
 
-
-
-
-header button,
-header input { margin: 2px 3px; }
