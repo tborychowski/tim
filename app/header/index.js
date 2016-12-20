@@ -4,7 +4,7 @@ const Config = require('electron-config');
 const config = new Config();
 
 
-let isReady = false, el, starBox;
+let isReady = false, el, starBox, notifToggle;
 
 const clickHandlers = {
 	prev: () => { $.trigger('frame/goto', 'prev'); },
@@ -13,6 +13,15 @@ const clickHandlers = {
 	copy: () => { clipboard.writeText(config.get('state.url')); },
 	star: () => { $.trigger('issue/star', config.get('state.issue')); starBox.addClass('is-starred'); },
 	unstar: () => { $.trigger('issue/unstar', config.get('state.issue')); starBox.removeClass('is-starred'); },
+	hideNotifications: () => {
+		notifToggle.removeClass('is-visible');
+		$.trigger('toggle-notifications', false);
+
+	},
+	showNotifications: () => {
+		notifToggle.addClass('is-visible');
+		$.trigger('toggle-notifications', true);
+	}
 };
 
 
@@ -32,6 +41,7 @@ function init () {
 
 	el = $('#header');
 	starBox = el.find('.star-box');
+	notifToggle = el.find('.notification-toggle');
 
 	el.on('click', onClick);
 

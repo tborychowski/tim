@@ -1,28 +1,18 @@
-#sidebar {
+.sidebar {
 	position: absolute;
 	top: 38px;
 	bottom: 0;
 	left: 0;
-	width: 240px;
+	width: 300px;
 	border-right: 1px solid #ddd;
 	background: #f5f5f4;
 	padding: 0;
 	color: #333;
 }
 
-#sidebar h2 {
-	font-size: 14px;
-	font-weight: 600;
-	line-height: 1;
-	margin: 0;
-}
-
-#sidebar h2 a {
-	padding: 12px 20px 0;
-	height: 36px;
-	color: #333;
-	display: block;
-}
+.sidebar h2 { font-size: 14px; font-weight: 600; line-height: 1; margin: 0; }
+.sidebar h2 a { color: #333; display: block; }
+.sidebar .hdr { padding: 12px 20px 0; height: 37px;	 }
 
 .repo-list {
 	position: absolute;
@@ -34,14 +24,17 @@
 	overflow-y: auto;
 }
 
-#sidebar>h2,
-#sidebar .repo-box { border-bottom: 1px solid #d8d8d8; }
+.sidebar>h2,
+.sidebar .repo-box { border-bottom: 1px solid #d8d8d8; }
 
 
 .repo-box { padding: 5px 0 10px; }
 .repo-issues { list-style: none; margin: 0; padding: 0; }
-.repo-issues li {  }
 .repo-issues li a { font-size: 12px; padding: 5px 10px 10px 20px; display: block; }
 .repo-issues li a em { color: #999; font-style: normal; }
 .repo-issues li a em:before { content: '#'; }
 
+
+
+#notifications-sidebar { left: -300px; transition: left .3s ease-out; }
+#notifications-sidebar.visible { left: 0; }

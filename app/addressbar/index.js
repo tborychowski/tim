@@ -12,10 +12,9 @@ function gotoUrl (url) {
 	const validUrl = isValidUrl(url);
 	if (!config.get('baseUrl') && validUrl) {
 		config.set('baseUrl', validUrl.href);
-		url = 'notifications';
+		url = '';
 	}
-	if (url === 'notifications') url = config.get('baseUrl') + url;
-	else if (!validUrl) url = config.get('baseUrl') + parseAnyAddress(url);
+	if (!validUrl) url = config.get('baseUrl') + parseAnyAddress(url);
 
 	if (url) $.trigger('frame/goto', url);
 }

@@ -32,9 +32,7 @@ function onMenuClick (target) {
 		else wv.openDevTools();
 	}
 	else if (target === 'clear-cookies') {
-		ses.clearStorageData(() => {
-			gotoUrl('notifications');
-		});
+		ses.clearStorageData(gotoUrl);
 	}
 }
 
@@ -63,7 +61,7 @@ function init () {
 
 	const frame = $('#frame');
 	const html = `<webview id="webview" class="loading" preload="${wpjs}"
-		src="${config.get('baseUrl')}notifications" partition="persist:github"></webview>`;
+		src="${config.get('baseUrl')}" partition="persist:github"></webview>`;
 
 	frame.html(html);
 	webview = frame.find('#webview');

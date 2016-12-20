@@ -15,6 +15,9 @@ address.init();
 const settings = require('./app/settings');
 settings.init();
 
+const notifications = require('./app/notifications');
+notifications.init();
+
 
 const { ipcRenderer } = require('electron');
 ipcRenderer.on('menu', (ev, msg) => { $.trigger('menu', msg); });

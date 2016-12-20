@@ -8,20 +8,27 @@ header {
 	top: 0;
 	left: 0;
 	right: 0;
-	padding: 7px 12px 0 230px;
+	padding: 7px 12px 0 70px;
 	border-bottom: 1px solid #c2c0c2;
 	text-align: right;
 	white-space: nowrap;
+	position: relative;
 }
 
 .window-inactive header { background: #F6F6F6; border-bottom: 1px solid #ddd; }
 
+.notification-toggle { position: absolute; left: 120px; }
+.notification-toggle .js-hide-notifications { display: none; }
 
-.browser-nav { float: left; }
+.notification-toggle.is-visible .js-show-notifications { display: none; }
+.notification-toggle.is-visible .js-hide-notifications { display: inline-block; }
+
+
+.browser-nav { position: absolute; left: 230px; right: 120px; }
 .btn-go { font-size: 13px; }
 
 .addressbar {
-	width: 400px;
+	width: calc(100% - 105px);
 	padding: 2px 5px;
 	margin: 1px 0 0 15px;
 	font-size: 13px;

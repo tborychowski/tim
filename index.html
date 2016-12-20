@@ -10,6 +10,11 @@
 </head>
 <body>
 	<header id="header">
+		<div class="notification-toggle">
+			<a href="#" class="header-btn js-hide-notifications ion-md-notifications" title="Hide Notifications" data-go="hideNotifications"></a>
+			<a href="#" class="header-btn js-show-notifications ion-md-notifications-outline" title="Show Notifications" data-go="showNotifications"></a>
+		</div>
+
 		<div class="browser-nav">
 			<a href="#" class="header-btn js-prev ion-md-arrow-back" title="Back" data-go="prev"></a>
 			<a href="#" class="header-btn js-next ion-md-arrow-forward" title="Forward" data-go="next"></a>
@@ -29,11 +34,12 @@
 		</div>
 	</header>
 
-	<aside id="sidebar">
-		<h2><a href="notifications" class="btn">Notifications</a></h2>
-		add tabs for notifications/starred
+	<aside id="sidebar" class="sidebar">
+		<h2 class="hdr">Starred</h2>
 		<div class="repo-list"></div>
 	</aside>
+
+	<aside id="notifications-sidebar" class="sidebar"></aside>
 
 	<section id="frame"></section>
 

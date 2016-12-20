@@ -35,7 +35,7 @@ function getIssueHtml (issue) {
 function getRepoHtml (repo) {
 	const issuesHtml = repo.items.map(getIssueHtml).join('');
 	return `<div class="repo-box ${repo.name}">
-		<h2><a href="${repo.name}/issues" class="btn">${repo.name}</a></h2>
+		<h2><a href="${repo.name}/issues" class="btn hdr">${repo.name}</a></h2>
 		<ul class="repo-issues">${issuesHtml}</ul>
 	</div>`;
 }
