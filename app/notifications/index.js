@@ -38,6 +38,8 @@ function init () {
 
 	$.on('toggle-notifications', toggle);
 
+	toggle(config.get('state.notifications'));
+
 	isReady = true;
 }
 

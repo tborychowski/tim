@@ -128,14 +128,14 @@ sizzle.fn.hasClass = function (cls) {
 
 sizzle.fn.html = function (html) {
 	if (!this || !this.length) return this;
-	if (!html || !html.length) return this[0].innerHTML;
+	if (typeof html === 'undefined') return this[0].innerHTML;
 	this.forEach(el => { el.innerHTML = html; });
 	return this;
 };
 
 sizzle.fn.text = function (text) {
 	if (!this || !this.length) return this;
-	if (!text || !text.length) return this[0].innerText;
+	if (typeof text === 'undefined') return this[0].innerText;
 	this.forEach(el => { el.innerText = text; });
 	return this;
 };

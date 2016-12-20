@@ -13,18 +13,15 @@ const clickHandlers = {
 	copy: () => { clipboard.writeText(config.get('state.url')); },
 	star: () => { $.trigger('issue/star', config.get('state.issue')); starBox.addClass('is-starred'); },
 	unstar: () => { $.trigger('issue/unstar', config.get('state.issue')); starBox.removeClass('is-starred'); },
-	hideNotifications: () => {
-		notifToggle.removeClass('is-visible');
-		$.trigger('toggle-notifications', false);
-
-	},
-	showNotifications: () => {
-		notifToggle.addClass('is-visible');
-		$.trigger('toggle-notifications', true);
-	}
+	hideNotifications: () => $.trigger('toggle-notifications', false),
+	showNotifications: () => $.trigger('toggle-notifications', true)
 };
 
 
+function toggleNotifications (show) {
+	config.set('state.notifications', !!show);
+	notifToggle.toggleClass('is-visible', !!show);
+}
 
 function onClick (e) {
 	let target = $(e.target);
@@ -44,6 +41,9 @@ function init () {
 	notifToggle = el.find('.notification-toggle');
 
 	el.on('click', onClick);
+	$.on('toggle-notifications', toggleNotifications);
+
+	toggleNotifications(config.get('state.notifications'));
 
 	isReady = true;
 }
