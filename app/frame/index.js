@@ -11,6 +11,9 @@ let webview, pageLoadCallback, isReady = false;
 
 
 const webviewHandlers = {
+	isLogged: (itIs) => {
+		if (!itIs) $.on('toggle-notifications', false);
+	},
 	domChanged: (url, issue) => {
 		config.set('state.url', url);
 		config.set('state.issue', issue);
@@ -32,6 +35,7 @@ function onMenuClick (target) {
 		else wv.openDevTools();
 	}
 	else if (target === 'clear-cookies') {
+		config.clear();
 		ses.clearStorageData(gotoUrl);
 	}
 }
@@ -61,7 +65,7 @@ function init () {
 
 	const frame = $('#frame');
 	const html = `<webview id="webview" class="loading" preload="${wpjs}"
-		src="${config.get('baseUrl')}" partition="persist:github"></webview>`;
+		src="${config.get('baseUrl')}login" partition="persist:github"></webview>`;
 
 	frame.html(html);
 	webview = frame.find('#webview');
@@ -73,6 +77,7 @@ function init () {
 		const fn = webviewHandlers[ev.channel];
 		if (typeof fn === 'function') fn.apply(fn, ev.args);
 	});
+
 
 	// DEBUG
 	// webview.on('console-message', e => { console.log('WV:', e.message); });

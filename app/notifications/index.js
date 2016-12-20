@@ -19,13 +19,17 @@ function toggle (show) {
 	el.toggleClass('visible', !!show);
 }
 
+function reload () {
+	webview.reload();
+}
+
 
 function init () {
 	if (isReady) return;
 
 	el = $('#notifications-sidebar');
 	const html = `<webview id="webview2" preload="${wpjs}" class="loading"
-		src="${config.get('baseUrl')}notifications" partition="persist:github"></webview>`;
+		src="${config.get('baseUrl')}notifications/participating" partition="persist:github"></webview>`;
 
 	el.html(html);
 	webview = el.find('#webview2');
@@ -37,6 +41,7 @@ function init () {
 	});
 
 	$.on('toggle-notifications', toggle);
+	$.on('reload-notifications', reload);
 
 	toggle(config.get('state.notifications'));
 
