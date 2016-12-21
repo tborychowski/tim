@@ -40,12 +40,46 @@ function observeChanges () {
 }
 
 
+function trim (str, chars) {
+	chars = chars || '\\s';
+	return str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
+}
+
+
+function gatherUserIds () {
+	const selectors = [
+		'.issues-listing .author',
+		'.sidebar-assignee .assignee',
+		'.user-mention'
+	];
+	let els = document.querySelectorAll(selectors.join(','));
+	const ids = Array.prototype.slice.call(els).map(el => trim(el.innerText, '@'));
+	msg('userIdsGathered', [...new Set(ids)]);	// send unique list
+}
+
+
+function updateUserNames (ev, users) {
+	const selectors = [
+		'.issues-listing .author',
+		'.sidebar-assignee .assignee',
+		'.user-mention'
+	];
+	let els = document.querySelectorAll(selectors.join(','));
+	els = Array.prototype.slice.call(els);
+	els.forEach(el => {
+		const id = trim(el.innerText, '@');
+		if (users[id]) el.innerText = `${users[id].name} (${id})`;
+	});
+}
+
 function init () {
 	updateCss();
 	observeChanges();
 	onDomChange();
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady', '<div>' + document.querySelector('body').innerHTML + '</div>');
+	ipc.on('gatherUserIds', gatherUserIds);
+	ipc.on('userIdsAndNames', updateUserNames);
 }
 
 

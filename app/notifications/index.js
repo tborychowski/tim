@@ -11,7 +11,7 @@ const webviewHandlers = {
 
 function onUrlChanged () {
 	setTimeout(() => { webview.removeClass('loading'); }, 100);
-	webview[0].openDevTools();
+	// webview[0].openDevTools();
 }
 
 
@@ -19,8 +19,18 @@ function toggle (show) {
 	el.toggleClass('visible', !!show);
 }
 
-function reload () {
-	webview.reload();
+function refresh (fullReload) {
+	if (fullReload) webview.reload();
+	else webview[0].send('reload');
+}
+
+
+function onClick (e) {
+	let target = $(e.target);
+	if (target.is('.js-refresh')) {
+		e.preventDefault();
+		refresh();
+	}
 }
 
 
@@ -41,8 +51,9 @@ function init () {
 		if (typeof fn === 'function') fn.apply(fn, ev.args);
 	});
 
+	el.on('click', onClick);
 	$.on('toggle-notifications', toggle);
-	$.on('reload-notifications', reload);
+	$.on('refresh-notifications', refresh);
 
 	toggle(config.get('state.notifications'));
 

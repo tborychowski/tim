@@ -1,5 +1,6 @@
 const {session} = require('electron').remote;
 const $ = require('../util');
+const realnames = require('../realnames');
 const Config = require('electron-config');
 const config = new Config();
 
@@ -55,6 +56,7 @@ function gotoUrl (url) {
 
 function onUrlChanged () {
 	config.set('state.url', webview[0].getURL());
+	realnames.replace(webview[0]);
 	setTimeout(() => { webview.removeClass('loading'); }, 100);
 }
 
@@ -80,7 +82,7 @@ function init () {
 
 
 	// DEBUG
-	// webview.on('console-message', e => { console.log('WV:', e.message); });
+	webview.on('console-message', e => { console.log('WV:', e.message); });
 	// webview.on('dom-ready', () => { webview[0].openDevTools(); });
 
 

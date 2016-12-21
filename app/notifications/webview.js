@@ -13,6 +13,11 @@ function updateCss () {
 	document.querySelector('.accessibility-aid').remove();
 }
 
+function reload () {
+	document.querySelector('.filter-list .filter-item.selected').click();
+}
+
+
 
 function onClick (e) {
 	const el = e.target;
@@ -26,6 +31,7 @@ function onClick (e) {
 function init () {
 	updateCss();
 	document.addEventListener('click', onClick, true);
+	ipc.on('reload', reload);
 }
 
 
