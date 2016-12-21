@@ -77,15 +77,6 @@ function merge (target, ...sources) {
 	return to;
 }
 
-if (!Object.assign) {
-	Object.defineProperty(Object, 'assign', {
-		value: merge,
-		enumerable: false,
-		configurable: true,
-		writable: true
-	});
-}
-
 
 function isNodeList (nodes) {
 	return (typeof nodes === 'object') &&
@@ -94,7 +85,14 @@ function isNodeList (nodes) {
 }
 
 
+function trim (str, chars) {return rtrim(ltrim(str, chars), chars); }
+function ltrim (str, chars) { return str.replace(new RegExp('^' + (chars ? chars : '\\s') + '+'), ''); }
+function rtrim (str, chars) { return str.replace(new RegExp((chars ? chars : '\\s') + '+$'), ''); }
+
 module.exports = {
+	ltrim,
+	rtrim,
+	trim,
 	type,
 	rand,
 	each,

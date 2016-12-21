@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu} = require('electron');
+const {app, shell, BrowserWindow, Menu} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 
 let win;
@@ -41,11 +41,6 @@ const menuTemplate = [
 				accelerator: '',
 				click () { win.webContents.send('menu', 'toggle-webview-devtools'); }
 			},
-			{
-				label: 'Clear Cookies',
-				accelerator: '',
-				click () { win.webContents.send('menu', 'clear-cookies'); }
-			},
 			{ type: 'separator' },
 			{ role: 'togglefullscreen' }
 		]
@@ -60,7 +55,15 @@ const menuTemplate = [
 	{
 		role: 'help',
 		submenu: [
-			{ label: 'Learn More', click () {  }}
+			{ label: 'Github Page', click () {
+				shell.openExternal('https://github.com/tborychowski/github-browser');
+			}},
+			{ type: 'separator' },
+			{
+				label: 'Clear Cookies & Config',
+				accelerator: 'CmdOrCtrl+Shift+Backspace',
+				click () { win.webContents.send('menu', 'clear-cookies'); }
+			},
 		]
 	}
 ];

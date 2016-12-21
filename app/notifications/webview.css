@@ -1,4 +1,4 @@
-body { min-width: auto !important; }
+body { min-width: auto !important; background: none; }
 
 .main-content { padding: 0; }
 
@@ -20,12 +20,25 @@ body { min-width: auto !important; }
 .gut-md>.col-9 .blankslate { background: none; box-shadow: none; border: 0; }
 
 .notifications-list .boxed-group-inner { border-width: 1px 0; }
-.notifications-list .boxed-group { margin-bottom: 0; }
+.notifications-list .boxed-group { margin-bottom: 20px; }
 .notifications-list .boxed-group>h3 { border-width: 0 0 1px 0; position: sticky; }
 .notifications-list .paginate-container { margin: 0; }
 
+.notifications .list-group-item { border: none; }
 .notifications .list-group-item-name { max-width: 100%; margin-right: 220px; }
 .notifications .list-group-item-name a { max-width: 100%; }
+.notifications .list-group-item.navigation-focus .list-group-item-name a { text-decoration: underline; }
+
+
+/* Notifications dark theme */
+.list-group-item.navigation-focus,
+.notifications-list .boxed-group>h3,
+.boxed-group-inner { background: none; color: #eee; border: none; }
+.list-group-item-link { color: #ddd; }
+
+.notifications .notifications-more>a,
+.notification-actions .btn-link { color: #999; }
+
 
 
 

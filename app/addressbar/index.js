@@ -35,9 +35,10 @@ function parseAnyAddress (url) {
 	if (parts.length > 2) id = parts.pop();
 	if (parts.length > 1) {
 		url = parts.join('/');
+		if (id === 'issues') id = '/';
 		if (id) url += `/issues/${id}`;
 	}
-	return url;
+	return $.rtrim(url, '/');
 }
 
 

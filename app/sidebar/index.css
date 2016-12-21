@@ -1,22 +1,27 @@
 .sidebar {
 	position: absolute;
-	top: 38px;
+	top: 0;
 	bottom: 0;
 	left: 0;
 	width: 300px;
-	border-right: 1px solid #ddd;
-	background: #f5f5f4;
+	background: #2B384D;
 	padding: 0;
-	color: #333;
+	color: #eee;
+}
+.sidebar a { color: inherit; display: block; }
+
+#notifications-sidebar {
+	background-color: #34445E;
 }
 
-.sidebar h2 { font-size: 14px; font-weight: 600; line-height: 1; margin: 0; }
-.sidebar h2 a { color: #333; display: block; }
-.sidebar .hdr { padding: 12px 20px 0; height: 37px;	 }
+.sidebar h1 { font-size: 14px; font-weight: 600; line-height: 1; margin: 0; color: #888;
+	padding: 12px 0 0; height: 38px; text-transform: uppercase; text-align: center;
+}
+.sidebar h2 { font-size: 14px; line-height: 17px; font-weight: 600; line-height: 1; margin: 0; }
 
 .repo-list {
 	position: absolute;
-	top: 36px;
+	top: 44px;
 	left: 0;
 	right: 0;
 	bottom: 0;
@@ -24,16 +29,15 @@
 	overflow-y: auto;
 }
 
-.sidebar>h2,
-.sidebar .repo-box { border-bottom: 1px solid #d8d8d8; }
 
+.repo-box { padding: 5px 0 10px 0; margin-bottom: 20px; }
+.repo-box li { display: block; padding: 0 10px 0 20px; }
+.repo-box a { padding: 10px 10px 12px 20px; }
+.repo-box li a { font-size: 12px; display: inline; padding: 5px 0 10px 0; }
+.repo-box em { color: #999; font-style: normal; margin-right: 6px; }
+.repo-box em:before { content: '#'; }
 
-.repo-box { padding: 5px 0 10px; }
-.repo-issues { list-style: none; margin: 0; padding: 0; }
-.repo-issues li a { font-size: 12px; padding: 5px 10px 10px 20px; display: block; }
-.repo-issues li a em { color: #999; font-style: normal; }
-.repo-issues li a em:before { content: '#'; }
-
+.repo-box-issues { list-style: none; margin: 0; padding: 0; }
 
 
 #notifications-sidebar { left: -300px; transition: left .3s ease-out; }

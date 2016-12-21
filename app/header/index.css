@@ -2,62 +2,51 @@
 header {
 	-webkit-user-select: none;
 	-webkit-app-region: drag;
-	position: fixed;
+	position: absolute;
 	z-index: 99;
 	height: 38px;
 	top: 0;
 	left: 0;
 	right: 0;
-	padding: 7px 12px 0 70px;
-	border-bottom: 1px solid #c2c0c2;
+	padding: 7px 0 0 0;
 	text-align: right;
 	white-space: nowrap;
-	position: relative;
+	display: flex;
+	min-width: 720px;
 }
 
-.window-inactive header { background: #F6F6F6; border-bottom: 1px solid #ddd; }
+.side-header { width: 300px; padding-left: 70px; }
+.main-header { display: flex; flex: 1; padding-right: 5px; border-bottom: 1px solid #c2c0c2; }
 
-.notification-toggle { position: absolute; left: 120px; }
+.notification-toggle { float: right; margin-right: 15px; }
 .notification-toggle .js-hide-notifications { display: none; }
 
 .notification-toggle.is-visible .js-show-notifications { display: none; }
-.notification-toggle.is-visible .js-hide-notifications { display: inline-block; color: blue; }
+.notification-toggle.is-visible .js-hide-notifications { display: inline-block; color: lightblue; }
 
-
-.browser-nav { position: absolute; left: 230px; right: 120px; }
-.btn-go { font-size: 13px; }
-
-.addressbar {
-	width: calc(100% - 105px);
-	padding: 2px 5px;
-	margin: 1px 0 0 15px;
-	font-size: 13px;
-	border-radius: 4px;
-	border: 1px solid #ccc;
-}
 
 .header-btn {
 	font-size: 22px;
 	color: #888;
 	transition: color .3s;
-	margin: 0 0 0 15px;
+	margin: 0;
 	cursor: pointer;
-	margin: 0 0 0 15px;
-	float: left;
+	padding: 0 10px;
+	text-align: center;
 }
 .header-btn:hover { color: blue; }
 .header-btn:active { color: black; }
 
-.header-right { float: right; }
+.side-header .header-btn:hover { color: lightblue; }
+.side-header .header-btn:active { color: white; }
+
 
 /* STAR BOX */
-.star-box { display: none; float: left; }
-.star-box .js-unstar { color: #FF9C20; }
+.star-box { pointer-events: normal; }
+.star-box.is-issue { pointer-events: normal; }
 
-.star-box.is-issue { display: inline-block; }
-
-.star-box .js-star { display: inline; }
-.star-box .js-unstar { display: none; }
+.star-box .js-star { display: inline; opacity: 0.3; pointer-events: none; }
+.star-box .js-unstar { color: #FF9C20; display: none; }
 
 .star-box.is-starred .js-star { display: none; }
 .star-box.is-starred .js-unstar { display: inline; }

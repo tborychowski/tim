@@ -27,15 +27,16 @@ function onClick (e) {
 
 
 function getIssueHtml (issue) {
-	return `<li><a href="${issue.repo}/${issue.id}" class="btn"><em>${issue.id}</em> ${issue.name}</a></li>`;
+	return `<li><em>${issue.id}</em> <a href="${issue.repo}/${issue.id}" class="btn">${issue.name}</a></li>`;
 }
 
 
 function getRepoHtml (repo) {
 	const issuesHtml = repo.items.map(getIssueHtml).join('');
+	const repoName = repo.name.split('/').pop();
 	return `<div class="repo-box ${repo.name}">
-		<h2><a href="${repo.name}/issues" class="btn hdr">${repo.name}</a></h2>
-		<ul class="repo-issues">${issuesHtml}</ul>
+		<h2><a href="${repo.name}/issues" class="btn">${repoName}</a></h2>
+		<ul class="repo-box-issues">${issuesHtml}</ul>
 	</div>`;
 }
 

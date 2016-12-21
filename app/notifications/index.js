@@ -3,7 +3,7 @@ const Config = require('electron-config');
 const config = new Config();
 const wpjs = `file://${__dirname}\\..\\..\\app\\notifications\\webview.js`;
 
-let webview, isReady = false, el;
+let webview, isReady = false, el, content;
 
 const webviewHandlers = {
 	goto: url => $.trigger('change-url', url)
@@ -11,7 +11,7 @@ const webviewHandlers = {
 
 function onUrlChanged () {
 	setTimeout(() => { webview.removeClass('loading'); }, 100);
-	// webview[0].openDevTools();
+	webview[0].openDevTools();
 }
 
 
@@ -28,10 +28,11 @@ function init () {
 	if (isReady) return;
 
 	el = $('#notifications-sidebar');
+	content = el.find('.repo-list');
 	const html = `<webview id="webview2" preload="${wpjs}" class="loading"
 		src="${config.get('baseUrl')}notifications/participating" partition="persist:github"></webview>`;
 
-	el.html(html);
+	content.html(html);
 	webview = el.find('#webview2');
 
 	webview.on('dom-ready', onUrlChanged);
