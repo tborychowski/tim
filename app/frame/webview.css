@@ -37,11 +37,12 @@ body { min-width: auto !important; }
 .issues-listing .subnav { display: none; }
 .issues-listing .table-list-header { border-width: 0 0 1px; border-radius: 0; margin: 0; }
 
-.repository-content { padding: 20px 30px 30px 25px; }
+.files-bucket,
+.js-issues-results { padding: 20px 30px 30px 25px; }
 .timeline-new-comment { max-width: initial; }
 .previewable-comment-form textarea { max-height: none; min-height: 200px; }
 
-.issues-reset-query-wrapper { margin-right: 0; }
+.issues-reset-query-wrapper { display: none; }
 .discussion-timeline { width: calc(100% - 220px); }
 
 
