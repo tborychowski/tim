@@ -37,9 +37,14 @@ const menuTemplate = [
 			{ role: 'reload' },
 			{ role: 'toggledevtools' },
 			{
-				label: 'Toggle Webview Developer Tools',
+				label: 'Toggle Main Frame Developer Tools',
 				accelerator: '',
-				click () { win.webContents.send('menu', 'toggle-webview-devtools'); }
+				click () { win.webContents.send('menu', 'toggle-main-frame-devtools'); }
+			},
+			{
+				label: 'Toggle Notifications Developer Tools',
+				accelerator: '',
+				click () { win.webContents.send('menu', 'toggle-notifications-devtools'); }
 			},
 			{ type: 'separator' },
 			{ role: 'togglefullscreen' }

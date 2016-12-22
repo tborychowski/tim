@@ -1,3 +1,6 @@
+// TODO: add auto-updating and badge for new notifications
+
+
 const electron = require('electron');
 const remote = electron.remote;
 const app = remote.app;

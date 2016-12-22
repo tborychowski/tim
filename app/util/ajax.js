@@ -1,6 +1,6 @@
 const util = require('./util');
 
-const baseUrl = 'http://localhost/_playground/zakupnik/api/';
+const baseUrl = '';
 
 function ajax (options) {
 	if (typeof options === 'string') options = { url: options };
@@ -21,9 +21,8 @@ function ajax (options) {
 		req.open(options.method, options.url, true);
 		req.onload = () => {
 			if (req.status >= 200 && req.status < 400) {
-				resp = req.responseText;
-				try { resp = JSON.parse(resp); }
-				catch (e) {}
+				try { resp = JSON.parse(req.responseText); }
+				catch (e) { resp = req.responseText; }
 				resolve(resp);
 			}
 			else reject(req.statusText);

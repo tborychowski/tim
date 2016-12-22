@@ -106,15 +106,9 @@ function modElCls (el, action, cls, cond) {
 	if (!el || !el.length) return el;
 	cls = cls.split(' ');
 	if (typeof cond === 'boolean') {
-		el.forEach(el => {
-			cls.forEach(c => el.classList[action](c, cond));
-		});
+		el.forEach(e => cls.forEach(c => e.classList[action](c, cond)));
 	}
-	else {
-		el.forEach(el => {
-			cls.forEach(c => el.classList[action](c));
-		});
-	}
+	else el.forEach(e => cls.forEach(c => e.classList[action](c)));
 	return el;
 }
 

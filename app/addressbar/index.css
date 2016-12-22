@@ -9,3 +9,12 @@
 	flex: 1;
 }
 
+
+/* STAR BOX */
+.star-box .js-star { display: inline; }
+.star-box .js-unstar { color: #FF9C20; display: none; }
+
+
+.star-box.is-starred .js-star { display: none; }
+.star-box.is-starred .js-unstar { display: inline; }
+

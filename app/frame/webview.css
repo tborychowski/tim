@@ -37,7 +37,7 @@ body { min-width: auto !important; }
 
 .js-issues-results { padding: 20px; }
 .timeline-new-comment { max-width: initial; }
-.previewable-comment-form textarea { max-height: initial; }
+.previewable-comment-form textarea { max-height: none; min-height: 200px; }
 
 .issues-reset-query-wrapper { margin-right: 0; }
 .discussion-timeline { width: calc(100% - 220px); }

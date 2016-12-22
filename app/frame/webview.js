@@ -46,30 +46,30 @@ function trim (str, chars) {
 }
 
 
-function gatherUserIds () {
-	const selectors = [
+function getElementsWithUserId () {
+	const userSelectors = [
 		'.issues-listing .author',
 		'.sidebar-assignee .assignee',
-		'.user-mention'
+		'.user-mention',
+		'.discussion-item-entity'
 	];
-	let els = document.querySelectorAll(selectors.join(','));
-	const ids = Array.prototype.slice.call(els).map(el => trim(el.innerText, '@'));
+	let els = document.querySelectorAll(userSelectors.join(','));
+	return Array.prototype.slice.call(els);
+}
+
+function gatherUserIds () {
+	if (document.body.classList.contains('user-name-replaced')) return;
+	const ids = getElementsWithUserId().map(el => trim(el.innerText, '@'));
 	msg('userIdsGathered', [...new Set(ids)]);	// send unique list
 }
 
 
 function updateUserNames (ev, users) {
-	const selectors = [
-		'.issues-listing .author',
-		'.sidebar-assignee .assignee',
-		'.user-mention'
-	];
-	let els = document.querySelectorAll(selectors.join(','));
-	els = Array.prototype.slice.call(els);
-	els.forEach(el => {
+	getElementsWithUserId().forEach(el => {
 		const id = trim(el.innerText, '@');
 		if (users[id]) el.innerText = `${users[id].name} (${id})`;
 	});
+	document.body.classList.add('user-name-replaced');
 }
 
 function init () {

@@ -46,6 +46,7 @@ function onIssueChange (issue) {
 	el[0].value = getCustomAddress(config.get('state.url'));
 	issue = issue || { id: '' };
 	starBox.toggleClass('is-issue', !!issue.id);
+	starBox.toggleClass('disabled', !issue.id);
 	if (issue.id) {
 		starsDB.getById(issue.id).then(res => {
 			starBox.toggleClass('is-starred', !!res);

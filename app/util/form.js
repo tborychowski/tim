@@ -1,5 +1,3 @@
-'use strict';
-
 const keyBreaker = /[^[\]]+/g;
 const numberMatcher = /^[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?$/;
 

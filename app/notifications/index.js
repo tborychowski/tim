@@ -9,6 +9,16 @@ const webviewHandlers = {
 	goto: url => $.trigger('change-url', url)
 };
 
+
+function onMenuClick (target) {
+	const wv = webview[0];
+	if (target === 'toggle-notifications-devtools') {
+		if (wv.isDevToolsOpened()) wv.closeDevTools();
+		else wv.openDevTools();
+	}
+}
+
+
 function onUrlChanged () {
 	setTimeout(() => { webview.removeClass('loading'); }, 100);
 	// webview[0].openDevTools();
@@ -54,6 +64,8 @@ function init () {
 	el.on('click', onClick);
 	$.on('toggle-notifications', toggle);
 	$.on('refresh-notifications', refresh);
+	$.on('menu', onMenuClick);
+
 
 	toggle(config.get('state.notifications'));
 

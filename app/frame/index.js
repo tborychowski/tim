@@ -18,6 +18,7 @@ const webviewHandlers = {
 	domChanged: (url, issue) => {
 		config.set('state.url', url);
 		config.set('state.issue', issue);
+		realnames.replace(webview[0]);
 		$.trigger('issue/changed', issue);
 	},
 	docReady: res => {
@@ -31,7 +32,7 @@ const webviewHandlers = {
 
 function onMenuClick (target) {
 	const wv = webview[0];
-	if (target === 'toggle-webview-devtools') {
+	if (target === 'toggle-main-frame-devtools') {
 		if (wv.isDevToolsOpened()) wv.closeDevTools();
 		else wv.openDevTools();
 	}
@@ -47,6 +48,7 @@ function gotoUrl (url) {
 
 	if (url === 'prev') setTimeout(() => { webview[0].goBack(); }, 400);
 	else if (url === 'next') setTimeout(() => { webview[0].goForward(); }, 400);
+	else if (url === 'refresh') setTimeout(() => { webview[0].reload(); }, 400);
 	else {
 		console.log(url);
 		webview[0].loadURL(url);
@@ -58,6 +60,7 @@ function onUrlChanged () {
 	config.set('state.url', webview[0].getURL());
 	realnames.replace(webview[0]);
 	setTimeout(() => { webview.removeClass('loading'); }, 100);
+	$.trigger('frame/url-changed', webview[0]);
 }
 
 
@@ -75,6 +78,7 @@ function init () {
 
 	webview.on('will-navigate', gotoUrl);
 	webview.on('dom-ready', onUrlChanged);
+	webview.on('did-navigate-in-page', onUrlChanged);
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
 		if (typeof fn === 'function') fn.apply(fn, ev.args);

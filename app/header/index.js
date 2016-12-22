@@ -4,11 +4,12 @@ const Config = require('electron-config');
 const config = new Config();
 
 
-let isReady = false, el, starBox, notifToggle;
+let isReady = false, el, starBox, notifToggle, btnBack, btnForw;
 
 const clickHandlers = {
 	prev: () => { $.trigger('frame/goto', 'prev'); },
 	next: () => { $.trigger('frame/goto', 'next'); },
+	refresh: () => { $.trigger('frame/goto', 'refresh'); },
 	browser: () => { shell.openExternal(config.get('state.url')); },
 	copy: () => { clipboard.writeText(config.get('state.url')); },
 	star: () => { $.trigger('issue/star', config.get('state.issue')); starBox.addClass('is-starred'); },
@@ -32,6 +33,11 @@ function onClick (e) {
 	}
 }
 
+function onUrlChanged (webview) {
+	btnBack.toggleClass('disabled', !webview.canGoBack());
+	btnForw.toggleClass('disabled', !webview.canGoForward());
+}
+
 
 function init () {
 	if (isReady) return;
@@ -39,9 +45,12 @@ function init () {
 	el = $('#header');
 	starBox = el.find('.star-box');
 	notifToggle = el.find('.notification-toggle');
+	btnBack = el.find('.js-prev');
+	btnForw = el.find('.js-next');
 
 	el.on('click', onClick);
 	$.on('toggle-notifications', toggleNotifications);
+	$.on('frame/url-changed', onUrlChanged);
 
 	toggleNotifications(config.get('state.notifications'));
 

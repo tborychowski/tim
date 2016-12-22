@@ -1,3 +1,4 @@
+const $ = require('../util');
 const Config = require('electron-config');
 const config = new Config();
 const usersDB = require('../db/users');
@@ -5,19 +6,15 @@ const usersDB = require('../db/users');
 let webview;
 
 function fetchUserById (id) {
-	return fetch(`${config.get('baseUrl')}api/v3/users/${id}`)
-		.then(res => res.json())
-		.then(res => res.name)
-		.then(name => {
-			usersDB.add({ id, name });
-			return { id, name };
-		});
+	return $.get(`${config.get('baseUrl')}api/v3/users/${id}`)
+		.then(res => ({ id, name: res.name }))
+		.then(usr => (usersDB.add(usr), usr));
 }
 
 /**
  * Convert an array of users to object, e.g.
- * from [{id: '1', name: 'a'}]
- * to { 1: 'a' }
+ * from [{id: '1', name: 'a'}, {id: '2', name: 'b'}]
+ * to { 1: {id: '1', name: 'a'}, 2: {id: '2', name: 'b'} }
  */
 function uato (users) {
 	const uobj = {};
