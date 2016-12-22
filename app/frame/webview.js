@@ -11,8 +11,7 @@ function onDomChange () {
 
 function _onDomChange () {
 	const isIssue = !!document.getElementById('discussion_bucket');
-	let issue = null;
-	const url = document.location.href;
+	let issue = null, url = document.location.href;
 	if (isIssue) {
 		issue = {
 			name: document.querySelector('.js-issue-title').innerText,
@@ -22,6 +21,7 @@ function _onDomChange () {
 			url: url
 		};
 	}
+	if (url.indexOf('http') !== 0) url = '';	// network error
 	msg('domChanged', url, issue);
 }
 
