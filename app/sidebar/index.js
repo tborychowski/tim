@@ -2,7 +2,10 @@ const $ = require('../util');
 const starsDB = require('../db/stars');
 
 let isReady = false, el, reposEl;
-
+const issueTypes = {
+	pr: 'ion-ios-git-pull-request',
+	issue: 'ion-ios-bug-outline'
+};
 
 function starIssue (issue) {
 	starsDB.add(issue).then(getIssues);
@@ -27,7 +30,11 @@ function onClick (e) {
 
 
 function getIssueHtml (issue) {
-	return `<li><em>${issue.id}</em> <a href="${issue.repo}/${issue.id}" class="btn">${issue.name}</a></li>`;
+	return `<li>
+		<i class="${issueTypes[issue.type]}"></i>
+		<em>${issue.id}</em>
+		<a href="${issue.repo}/${issue.id}" class="btn">${issue.name}</a>
+	</li>`;
 }
 
 

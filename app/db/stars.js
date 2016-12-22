@@ -1,5 +1,6 @@
+const app = require('electron').remote.app;
 const DB = require('tingodb')().Db;
-const db = new DB('storage/', {});
+const db = new DB(app.getPath('userData'), {});
 const collection = db.collection('stars.json');
 
 

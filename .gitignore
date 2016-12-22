@@ -3,3 +3,4 @@ storage/*.json
 config.json
 *.sublime-*
 .DS_Store
+*-darwin-x64

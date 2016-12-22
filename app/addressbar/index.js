@@ -42,9 +42,9 @@ function parseAnyAddress (url) {
 }
 
 
-function onIssueChange (issue) {
+function onUrlChanged (webview, issue) {
 	el[0].value = getCustomAddress(config.get('state.url'));
-	issue = issue || { id: '' };
+	if (!issue) return;
 	starBox.toggleClass('is-issue', !!issue.id);
 	starBox.toggleClass('disabled', !issue.id);
 	if (issue.id) {
@@ -73,7 +73,7 @@ function init () {
 	el.on('keypress', e => { if (e.key === 'Enter') gotoUrl(); });
 
 	$.on('change-url', gotoUrl);
-	$.on('issue/changed', onIssueChange);
+	$.on('url-changed', onUrlChanged);
 
 	isReady = true;
 }

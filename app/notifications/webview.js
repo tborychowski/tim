@@ -1,22 +1,17 @@
 const ipc = require('electron').ipcRenderer;
 const msg = ipc.sendToHost;
-const readFile = require('fs').readFileSync;
-const cssFile = './app/notifications/webview.css';
 
 
-function updateCss () {
-	let css;
-	try { css = readFile(cssFile, 'utf8'); } catch (e) { css = ''; }
+function injectCss (ev, css) {
 	const style = document.createElement('style');
 	style.innerHTML = css;
 	document.head.appendChild(style);
-	document.querySelector('.accessibility-aid').remove();
 }
+
 
 function reload () {
 	document.querySelector('.filter-list .filter-item.selected').click();
 }
-
 
 
 function onClick (e) {
@@ -29,11 +24,16 @@ function onClick (e) {
 
 
 function init () {
-	updateCss();
+	const aid = document.querySelector('.accessibility-aid');
+	if (aid) aid.remove();
+
+
 	document.addEventListener('click', onClick, true);
 	ipc.on('reload', reload);
-}
+	ipc.on('injectCss', injectCss);
 
+	msg('docReady');
+}
 
 
 document.addEventListener('DOMContentLoaded', init);

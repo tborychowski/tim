@@ -1,20 +1,15 @@
 const ipc = require('electron').ipcRenderer;
 const msg = ipc.sendToHost;
-const readFile = require('fs').readFileSync;
-const cssFile = './app/frame/webview.css';
 
 
-function updateCss () {
-	let css;
-	try { css = readFile(cssFile, 'utf8'); } catch (e) { css = ''; }
-	const style = document.createElement('style');
-	style.innerHTML = css;
-	document.head.appendChild(style);
-	document.querySelector('.accessibility-aid').remove();
+// Throttle
+let domChangeTimer;
+function onDomChange () {
+	if (domChangeTimer) clearTimeout(domChangeTimer);
+	domChangeTimer = setTimeout(_onDomChange, 200);
 }
 
-
-function onDomChange () {
+function _onDomChange () {
 	const isIssue = !!document.getElementById('discussion_bucket');
 	let issue = null;
 	const url = document.location.href;
@@ -40,6 +35,13 @@ function observeChanges () {
 }
 
 
+function injectCss (ev, css) {
+	const style = document.createElement('style');
+	style.innerHTML = css;
+	document.head.appendChild(style);
+}
+
+
 function trim (str, chars) {
 	chars = chars || '\\s';
 	return str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
@@ -48,17 +50,25 @@ function trim (str, chars) {
 
 function getElementsWithUserId () {
 	const userSelectors = [
-		'.issues-listing .author',
-		'.sidebar-assignee .assignee',
-		'.user-mention',
-		'.discussion-item-entity'
+		'.issues-listing .author:not(.user-name-replaced)',
+		'.sidebar-assignee .assignee:not(.user-name-replaced)',
+		'.user-mention:not(.user-name-replaced)',
+		'a .discussion-item-entity:not(.user-name-replaced)'
 	];
 	let els = document.querySelectorAll(userSelectors.join(','));
 	return Array.prototype.slice.call(els);
 }
 
+function getTooltipsWithUserId () {
+	const userSelectors = [
+		'.reaction-summary-item.tooltipped:not(.user-name-replaced)'
+	];
+	let els = document.querySelectorAll(userSelectors.join(','));
+	return Array.prototype.slice.call(els);
+}
+
+
 function gatherUserIds () {
-	if (document.body.classList.contains('user-name-replaced')) return;
 	const ids = getElementsWithUserId().map(el => trim(el.innerText, '@'));
 	msg('userIdsGathered', [...new Set(ids)]);	// send unique list
 }
@@ -67,21 +77,58 @@ function gatherUserIds () {
 function updateUserNames (ev, users) {
 	getElementsWithUserId().forEach(el => {
 		const id = trim(el.innerText, '@');
-		if (users[id]) el.innerText = `${users[id].name} (${id})`;
+		if (users[id]) {
+			el.innerText = `${users[id].name}`;
+			el.title = `${id}`;
+			el.classList.add('user-name-replaced');
+		}
 	});
-	document.body.classList.add('user-name-replaced');
+	getTooltipsWithUserId().forEach(el => {
+		if (el.classList.contains('user-name-replaced')) return;
+		let lbl = el.getAttribute('aria-label');
+		for (let id in users) lbl = lbl.replace(id, users[id].name);
+		el.setAttribute('aria-label', lbl);
+		el.classList.add('user-name-replaced');
+	});
 }
+
+
+function isExternal (url) {
+	let u;
+	try { u = new URL(url); }
+	catch (e) { u = null; }
+	return (u && u.host !== location.host);
+}
+
+
+function onClick (e) {
+	const el = e.target;
+	if (el.tagName === 'A') {
+		if (isExternal(el.href)) {
+			e.preventDefault();
+			msg('externalLinkClicked', el.href);
+		}
+		else msg('linkClicked', el.href);
+	}
+}
+
 
 function init () {
-	updateCss();
 	observeChanges();
-	onDomChange();
-	msg('isLogged', document.body.classList.contains('logged-in'));
-	msg('docReady', '<div>' + document.querySelector('body').innerHTML + '</div>');
+
+	const aid = document.querySelector('.accessibility-aid');
+	if (aid) aid.remove();
+
 	ipc.on('gatherUserIds', gatherUserIds);
 	ipc.on('userIdsAndNames', updateUserNames);
-}
+	ipc.on('injectCss', injectCss);
+	document.addEventListener('click', onClick, true);
 
+	msg('isLogged', document.body.classList.contains('logged-in'));
+	msg('docReady', '<div>' + document.querySelector('body').innerHTML + '</div>');
+
+	onDomChange();
+}
 
 
 document.addEventListener('DOMContentLoaded', init);

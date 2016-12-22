@@ -87,7 +87,7 @@ app.on('ready', () => {
 	});
 
 	win = new BrowserWindow({
-		title: 'Issue Monitor',
+		title: 'Github Browser',
 		icon:'assets/icon.png',
 		show: false,
 		frame: false,

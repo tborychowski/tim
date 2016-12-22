@@ -1,7 +1,8 @@
 {
   "name": "github-browser",
-  "version": "1.0.0",
+  "productName": "Github Browser",
   "description": "Github browser.",
+  "version": "1.0.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -9,7 +10,7 @@
   },
   "scripts": {
     "start": "electron index.js",
-    "package": "electron-packager . --platform=darwin"
+    "package": "electron-packager . --icon './assets/icon.icns' --overwrite --platform=darwin"
   },
   "author": "Tom",
   "license": "MIT",
@@ -17,7 +18,6 @@
     "electron-config": "^0.2.1",
     "electron-window-state": "^4.0.1",
     "ionicons": "^3.0.0",
-    "octonode": "^0.7.7",
     "tingodb": "^0.4.2"
   },
   "devDependencies": {

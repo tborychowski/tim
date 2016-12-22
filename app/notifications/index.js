@@ -1,13 +1,23 @@
 const $ = require('../util');
 const Config = require('electron-config');
 const config = new Config();
-const wpjs = `file://${__dirname}\\..\\..\\app\\notifications\\webview.js`;
+const readFile = require('fs').readFileSync;
+const wpjs = `file://${__dirname}/webview.js`;
+const wpcss = `${__dirname}/webview.css`;
 
 let webview, isReady = false, el, content;
 
 const webviewHandlers = {
-	goto: url => $.trigger('change-url', url)
+	goto: url => $.trigger('change-url', url),
+	docReady: injectCss
 };
+
+
+function injectCss () {
+	let css;
+	try { css = readFile(wpcss, 'utf8'); } catch (e) { css = ''; }
+	webview[0].send('injectCss', css);
+}
 
 
 function onMenuClick (target) {

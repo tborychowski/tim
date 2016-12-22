@@ -2,6 +2,8 @@ body { min-width: auto !important; }
 
 .main-content { padding: 0; }
 
+.pjax-loader-bar,
+.repository-meta,
 .header,
 .site-footer,
 .flash-full.js-notice,
@@ -13,7 +15,7 @@ body { min-width: auto !important; }
 
 
 /* notifications full view */
-.container { width: auto; margin 0; padding: 0;  }
+.container { width: 100% !important; margin 0; padding: 0 !important;  }
 .gut-md { width: auto; margin: 0; }
 .gut-md>.col-3 { display: none; }
 .gut-md>.col-9 { float: none !important; width: 100%; padding: 0 !important; }
@@ -35,7 +37,7 @@ body { min-width: auto !important; }
 .issues-listing .subnav { display: none; }
 .issues-listing .table-list-header { border-width: 0 0 1px; border-radius: 0; margin: 0; }
 
-.js-issues-results { padding: 20px; }
+.repository-content { padding: 20px 30px 30px 25px; }
 .timeline-new-comment { max-width: initial; }
 .previewable-comment-form textarea { max-height: none; min-height: 200px; }
 
@@ -43,9 +45,16 @@ body { min-width: auto !important; }
 .discussion-timeline { width: calc(100% - 220px); }
 
 
+.page-dashboard { padding: 30px; }
+.page-dashboard .news>.text-center { display: none; }
+.page-dashboard .news .alert { border: none; }
+.page-dashboard .news .account-switcher { display: none; }
+
+
 
 /* hide sidebar */
 /*
+/// #files_bucket.pull-request-tab-content { margin-top: 20px !important; }
 .discussion-timeline { float: none; width: auto; }
 .discussion-sidebar { display: none; }
 */

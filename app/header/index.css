@@ -42,3 +42,19 @@ header {
 
 
 header .disabled { pointer-events: none; opacity: 0.3; }
+header .js-sync { position: absolute; right: 118px; top: 6px; opacity: 0; transition: opacity .2s; }
+header .js-stop { display: none; }
+
+header .js-refresh,
+header .js-stop { width: 35px; }
+
+header.loading .js-sync { animation: spin 1s infinite linear; opacity: 1; }
+header.loading .js-refresh { display: none; }
+header.loading .js-stop { display: block; }
+
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(359deg); }
+}
+
