@@ -39,6 +39,7 @@ function injectCss (ev, css) {
 	const style = document.createElement('style');
 	style.innerHTML = css;
 	document.head.appendChild(style);
+	msg('cssReady');
 }
 
 
@@ -125,7 +126,7 @@ function init () {
 	document.addEventListener('click', onClick, true);
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
-	msg('docReady', '<div>' + document.querySelector('body').innerHTML + '</div>');
+	msg('docReady');
 
 	onDomChange();
 }

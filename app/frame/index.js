@@ -13,20 +13,14 @@ const wpcss = `${__dirname}/webview.css`;
 const ses = session.fromPartition('persist:github');
 
 
-let webview, pageLoadCallback, isReady = false;
+let webview, isReady = false;
 
 const webviewHandlers = {
 	isLogged: (itIs) => { if (!itIs) $.on('toggle-notifications', false); },
 	linkClicked: loadingStart,
 	externalLinkClicked: (url) => { shell.openExternal(url); },
-	domChanged: onRendered,
-	docReady: res => {
-		injectCss();
-		if (pageLoadCallback) {
-			pageLoadCallback(res);
-			pageLoadCallback = null;
-		}
-	}
+	docReady: injectCss,
+	domChanged: onRendered
 };
 
 
@@ -67,8 +61,7 @@ function onNavigationStart () {
 	$.trigger('url-changed', webview[0]);
 }
 
-function onNavigationEnd () {
-}
+function onNavigationEnd () {}
 
 function onRendered (url, issue) {
 	config.set('state.url', url);

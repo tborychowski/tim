@@ -6,6 +6,7 @@ function injectCss (ev, css) {
 	const style = document.createElement('style');
 	style.innerHTML = css;
 	document.head.appendChild(style);
+	msg('cssReady');
 }
 
 
@@ -28,9 +29,9 @@ function init () {
 	if (aid) aid.remove();
 
 
-	document.addEventListener('click', onClick, true);
 	ipc.on('reload', reload);
 	ipc.on('injectCss', injectCss);
+	document.addEventListener('click', onClick, true);
 
 	msg('docReady');
 }

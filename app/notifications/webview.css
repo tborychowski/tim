@@ -32,6 +32,7 @@ body { min-width: auto !important; background: none; }
 
 
 /* Notifications dark theme */
+.blankslate,
 .notifications .read.navigation-focus,
 .list-group-item.navigation-focus,
 .notifications-list .boxed-group>h3,
@@ -40,6 +41,8 @@ body { min-width: auto !important; background: none; }
 
 .notifications .notifications-more>a,
 .notification-actions .btn-link { color: #999; }
+.blankslate h3 { font-weight: 100; }
+.blankslate p { display: none; }
 
 
 

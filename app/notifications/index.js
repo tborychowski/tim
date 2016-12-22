@@ -9,7 +9,8 @@ let webview, isReady = false, el, content;
 
 const webviewHandlers = {
 	goto: url => $.trigger('change-url', url),
-	docReady: injectCss
+	docReady: onDocReady,
+	cssReady: onCssReady
 };
 
 
@@ -29,10 +30,18 @@ function onMenuClick (target) {
 }
 
 
-function onUrlChanged () {
-	setTimeout(() => { webview.removeClass('loading'); }, 100);
+function onNavigationEnd () {
 	// webview[0].openDevTools();
 }
+
+function onDocReady () {
+	injectCss();
+}
+
+function onCssReady () {
+	setTimeout(() => { webview.removeClass('loading'); }, 100);
+}
+
 
 
 function toggle (show) {
@@ -65,7 +74,7 @@ function init () {
 	content.html(html);
 	webview = el.find('#webview2');
 
-	webview.on('dom-ready', onUrlChanged);
+	webview.on('dom-ready', onNavigationEnd);
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
 		if (typeof fn === 'function') fn.apply(fn, ev.args);
