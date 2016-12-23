@@ -7,16 +7,16 @@ const config = new Config();
 let isReady = false, el, starBox, notifToggle, btnBack, btnForw;
 
 const clickHandlers = {
-	prev: () => { $.trigger('frame/goto', 'prev'); },
-	next: () => { $.trigger('frame/goto', 'next'); },
-	refresh: () => { $.trigger('frame/goto', 'refresh'); },
-	stop: () => { $.trigger('frame/goto', 'stop'); },
-	browser: () => { shell.openExternal(config.get('state.url')); },
-	copy: () => { clipboard.writeText(config.get('state.url')); },
-	star: () => { $.trigger('issue/star', config.get('state.issue')); starBox.addClass('is-starred'); },
-	unstar: () => { $.trigger('issue/unstar', config.get('state.issue')); starBox.removeClass('is-starred'); },
-	hideNotifications: () => $.trigger('toggle-notifications', false),
-	showNotifications: () => $.trigger('toggle-notifications', true)
+	prev () { $.trigger('frame/goto', 'prev'); },
+	next () { $.trigger('frame/goto', 'next'); },
+	refresh () { $.trigger('frame/goto', 'refresh'); },
+	stop () { $.trigger('frame/goto', 'stop'); },
+	browser () { shell.openExternal(config.get('state.url')); },
+	copy () { clipboard.writeText(config.get('state.url')); },
+	star () { $.trigger('issue/star', config.get('state.issue')); starBox.addClass('is-starred'); },
+	unstar () { $.trigger('issue/unstar', config.get('state.issue')); starBox.removeClass('is-starred'); },
+	hideNotifications () { $.trigger('toggle-notifications', false); },
+	showNotifications () { $.trigger('toggle-notifications', true); }
 };
 
 

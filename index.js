@@ -28,7 +28,13 @@ const menuTemplate = [
 			{ role: 'paste' },
 			{ role: 'pasteandmatchstyle' },
 			{ role: 'delete' },
-			{ role: 'selectall' }
+			{ role: 'selectall' },
+			{ type: 'separator' },
+			{
+				label: 'Find',
+				accelerator: 'CmdOrCtrl+F',
+				click () { win.webContents.send('menu', 'find-in-page'); }
+			}
 		]
 	},
 	{
@@ -65,7 +71,7 @@ const menuTemplate = [
 			}},
 			{ type: 'separator' },
 			{
-				label: 'Clear Cookies & Config',
+				label: 'Purge Everything (settings, cookies, history)',
 				accelerator: 'CmdOrCtrl+Shift+Backspace',
 				click () { win.webContents.send('menu', 'clear-cookies'); }
 			},

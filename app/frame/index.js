@@ -4,6 +4,7 @@ const session = electron.remote.session;
 const readFile = require('fs').readFileSync;
 const $ = require('../util');
 const realnames = require('../realnames');
+const findInPage = require('../findinpage');
 const Config = require('electron-config');
 const config = new Config();
 
@@ -16,13 +17,25 @@ const ses = session.fromPartition('persist:github');
 let webview, isReady = false;
 
 const webviewHandlers = {
-	isLogged: (itIs) => { if (!itIs) $.on('toggle-notifications', false); },
+	isLogged (itIs) { if (!itIs) $.on('toggle-notifications', false); },
+	externalLinkClicked (url) { shell.openExternal(url); },
 	linkClicked: loadingStart,
-	externalLinkClicked: (url) => { shell.openExternal(url); },
 	docReady: injectCss,
 	domChanged: onRendered
 };
 
+const menuClickHandlers = {
+	'toggle-main-frame-devtools' () {
+		if (webview[0].isDevToolsOpened()) webview[0].closeDevTools();
+		else webview[0].openDevTools();
+	},
+	'clear-cookies' () {
+		config.clear();
+		webview[0].clearHistory();
+		ses.clearStorageData(gotoUrl);
+	},
+	'find-in-page' () { findInPage(webview[0]); }
+};
 
 
 function injectCss () {
@@ -33,15 +46,7 @@ function injectCss () {
 
 
 function onMenuClick (target) {
-	const wv = webview[0];
-	if (target === 'toggle-main-frame-devtools') {
-		if (wv.isDevToolsOpened()) wv.closeDevTools();
-		else wv.openDevTools();
-	}
-	else if (target === 'clear-cookies') {
-		config.clear();
-		ses.clearStorageData(gotoUrl);
-	}
+	if (menuClickHandlers[target]) menuClickHandlers[target]();
 }
 
 function gotoUrl (url) {
