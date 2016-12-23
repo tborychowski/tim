@@ -15,6 +15,7 @@ function gotoUrl (url) {
 		url = '';
 	}
 	if (!validUrl) url = config.get('baseUrl') + parseAnyAddress(url);
+	starBox.addClass('disabled');
 
 	if (url) $.trigger('frame/goto', url);
 }
@@ -44,10 +45,8 @@ function parseAnyAddress (url) {
 
 function onUrlChanged (webview, issue) {
 	el[0].value = getCustomAddress(config.get('state.url'));
-	if (!issue) return;
-	starBox.toggleClass('is-issue', !!issue.id);
-	starBox.toggleClass('disabled', !issue.id);
-	if (issue.id) {
+	if (issue && issue.id) {
+		starBox.removeClass('disabled');
 		starsDB.getById(issue.id).then(res => {
 			starBox.toggleClass('is-starred', !!res);
 		});

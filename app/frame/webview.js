@@ -54,7 +54,7 @@ function getElementsWithUserId () {
 		'.issues-listing .author:not(.user-name-replaced)',
 		'.sidebar-assignee .assignee:not(.user-name-replaced)',
 		'.user-mention:not(.user-name-replaced)',
-		'a .discussion-item-entity:not(.user-name-replaced)'
+		'a .discussion-item-entity:not(.user-name-replaced):not(code)'
 	];
 	let els = document.querySelectorAll(userSelectors.join(','));
 	return Array.prototype.slice.call(els);
