@@ -1,7 +1,6 @@
 const $ = require('../util');
 
 let webview, el, inp, info,
-	isAnimating = false,
 	timers = [],
 	isReady = false,
 	isVisible = false;
@@ -23,18 +22,21 @@ function toggle (force) {
 
 	clearDelays();
 	if (isVisible) {
-		isAnimating = true;
 		el.removeClass('hidden');
-		delay(() => { el.addClass('visible'); }, 10);
-		delay(() => { inp[0].focus(); isAnimating = false; }, 350);
+		delay(() => {
+			el.addClass('visible');
+			inp[0].focus();
+		}, 10);
 	}
 	else {
-		isAnimating = true;
 		el.removeClass('visible');
 		inp[0].value = '';
 		findInPage();
 		updateInfo();
-		delay(() => { el.addClass('hidden'); isAnimating = false; }, 350);
+		$.trigger('focus-addressbar');
+		delay(() => {
+			el.addClass('hidden');
+		}, 350);
 	}
 }
 
@@ -103,7 +105,6 @@ function init (wv) {
 
 
 function find (wv) {
-	if (isAnimating) return;
 	if (!isReady) init(wv);
 	toggle();
 }

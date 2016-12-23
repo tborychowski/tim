@@ -73,6 +73,7 @@ function init () {
 
 	$.on('change-url', gotoUrl);
 	$.on('url-changed', onUrlChanged);
+	$.on('focus-addressbar', () => { el[0].focus(); });
 
 	isReady = true;
 }

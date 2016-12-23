@@ -8,15 +8,29 @@ header {
 	top: 0;
 	left: 0;
 	right: 0;
-	padding: 7px 0 0 0;
+	padding: 0;
 	text-align: right;
 	white-space: nowrap;
 	display: flex;
 	min-width: 720px;
 }
 
-.side-header { width: 300px; padding-left: 70px; }
-.main-header { display: flex; flex: 1; padding-right: 5px; border-bottom: 1px solid #c2c0c2; }
+.side-header { width: 300px; padding: 7px 0 0 70px; }
+.main-header { flex: 1; position: relative; }
+.main-header-inner { padding: 7px 5px 0 0; background-color: #F9F9F9;
+	display: flex;
+	position: absolute;
+	width: 100%;
+	height: 37px;
+	z-index: 100;
+}
+.main-header-border {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	border-bottom: 1px solid #c2c0c2;
+	z-index: 99;
+}
 
 .notification-toggle { float: right; margin-right: 5px; }
 .notification-toggle .js-hide-notifications { display: none; }
