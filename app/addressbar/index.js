@@ -10,10 +10,6 @@ function gotoUrl (url) {
 	if (url) el[0].value = url;
 	url = el[0].value.trim();
 	const validUrl = isValidUrl(url);
-	if (!config.get('baseUrl') && validUrl) {
-		config.set('baseUrl', validUrl.href);
-		url = '';
-	}
 	if (!validUrl) url = config.get('baseUrl') + parseAnyAddress(url);
 	starBox.addClass('disabled');
 
@@ -63,10 +59,6 @@ function init () {
 
 	el = $('.addressbar');
 	starBox = $('header .star-box');
-
-	if (!config.get('baseUrl')) {
-		el[0].setAttribute('placeholder', 'Start by entering your github URL');
-	}
 
 	el.on('focus', e => { e.target.select(); });
 	el.on('keypress', e => { if (e.key === 'Enter') gotoUrl(); });

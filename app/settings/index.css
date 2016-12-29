@@ -1,0 +1,35 @@
+.settings {
+	position: absolute;
+	z-index: 200;
+	top: 100px;
+	left: calc(50% - 300px);
+	width: 600px;
+	background-color: #fff;
+	padding: 30px 40px;
+	box-shadow: 0 2px 30px #000;
+	border-radius: 3px;
+	display: none;
+	opacity: 0;
+	transform: scale(0.8);
+	transition: all .3s ease-out;
+}
+#header,
+#frame,
+.sidebar { transition: opacity .3s ease-out, filter .3s ease-out; }
+
+.show-settings #header,
+.show-settings #frame,
+.show-settings .sidebar { opacity: 0.5; filter: brightness(0.5) blur(1px); }
+.show-settings .settings { opacity: 1; transform: scale(1); }
+
+
+
+.settings h1 { margin: 0 0 20px 0; }
+
+.settings-form label { display: inline-block; padding: 5px; width: 100%; text-align: right; }
+.settings-form input { display: inline-block; padding: 5px; margin-left: 10px; width: calc(100% - 85px);  }
+.settings-form input:invalid { background-color: rgba(255, 0, 0, 0.1); }
+.settings-buttons { margin: 20px 0 0 0; text-align: right; }
+.settings-buttons .btn { font-size: 13px; }
+.settings-buttons .btn-left { float: left; }
+.settings-buttons .btn-save { font-weight: bold; }

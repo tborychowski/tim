@@ -49,7 +49,7 @@ function toggle (show) {
 }
 
 function refresh (fullReload) {
-	if (fullReload) webview.reload();
+	if (fullReload) webview[0].reload();
 	else webview[0].send('reload');
 }
 
@@ -82,7 +82,7 @@ function init () {
 
 	el.on('click', onClick);
 	$.on('toggle-notifications', toggle);
-	$.on('refresh-notifications', refresh);
+	$.on('settings-changed', () => refresh(true));
 	$.on('menu', onMenuClick);
 
 

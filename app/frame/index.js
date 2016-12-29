@@ -13,12 +13,15 @@ const wpcss = `${__dirname}/webview.css`;
 
 const ses = session.fromPartition('persist:github');
 
-
 let webview, isReady = false;
 
 const webviewHandlers = {
-	isLogged (itIs) { if (!itIs) $.on('toggle-notifications', false); },
 	externalLinkClicked (url) { shell.openExternal(url); },
+	isLogged (itIs) {
+		if (itIs) return;
+		$.trigger('toggle-notifications', false);
+		if (!config.get('baseUrl')) $.trigger('show-settings');
+	},
 	linkClicked: loadingStart,
 	docReady: injectCss,
 	domChanged: onRendered
@@ -32,10 +35,12 @@ const menuClickHandlers = {
 	'clear-cookies' () {
 		config.clear();
 		webview[0].clearHistory();
-		ses.clearStorageData(gotoUrl);
+		ses.clearStorageData(webviewHandlers.isLogged);
 	},
 	'find-in-page' () { findInPage(webview[0]); }
 };
+
+const initialURL = () => `${config.get('baseUrl')}login`;
 
 
 function injectCss () {
@@ -92,7 +97,7 @@ function init () {
 
 	const frame = $('#frame');
 	const html = `<webview id="webview" class="loading" preload="${wpjs}"
-		src="${config.get('baseUrl')}login" partition="persist:github"></webview>`;
+		src="${initialURL()}" partition="persist:github"></webview>`;
 
 	frame.html(html);
 	webview = frame.find('#webview');
@@ -113,6 +118,7 @@ function init () {
 
 	$.on('frame/goto', gotoUrl);
 	$.on('menu', onMenuClick);
+	$.on('settings-changed', () => gotoUrl(initialURL()));
 
 	isReady = true;
 }
