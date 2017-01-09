@@ -1,0 +1,6 @@
+.notification-toggle { float: right; margin-right: 5px; display: none; }
+.notification-toggle .js-hide-notifications { display: none; }
+
+.notification-toggle.is-visible .js-show-notifications { display: none; }
+.notification-toggle.is-visible .js-hide-notifications { display: inline-block; color: lightblue; }
+
