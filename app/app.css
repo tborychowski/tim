@@ -5,6 +5,7 @@
 @import 'addressbar/index.css';
 @import 'findinpage/index.css';
 @import 'settings/index.css';
+@import 'notifications/index.css';
 
 body { transition: opacity .4s ease-out, filter .4s ease-out; }
 .window-inactive { opacity: 0.8; filter: blur(0.4px); }

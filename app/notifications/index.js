@@ -5,12 +5,13 @@ const readFile = require('fs').readFileSync;
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
 
-let webview, isReady = false, el, content;
+let webview, isReady = false, el, content, notifToggle, isLoggedIn, loginTimer;
 
 const webviewHandlers = {
 	goto: url => $.trigger('change-url', url),
 	docReady: onDocReady,
-	cssReady: onCssReady
+	cssReady: onCssReady,
+	isLogged: onIsLogged
 };
 
 
@@ -30,6 +31,11 @@ function onMenuClick (target) {
 }
 
 
+function onIsLogged (isit) {
+	isLoggedIn = isit;
+	notifToggle.toggle(isit);
+}
+
 function onNavigationEnd () {
 	// webview[0].openDevTools();
 }
@@ -43,8 +49,20 @@ function onCssReady () {
 }
 
 
+/**
+ * If not logged in to GH:
+ * when the url changes in the main frame - try refreshing notifications
+ * if user logs-in in the main - the session will pick-up here as well
+ */
+function onFrameUrlChanged () {
+	if (loginTimer) clearTimeout(loginTimer);
+	if (!isLoggedIn) loginTimer = setTimeout(() => { refresh(true); }, 500);
+}
+
 
 function toggle (show) {
+	config.set('state.notifications', !!show);
+	notifToggle.toggleClass('is-visible', !!show);
 	el.toggleClass('visible', !!show);
 }
 
@@ -68,6 +86,9 @@ function init () {
 
 	el = $('#notifications-sidebar');
 	content = el.find('.repo-list');
+	notifToggle = $('.notification-toggle');
+
+
 	const html = `<webview id="webview2" preload="${wpjs}" class="loading"
 		src="${config.get('baseUrl')}notifications/participating" partition="persist:github"></webview>`;
 
@@ -84,9 +105,12 @@ function init () {
 	$.on('toggle-notifications', toggle);
 	$.on('settings-changed', () => refresh(true));
 	$.on('menu', onMenuClick);
+	$.on('url-change-end', onFrameUrlChanged);
+
 
 
 	toggle(config.get('state.notifications'));
+
 
 	isReady = true;
 }

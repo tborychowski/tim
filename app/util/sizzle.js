@@ -120,6 +120,12 @@ sizzle.fn.hasClass = function (cls) {
 	return this[0].classList.contains(cls);
 };
 
+sizzle.fn.toggle = function (cond) {
+	const disp = cond ? 'block' : 'none';
+	this.forEach(el => { el.style.display = disp; });
+	return this;
+};
+
 sizzle.fn.html = function (html) {
 	if (!this || !this.length) return this;
 	if (typeof html === 'undefined') return this[0].innerHTML;

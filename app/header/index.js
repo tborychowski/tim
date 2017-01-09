@@ -4,7 +4,7 @@ const Config = require('electron-config');
 const config = new Config();
 
 
-let isReady = false, el, starBox, notifToggle, btnBack, btnForw;
+let isReady = false, el, starBox, btnBack, btnForw;
 
 const clickHandlers = {
 	prev () { $.trigger('frame/goto', 'prev'); },
@@ -19,11 +19,6 @@ const clickHandlers = {
 	showNotifications () { $.trigger('toggle-notifications', true); }
 };
 
-
-function toggleNotifications (show) {
-	config.set('state.notifications', !!show);
-	notifToggle.toggleClass('is-visible', !!show);
-}
 
 function onClick (e) {
 	let target = $(e.target);
@@ -48,17 +43,13 @@ function init () {
 
 	el = $('#header');
 	starBox = el.find('.star-box');
-	notifToggle = el.find('.notification-toggle');
 	btnBack = el.find('.js-prev');
 	btnForw = el.find('.js-next');
 
 	el.on('click', onClick);
-	$.on('toggle-notifications', toggleNotifications);
 	$.on('url-changed', onUrlChanged);
 	$.on('url-change-start', onUrlChangeStart);
 	$.on('url-change-end', onUrlChangeEnd);
-
-	toggleNotifications(config.get('state.notifications'));
 
 	isReady = true;
 }

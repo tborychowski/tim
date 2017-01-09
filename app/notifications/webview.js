@@ -33,6 +33,7 @@ function init () {
 	ipc.on('injectCss', injectCss);
 	document.addEventListener('click', onClick, true);
 
+	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');
 }
 
