@@ -40,7 +40,10 @@ const menuClickHandlers = {
 	'find-in-page' () { findInPage(webview[0]); }
 };
 
-const initialURL = () => `${config.get('baseUrl')}login`;
+function initialURL (initial) {
+	if (initial && config.get('state.url')) return config.get('state.url');
+	return `${config.get('baseUrl')}login`;
+}
 
 
 function injectCss () {
@@ -56,13 +59,13 @@ function onMenuClick (target) {
 
 function gotoUrl (url) {
 	loadingStart();
-	if (typeof url !== 'string' || !url.length) return;
+	if (typeof url !== 'string' || !url.length || !webview.length) return;
 
 	if (url === 'prev') setTimeout(() => { webview[0].goBack(); }, 400);
 	else if (url === 'next') setTimeout(() => { webview[0].goForward(); }, 400);
 	else if (url === 'refresh') setTimeout(() => { webview[0].reload(); }, 400);
 	else if (url === 'stop') { webview[0].stop(); loadingStop(); }
-	else webview[0].loadURL(url);
+	else if (webview[0].loadURL) webview[0].loadURL(url);
 }
 
 
@@ -97,7 +100,7 @@ function init () {
 
 	const frame = $('#frame');
 	const html = `<webview id="webview" class="loading" preload="${wpjs}"
-		src="${initialURL()}" partition="persist:github"></webview>`;
+		src="${initialURL(true)}" partition="persist:github"></webview>`;
 
 	frame.html(html);
 	webview = frame.find('#webview');
