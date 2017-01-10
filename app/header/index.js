@@ -16,7 +16,8 @@ const clickHandlers = {
 	star () { $.trigger('issue/star', config.get('state.issue')); starBox.addClass('is-starred'); },
 	unstar () { $.trigger('issue/unstar', config.get('state.issue')); starBox.removeClass('is-starred'); },
 	hideNotifications () { $.trigger('toggle-notifications', false); },
-	showNotifications () { $.trigger('toggle-notifications', true); }
+	showNotifications () { $.trigger('toggle-notifications', true); },
+	home () { $.trigger('change-url', config.get('homeUrl') || ''); }
 };
 
 
