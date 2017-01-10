@@ -42,7 +42,7 @@ header {
 	padding: 0 10px;
 	text-align: center;
 }
-.header-btn:hover { color: blue; }
+.header-btn:hover { color: #72ADE7; }
 .header-btn:active { color: black; }
 
 .side-header .header-btn:hover { color: lightblue; }
