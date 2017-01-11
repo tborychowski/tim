@@ -85,7 +85,7 @@ function init () {
 
 	$.on('change-url', gotoUrl);
 	$.on('url-changed', onUrlChanged);
-	$.on('focus-addressbar', () => { el[0].focus(); });
+	$.on('focus-addressbar', () => { setTimeout(() => { el[0].select(); }, 10); });
 
 	isReady = true;
 }

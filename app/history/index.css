@@ -1,11 +1,11 @@
 .addressbar-results {
 	position: absolute;
-	left: 5px;
-	right: 5px;
-	top: 30px;
+	left: 0;
+	right: 0;
+	top: 38px;
 	height: 200px;
 	background-color: #fff;
-	box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
 	border-radius: 4px;
 	opacity: 0;
 	display: none;
@@ -19,9 +19,9 @@
 .addressbar-results-list {
 	width: 100%;
 	height: 100%;
-	padding: 10px;
+	padding: 10px 0;
 	border: none;
 	font: inherit;
 }
 
-.addressbar-results-list option { padding: 5px; }
+.addressbar-results-list option { padding: 5px 20px; }

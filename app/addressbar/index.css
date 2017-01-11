@@ -1,22 +1,21 @@
 .addressbar-input-wrapper {
 	flex: 1;
 	display: flex;
-	position: relative;
 }
 
 .addressbar {
 	padding: 2px 5px 2px 32px;
 	margin: 0 5px;
-	height: 24px;
+	height: 100%;
 	font-size: 13px;
-	border-radius: 4px;
 	border: 1px solid #ccc;
+	border-width: 0 1px;
 	flex: 1;
 }
 
 
 /* STAR BOX */
-.star-box { position: absolute; left: 7px; }
+.star-box { position: absolute; top: 1px; left: 150px; height: 100%; padding: 6px 0; }
 .star-box .js-star { display: inline; }
 .star-box .js-unstar { color: #E73528; display: none; }
 

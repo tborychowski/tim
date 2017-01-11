@@ -9,7 +9,7 @@ function fetchUserById (id) {
 	return $.get(`${config.get('baseUrl')}api/v3/users/${id}`)
 		.then(res => ({ id, name: res.name }))
 		.then(usr => (usersDB.add(usr), usr))
-		.catch(() => '');
+		.catch(() => usersDB.add({ id, name: id }));
 }
 
 /**

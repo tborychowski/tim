@@ -1,4 +1,3 @@
-
 header {
 	-webkit-user-select: none;
 	-webkit-app-region: drag;
@@ -17,7 +16,7 @@ header {
 
 .side-header { width: 300px; padding: 7px 0 0 70px; }
 .main-header { flex: 1; position: relative; }
-.main-header-inner { padding: 7px 5px 0 0; background-color: #F9F9F9;
+.main-header-inner { padding: 0 5px 0 0; background-color: #F9F9F9;
 	display: flex;
 	position: absolute;
 	width: 100%;
@@ -39,7 +38,7 @@ header {
 	transition: color .3s;
 	margin: 0;
 	cursor: pointer;
-	padding: 0 10px;
+	padding: 6px 10px;
 	text-align: center;
 }
 .header-btn:hover { color: #4078c0; }
@@ -50,7 +49,7 @@ header {
 
 
 header .disabled { pointer-events: none; opacity: 0.3; }
-header .js-sync { position: absolute; right: 3px; top: -1px; opacity: 0; transition: opacity .2s; }
+header .js-sync { position: absolute; right: 90px; top: 0; opacity: 0; transition: opacity .2s; }
 header .js-stop { display: none; }
 
 header .js-refresh,

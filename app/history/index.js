@@ -2,16 +2,18 @@ const $ = require('../util');
 const DB = require('../db/history');
 
 
-let el, listEl, isReady = false;
+let el, listEl, isVisible = false, isReady = false;
 
 
 function hide () {
+	isVisible = false;
 	el.removeClass('visible');
 	setTimeout(() => { el.hide(); }, 400);
 }
 
 
 function show () {
+	isVisible = true;
 	el.show();
 	setTimeout(() => { el.addClass('visible'); }, 10);
 }
@@ -50,6 +52,18 @@ function onKeyPress (e) {
 	}
 }
 
+function onKeyDown (e) {
+	if (e.key === 'ArrowUp' && listEl[0].selectedIndex === 0) {
+		$.trigger('focus-addressbar');
+	}
+}
+
+
+function focusResults () {
+	if (!isVisible) show();
+	listEl[0].focus();
+}
+
 
 function init () {
 	if (isReady) return;
@@ -59,12 +73,13 @@ function init () {
 
 	listEl.on('blur', hide);
 	listEl.on('keypress', onKeyPress);
+	listEl.on('keydown', onKeyDown);
 	listEl.on('click', onKeyPress);
 
 	$.on('url-changed', onUrlChanged);
 	$.on('address-input', onAddressInput);
 	$.on('address-input-end', hide);
-	$.on('focus-address-results', () => { listEl[0].focus(); });
+	$.on('focus-address-results', focusResults);
 
 	isReady = true;
 }
