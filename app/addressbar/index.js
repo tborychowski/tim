@@ -3,7 +3,7 @@ const Config = require('electron-config');
 const config = new Config();
 const starsDB = require('../db/stars');
 
-let isReady = false, el, starBox;
+let isReady = false, el, starBox, lastUrl;
 
 
 function gotoUrl (url) {
@@ -14,6 +14,7 @@ function gotoUrl (url) {
 	starBox.addClass('disabled');
 
 	if (url) $.trigger('frame/goto', url);
+	$.trigger('address-input-end');
 }
 
 function isValidUrl (url) {
@@ -40,19 +41,36 @@ function parseAnyAddress (url) {
 
 
 function onUrlChanged (webview, issue) {
-	el[0].value = getCustomAddress(config.get('state.url'));
+	lastUrl = el[0].value = getCustomAddress(config.get('state.url'));
 	if (issue && issue.id) {
 		starBox.removeClass('disabled');
 		starsDB.getById(issue.id).then(res => {
 			starBox.toggleClass('is-starred', !!res);
 		});
 	}
+	el[0].select();
 }
 
 
 function getCustomAddress (url) {
 	return url.replace(config.get('baseUrl'), '').replace('pull/', '').replace('issues/', '');
 }
+
+
+function onKeyDown (e) {
+	if (e.key === 'ArrowDown') return $.trigger('focus-address-results');
+	if (e.key === 'Escape') {
+		e.target.value = lastUrl;
+		e.target.select();
+		$.trigger('address-input-end');
+	}
+}
+
+function onKeyPress (e) {
+	if (e.key === 'Enter') return gotoUrl();
+}
+
+
 
 function init () {
 	if (isReady) return;
@@ -61,7 +79,9 @@ function init () {
 	starBox = $('header .star-box');
 
 	el.on('focus', e => { e.target.select(); });
-	el.on('keypress', e => { if (e.key === 'Enter') gotoUrl(); });
+	el.on('keydown', onKeyDown);
+	el.on('keypress', onKeyPress);
+	el.on('input', e => { $.trigger('address-input', e); });
 
 	$.on('change-url', gotoUrl);
 	$.on('url-changed', onUrlChanged);

@@ -1,0 +1,27 @@
+.addressbar-results {
+	position: absolute;
+	left: 5px;
+	right: 5px;
+	top: 30px;
+	height: 200px;
+	background-color: #fff;
+	box-shadow: 0 2px 3px 2px rgba(0, 0, 0, 0.2);
+	border-radius: 4px;
+	opacity: 0;
+	display: none;
+	transition: opacity .3s ease-out;
+	text-align: center;
+}
+
+.addressbar-results.visible { opacity: 1; }
+
+
+.addressbar-results-list {
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+	border: none;
+	font: inherit;
+}
+
+.addressbar-results-list option { padding: 5px; }

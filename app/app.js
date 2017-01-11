@@ -18,6 +18,11 @@ settings.init();
 const notifications = require('./app/notifications');
 notifications.init();
 
+const history = require('./app/history');
+history.init();
+
+
+
 
 const { ipcRenderer } = require('electron');
 ipcRenderer.on('menu', (ev, msg) => { $.trigger('menu', msg); });

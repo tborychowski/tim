@@ -50,7 +50,7 @@ header {
 
 
 header .disabled { pointer-events: none; opacity: 0.3; }
-header .js-sync { position: absolute; right: 118px; top: 6px; opacity: 0; transition: opacity .2s; }
+header .js-sync { position: absolute; right: 3px; top: -1px; opacity: 0; transition: opacity .2s; }
 header .js-stop { display: none; }
 
 header .js-refresh,

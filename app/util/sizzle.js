@@ -121,8 +121,16 @@ sizzle.fn.hasClass = function (cls) {
 };
 
 sizzle.fn.toggle = function (cond) {
-	const disp = cond ? 'block' : 'none';
-	this.forEach(el => { el.style.display = disp; });
+	return cond ? this.show() : this.hide();
+};
+
+sizzle.fn.hide = function () {
+	this.forEach(el => { el.style.display = 'none'; });
+	return this;
+};
+
+sizzle.fn.show = function () {
+	this.forEach(el => { el.style.display = 'block'; });
 	return this;
 };
 

@@ -92,7 +92,18 @@ function trim (str, chars) {
 function ltrim (str, chars) { return str.replace(new RegExp('^' + (chars ? chars : '\\s') + '+'), ''); }
 function rtrim (str, chars) { return str.replace(new RegExp((chars ? chars : '\\s') + '+$'), ''); }
 
+
+function fuzzy (hay, s) {
+	s = ('' + s).toLowerCase();
+	hay = ('' + hay).toLowerCase();
+	let n = -1;
+	for (let l of s) if (!~(n = hay.indexOf(l, n + 1))) return false;
+	return true;
+}
+
+
 module.exports = {
+	fuzzy,
 	ltrim,
 	rtrim,
 	trim,
