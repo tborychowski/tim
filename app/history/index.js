@@ -60,7 +60,7 @@ function onKeyDown (e) {
 
 
 function focusResults () {
-	if (!isVisible) show();
+	if (!isVisible && listEl[0].options.length) show();
 	listEl[0].focus();
 }
 
