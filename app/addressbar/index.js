@@ -41,14 +41,17 @@ function parseAnyAddress (url) {
 
 
 function onUrlChanged (webview, issue) {
-	lastUrl = el[0].value = getCustomAddress(config.get('state.url'));
+	const newUrl = getCustomAddress(config.get('state.url'));
+	const hasUrlChanged = (lastUrl !== newUrl);
+	lastUrl = el[0].value = newUrl;
 	if (issue && issue.id) {
 		starBox.removeClass('disabled');
 		starsDB.getById(issue.id).then(res => {
 			starBox.toggleClass('is-starred', !!res);
 		});
 	}
-	el[0].select();
+
+	if (hasUrlChanged) el[0].select();
 }
 
 

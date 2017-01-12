@@ -78,11 +78,9 @@ function onNavigationStart () {
 function onNavigationEnd () {}
 
 function onRendered (url, issue) {
-	if (config.get('state.url') !== url) {
-		config.set('state.url', url);
-		config.set('state.issue', issue);
-		$.trigger('url-changed', webview[0], issue);
-	}
+	config.set('state.url', url);
+	config.set('state.issue', issue);
+	$.trigger('url-changed', webview[0], issue);
 	realnames.replace(webview[0]);
 	setTimeout(loadingStop, 100);
 }
