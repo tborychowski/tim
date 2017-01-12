@@ -82,8 +82,8 @@ function onRendered (url, issue) {
 		config.set('state.url', url);
 		config.set('state.issue', issue);
 		$.trigger('url-changed', webview[0], issue);
-		realnames.replace(webview[0]);
 	}
+	realnames.replace(webview[0]);
 	setTimeout(loadingStop, 100);
 }
 
