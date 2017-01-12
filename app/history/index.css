@@ -7,10 +7,10 @@
 	background-color: #fff;
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
 	border-radius: 4px;
-	opacity: 0;
-	display: none;
 	transition: opacity .3s ease-out;
 	text-align: center;
+	opacity: 0;
+	display: none;
 }
 
 .addressbar-results.visible { opacity: 1; }
@@ -24,4 +24,4 @@
 	font: inherit;
 }
 
-.addressbar-results-list option { padding: 5px 20px; }
+.addressbar-results-list option { padding: 5px 90px 5px 179px; }
