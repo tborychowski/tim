@@ -1,6 +1,6 @@
 #notifications-sidebar { background-color: #34445E; left: -300px; transition: left .3s ease-out; }
 #notifications-sidebar.visible { left: 0; }
-#notifications-sidebar .js-refresh { position: absolute; top: 9px; right: 35px; z-index: 100; }
+#notifications-sidebar .js-refresh { position: absolute; top: 2px; right: 35px; z-index: 100; }
 #notifications-sidebar .js-refresh:hover { color: lightblue; }
 
 
@@ -8,5 +8,5 @@
 .notification-toggle .js-hide-notifications { display: none; }
 
 .notification-toggle.is-visible .js-show-notifications { display: none; }
-.notification-toggle.is-visible .js-hide-notifications { display: inline-block; color: lightblue; }
+.notification-toggle.is-visible .js-hide-notifications { display: inline; color: lightblue; }
 

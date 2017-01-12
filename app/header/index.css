@@ -14,7 +14,7 @@ header {
 	min-width: 720px;
 }
 
-.side-header { width: 300px; padding: 7px 0 0 70px; }
+.side-header { width: 300px; padding: 6px 0 0 70px; }
 .main-header { flex: 1; position: relative; }
 .main-header-inner {
 	padding: 0 5px 0 0;
