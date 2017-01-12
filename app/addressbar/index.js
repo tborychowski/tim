@@ -70,6 +70,9 @@ function onKeyPress (e) {
 	if (e.key === 'Enter') return gotoUrl();
 }
 
+function focusAddressbar () {
+	setTimeout(() => { el[0].select(); }, 10);
+}
 
 
 function init () {
@@ -85,7 +88,7 @@ function init () {
 
 	$.on('change-url', gotoUrl);
 	$.on('url-changed', onUrlChanged);
-	$.on('focus-addressbar', () => { setTimeout(() => { el[0].select(); }, 10); });
+	$.on('focus-addressbar', focusAddressbar);
 
 	isReady = true;
 }
