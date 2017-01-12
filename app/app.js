@@ -30,3 +30,4 @@ ipcRenderer.on('menu', (ev, msg) => { $.trigger('menu', msg); });
 
 window.addEventListener('blur', () => document.body.classList.add('window-inactive'));
 window.addEventListener('focus', () => document.body.classList.remove('window-inactive'));
+document.addEventListener('click', e => $.trigger('document-clicked', e));

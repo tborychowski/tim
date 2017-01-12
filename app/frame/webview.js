@@ -103,6 +103,7 @@ function isExternal (url) {
 
 
 function onClick (e) {
+	msg('documentClicked');
 	const el = e.target;
 	if (el.tagName === 'A') {
 		if (isExternal(el.href)) {

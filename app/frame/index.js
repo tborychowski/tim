@@ -16,6 +16,7 @@ const ses = session.fromPartition('persist:github');
 let webview, isReady = false;
 
 const webviewHandlers = {
+	documentClicked () { $.trigger('document-clicked'); },
 	externalLinkClicked (url) { shell.openExternal(url); },
 	isLogged (itIs) {
 		if (itIs) return;

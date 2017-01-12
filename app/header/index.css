@@ -16,7 +16,9 @@ header {
 
 .side-header { width: 300px; padding: 7px 0 0 70px; }
 .main-header { flex: 1; position: relative; }
-.main-header-inner { padding: 0 5px 0 0; background-color: #F9F9F9;
+.main-header-inner {
+	padding: 0 5px 0 0;
+	background-color: #eee;
 	display: flex;
 	position: absolute;
 	width: 100%;

@@ -47,7 +47,7 @@ function onAddressInput (e) {
 
 
 function onKeyPress (e) {
-	if (e.key === 'Enter' || e.type === 'click') {
+	if (e.key === 'Enter' || (e.type === 'click' && e.target.tagName === 'OPTION')) {
 		DB.getById(e.target.value).then(item => $.trigger('change-url', item.url));
 	}
 }
@@ -62,6 +62,12 @@ function onKeyDown (e) {
 function focusResults () {
 	if (!isVisible && listEl[0].options.length) show();
 	listEl[0].focus();
+}
+
+
+function onDocumentClick (e) {
+	if (e && e.target && $(e.target).closest('.addressbar-results-list')) return;
+	hide();
 }
 
 
@@ -80,6 +86,7 @@ function init () {
 	$.on('address-input', onAddressInput);
 	$.on('address-input-end', hide);
 	$.on('focus-address-results', focusResults);
+	$.on('document-clicked', onDocumentClick);
 
 	isReady = true;
 }
