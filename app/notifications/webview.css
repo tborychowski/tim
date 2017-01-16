@@ -1,3 +1,4 @@
+html { overflow: hidden; }
 body { min-width: auto !important; background: none; }
 
 .main-content { padding: 0; }
