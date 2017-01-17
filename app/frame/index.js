@@ -13,7 +13,7 @@ const wpcss = `${__dirname}/webview.css`;
 
 const ses = session.fromPartition('persist:github');
 
-let webview, isReady = false;
+let webview, isReady = false, lastUrl = '';
 
 const webviewHandlers = {
 	documentClicked () { $.trigger('document-clicked'); },
@@ -91,9 +91,11 @@ function loadingStart () {
 }
 
 function loadingStop () {
+	const newUrl = webview[0].getURL();
 	webview.removeClass('loading');
 	$.trigger('url-change-end');
-	webview[0].focus();
+	if (lastUrl !== newUrl) webview[0].focus();
+	lastUrl = newUrl;
 }
 
 

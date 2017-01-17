@@ -45,8 +45,6 @@ function onUrlChanged (webview, issue) {
 	lastShortUrl = shortenUrl(lastFullUrl);
 	el[0].value = lastShortUrl;
 
-	console.log(lastFullUrl, lastShortUrl);
-
 	if (issue && issue.id) {
 		starBox.removeClass('disabled');
 		starsDB.getById(issue.id).then(res => {
