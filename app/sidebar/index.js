@@ -32,7 +32,7 @@ function onClick (e) {
 function getIssueHtml (issue) {
 	return `<li>
 		<i class="${issueTypes[issue.type]}"></i>
-		<a href="${issue.repo}/${issue.id}" class="btn">${issue.name}</a>
+		<a href="${issue.repo}/${issue.id}" class="btn" title="${issue.id}">${issue.name}</a>
 		<em>${issue.id}</em>
 	</li>`;
 }

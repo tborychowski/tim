@@ -28,6 +28,16 @@ const { ipcRenderer } = require('electron');
 ipcRenderer.on('menu', (ev, msg) => { $.trigger('menu', msg); });
 
 
-window.addEventListener('blur', () => document.body.classList.add('window-inactive'));
-window.addEventListener('focus', () => document.body.classList.remove('window-inactive'));
-document.addEventListener('click', e => $.trigger('document-clicked', e));
+window.addEventListener('blur', () => {
+	document.body.classList.add('window-inactive');
+	$.trigger('window-blurred');
+});
+
+window.addEventListener('focus', () => {
+	document.body.classList.remove('window-inactive');
+	$.trigger('window-focused');
+});
+
+document.addEventListener('click', e => {
+	$.trigger('document-clicked', e);
+});

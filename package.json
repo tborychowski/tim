@@ -2,7 +2,7 @@
   "name": "github-browser",
   "productName": "Github Browser",
   "description": "Github browser.",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "start": "electron index.js",
-    "package": "electron-packager . --icon './assets/icon.icns' --overwrite --platform=darwin"
+    "pack": "electron-packager . --icon './assets/icon.icns' --overwrite --platform=darwin"
   },
   "author": "Tom",
   "license": "MIT",
@@ -18,7 +18,7 @@
     "electron-config": "^0.2.1",
     "electron-window-state": "^4.0.1",
     "ionicons": "^3.0.0",
-    "tingodb": "^0.4.2"
+    "tingodb": "^0.5.1"
   },
   "devDependencies": {
     "electron-packager": "^8.3.0",

@@ -41,6 +41,13 @@ const menuTemplate = [
 		label: 'View',
 		submenu: [
 			{ role: 'reload' },
+			{
+				label: 'Focus address bar',
+				accelerator: 'CmdOrCtrl+L',
+				click () { win.webContents.send('menu', 'focus-addressbar'); }
+			},
+
+			{ type: 'separator' },
 			{ role: 'toggledevtools' },
 			{
 				label: 'Toggle Main Frame Developer Tools',

@@ -3,7 +3,7 @@ const Config = require('electron-config');
 const config = new Config();
 const starsDB = require('../db/stars');
 
-let isReady = false, el, starBox, lastUrl;
+let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '';
 
 
 function gotoUrl (url) {
@@ -26,7 +26,7 @@ function isValidUrl (url) {
 
 
 function parseAnyAddress (url) {
-	url = getCustomAddress(url);
+	url = shortenUrl(url);
 	const parts = url.split('/');
 	let id;
 	url = '';
@@ -41,29 +41,49 @@ function parseAnyAddress (url) {
 
 
 function onUrlChanged (webview, issue) {
-	const newUrl = getCustomAddress(config.get('state.url'));
-	const hasUrlChanged = (lastUrl !== newUrl);
-	lastUrl = el[0].value = newUrl;
+	lastFullUrl = config.get('state.url');
+	lastShortUrl = shortenUrl(lastFullUrl);
+	el[0].value = lastShortUrl;
+
+	console.log(lastFullUrl, lastShortUrl);
+
 	if (issue && issue.id) {
 		starBox.removeClass('disabled');
 		starsDB.getById(issue.id).then(res => {
 			starBox.toggleClass('is-starred', !!res);
 		});
 	}
-
-	if (hasUrlChanged) el[0].select();
 }
 
 
-function getCustomAddress (url) {
-	return url.replace(config.get('baseUrl'), '').replace('pull/', '').replace('issues/', '');
+function shortenUrl (url = '') {
+	return url
+		.replace(config.get('baseUrl'), '')
+		.replace('pull/', '')
+		.replace('issues/', '')
+		.split('#')
+		.shift();
 }
 
+function focusAddressbar () {
+	setTimeout(() => { el[0].select(); }, 10);
+}
+
+
+
+function onFocus () {
+	el[0].value = lastFullUrl;
+	el[0].select();
+}
+
+function onBlur () {
+	el[0].value = lastShortUrl;
+}
 
 function onKeyDown (e) {
 	if (e.key === 'ArrowDown') return $.trigger('focus-address-results');
 	if (e.key === 'Escape') {
-		e.target.value = lastUrl;
+		e.target.value = lastFullUrl;
 		e.target.select();
 		$.trigger('address-input-end');
 	}
@@ -73,8 +93,12 @@ function onKeyPress (e) {
 	if (e.key === 'Enter') return gotoUrl();
 }
 
-function focusAddressbar () {
-	setTimeout(() => { el[0].select(); }, 10);
+function onInput (e) {
+	$.trigger('address-input', e);
+}
+
+function onMenuClick (target) {
+	if (target === 'focus-addressbar') focusAddressbar();
 }
 
 
@@ -84,14 +108,16 @@ function init () {
 	el = $('.addressbar');
 	starBox = $('header .star-box');
 
-	el.on('focus', e => { e.target.select(); });
+	el.on('focus', onFocus);
+	el.on('blur', onBlur);
 	el.on('keydown', onKeyDown);
 	el.on('keypress', onKeyPress);
-	el.on('input', e => { $.trigger('address-input', e); });
+	el.on('input', onInput);
 
 	$.on('change-url', gotoUrl);
 	$.on('url-changed', onUrlChanged);
 	$.on('focus-addressbar', focusAddressbar);
+	$.on('menu', onMenuClick);
 
 	isReady = true;
 }

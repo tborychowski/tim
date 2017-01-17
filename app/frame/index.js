@@ -93,6 +93,7 @@ function loadingStart () {
 function loadingStop () {
 	webview.removeClass('loading');
 	$.trigger('url-change-end');
+	webview[0].focus();
 }
 
 

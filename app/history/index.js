@@ -37,7 +37,9 @@ function getItemHtml (item, i) {
 function render (items) {
 	if (items.length) show();
 	else hide();
+	items = items.slice(0, 20);
 	listEl.html(items.map(getItemHtml).join(''));
+	el[0].style.height = `${items.length * 27 + 20}px`;
 }
 
 function onAddressInput (e) {
@@ -66,7 +68,7 @@ function focusResults () {
 
 
 function onDocumentClick (e) {
-	if (e && e.target && $(e.target).closest('.addressbar-results-list')) return;
+	if (e && e.target && $(e.target).closest('.history-list')) return;
 	hide();
 }
 
@@ -74,8 +76,8 @@ function onDocumentClick (e) {
 function init () {
 	if (isReady) return;
 
-	el = $('.addressbar-results');
-	listEl = el.find('.addressbar-results-list');
+	el = $('.history');
+	listEl = el.find('.history-list');
 
 	listEl.on('blur', hide);
 	listEl.on('keypress', onKeyPress);

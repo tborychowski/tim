@@ -1,4 +1,4 @@
-.addressbar-results {
+.history {
 	position: absolute;
 	left: 0;
 	right: 0;
@@ -13,15 +13,16 @@
 	display: none;
 }
 
-.addressbar-results.visible { opacity: 1; }
+.history.visible { opacity: 1; }
 
 
-.addressbar-results-list {
+.history-list {
 	width: 100%;
 	height: 100%;
 	padding: 10px 0;
 	border: none;
 	font: inherit;
 }
+.history-list:focus { outline: none; }
 
-.addressbar-results-list option { padding: 5px 90px 5px 179px; }
+.history-list option { padding: 5px 90px 5px 179px; }

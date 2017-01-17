@@ -107,8 +107,6 @@ function init () {
 	$.on('menu', onMenuClick);
 	$.on('url-change-end', onFrameUrlChanged);
 
-
-
 	toggle(config.get('state.notifications'));
 
 
