@@ -3,7 +3,12 @@ const Config = require('electron-config');
 const config = new Config();
 const starsDB = require('../db/stars');
 
-let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '';
+let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '', lastIssue = '';
+
+
+function getUnfocusedText () {
+	return lastIssue && lastIssue.name ? lastIssue.name : lastShortUrl;
+}
 
 
 function gotoUrl (url) {
@@ -13,6 +18,7 @@ function gotoUrl (url) {
 	if (!validUrl) url = config.get('baseUrl') + parseAnyAddress(url);
 	starBox.addClass('disabled');
 
+	// $.trigger('hide-connection-error');
 	if (url) $.trigger('frame/goto', url);
 	$.trigger('address-input-end');
 }
@@ -43,7 +49,9 @@ function parseAnyAddress (url) {
 function onUrlChanged (webview, issue) {
 	lastFullUrl = config.get('state.url');
 	lastShortUrl = shortenUrl(lastFullUrl);
-	el[0].value = lastShortUrl;
+	lastIssue = issue || {};
+
+	el[0].value = getUnfocusedText();
 
 	if (issue && issue.id) {
 		starBox.removeClass('disabled');
@@ -75,7 +83,7 @@ function onFocus () {
 }
 
 function onBlur () {
-	el[0].value = lastShortUrl;
+	el[0].value = getUnfocusedText();
 }
 
 function onKeyDown (e) {

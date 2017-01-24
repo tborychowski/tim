@@ -8,6 +8,7 @@ body { min-width: auto !important; background: none; }
 .flash-full.js-notice,
 .notification-actions .mute,
 .notification-center .tabnav,
+.mark-all-as-read-confirmed,
 .repohead,
 .protip,
 .site-footer-container { display: none; }

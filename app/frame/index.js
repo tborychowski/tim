@@ -4,7 +4,7 @@ const session = electron.remote.session;
 const readFile = require('fs').readFileSync;
 const $ = require('../util');
 const realnames = require('../realnames');
-const findInPage = require('../findinpage');
+const search = require('../search');
 const Config = require('electron-config');
 const config = new Config();
 
@@ -38,7 +38,7 @@ const menuClickHandlers = {
 		webview[0].clearHistory();
 		ses.clearStorageData(webviewHandlers.isLogged);
 	},
-	'find-in-page' () { findInPage(webview[0]); }
+	'find-in-page' () { search.start(webview[0]); }
 };
 
 function initialURL (initial) {
@@ -59,6 +59,7 @@ function onMenuClick (target) {
 }
 
 function gotoUrl (url) {
+	search.stop();
 	loadingStart();
 	if (typeof url !== 'string' || !url.length || !webview.length) return;
 
@@ -76,6 +77,10 @@ function onNavigationStart () {
 }
 
 function onNavigationEnd () {}
+
+function onNavigationError (er) {
+	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger('show-connection-error');
+}
 
 function onRendered (url, issue) {
 	config.set('state.url', url);
@@ -113,6 +118,7 @@ function init () {
 	webview.on('will-navigate', gotoUrl);
 	webview.on('did-navigate-in-page', onNavigationStart);
 	webview.on('dom-ready', onNavigationEnd);
+	webview.on('did-fail-load', onNavigationError);
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
 		if (typeof fn === 'function') fn.apply(fn, ev.args);

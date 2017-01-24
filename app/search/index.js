@@ -8,7 +8,7 @@ let webview, el, inp, info,
 const clickHandlers = {
 	prev: findPrev,
 	next: findNext,
-	close () { toggle(false); }
+	close: hide
 };
 
 
@@ -28,15 +28,18 @@ function toggle (force) {
 			inp[0].focus();
 		}, 10);
 	}
-	else {
-		el.removeClass('visible');
-		inp[0].value = '';
-		findInPage();
-		updateInfo();
+	else hide(true);
+}
+
+function hide (toggling) {
+	if (!isReady) return;
+	el.removeClass('visible');
+	inp[0].value = '';
+	findInPage();
+	updateInfo();
+	if (toggling) {
 		$.trigger('focus-addressbar');
-		delay(() => {
-			el.addClass('hidden');
-		}, 350);
+		delay(() => { el.addClass('hidden'); }, 350);
 	}
 }
 
@@ -110,4 +113,7 @@ function find (wv) {
 }
 
 
-module.exports = find;
+module.exports = {
+	start: find,
+	stop: hide
+};

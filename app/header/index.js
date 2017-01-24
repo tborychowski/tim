@@ -21,6 +21,16 @@ const clickHandlers = {
 };
 
 
+function showConnectionError () {
+	el.addClass('error');
+}
+
+function hideConnectionError () {
+	el.removeClass('error');
+}
+
+
+
 function onClick (e) {
 	let target = $(e.target);
 	if (target.is('.header-btn')) {
@@ -51,6 +61,8 @@ function init () {
 	$.on('url-changed', onUrlChanged);
 	$.on('url-change-start', onUrlChangeStart);
 	$.on('url-change-end', onUrlChangeEnd);
+	$.on('show-connection-error', showConnectionError);
+	$.on('hide-connection-error', hideConnectionError);
 
 	isReady = true;
 }

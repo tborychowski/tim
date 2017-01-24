@@ -25,14 +25,7 @@ header {
 	height: 37px;
 	z-index: 100;
 }
-.main-header-border {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	border-bottom: 1px solid #c2c0c2;
-	z-index: 99;
-}
-
+.main-header-border { position: absolute; bottom: 0; width: 100%; border-bottom: 1px solid #c2c0c2; z-index: 99; }
 
 .header-btn {
 	font-size: 22px;
@@ -52,6 +45,8 @@ header {
 
 header .disabled { pointer-events: none; opacity: 0.3; }
 header .js-sync { position: absolute; right: 90px; top: 0; opacity: 0; transition: opacity .2s; }
+header .js-error:hover,
+header .js-error { position: absolute; right: 90px; top: 0; color: red; display: none; }
 header .js-stop { display: none; }
 
 header .js-refresh,
@@ -61,6 +56,9 @@ header.loading .js-sync { animation: spin 1s infinite linear; opacity: 1; }
 header.loading .js-refresh { display: none; }
 header.loading .js-stop { display: block; }
 
+
+header.error .js-sync { display: none; }
+header.error .js-error { display: block; }
 
 @keyframes spin {
 	0% { transform: rotate(0deg); }
