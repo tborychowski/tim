@@ -115,6 +115,12 @@ function onClick (e) {
 }
 
 
+function onContextMenu (e) {
+	if (e.target.matches('a')) return msg('showLinkMenu', e.target.getAttribute('href'));
+	if (e.target.matches('img')) return msg('showImgMenu', e.target.getAttribute('src'));
+}
+
+
 function init () {
 	observeChanges();
 
@@ -124,7 +130,9 @@ function init () {
 	ipc.on('gatherUserIds', gatherUserIds);
 	ipc.on('userIdsAndNames', updateUserNames);
 	ipc.on('injectCss', injectCss);
+
 	document.addEventListener('click', onClick, true);
+	document.addEventListener('contextmenu', onContextMenu);
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');

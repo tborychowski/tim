@@ -9,6 +9,8 @@ let webview, isReady = false, el, content, notifToggle, isLoggedIn, loginTimer;
 
 const webviewHandlers = {
 	goto: url => $.trigger('change-url', url),
+	showLinkMenu: url => $.trigger('show-link-menu', url),
+
 	docReady: onDocReady,
 	cssReady: onCssReady,
 	isLogged: onIsLogged

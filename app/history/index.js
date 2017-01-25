@@ -6,16 +6,16 @@ let el, listEl, isVisible = false, isReady = false;
 
 
 function hide () {
+	if (!isVisible) return;
 	isVisible = false;
-	el.removeClass('visible');
-	setTimeout(() => { el.hide(); }, 400);
+	el.show().animate({ opacity: 1 }, { opacity: 0 }).then(el.hide);
 }
 
 
 function show () {
+	if (isVisible) return;
 	isVisible = true;
-	el.show();
-	setTimeout(() => { el.addClass('visible'); }, 10);
+	el.show().animate({ opacity: 0 }, { opacity: 1 });
 }
 
 

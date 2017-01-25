@@ -56,7 +56,6 @@ header.loading .js-sync { animation: spin 1s infinite linear; opacity: 1; }
 header.loading .js-refresh { display: none; }
 header.loading .js-stop { display: block; }
 
-
 header.error .js-sync { display: none; }
 header.error .js-error { display: block; }
 

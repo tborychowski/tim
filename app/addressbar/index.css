@@ -4,7 +4,7 @@
 }
 
 .addressbar {
-	padding: 3px 40px 3px 32px;
+	padding: 3px 10px 3px 32px;
 	margin: 0 5px;
 	height: 100%;
 	font-size: 15px;
@@ -21,6 +21,11 @@
 	background-color: #fff;
 	color: #222;
 }
+
+
+header.loading .addressbar,
+header.error .addressbar { padding-right: 40px; }
+
 
 /* STAR BOX */
 .star-box { position: absolute; top: 1px; left: 150px; height: 100%; padding: 6px 0; }

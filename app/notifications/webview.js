@@ -24,6 +24,12 @@ function onClick (e) {
 }
 
 
+function onContextMenu (e) {
+	if (e.target.matches('a')) msg('showLinkMenu', e.target.getAttribute('href'));
+}
+
+
+
 function init () {
 	const aid = document.querySelector('.accessibility-aid');
 	if (aid) aid.remove();
@@ -32,6 +38,8 @@ function init () {
 	ipc.on('reload', reload);
 	ipc.on('injectCss', injectCss);
 	document.addEventListener('click', onClick, true);
+	document.addEventListener('contextmenu', onContextMenu);
+
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');

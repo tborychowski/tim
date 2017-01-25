@@ -7,14 +7,10 @@
 	background-color: #fff;
 	box-shadow: 0 5px 5px rgba(0, 0, 0, 0.4);
 	border-radius: 4px;
-	transition: opacity .3s ease-out;
 	text-align: center;
 	opacity: 0;
 	display: none;
 }
-
-.history.visible { opacity: 1; }
-
 
 .history-list {
 	width: 100%;

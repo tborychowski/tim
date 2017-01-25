@@ -1,5 +1,7 @@
 const $ = require('../util');
 const starsDB = require('../db/stars');
+const Config = require('electron-config');
+const config = new Config();
 
 let isReady = false, el, reposEl;
 const issueTypes = {
@@ -32,7 +34,7 @@ function onClick (e) {
 function getIssueHtml (issue) {
 	return `<li>
 		<i class="${issueTypes[issue.type]}"></i>
-		<a href="${issue.repo}/${issue.id}" class="btn" title="${issue.id}">${issue.name}</a>
+		<a href="${issue.url}" class="btn" title="${issue.id}">${issue.name}</a>
 		<em>${issue.id}</em>
 	</li>`;
 }
@@ -41,8 +43,9 @@ function getIssueHtml (issue) {
 function getRepoHtml (repo) {
 	const issuesHtml = repo.items.map(getIssueHtml).join('');
 	const repoName = repo.name.split('/').pop();
+	const url = `${config.get('baseUrl')}${repo.name}/issues`;
 	return `<div class="repo-box ${repo.name}">
-		<h2><a href="${repo.name}/issues" class="btn">${repoName}</a></h2>
+		<h2><a href="${url}" class="btn">${repoName}</a></h2>
 		<ul class="repo-box-issues">${issuesHtml}</ul>
 	</div>`;
 }

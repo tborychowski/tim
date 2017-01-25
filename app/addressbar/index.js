@@ -7,7 +7,9 @@ let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '', lastIssue
 
 
 function getUnfocusedText () {
-	return lastIssue && lastIssue.name ? lastIssue.name : lastShortUrl;
+	if (!lastIssue || !lastIssue.name) return lastShortUrl || '';
+	const mod = lastIssue.repo.split('/').pop();
+	return `${mod} / ${lastIssue.name}`;
 }
 
 

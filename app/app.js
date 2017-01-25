@@ -22,6 +22,10 @@ const history = require('./app/history');
 history.init();
 
 
+const contextmenu = require('./app/contextmenu');
+contextmenu.init();
+
+
 
 
 const { ipcRenderer } = require('electron');

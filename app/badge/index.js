@@ -6,7 +6,7 @@ const remote = electron.remote;
 const app = remote.app;
 const nativeImage = electron.nativeImage;
 const win = remote.getCurrentWindow();
-const appName = 'Gitweet';
+const appName = 'Github Browser';
 
 module.exports = function (text) {
 	text = (text === '0' ? '' : String(text || ''));

@@ -16,9 +16,11 @@ const ses = session.fromPartition('persist:github');
 let webview, isReady = false, lastUrl = '';
 
 const webviewHandlers = {
-	documentClicked () { $.trigger('document-clicked'); },
-	externalLinkClicked (url) { shell.openExternal(url); },
-	isLogged (itIs) {
+	documentClicked: () => $.trigger('document-clicked'),
+	externalLinkClicked: url => shell.openExternal(url),
+	showLinkMenu: url => $.trigger('show-link-menu', url),
+	showImgMenu: url => $.trigger('show-img-menu', url),
+	isLogged: itIs => {
 		if (itIs) return;
 		$.trigger('toggle-notifications', false);
 		if (!config.get('baseUrl')) $.trigger('show-settings');
