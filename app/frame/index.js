@@ -117,6 +117,7 @@ function init () {
 	webview = frame.find('#webview');
 
 
+	webview.on('focus', () => $.trigger('frame-focused'));
 	webview.on('will-navigate', gotoUrl);
 	webview.on('did-navigate-in-page', onNavigationStart);
 	webview.on('dom-ready', onNavigationEnd);

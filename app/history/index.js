@@ -8,7 +8,7 @@ let el, listEl, isVisible = false, isReady = false;
 function hide () {
 	if (!isVisible) return;
 	isVisible = false;
-	el.show().animate({ opacity: 1 }, { opacity: 0 }).then(el.hide);
+	el.show().animate({ opacity: 1 }, { opacity: 0 }).then(el.hide.bind(el));
 }
 
 
@@ -28,9 +28,10 @@ function onUrlChanged (webview, issue) {
 
 
 function getItemHtml (item, i) {
+	const mod = item.repo.split('/').pop() + '#' + item.id;
 	let selected = '';
 	if (i === 0) selected = 'selected="selected"';
-	return `<option ${selected} value="${item._id}">${item.name}</option>`;
+	return `<option ${selected} value="${item._id}">${item.name} (${mod})</option>`;
 }
 
 
@@ -56,6 +57,10 @@ function onKeyPress (e) {
 
 function onKeyDown (e) {
 	if (e.key === 'ArrowUp' && listEl[0].selectedIndex === 0) {
+		$.trigger('focus-addressbar');
+	}
+	else if (e.key === 'Escape') {
+		hide();
 		$.trigger('focus-addressbar');
 	}
 }
@@ -89,6 +94,7 @@ function init () {
 	$.on('address-input-end', hide);
 	$.on('focus-address-results', focusResults);
 	$.on('document-clicked', onDocumentClick);
+	$.on('frame-focused', hide);
 
 	isReady = true;
 }

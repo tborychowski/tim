@@ -88,6 +88,10 @@ function onBlur () {
 	el[0].value = getUnfocusedText();
 }
 
+function onKeyPress (e) {
+	if (e.key === 'Enter') return gotoUrl();
+}
+
 function onKeyDown (e) {
 	if (e.key === 'ArrowDown') return $.trigger('focus-address-results');
 	if (e.key === 'Escape') {
@@ -95,10 +99,6 @@ function onKeyDown (e) {
 		e.target.select();
 		$.trigger('address-input-end');
 	}
-}
-
-function onKeyPress (e) {
-	if (e.key === 'Enter') return gotoUrl();
 }
 
 function onInput (e) {
