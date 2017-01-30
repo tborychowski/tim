@@ -65,11 +65,21 @@
 
 	<section id="frame"></section>
 
+
+
+
 	<section class="settings">
 		<h1>Preferences</h1>
 		<form class="settings-form">
+
 			<label>Base URL: <input name="baseUrl" required></label>
+
 			<label>Home button URL: <input name="homeUrl" placeholder="Defaults to Base URL"></label>
+
+			<label>Repo to search: <input name="repoToSearch" placeholder="Just Group/RepoName"></label>
+			<span class="settings-info-text">BaseURL/<b>Group/RepoName</b>/issues?q=is:open is:issue...</span>
+			<span class="settings-info-text">e.g. https://github.com/<b>angular/angular</b>/issues?q=is:open is:issue...</span>
+
 			<div class="settings-buttons">
 				<a href="#" class="btn btn-left btn-folder" data-go="folder">Open settings folder</a>
 				<button class="btn btn-cancel" data-go="cancel" type="button">Cancel</button>

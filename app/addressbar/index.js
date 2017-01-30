@@ -3,24 +3,47 @@ const Config = require('electron-config');
 const config = new Config();
 const starsDB = require('../db/stars');
 
-let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '', lastIssue = '';
+let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '', lastIssue = '',
+	searchTerm = null;
+
+const baseUrl = $.rtrim(config.get('baseUrl'), '/');
+const repoToSearch = config.get('repoToSearch');
 
 
 function getUnfocusedText () {
+	if (searchTerm) return searchTerm;
 	if (!lastIssue || !lastIssue.name) return lastShortUrl || '';
 	const mod = lastIssue.repo.split('/').pop();
 	return `${mod} / ${lastIssue.name}`;
 }
 
+function getFocusedText () {
+	if (searchTerm) return searchTerm;
+	return lastFullUrl;
+}
+
+
+// BaseURL/Group/RepoName/issues?q=is:open is:issue...
+function getSearchUrl (q) {
+	const query = 'issues?q=is:open is:issue ' + q;
+	return [baseUrl, repoToSearch, query].join('/');
+}
+
 
 function gotoUrl (url) {
+	searchTerm = null;
+
 	if (url) el[0].value = url;
 	url = el[0].value.trim();
-	const validUrl = isValidUrl(url);
-	if (!validUrl) url = config.get('baseUrl') + parseAnyAddress(url);
-	starBox.addClass('disabled');
 
-	// $.trigger('hide-connection-error');
+	const validUrl = isValidUrl(url);
+
+	if (!validUrl) {	// not a URL - do search
+		searchTerm = url;
+		url = getSearchUrl(url);
+	}
+
+	starBox.addClass('disabled');
 	if (url) $.trigger('frame/goto', url);
 	$.trigger('address-input-end');
 }
@@ -33,22 +56,9 @@ function isValidUrl (url) {
 }
 
 
-function parseAnyAddress (url) {
-	url = shortenUrl(url);
-	const parts = url.split('/');
-	let id;
-	url = '';
-	if (parts.length > 2) id = parts.pop();
-	if (parts.length > 1) {
-		url = parts.join('/');
-		if (id === 'issues') id = '/';
-		if (id) url += `/issues/${id}`;
-	}
-	return $.rtrim(url, '/');
-}
-
-
 function onUrlChanged (webview, issue) {
+	if (issue) searchTerm = null;
+
 	lastFullUrl = config.get('state.url');
 	lastShortUrl = shortenUrl(lastFullUrl);
 	lastIssue = issue || {};
@@ -65,6 +75,13 @@ function onUrlChanged (webview, issue) {
 
 
 function shortenUrl (url = '') {
+	if (url.indexOf('?q=') > -1) {	// it's search url
+		return searchTerm = url
+			.split('?q=').pop()
+			.replace(/is(:|%3A)(issue|open|closed)/g, '')
+			.replace(/(%20|\+)/g, ' ')
+			.trim();
+	}
 	return url
 		.replace(config.get('baseUrl'), '')
 		.replace('pull/', '')
@@ -80,7 +97,7 @@ function focusAddressbar () {
 
 
 function onFocus () {
-	el[0].value = lastFullUrl;
+	el[0].value = getFocusedText();
 	el[0].select();
 }
 
@@ -95,7 +112,7 @@ function onKeyPress (e) {
 function onKeyDown (e) {
 	if (e.key === 'ArrowDown') return $.trigger('focus-address-results');
 	if (e.key === 'Escape') {
-		e.target.value = lastFullUrl;
+		e.target.value = getFocusedText();
 		e.target.select();
 		$.trigger('address-input-end');
 	}

@@ -33,3 +33,5 @@
 .settings-buttons .btn { font-size: 13px; }
 .settings-buttons .btn-left { float: left; }
 .settings-buttons .btn-save { font-weight: bold; }
+
+.settings-info-text { font-size: 11px; color: #999; margin-left: 146px; }
