@@ -8,7 +8,7 @@ let el, listEl, isVisible = false, isReady = false;
 function hide () {
 	if (!isVisible) return;
 	isVisible = false;
-	el.show().animate({ opacity: 1 }, { opacity: 0 }).then(el.hide.bind(el));
+	el.animate({ opacity: 1 }, { opacity: 0 }).then(el.hide.bind(el));
 }
 
 

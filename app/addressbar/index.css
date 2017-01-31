@@ -1,7 +1,5 @@
-.addressbar-input-wrapper {
-	flex: 1;
-	display: flex;
-}
+.addressbar-input-wrapper { flex: 1; display: flex; position: relative; }
+
 
 .addressbar {
 	padding: 3px 10px 3px 32px;
@@ -16,11 +14,7 @@
 	transition: background-color .3s ease-out, color .3s ease-out;
 }
 
-.addressbar:focus {
-	outline: none;
-	background-color: #fff;
-	color: #222;
-}
+.addressbar:focus { outline: none; background-color: #fff; color: #222; }
 
 
 header.loading .addressbar,
@@ -28,7 +22,7 @@ header.error .addressbar { padding-right: 40px; }
 
 
 /* STAR BOX */
-.star-box { position: absolute; top: 1px; left: 150px; height: 100%; padding: 6px 0; }
+.star-box { position: absolute; top: 1px; left: 8px; height: 100%; padding: 6px 0; }
 .star-box .js-star { display: inline; }
 .star-box .js-unstar { color: #E73528; display: none; }
 

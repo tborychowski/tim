@@ -107,13 +107,13 @@ function init (wv) {
 }
 
 
-function find (wv) {
+function start (wv) {
 	if (!isReady) init(wv);
-	toggle();
+	toggle(true);
 }
 
 
 module.exports = {
-	start: find,
+	start: start,
 	stop: hide
 };

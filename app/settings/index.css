@@ -28,10 +28,17 @@
 
 .settings-form label { display: inline-block; padding: 5px; width: 100%; text-align: right; }
 .settings-form input { display: inline-block; padding: 5px; margin-left: 10px; width: calc(100% - 140px);  }
-.settings-form input:invalid { background-color: rgba(255, 0, 0, 0.1); }
+.settings-form input:invalid,
+.settings-form textarea:invalid { background-color: rgba(255, 0, 0, 0.1); }
+
+.settings-form textarea { display: inline-block; padding: 5px; margin-left: 10px; width: calc(100% - 140px);
+	vertical-align: top; resize: vertical; min-height: 3em; height: 5em;
+}
+
+
 .settings-buttons { margin: 20px 0 0 0; text-align: right; }
 .settings-buttons .btn { font-size: 13px; }
 .settings-buttons .btn-left { float: left; }
 .settings-buttons .btn-save { font-weight: bold; }
 
-.settings-info-text { font-size: 11px; color: #999; margin-left: 146px; }
+.settings-info-text { font-size: 11px; color: #999; margin-left: 146px; display: block; }

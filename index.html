@@ -24,7 +24,6 @@
 				<a href="#" class="header-btn js-stop ion-md-close" title="Stop" data-go="stop"></a>
 				<a href="#" class="header-btn js-home ion-md-home" title="Home" data-go="home"></a>
 
-
 				<div class="addressbar-input-wrapper">
 					<div class="star-box disabled">
 		 				<a href="#" class="header-btn js-star ion-ios-bookmark-outline" title="Bookmark" data-go="star"></a>
@@ -34,11 +33,16 @@
 					<input class="addressbar" autofocus />
 					<i class="header-btn js-sync ion-ios-nuclear"></i>
 					<i class="header-btn js-error ion-ios-alert-outline" title="Cannot connect to github. Check your network."></i>
-					<div class="history"><select class="history-list" size="2"></select></div>
+
 				</div>
+
+				<div class="history"><select class="history-list" size="2"></select></div>
 
 				<a href="#" class="header-btn js-copy ion-md-link" title="Copy link" data-go="copy"></a>
 				<a href="#" class="header-btn js-browser ion-md-open" title="Open in browser" data-go="browser"></a>
+
+				<a href="#" class="header-btn js-places ion-md-more" title="Places" data-go="places"></a>
+				<div class="places-popup"></div>
 			</div>
 			<div class="main-header-border"></div>
 			<div class="search-bar hidden">
@@ -51,6 +55,8 @@
 		</div>
 	</header>
 
+
+
 	<aside id="sidebar" class="sidebar">
 		<h1>Bookmarks</h1>
 		<div class="repo-list"></div>
@@ -62,6 +68,9 @@
 		</h1>
 		<div class="repo-list"></div>
 	</aside>
+
+
+
 
 	<section id="frame"></section>
 
@@ -79,6 +88,12 @@
 			<label>Repo to search: <input name="repoToSearch" placeholder="Just Group/RepoName"></label>
 			<span class="settings-info-text">BaseURL/<b>Group/RepoName</b>/issues?q=is:open is:issue...</span>
 			<span class="settings-info-text">e.g. https://github.com/<b>angular/angular</b>/issues?q=is:open is:issue...</span>
+
+			<label>Places: <textarea name="places" placeholder='[{ "name": "My GH Repo", "url": "https://github.com/my/repo" },
+{ "name": "My GH Repo 2", "url": "https://github.com/my/repo2" }]'></textarea></label>
+			<span class="settings-info-text">Yeah, in JSON format for now :-)</span>
+			<span class="settings-info-text">e.g. [{ "name": "My GH Repo", "url": "https://github.com/my/repo" }]</span>
+
 
 			<div class="settings-buttons">
 				<a href="#" class="btn btn-left btn-folder" data-go="folder">Open settings folder</a>
