@@ -13,23 +13,10 @@ const clickHandlers = {
 };
 
 
-function onFormChange (v, ov, field) {
-	if (field.name === 'places') field.setCustomValidity('');
-}
-
-
 function validate (settings) {
 	if (!formEl[0].checkValidity()) return false;
 	if (settings.baseUrl.indexOf('http') < 0) settings.baseUrl = `https://${settings.baseUrl}`;
 	settings.baseUrl = $.rtrim(settings.baseUrl, '/') + '/';
-
-	if (settings.places) {
-		try { JSON.parse(settings.places); }
-		catch (e) {
-			formEl[0].elements.places.setCustomValidity('Invalid JSON format!');
-			return false;
-		}
-	}
 	return settings;
 }
 
@@ -54,14 +41,12 @@ function showSettings () {
 	form.set(config.get());
 	setTimeout(() => { document.body.classList.add('show-settings'); }, 50);
 	document.addEventListener('keyup', onKeyUp);
-	form.observe(onFormChange);
 	formEl.find('input')[0].focus();
 }
 
 function hideSettings () {
 	if (!isVisible) return;
 	document.body.classList.remove('show-settings');
-	form.observeStop();
 	setTimeout(() => {
 		el[0].style.display = 'none';
 		isVisible = false;

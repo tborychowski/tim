@@ -25,9 +25,6 @@ history.init();
 const contextmenu = require('./app/contextmenu');
 contextmenu.init();
 
-const places = require('./app/places');
-places.init();
-
 
 
 

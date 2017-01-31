@@ -17,8 +17,7 @@ const clickHandlers = {
 	unstar () { $.trigger('issue/unstar', config.get('state.issue')); starBox.removeClass('is-starred'); },
 	hideNotifications () { $.trigger('toggle-notifications', false); },
 	showNotifications () { $.trigger('toggle-notifications', true); },
-	home () { $.trigger('change-url', config.get('homeUrl') || config.get('baseUrl')); },
-	places () { $.trigger('show-places'); }
+	home () { $.trigger('change-url', config.get('homeUrl') || config.get('baseUrl')); }
 };
 
 
