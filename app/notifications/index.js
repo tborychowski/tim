@@ -8,6 +8,7 @@ const wpcss = `${__dirname}/webview.css`;
 let webview, isReady = false, el, content, notifToggle, isLoggedIn, loginTimer;
 
 const webviewHandlers = {
+	gotoRepo: repo => $.trigger('change-url', $.trim(repo, '/') + '/issues'),
 	goto: url => $.trigger('change-url', url),
 	showLinkMenu: url => $.trigger('show-link-menu', url),
 

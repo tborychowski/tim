@@ -17,7 +17,13 @@ function reload () {
 
 function onClick (e) {
 	const el = e.target;
-	if (el.matches('.notifications-list .js-navigation-open')) {
+
+	if (el.matches('.notifications-list .notifications-repo-link')) {
+		e.preventDefault();
+		msg('gotoRepo', el.href);
+	}
+
+	else if (el.matches('.notifications-list .js-navigation-open')) {
 		e.preventDefault();
 		msg('goto', el.href);
 	}
