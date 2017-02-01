@@ -3,6 +3,7 @@ const DB = require('tingodb')().Db;
 const db = new DB(app.getPath('userData'), {});
 const collection = db.collection('stars.json');
 
+collection.ensureIndex({ 'url': 1 }, { unique: true });
 
 function add (issue) {
 	// { id: 3214, name: 'issue name', repo: 'angular/angular' }
@@ -16,7 +17,7 @@ function add (issue) {
 
 function remove (issue) {
 	return new Promise ((resolve, reject) => {
-		collection.remove({ id: issue.id }, (err, res) => {
+		collection.remove({ url: issue.url }, (err, res) => {
 			if (err) return reject(err);
 			resolve(res);
 		});
@@ -49,10 +50,24 @@ function getById (id) {
 }
 
 
+function getByUrl (url) {
+	return new Promise ((resolve, reject) => {
+		collection.find({ url }, (err, res) => {
+			if (err) return reject(err);
+			res.toArray((err2, items) => {
+				if (err2) return reject(err2);
+				resolve(items[0]);
+			});
+		});
+	});
+}
+
+
 
 module.exports = {
 	add,
 	remove,
 	get,
 	getById,
+	getByUrl,
 };

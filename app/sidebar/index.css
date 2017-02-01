@@ -28,7 +28,7 @@
 
 
 .repo-box { padding: 5px 0 10px 0; }
-.repo-box a { padding: 10px 10px 12px 20px; }
+.repo-box .hdr { padding: 10px 10px 12px 20px; display: block; }
 
 .repo-box li { padding: 5px 20px 5px 20px; display: flex; font-weight: 100; }
 .repo-box li i { color: #999; width: 18px; min-width: 18px; font-size: 16px; margin: -1px 3px 0 0; }

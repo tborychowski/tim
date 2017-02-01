@@ -13,7 +13,7 @@ const repoToSearch = config.get('repoToSearch');
 function getUnfocusedText () {
 	if (searchTerm) return searchTerm;
 	if (!lastIssue || !lastIssue.name) return lastShortUrl || '';
-	const mod = lastIssue.repo.split('/').pop();
+	const mod = lastIssue.repo ? lastIssue.repo.split('/').pop() : '';
 	return `${mod} / ${lastIssue.name}`;
 }
 
@@ -27,6 +27,12 @@ function getFocusedText () {
 function getSearchUrl (q) {
 	const query = 'issues?q=is:open is:issue ' + q;
 	return [baseUrl, repoToSearch, query].join('/');
+}
+
+function checkIfBookmarked (url) {
+	starsDB.getByUrl(url).then(res => {
+		starBox.toggleClass('is-starred', !!res);
+	});
 }
 
 
@@ -43,7 +49,7 @@ function gotoUrl (url) {
 		url = getSearchUrl(url);
 	}
 
-	starBox.addClass('disabled');
+	starBox.toggleClass('is-starred', false);
 	if (url) $.trigger('frame/goto', url);
 	$.trigger('address-input-end');
 }
@@ -65,12 +71,7 @@ function onUrlChanged (webview, issue) {
 
 	el[0].value = getUnfocusedText();
 
-	if (issue && issue.id) {
-		starBox.removeClass('disabled');
-		starsDB.getById(issue.id).then(res => {
-			starBox.toggleClass('is-starred', !!res);
-		});
-	}
+	if (issue && issue.url) checkIfBookmarked(issue.url);
 }
 
 

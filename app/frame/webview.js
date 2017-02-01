@@ -12,16 +12,20 @@ function onDomChange () {
 function _onDomChange () {
 	const isIssue = !!document.getElementById('discussion_bucket');
 	let issue = null, url = document.location.href;
+	if (url.indexOf('http') !== 0) url = '';	// network error
+
 	if (isIssue) {
 		issue = {
 			name: document.querySelector('.js-issue-title').innerText,
 			id: document.querySelector('.gh-header-number').innerText.substr(1),
 			repo: document.querySelector('.js-repo-nav .reponav-item').getAttribute('href').substr(1),
 			type: document.querySelector('.tabnav-pr') ? 'pr' : 'issue',
-			url: url
+			url
 		};
 	}
-	if (url.indexOf('http') !== 0) url = '';	// network error
+	// just a regular page
+	else issue = { name: document.title, url };
+
 	msg('domChanged', url, issue);
 }
 

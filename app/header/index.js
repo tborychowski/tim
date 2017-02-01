@@ -13,11 +13,17 @@ const clickHandlers = {
 	stop () { $.trigger('frame/goto', 'stop'); },
 	browser () { shell.openExternal(config.get('state.url')); },
 	copy () { clipboard.writeText(config.get('state.url')); },
-	star () { $.trigger('issue/star', config.get('state.issue')); starBox.addClass('is-starred'); },
-	unstar () { $.trigger('issue/unstar', config.get('state.issue')); starBox.removeClass('is-starred'); },
 	hideNotifications () { $.trigger('toggle-notifications', false); },
 	showNotifications () { $.trigger('toggle-notifications', true); },
-	home () { $.trigger('change-url', config.get('homeUrl') || config.get('baseUrl')); }
+	home () { $.trigger('change-url', config.get('homeUrl') || config.get('baseUrl')); },
+	star () {
+		starBox.addClass('is-starred');
+		$.trigger('add-bookmark', config.get('state.issue'));
+	},
+	unstar () {
+		starBox.removeClass('is-starred');
+		$.trigger('remove-bookmark', config.get('state.issue'));
+	},
 };
 
 

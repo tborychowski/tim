@@ -6,8 +6,13 @@ const config = new Config();
 let isReady = false, el, reposEl;
 const issueTypes = {
 	pr: 'ion-ios-git-pull-request',
-	issue: 'ion-ios-bug-outline'
+	issue: 'ion-ios-bug-outline',
+	default: 'ion-ios-star-outline',
 };
+
+const DEFAULT_REPO_NAME = 'Pages';
+
+
 
 function starIssue (issue) {
 	starsDB.add(issue).then(getIssues);
@@ -33,7 +38,7 @@ function onClick (e) {
 
 function getIssueHtml (issue) {
 	return `<li>
-		<i class="${issueTypes[issue.type]}"></i>
+		<i class="${issueTypes[issue.type || 'default']}"></i>
 		<a href="${issue.url}" class="btn" title="${issue.id}">${issue.name}</a>
 		<em>${issue.id}</em>
 	</li>`;
@@ -42,10 +47,13 @@ function getIssueHtml (issue) {
 
 function getRepoHtml (repo) {
 	const issuesHtml = repo.items.map(getIssueHtml).join('');
-	const repoName = repo.name.split('/').pop();
+	let repoName = repo.name.split('/').pop();
 	const url = `${config.get('baseUrl')}${repo.name}/issues`;
-	return `<div class="repo-box ${repo.name}">
-		<h2><a href="${url}" class="btn">${repoName}</a></h2>
+
+	if (repoName === DEFAULT_REPO_NAME) repoName = `<span class="hdr">${repoName}</span>`;
+	else repoName = `<a href="${url}" class="hdr btn">${repoName}</a>`;
+
+	return `<div class="repo-box ${repo.name}"><h2>${repoName}</h2>
 		<ul class="repo-box-issues">${issuesHtml}</ul>
 	</div>`;
 }
@@ -53,8 +61,9 @@ function getRepoHtml (repo) {
 function fillIssues (issues) {
 	const remap = {};
 	issues.forEach(iss => {
-		remap[iss.repo] = remap[iss.repo] || { name: iss.repo, items: [] };
-		if (iss.id) remap[iss.repo].items.push(iss);
+		const repo = iss.repo || DEFAULT_REPO_NAME;
+		remap[repo] = remap[repo] || { name: repo, items: [] };
+		if (iss.url) remap[repo].items.push(iss);
 	});
 
 	const html = [];
@@ -74,8 +83,8 @@ function init () {
 	getIssues();
 
 	el.on('click', onClick);
-	$.on('issue/star', starIssue);
-	$.on('issue/unstar', unstarIssue);
+	$.on('add-bookmark', starIssue);
+	$.on('remove-bookmark', unstarIssue);
 
 	isReady = true;
 }
