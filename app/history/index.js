@@ -28,10 +28,10 @@ function onUrlChanged (webview, issue) {
 
 
 function getItemHtml (item, i) {
-	const mod = item.repo.split('/').pop() + '#' + item.id;
-	let selected = '';
-	if (i === 0) selected = 'selected="selected"';
-	return `<option ${selected} value="${item._id}">${item.name} (${mod})</option>`;
+	const repo = (item.repo ? item.repo.split('/').pop() : null);
+	const mod = (repo ? ` (${repo}#${item.id})` : '');
+	const selected = (i === 0 ? 'selected="selected"' : '');
+	return `<option ${selected} value="${item._id}">${item.name}${mod}</option>`;
 }
 
 

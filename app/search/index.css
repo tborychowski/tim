@@ -27,7 +27,7 @@
 	position: relative; z-index: 9;
 }
 
-.search-info { position: absolute; right: 90px; top: 9px; color: #aaa; background-color: #fff; }
+.search-info { position: absolute; right: 90px; top: 9px; color: #aaa; background-color: #fff; z-index: 10; }
 
 .search-bar .search-btn {
 	font-size: 20px;
