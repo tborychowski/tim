@@ -87,10 +87,10 @@ function isNodeList (nodes) {
 
 function trim (str, chars) {
 	chars = chars || '\\s';
-	return str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
+	return ('' + str).replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
 }
-function ltrim (str, chars) { return str.replace(new RegExp('^' + (chars ? chars : '\\s') + '+'), ''); }
-function rtrim (str, chars) { return str.replace(new RegExp((chars ? chars : '\\s') + '+$'), ''); }
+function ltrim (str, chars) { return ('' + str).replace(new RegExp('^' + (chars ? chars : '\\s') + '+'), ''); }
+function rtrim (str, chars) { return ('' + str).replace(new RegExp((chars ? chars : '\\s') + '+$'), ''); }
 
 
 function fuzzy (hay, s) {

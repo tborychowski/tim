@@ -1,16 +1,24 @@
 const $ = require('../util');
+const GH = require('../db/github');
 const Config = require('electron-config');
 const config = new Config();
 const readFile = require('fs').readFileSync;
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
+const badge = require('../badge');
 
-let webview, isReady = false, el, content, notifToggle, isLoggedIn, loginTimer;
+
+let webview, isReady = false, el, content, notifToggle, isLoggedIn, loginTimer, notificationsTimer;
+
+const refreshDelay = 5 * 60 * 1000; // every 5 minutes
+
 
 const webviewHandlers = {
 	gotoRepo: repo => $.trigger('change-url', $.trim(repo, '/') + '/issues'),
 	goto: url => $.trigger('change-url', url),
 	showLinkMenu: url => $.trigger('show-link-menu', url),
+	// documentClicked: () => $.trigger('document-clicked'),
+	actionClicked: () => checkNotifications(1000),
 
 	docReady: onDocReady,
 	cssReady: onCssReady,
@@ -84,6 +92,19 @@ function onClick (e) {
 }
 
 
+
+function checkNotifications (delay = 0) {
+	if (notificationsTimer) clearTimeout(notificationsTimer);
+	if (delay) return notificationsTimer = setTimeout(checkNotifications, delay);
+
+	GH.getCount().then(count => {
+		badge(count);
+		notificationsTimer = setTimeout(checkNotifications, refreshDelay);
+	});
+}
+
+
+
 function init () {
 	if (isReady) return;
 
@@ -112,6 +133,7 @@ function init () {
 
 	toggle(config.get('state.notifications'));
 
+	checkNotifications();
 
 	isReady = true;
 }
