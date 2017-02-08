@@ -7,6 +7,7 @@ const realnames = require('../realnames');
 const search = require('../search');
 const Config = require('electron-config');
 const config = new Config();
+const swiping = require('./swiping');
 
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
@@ -43,6 +44,24 @@ const menuClickHandlers = {
 	'find-in-page' () { search.start(webview[0]); }
 };
 
+const gotoActions = {
+	prev: () => {
+		if (webview[0].canGoBack()) {
+			loadingStart();
+			setTimeout(() => { webview[0].goBack(); }, 400);
+		}
+	},
+	next: () => {
+		if (webview[0].canGoForward()) {
+			loadingStart();
+			setTimeout(() => { webview[0].goForward(); }, 400);
+		}
+	},
+	refresh: () => { loadingStart(); setTimeout(() => { webview[0].reload(); }, 400); },
+	stop: () => { webview[0].stop(); loadingStop(); }
+};
+
+
 function initialURL (initial) {
 	if (initial && config.get('state.url')) return config.get('state.url');
 	return `${config.get('baseUrl')}login`;
@@ -62,14 +81,12 @@ function onMenuClick (target) {
 
 function gotoUrl (url) {
 	search.stop();
-	loadingStart();
 	if (typeof url !== 'string' || !url.length || !webview.length) return;
-
-	if (url === 'prev') setTimeout(() => { webview[0].goBack(); }, 400);
-	else if (url === 'next') setTimeout(() => { webview[0].goForward(); }, 400);
-	else if (url === 'refresh') setTimeout(() => { webview[0].reload(); }, 400);
-	else if (url === 'stop') { webview[0].stop(); loadingStop(); }
-	else if (webview[0].loadURL) webview[0].loadURL(url);
+	if (url in gotoActions) gotoActions[url]();
+	else if (webview[0].loadURL) {
+		loadingStart();
+		webview[0].loadURL(url);
+	}
 }
 
 
@@ -135,6 +152,8 @@ function init () {
 	$.on('frame/goto', gotoUrl);
 	$.on('menu', onMenuClick);
 	$.on('settings-changed', () => gotoUrl(initialURL()));
+
+	// swiping(frame, webview);
 
 	isReady = true;
 }

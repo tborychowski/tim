@@ -5,9 +5,11 @@
 	right: 0;
 	bottom: 0;
 	background-color: #eee;
+	overflow: hidden;
 }
 
 webview {
+	outline: none;
 	height: 100%;
 	width: 100%;
 	position: relative;

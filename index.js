@@ -114,6 +114,10 @@ app.on('ready', () => {
 
 	mainWindowState.manage(win);
 
+	win.on('scroll-touch-begin', () => { win.webContents.send('swipe-start'); });
+	win.on('scroll-touch-end', () => { win.webContents.send('swipe-end'); });
+	win.on('swipe', (dir) => { win.webContents.send('swipe', dir); });
+
 	win.loadURL(`file://${__dirname}/index.html`);
 	win.show();
 
