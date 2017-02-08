@@ -27,6 +27,10 @@ function onClick (e) {
 		e.preventDefault();
 		msg('goto', el.href);
 	}
+
+	if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') {
+		msg('actionClicked');
+	}
 }
 
 

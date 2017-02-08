@@ -4,12 +4,13 @@ const $ = require('../util');
 const Config = require('electron-config');
 const config = new Config();
 
-let isReady = false, el, formEl, form, isVisible = false;
+let isReady = false, el, formEl, tokenLink, form, isVisible = false;
 
 const clickHandlers = {
 	// save: saveSettings,
 	cancel: hideSettings,
-	folder () { shell.openExternal(`file://${app.getPath('userData')}`); },
+	folder: () => shell.openExternal(`file://${app.getPath('userData')}`),
+	link: target => shell.openExternal(target[0].href),
 };
 
 
@@ -39,6 +40,7 @@ function showSettings () {
 	isVisible = true;
 	el[0].style.display = 'block';
 	form.set(config.get());
+	tokenLink.href = config.get('baseUrl') + 'settings/tokens';
 	setTimeout(() => { document.body.classList.add('show-settings'); }, 50);
 	document.addEventListener('keyup', onKeyUp);
 	formEl.find('input')[0].focus();
@@ -72,7 +74,7 @@ function onClick (e) {
 	if (target.is('.btn')) to = target.data('go');
 	if (to && clickHandlers[to]) {
 		e.preventDefault();
-		clickHandlers[to]();
+		clickHandlers[to](target);
 	}
 }
 
@@ -83,6 +85,7 @@ function init () {
 	// console.log('config:', config.get());
 
 	el = $('.settings');
+	tokenLink = el.find('.token-link')[0];
 	formEl = el.find('.settings-form');
 	form = $.form(formEl[0]);
 
