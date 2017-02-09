@@ -99,7 +99,7 @@ function onNavigationEnd () {}
 
 function onNavigationError (er) {
 	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger('show-connection-error');
-	else $.trigger('show-connection-error'); // for now - all errors are connection errors :-)
+	else console.log(er);
 }
 
 function onRendered (url, issue) {

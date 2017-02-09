@@ -14,7 +14,7 @@ function getUnfocusedText () {
 	if (searchTerm) return searchTerm;
 	if (!lastIssue || !lastIssue.name) return lastShortUrl || '';
 	const mod = lastIssue.repo ? lastIssue.repo.split('/').pop() : '';
-	return `${mod} / ${lastIssue.name}`;
+	return $.trim(`${mod} / ${lastIssue.name}`, '/');
 }
 
 function getFocusedText () {
