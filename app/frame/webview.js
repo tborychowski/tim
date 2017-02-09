@@ -106,6 +106,30 @@ function isExternal (url) {
 }
 
 
+let isScrolling = false, isWheeling = false;
+const isScrollable = el => el && el.scrollWidth > el.offsetWidth + 5;
+
+function onWheel (e) {
+	if (!isScrolling || isWheeling) return;
+	isWheeling = true;
+	let el = e.target, isIt = false;
+	while (el.tagName && isIt === false) {
+		if (!isScrollable(el)) el = el.parentNode;
+		else isIt = true;
+	}
+	if (!isIt) msg('swipe-allowed'); // handled in swiping.js
+}
+
+function onSwipeStart () {
+	isScrolling = true;
+	isWheeling = false;
+}
+
+function onSwipeEnd () {
+	isScrolling = false;
+}
+
+
 function onClick (e) {
 	msg('documentClicked');
 	const el = e.target;
@@ -135,8 +159,12 @@ function init () {
 	ipc.on('userIdsAndNames', updateUserNames);
 	ipc.on('injectCss', injectCss);
 
-	document.addEventListener('click', onClick, true);
+	ipc.on('swipe-start', onSwipeStart);
+	ipc.on('swipe-end', onSwipeEnd);
+
+	document.addEventListener('click', onClick);
 	document.addEventListener('contextmenu', onContextMenu);
+	document.addEventListener('wheel', onWheel);
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');

@@ -1,5 +1,7 @@
 const {clipboard, remote, shell} = require('electron');
 const {Menu, getCurrentWindow} = remote;
+const Config = require('electron-config');
+const config = new Config();
 const $ = require('../util');
 
 let isReady = false, URL = '';
@@ -16,6 +18,8 @@ const urlTpl = [
 
 
 function showLinkMenu (link) {
+	link = '' + link;
+	if (link.indexOf('http') !== 0) link = config.get('baseUrl') + link;
 	URL = link;
 	Menu.buildFromTemplate(urlTpl).popup(getCurrentWindow());
 }

@@ -28,7 +28,7 @@ const webviewHandlers = {
 	},
 	linkClicked: loadingStart,
 	docReady: injectCss,
-	domChanged: onRendered
+	domChanged: onRendered,
 };
 
 const menuClickHandlers = {
@@ -99,6 +99,7 @@ function onNavigationEnd () {}
 
 function onNavigationError (er) {
 	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger('show-connection-error');
+	else $.trigger('show-connection-error'); // for now - all errors are connection errors :-)
 }
 
 function onRendered (url, issue) {
@@ -153,7 +154,7 @@ function init () {
 	$.on('menu', onMenuClick);
 	$.on('settings-changed', () => gotoUrl(initialURL()));
 
-	// swiping(frame, webview);
+	swiping(frame, webview);
 
 	isReady = true;
 }
