@@ -29,7 +29,7 @@ header {
 
 .header-btn {
 	font-size: 22px;
-	color: #eee;
+	color: #888;
 	transition: color .3s;
 	margin: 0;
 	cursor: pointer;
@@ -39,6 +39,7 @@ header {
 .header-btn:hover { color: #4078c0; }
 .header-btn:active { color: black; }
 
+.side-header .header-btn { color: #eee; }
 .side-header .header-btn:hover { color: lightblue; }
 .side-header .header-btn:active { color: white; }
 
