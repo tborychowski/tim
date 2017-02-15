@@ -1,4 +1,5 @@
-html { overflow: hidden; }
+
+html { overflow-x: hidden; }
 body { min-width: auto !important; background: none; }
 
 .main-content { padding: 0; }
