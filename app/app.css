@@ -8,5 +8,6 @@
 @import 'notifications/index.css';
 @import 'history/index.css';
 
+html { zoom: reset; }
 body { transition: opacity .4s ease-out, filter .4s ease-out; }
 .window-inactive { opacity: 0.8; filter: blur(0.4px); }

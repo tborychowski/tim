@@ -60,6 +60,10 @@ const menuTemplate = [
 				click () { win.webContents.send('menu', 'toggle-notifications-devtools'); }
 			},
 			{ type: 'separator' },
+			{ role: 'resetzoom' },
+			{ role: 'zoomin' },
+			{ role: 'zoomout' },
+			{ type: 'separator' },
 			{ role: 'togglefullscreen' }
 		]
 	},
