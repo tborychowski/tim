@@ -30,6 +30,7 @@ function getSearchUrl (q) {
 }
 
 function checkIfBookmarked (url) {
+	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
 	starsDB.getByUrl(url).then(res => {
 		starBox.toggleClass('is-starred', !!res);
 	});

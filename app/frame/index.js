@@ -103,6 +103,8 @@ function onNavigationError (er) {
 }
 
 function onRendered (url, issue) {
+	if (issue.url.indexOf('#') > -1) issue.url = issue.url.substr(0, issue.url.indexOf('#'));
+
 	config.set('state.url', url);
 	config.set('state.issue', issue);
 	$.trigger('url-changed', webview[0], issue);
