@@ -97,10 +97,11 @@ function checkNotifications (delay = 0) {
 	if (notificationsTimer) clearTimeout(notificationsTimer);
 	if (delay) return notificationsTimer = setTimeout(checkNotifications, delay);
 
-	GH.getCount().then(count => {
-		badge(count);
-		notificationsTimer = setTimeout(checkNotifications, refreshDelay);
-	});
+	GH.getCount()
+		.then(count => {
+			badge(count);
+			notificationsTimer = setTimeout(checkNotifications, refreshDelay);
+		});
 }
 
 

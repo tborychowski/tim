@@ -52,3 +52,4 @@ ipcRenderer.on('swipe', (ev, dir) => { console.log('swipe', dir); });
 // this does
 ipcRenderer.on('swipe-start', () => { $.trigger('swipe-start'); });
 ipcRenderer.on('swipe-end', () => { $.trigger('swipe-end'); });
+ipcRenderer.on('goto-url', (ev, url) => { $.trigger('frame/goto', url); });

@@ -10,4 +10,4 @@
 
 html { zoom: reset; }
 body { transition: opacity .4s ease-out, filter .4s ease-out; }
-.window-inactive { opacity: 0.8; filter: blur(0.4px); }
+.window-inactive { opacity: 0.8; filter: blur(0.4px) contrast(0.4); }

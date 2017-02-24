@@ -1,7 +1,7 @@
 .settings {
 	position: absolute;
 	z-index: 200;
-	top: 100px;
+	top: calc(50% - 300px);
 	left: calc(50% - 300px);
 	width: 600px;
 	background-color: #fff;
@@ -19,7 +19,7 @@
 
 .show-settings #header,
 .show-settings #frame,
-.show-settings .sidebar { opacity: 0.5; filter: brightness(0.5) blur(1px); }
+.show-settings .sidebar { filter: brightness(0.5) blur(1px); pointer-events: none; }
 .show-settings .settings { opacity: 1; transform: scale(1); }
 
 

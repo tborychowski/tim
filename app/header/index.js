@@ -16,16 +16,17 @@ const clickHandlers = {
 	hideNotifications () { $.trigger('toggle-notifications', false); },
 	showNotifications () { $.trigger('toggle-notifications', true); },
 	home () { $.trigger('change-url', config.get('homeUrl') || config.get('baseUrl')); },
-	star () {
-		starBox.addClass('is-starred');
-		$.trigger('add-bookmark', config.get('state.issue'));
-	},
-	unstar () {
-		starBox.removeClass('is-starred');
-		$.trigger('remove-bookmark', config.get('state.issue'));
-	},
+	star () { $.trigger('add-bookmark', config.get('state.issue')); },
+	unstar () { $.trigger('remove-bookmark', config.get('state.issue')); },
 };
 
+function star () {
+	starBox.addClass('is-starred');
+}
+
+function unstar () {
+	starBox.removeClass('is-starred');
+}
 
 function showConnectionError () {
 	el.addClass('error');
@@ -68,6 +69,10 @@ function init () {
 	$.on('url-change-end', onUrlChangeEnd);
 	$.on('show-connection-error', showConnectionError);
 	$.on('hide-connection-error', hideConnectionError);
+
+	$.on('add-bookmark', star);
+	$.on('remove-bookmark', unstar);
+
 
 	isReady = true;
 }

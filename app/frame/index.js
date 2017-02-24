@@ -8,6 +8,8 @@ const search = require('../search');
 const Config = require('electron-config');
 const config = new Config();
 const swiping = require('./swiping');
+const args = electron.remote.getGlobal('appArgs');
+
 
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
@@ -62,7 +64,20 @@ const gotoActions = {
 };
 
 
+function isValidUrl (url) {
+	let urlt;
+	try { urlt = new URL(url); }
+	catch (e) { urlt = null; }
+	return urlt;
+}
+
+
+
 function initialURL (initial) {
+	if (initial && args) {
+		const url = isValidUrl(args.pop());
+		if (url) return url;
+	}
 	if (initial && config.get('state.url')) return config.get('state.url');
 	return `${config.get('baseUrl')}login`;
 }

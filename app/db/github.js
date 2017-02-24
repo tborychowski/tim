@@ -17,9 +17,10 @@ function init () {
 
 function getCount () {
 	if (!client) init();
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
+		if (!client) return resolve(0);
 		client.me().notifications({ participating: true }, (err, resp) => {
-			if (err) return reject(err);
+			if (err) return resolve(0);
 			resolve(resp.length);
 		});
 	});
