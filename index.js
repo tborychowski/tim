@@ -42,6 +42,7 @@ app.on('ready', () => {
 
 app.on('open-url', (ev, url) => {
 	if (win && win.webContents) {
+		win.restore();
 		win.webContents.send('goto-url', url);
 		if (ev) ev.preventDefault();
 	}
