@@ -17,7 +17,7 @@ const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 const webviewHandlers = {
 	gotoRepo: repo => $.trigger(EVENT.url.change.to, $.trim(repo, '/') + '/issues'),
 	goto: url => $.trigger(EVENT.url.change.to, url),
-	showLinkMenu: url => $.trigger('show-link-menu', url),
+	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	actionClicked: () => checkNotifications(1000),
 
 	docReady: onDocReady,
@@ -33,12 +33,10 @@ function injectCss () {
 }
 
 
-function onMenuClick (target) {
+function toggleDevTools () {
 	const wv = webview[0];
-	if (target === 'toggle-notifications-devtools') {
-		if (wv.isDevToolsOpened()) wv.closeDevTools();
-		else wv.openDevTools();
-	}
+	if (wv.isDevToolsOpened()) wv.closeDevTools();
+	else wv.openDevTools();
 }
 
 
@@ -129,8 +127,8 @@ function init () {
 	el.on('click', onClick);
 
 	$.on(EVENT.notifications.toggle, toggle);
+	$.on(EVENT.notifications.devtools, toggleDevTools);
 	$.on(EVENT.settings.changed, () => refresh(true));
-	$.on(EVENT.menu.click, onMenuClick);
 	$.on(EVENT.url.change.end, onFrameUrlChanged);
 
 	toggle(config.get('state.notifications'));

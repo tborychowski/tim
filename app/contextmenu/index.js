@@ -7,16 +7,16 @@ const EVENT = require('../db/events');
 
 let isReady = false, URL = '';
 
+const templates = {};
 
-const urlTpl = [
+templates.link = [
 	{ label: 'Open in browser', click () { shell.openExternal(URL); }},
 	// { type: 'separator' },
 	{ label: 'Copy URL', click () { clipboard.writeText(URL); }},
 ];
 
-const bookmarkTpl = [
-	{ label: 'Open in browser', click () { shell.openExternal(URL); }},
-	{ label: 'Copy URL', click () { clipboard.writeText(URL); }},
+templates.bookmark = [
+	...templates.link,
 	{ type: 'separator' },
 	{ label: 'Remove bookmark', click () { $.trigger(EVENT.bookmark.remove, { url: URL }); }},
 ];
@@ -30,31 +30,28 @@ function parseLink (link) {
 
 
 
-function showBookmarkMenu (link) {
-	URL = parseLink(link);
-	Menu.buildFromTemplate(bookmarkTpl).popup(getCurrentWindow());
-}
-
-
-function showLinkMenu (link) {
-	URL = parseLink(link);
-	Menu.buildFromTemplate(urlTpl).popup(getCurrentWindow());
-}
-
-
 function onContextMenu (e) {
-	if (e.target.matches('a.bookmark')) showBookmarkMenu(e.target.getAttribute('href'));
-	else if (e.target.matches('a')) showLinkMenu(e.target.getAttribute('href'));
+	const tar = e.target, url = tar.getAttribute('href');
+	let type;
+
+	if (tar.matches('a.bookmark')) type = 'bookmark';
+	else if (tar.matches('a')) type = 'link';
+
+	showMenu({ url, type });
 }
 
+
+function showMenu ({ url, type }) {
+	if (url) URL = parseLink(url);
+	const tpl = templates[type];
+	if (tpl) Menu.buildFromTemplate(tpl).popup(getCurrentWindow());
+}
 
 
 function init () {
 	if (isReady) return;
 	document.addEventListener('contextmenu', onContextMenu);
-	$.on('show-bookmark-menu', showBookmarkMenu);
-	$.on('show-link-menu', showLinkMenu);
-	$.on('show-img-menu', showLinkMenu);	// the same for now
+	$.on(EVENT.contextmenu.show, showMenu);
 	isReady = true;
 }
 

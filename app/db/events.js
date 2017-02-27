@@ -21,7 +21,10 @@ module.exports = {
 	},
 	frame: {
 		goto: 'set the url for the main frame',
-		focused: 'frame-focused'
+		focused: 'frame-focused',
+		find: 'find-in-page',
+		purge: 'purge-frame-cache',
+		devtools: 'frame-devtools-toggle'
 	},
 	history: {
 		focus: 'focus on the search results'
@@ -30,12 +33,13 @@ module.exports = {
 		click: 'main menu has been clicked'
 	},
 	notifications: {
-		toggle: 'notifications-toggle'
+		toggle: 'notifications-toggle',
+		devtools: 'notification-devtools-toggle'
 	},
-	// contextmenu: {
-	// 	show: '',
-	// 	hide: ''
-	// },
+	contextmenu: {
+		show: 'show-contextmenu',
+		hide: 'hide-contextmenu'
+	},
 	settings: {
 		show: 'show-settings',
 		changed: 'on settings changed'

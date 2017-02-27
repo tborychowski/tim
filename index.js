@@ -1,13 +1,12 @@
 const {app, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
-const menu = require('./app/main-menu');
+const EVENT = require('./app/db/events');
+
+const send = (name, val) => win.webContents.send(name, val);
+
 let win;
 
-global.appArgs = process.argv;
-
-app.on('window-all-closed', app.quit);
 app.on('ready', () => {
-
 	// Load the previous state with fallback to defaults
 	let mainWindowState = windowStateKeeper({ defaultWidth: 1000, defaultHeight: 800 });
 
@@ -15,8 +14,6 @@ app.on('ready', () => {
 		title: 'Github Browser',
 		icon:'assets/icon.png',
 		show: false,
-		// frame: false,
-		// hasShadow: true,
 		// vibrancy: 'sidebar',
 		// transparent: true,
 		titleBarStyle: 'hidden-inset',
@@ -25,26 +22,27 @@ app.on('ready', () => {
 		width: mainWindowState.width,
 		height: mainWindowState.height
 	});
+	win.on('closed', () => win = null);
+	win.on('scroll-touch-begin', () => { send('event', EVENT.swipe.start); });
+	win.on('scroll-touch-end', () => { send('event', EVENT.swipe.end); });
 
 	mainWindowState.manage(win);
-
-	menu(win);
-
-	win.on('scroll-touch-begin', () => { win.webContents.send('swipe-start'); });
-	win.on('scroll-touch-end', () => { win.webContents.send('swipe-end'); });
-	win.on('swipe', (dir) => { win.webContents.send('swipe', dir); });
 
 	win.loadURL(`file://${__dirname}/index.html`);
 	win.show();
 
-	win.on('closed', () => win = null);
 });
 
-app.on('open-url', (ev, url) => {
+
+app.on('open-url', (ev, url) => {		// opening URL in GHB
 	if (win && win.webContents) {
 		win.restore();
-		win.webContents.send('goto-url', url);
+		send(EVENT.frame.goto, url);
 		if (ev) ev.preventDefault();
 	}
-	else global.appArgs = [url];
+	else global.appArgs = [url];		// opening URL in closed GHB
 });
+
+app.on('window-all-closed', app.quit);
+
+global.appArgs = process.argv;			// opening URL from CLI
