@@ -2,6 +2,8 @@ const $ = require('../util');
 const starsDB = require('../db/stars');
 const Config = require('electron-config');
 const config = new Config();
+const EVENT = require('../db/events');
+
 
 let isReady = false, el, reposEl;
 const issueTypes = {
@@ -30,7 +32,7 @@ function getIssues () {
 function onClick (e) {
 	let target = $(e.target);
 	if (target.is('.btn')) {
-		$.trigger('change-url', target[0].getAttribute('href'));
+		$.trigger(EVENT.url.change.to, target[0].getAttribute('href'));
 		e.preventDefault();
 	}
 }
@@ -83,8 +85,8 @@ function init () {
 	getIssues();
 
 	el.on('click', onClick);
-	$.on('add-bookmark', starIssue);
-	$.on('remove-bookmark', unstarIssue);
+	$.on(EVENT.bookmark.add, starIssue);
+	$.on(EVENT.bookmark.remove, unstarIssue);
 
 	isReady = true;
 }

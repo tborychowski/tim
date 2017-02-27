@@ -17,7 +17,7 @@ app.on('ready', () => {
 		show: false,
 		// frame: false,
 		// hasShadow: true,
-		// vibrancy: 'dark',
+		// vibrancy: 'sidebar',
 		// transparent: true,
 		titleBarStyle: 'hidden-inset',
 		x: mainWindowState.x,

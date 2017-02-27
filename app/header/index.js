@@ -2,22 +2,23 @@ const {shell, clipboard} = require('electron');
 const $ = require('../util');
 const Config = require('electron-config');
 const config = new Config();
+const EVENT = require('../db/events');
 
 
 let isReady = false, el, starBox, btnBack, btnForw;
 
 const clickHandlers = {
-	prev () { $.trigger('frame/goto', 'prev'); },
-	next () { $.trigger('frame/goto', 'next'); },
-	refresh () { $.trigger('frame/goto', 'refresh'); },
-	stop () { $.trigger('frame/goto', 'stop'); },
+	prev () { $.trigger(EVENT.frame.goto, 'prev'); },
+	next () { $.trigger(EVENT.frame.goto, 'next'); },
+	refresh () { $.trigger(EVENT.frame.goto, 'refresh'); },
+	stop () { $.trigger(EVENT.frame.goto, 'stop'); },
 	browser () { shell.openExternal(config.get('state.url')); },
 	copy () { clipboard.writeText(config.get('state.url')); },
-	hideNotifications () { $.trigger('toggle-notifications', false); },
-	showNotifications () { $.trigger('toggle-notifications', true); },
-	home () { $.trigger('change-url', config.get('homeUrl') || config.get('baseUrl')); },
-	star () { $.trigger('add-bookmark', config.get('state.issue')); },
-	unstar () { $.trigger('remove-bookmark', config.get('state.issue')); },
+	hideNotifications () { $.trigger(EVENT.notifications.toggle, false); },
+	showNotifications () { $.trigger(EVENT.notifications.toggle, true); },
+	home () { $.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl')); },
+	star () { $.trigger(EVENT.bookmark.add, config.get('state.issue')); },
+	unstar () { $.trigger(EVENT.bookmark.remove, config.get('state.issue')); },
 };
 
 function star () {
@@ -64,15 +65,14 @@ function init () {
 	btnForw = el.find('.js-next');
 
 	el.on('click', onClick);
-	$.on('url-changed', onUrlChanged);
-	$.on('url-change-start', onUrlChangeStart);
-	$.on('url-change-end', onUrlChangeEnd);
-	$.on('show-connection-error', showConnectionError);
-	$.on('hide-connection-error', hideConnectionError);
 
-	$.on('add-bookmark', star);
-	$.on('remove-bookmark', unstar);
-
+	$.on(EVENT.url.change.done, onUrlChanged);
+	$.on(EVENT.url.change.start, onUrlChangeStart);
+	$.on(EVENT.url.change.end, onUrlChangeEnd);
+	$.on(EVENT.connection.error.show, showConnectionError);
+	$.on(EVENT.connection.error.hide, hideConnectionError);
+	$.on(EVENT.bookmark.add, star);
+	$.on(EVENT.bookmark.remove, unstar);
 
 	isReady = true;
 }

@@ -1,4 +1,6 @@
 const $ = require('../util');
+const EVENT = require('../db/events');
+
 
 let webview, el, inp, info,
 	timers = [],
@@ -38,7 +40,7 @@ function hide (toggling) {
 	findInPage();
 	updateInfo();
 	if (toggling) {
-		$.trigger('focus-addressbar');
+		$.trigger(EVENT.address.focus);
 		delay(() => { el.addClass('hidden'); }, 350);
 	}
 }

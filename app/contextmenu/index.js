@@ -3,6 +3,7 @@ const {Menu, getCurrentWindow} = remote;
 const Config = require('electron-config');
 const config = new Config();
 const $ = require('../util');
+const EVENT = require('../db/events');
 
 let isReady = false, URL = '';
 
@@ -17,7 +18,7 @@ const bookmarkTpl = [
 	{ label: 'Open in browser', click () { shell.openExternal(URL); }},
 	{ label: 'Copy URL', click () { clipboard.writeText(URL); }},
 	{ type: 'separator' },
-	{ label: 'Remove bookmark', click () { $.trigger('remove-bookmark', { url: URL }); }},
+	{ label: 'Remove bookmark', click () { $.trigger(EVENT.bookmark.remove, { url: URL }); }},
 ];
 
 

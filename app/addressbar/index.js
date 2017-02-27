@@ -2,6 +2,7 @@ const $ = require('../util');
 const Config = require('electron-config');
 const config = new Config();
 const starsDB = require('../db/stars');
+const EVENT = require('../db/events');
 
 let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '', lastIssue = '',
 	searchTerm = null;
@@ -52,8 +53,8 @@ function gotoUrl (url) {
 	}
 
 	starBox.toggleClass('is-starred', false);
-	if (url) $.trigger('frame/goto', url);
-	$.trigger('address-input-end');
+	if (url) $.trigger(EVENT.frame.goto, url);
+	$.trigger(EVENT.address.input.end);
 }
 
 function isValidUrl (url) {
@@ -113,16 +114,16 @@ function onKeyPress (e) {
 }
 
 function onKeyDown (e) {
-	if (e.key === 'ArrowDown') return $.trigger('focus-address-results');
+	if (e.key === 'ArrowDown') return $.trigger(EVENT.history.focus);
 	if (e.key === 'Escape') {
 		e.target.value = getFocusedText();
 		e.target.select();
-		$.trigger('address-input-end');
+		$.trigger(EVENT.address.input.end);
 	}
 }
 
 function onInput (e) {
-	$.trigger('address-input', e);
+	$.trigger(EVENT.address.input.key, e);
 }
 
 function onMenuClick (target) {
@@ -142,10 +143,10 @@ function init () {
 	el.on('keypress', onKeyPress);
 	el.on('input', onInput);
 
-	$.on('change-url', gotoUrl);
-	$.on('url-changed', onUrlChanged);
-	$.on('focus-addressbar', focusAddressbar);
-	$.on('menu', onMenuClick);
+	$.on(EVENT.url.change.to, gotoUrl);
+	$.on(EVENT.url.change.done, onUrlChanged);
+	$.on(EVENT.address.focus, focusAddressbar);
+	$.on(EVENT.menu.click, onMenuClick);
 
 	isReady = true;
 }

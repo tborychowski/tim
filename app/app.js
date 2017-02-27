@@ -29,27 +29,15 @@ contextmenu.init();
 
 
 const { ipcRenderer } = require('electron');
-ipcRenderer.on('menu', (ev, msg) => { $.trigger('menu', msg); });
+const EVENT = require('./app/db/events');
+ipcRenderer.on('menu', (ev, msg) => { $.trigger(EVENT.menu.click, msg); });
 
-
-window.addEventListener('blur', () => {
-	document.body.classList.add('window-inactive');
-	$.trigger('window-blurred');
-});
-
-window.addEventListener('focus', () => {
-	document.body.classList.remove('window-inactive');
-	$.trigger('window-focused');
-});
-
-document.addEventListener('click', e => {
-	$.trigger('document-clicked', e);
-});
+document.addEventListener('click', e => { $.trigger(EVENT.document.clicked, e); });
 
 
 // currently doesn't work
 ipcRenderer.on('swipe', (ev, dir) => { console.log('swipe', dir); });
 // this does
-ipcRenderer.on('swipe-start', () => { $.trigger('swipe-start'); });
-ipcRenderer.on('swipe-end', () => { $.trigger('swipe-end'); });
-ipcRenderer.on('goto-url', (ev, url) => { $.trigger('frame/goto', url); });
+ipcRenderer.on('swipe-start', () => { $.trigger(EVENT.swipe.start); });
+ipcRenderer.on('swipe-end', () => { $.trigger(EVENT.swipe.end); });
+ipcRenderer.on('goto-url', (ev, url) => { $.trigger(EVENT.frame.goto, url); });

@@ -9,6 +9,7 @@ const Config = require('electron-config');
 const config = new Config();
 const swiping = require('./swiping');
 const args = electron.remote.getGlobal('appArgs');
+const EVENT = require('../db/events');
 
 
 const wpjs = `file://${__dirname}/webview.js`;
@@ -19,14 +20,14 @@ const ses = session.fromPartition('persist:github');
 let webview, isReady = false, lastUrl = '';
 
 const webviewHandlers = {
-	documentClicked: () => $.trigger('document-clicked'),
+	documentClicked: () => $.trigger(EVENT.document.clicked),
 	externalLinkClicked: url => shell.openExternal(url),
 	showLinkMenu: url => $.trigger('show-link-menu', url),
 	showImgMenu: url => $.trigger('show-img-menu', url),
 	isLogged: itIs => {
 		if (itIs) return;
-		$.trigger('toggle-notifications', false);
-		if (!config.get('baseUrl')) $.trigger('show-settings');
+		$.trigger(EVENT.notifications.toggle, false);
+		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
 	linkClicked: loadingStart,
 	docReady: injectCss,
@@ -107,13 +108,13 @@ function gotoUrl (url) {
 
 function onNavigationStart () {
 	config.set('state.url', webview[0].getURL());
-	$.trigger('url-changed', webview[0]);
+	$.trigger(EVENT.url.change.done, webview[0]);
 }
 
 function onNavigationEnd () {}
 
 function onNavigationError (er) {
-	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger('show-connection-error');
+	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger(EVENT.connection.error.show);
 	else console.log(er);
 }
 
@@ -122,20 +123,20 @@ function onRendered (url, issue) {
 
 	config.set('state.url', url);
 	config.set('state.issue', issue);
-	$.trigger('url-changed', webview[0], issue);
+	$.trigger(EVENT.url.change.done, webview[0], issue);
 	realnames.replace(webview[0]);
 	setTimeout(loadingStop, 100);
 }
 
 function loadingStart () {
 	webview.addClass('loading');
-	$.trigger('url-change-start');
+	$.trigger(EVENT.url.change.start);
 }
 
 function loadingStop () {
 	const newUrl = webview[0].getURL();
 	webview.removeClass('loading');
-	$.trigger('url-change-end');
+	$.trigger(EVENT.url.change.end);
 	if (lastUrl !== newUrl) webview[0].focus();
 	lastUrl = newUrl;
 }
@@ -152,7 +153,7 @@ function init () {
 	webview = frame.find('#webview');
 
 
-	webview.on('focus', () => $.trigger('frame-focused'));
+	webview.on('focus', () => $.trigger(EVENT.frame.focused));
 	webview.on('will-navigate', gotoUrl);
 	webview.on('did-navigate-in-page', onNavigationStart);
 	webview.on('dom-ready', onNavigationEnd);
@@ -167,9 +168,9 @@ function init () {
 	// webview.on('console-message', e => { console.log('WV:', e.message); });
 
 
-	$.on('frame/goto', gotoUrl);
-	$.on('menu', onMenuClick);
-	$.on('settings-changed', () => gotoUrl(initialURL()));
+	$.on(EVENT.frame.goto, gotoUrl);
+	$.on(EVENT.menu.click, onMenuClick);
+	$.on(EVENT.settings.changed, () => gotoUrl(initialURL()));
 
 	swiping(frame, webview);
 

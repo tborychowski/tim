@@ -1,5 +1,6 @@
 const $ = require('../util');
 const DB = require('../db/history');
+const EVENT = require('../db/events');
 
 
 let el, listEl, isVisible = false, isReady = false;
@@ -51,17 +52,17 @@ function onAddressInput (e) {
 
 function onKeyPress (e) {
 	if (e.key === 'Enter' || (e.type === 'click' && e.target.tagName === 'OPTION')) {
-		DB.getById(e.target.value).then(item => $.trigger('change-url', item.url));
+		DB.getById(e.target.value).then(item => $.trigger(EVENT.url.change.to, item.url));
 	}
 }
 
 function onKeyDown (e) {
 	if (e.key === 'ArrowUp' && listEl[0].selectedIndex === 0) {
-		$.trigger('focus-addressbar');
+		$.trigger(EVENT.address.focus);
 	}
 	else if (e.key === 'Escape') {
 		hide();
-		$.trigger('focus-addressbar');
+		$.trigger(EVENT.address.focus);
 	}
 }
 
@@ -89,12 +90,13 @@ function init () {
 	listEl.on('keydown', onKeyDown);
 	listEl.on('click', onKeyPress);
 
-	$.on('url-changed', onUrlChanged);
-	$.on('address-input', onAddressInput);
-	$.on('address-input-end', hide);
-	$.on('focus-address-results', focusResults);
-	$.on('document-clicked', onDocumentClick);
-	$.on('frame-focused', hide);
+
+	$.on(EVENT.url.change.done, onUrlChanged);
+	$.on(EVENT.address.input.key, onAddressInput);
+	$.on(EVENT.address.input.end, hide);
+	$.on(EVENT.history.focus, focusResults);
+	$.on(EVENT.document.clicked, onDocumentClick);
+	$.on(EVENT.frame.focused, hide);
 
 	isReady = true;
 }

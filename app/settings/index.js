@@ -3,6 +3,8 @@ const app = remote.app;
 const $ = require('../util');
 const Config = require('electron-config');
 const config = new Config();
+const EVENT = require('../db/events');
+
 
 let isReady = false, el, formEl, tokenLink, form, isVisible = false;
 
@@ -30,7 +32,7 @@ function saveSettings (e) {
 	if (e && e.preventDefault) e.preventDefault();
 	if (merged === false) return;
 	config.set(merged);
-	$.trigger('settings-changed');
+	$.trigger(EVENT.settings.changed);
 	hideSettings();
 }
 
@@ -92,8 +94,8 @@ function init () {
 	el.on('click', onClick);
 	formEl.on('submit', saveSettings);
 
-	$.on('menu', onMenuClick);
-	$.on('show-settings', showSettings);
+	$.on(EVENT.menu.click, onMenuClick);
+	$.on(EVENT.settings.show, showSettings);
 
 	isReady = true;
 }

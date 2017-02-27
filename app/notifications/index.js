@@ -6,6 +6,7 @@ const readFile = require('fs').readFileSync;
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
 const badge = require('../badge');
+const EVENT = require('../db/events');
 
 
 let webview, isReady = false, el, content, notifToggle, isLoggedIn, loginTimer, notificationsTimer;
@@ -14,10 +15,9 @@ const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 
 
 const webviewHandlers = {
-	gotoRepo: repo => $.trigger('change-url', $.trim(repo, '/') + '/issues'),
-	goto: url => $.trigger('change-url', url),
+	gotoRepo: repo => $.trigger(EVENT.url.change.to, $.trim(repo, '/') + '/issues'),
+	goto: url => $.trigger(EVENT.url.change.to, url),
 	showLinkMenu: url => $.trigger('show-link-menu', url),
-	// documentClicked: () => $.trigger('document-clicked'),
 	actionClicked: () => checkNotifications(1000),
 
 	docReady: onDocReady,
@@ -127,10 +127,11 @@ function init () {
 	});
 
 	el.on('click', onClick);
-	$.on('toggle-notifications', toggle);
-	$.on('settings-changed', () => refresh(true));
-	$.on('menu', onMenuClick);
-	$.on('url-change-end', onFrameUrlChanged);
+
+	$.on(EVENT.notifications.toggle, toggle);
+	$.on(EVENT.settings.changed, () => refresh(true));
+	$.on(EVENT.menu.click, onMenuClick);
+	$.on(EVENT.url.change.end, onFrameUrlChanged);
 
 	toggle(config.get('state.notifications'));
 

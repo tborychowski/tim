@@ -14,6 +14,8 @@ const menuTemplate = [
 				click () { win.webContents.send('menu', 'open-settings'); }
 			},
 			{ type: 'separator' },
+			{ role: 'services', submenu: [] },
+			{ type: 'separator' },
 			{ role: 'quit' }
 		]
 	},

@@ -1,4 +1,5 @@
 const $ = require('../util');
+const EVENT = require('../db/events');
 
 
 let frame, webview, isReady = false;
@@ -67,7 +68,7 @@ function swipeEnd () {
 	webview[0].send('swipe-end');
 	if (Math.abs(left) < maxX) revert();
 	else {
-		$.trigger('frame/goto', dir);
+		$.trigger(EVENT.frame.goto, dir);
 		revert(true);
 	}
 }
@@ -81,8 +82,8 @@ function init (frm, wbv) {
 	webview = wbv;
 
 	frame.on('wheel', onWheel);
-	$.on('swipe-start', swipeStart);
-	$.on('swipe-end', swipeEnd);
+	$.on(EVENT.swipe.start, swipeStart);
+	$.on(EVENT.swipe.end, swipeEnd);
 
 	webview.on('ipc-message', ev => {
 		if (ev.channel === 'swipe-allowed') trackSwipe = true;
