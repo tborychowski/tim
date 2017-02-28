@@ -53,64 +53,6 @@ body { min-width: auto !important; }
 
 
 
-/* hide sidebar */
-/*
-/// #files_bucket.pull-request-tab-content { margin-top: 20px !important; }
-.discussion-timeline { float: none; width: auto; }
-.discussion-sidebar { display: none; }
-*/
-
-
-/* fixed header for issue */
-/*
-#partial-discussion-header {
-	position: fixed;
-	z-index: 999;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 110px;
-	background: #fff;
-	padding: 20px 20px 0;
-	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-	overflow: hidden;
-}
-#partial-discussion-header .gh-header-title {
-	overflow: hidden;
-	text-overflow: ellipsis;
-	display: block;
-	white-space: nowrap;
-	font-size: 23px;
-	line-height: 1.4;
-	width: calc(100% - 150px);
-}
-#discussion_bucket { margin-top: 110px; }
-
-
-/* fixed header for PR *
-.tabnav-pr {
-    position: fixed;
-    top: 110px;
-    margin: 0;
-    left: 0;
-    right: 0;
-    height: 45px;
-    background: #fff;
-    z-index: 1000;
-	box-shadow: 0 2px 2px rgba(0,0,0,0.3);
-	overflow: hidden;
-	padding: 5px 10px 0;
-}
-#discussion_bucket.pull-request-tab-content,
-#commits_bucket.pull-request-tab-content { margin-top: 150px !important; }
-#files_bucket.pull-request-tab-content { margin-top: 170px !important; }
-
-.pull-request-tab-content { margin: 20px; }
-*/
-
-
-
-
 /* name, age, checkbox and avatars */
 @media (max-width: 850px) {
 	.main-content { padding: 0 10px; }

@@ -22,7 +22,6 @@ module.exports = {
 	frame: {
 		goto: 'set the url for the main frame',
 		focused: 'frame-focused',
-		find: 'find-in-page',
 		purge: 'purge-frame-cache',
 		devtools: 'frame-devtools-toggle'
 	},
@@ -43,6 +42,10 @@ module.exports = {
 	settings: {
 		show: 'show-settings',
 		changed: 'on settings changed'
+	},
+	search: {
+		start: 'start-search',
+		stop: 'stop-search'
 	},
 	swipe: {
 		start: 'swipe-start',

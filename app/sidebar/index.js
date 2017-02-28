@@ -1,7 +1,6 @@
 const $ = require('../util');
+const config = $.getConfig();
 const starsDB = require('../db/stars');
-const Config = require('electron-config');
-const config = new Config();
 const EVENT = require('../db/events');
 
 

@@ -1,8 +1,7 @@
 const {clipboard, remote, shell} = require('electron');
 const {Menu, getCurrentWindow} = remote;
-const Config = require('electron-config');
-const config = new Config();
 const $ = require('../util');
+const config = $.getConfig();
 const EVENT = require('../db/events');
 
 let isReady = false, URL = '';

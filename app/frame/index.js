@@ -1,15 +1,14 @@
-const electron = require('electron');
-const shell = electron.shell;
-const session = electron.remote.session;
-const readFile = require('fs').readFileSync;
+const {shell, session, getGlobal } = require('electron').remote;
+const args = getGlobal('appArgs');
+
+
 const $ = require('../util');
-const realnames = require('../realnames');
+const config = $.getConfig();
 const search = require('../search');
-const Config = require('electron-config');
-const config = new Config();
-const swiping = require('./swiping');
-const args = electron.remote.getGlobal('appArgs');
 const EVENT = require('../db/events');
+
+const realnames = require('../realnames');
+const swiping = require('./swiping');
 
 
 const wpjs = `file://${__dirname}/webview.js`;
@@ -30,7 +29,7 @@ const webviewHandlers = {
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
 	linkClicked: loadingStart,
-	docReady: injectCss,
+	docReady: () => $.injectCSS(webview, wpcss),
 	domChanged: onRendered,
 };
 
@@ -39,43 +38,27 @@ const gotoActions = {
 	prev: () => {
 		if (webview[0].canGoBack()) {
 			loadingStart();
-			setTimeout(() => { webview[0].goBack(); }, 400);
+			webview[0].goBack();
 		}
 	},
 	next: () => {
 		if (webview[0].canGoForward()) {
 			loadingStart();
-			setTimeout(() => { webview[0].goForward(); }, 400);
+			webview[0].goForward();
 		}
 	},
-	refresh: () => { loadingStart(); setTimeout(() => { webview[0].reload(); }, 400); },
+	refresh: () => { loadingStart(); webview[0].reload(); },
 	stop: () => { webview[0].stop(); loadingStop(); }
 };
 
 
-function isValidUrl (url) {
-	let urlt;
-	try { urlt = new URL(url); }
-	catch (e) { urlt = null; }
-	return urlt;
-}
-
-
-
 function initialURL (initial) {
 	if (initial && args) {
-		const url = isValidUrl(args.pop());
+		const url = $.parseUrl(args.pop());
 		if (url) return url;
 	}
 	if (initial && config.get('state.url')) return config.get('state.url');
 	return `${config.get('baseUrl')}login`;
-}
-
-
-function injectCss () {
-	let css;
-	try { css = readFile(wpcss, 'utf8'); } catch (e) { css = ''; }
-	webview[0].send('injectCss', css);
 }
 
 function toggleDevTools () {
@@ -89,14 +72,10 @@ function purge () {
 	ses.clearStorageData(webviewHandlers.isLogged);
 }
 
-function findInPage () {
-	search.start(webview[0]);
-}
-
 
 
 function gotoUrl (url) {
-	search.stop();
+	$.trigger(EVENT.search.stop);
 	if (typeof url !== 'string' || !url.length || !webview.length) return;
 	if (url in gotoActions) gotoActions[url]();
 	else if (webview[0].loadURL) {
@@ -107,11 +86,10 @@ function gotoUrl (url) {
 
 
 function onNavigationStart () {
+	search.stop();
 	config.set('state.url', webview[0].getURL());
 	$.trigger(EVENT.url.change.done, webview[0]);
 }
-
-function onNavigationEnd () {}
 
 function onNavigationError (er) {
 	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger(EVENT.connection.error.show);
@@ -156,7 +134,6 @@ function init () {
 	webview.on('focus', () => $.trigger(EVENT.frame.focused));
 	webview.on('will-navigate', gotoUrl);
 	webview.on('did-navigate-in-page', onNavigationStart);
-	webview.on('dom-ready', onNavigationEnd);
 	webview.on('did-fail-load', onNavigationError);
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
@@ -171,8 +148,6 @@ function init () {
 	$.on(EVENT.frame.goto, gotoUrl);
 	$.on(EVENT.frame.devtools, toggleDevTools);
 	$.on(EVENT.frame.purge, purge);
-	$.on(EVENT.frame.find, findInPage);
-
 	$.on(EVENT.settings.changed, () => gotoUrl(initialURL()));
 
 	swiping(frame, webview);

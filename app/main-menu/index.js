@@ -35,14 +35,18 @@ const menuTemplate = [
 			{
 				label: 'Find',
 				accelerator: 'CmdOrCtrl+F',
-				click () { $.trigger(EVENT.frame.find); }
+				click () { $.trigger(EVENT.search.start); }
 			}
 		]
 	},
 	{
 		label: 'View',
 		submenu: [
-			{ role: 'reload' },
+			{
+				label: 'Reload',
+				accelerator: 'CmdOrCtrl+R',
+				click () { $.trigger(EVENT.frame.goto, 'refresh'); }
+			},
 			{
 				label: 'Focus address bar',
 				accelerator: 'CmdOrCtrl+L',

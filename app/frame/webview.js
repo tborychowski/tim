@@ -1,6 +1,19 @@
 const ipc = require('electron').ipcRenderer;
 const msg = ipc.sendToHost;
 
+const trim = (str, chars = '\\s') => str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
+
+function isExternal (url) {
+	let u;
+	try { u = new URL(url); }
+	catch (e) { u = null; }
+	return (u && u.host !== location.host);
+}
+
+let isScrolling = false, isWheeling = false;
+const isScrollable = el => el && el.scrollWidth > el.offsetWidth + 5;
+
+
 
 // Throttle
 let domChangeTimer;
@@ -47,11 +60,6 @@ function injectCss (ev, css) {
 }
 
 
-function trim (str, chars) {
-	chars = chars || '\\s';
-	return str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
-}
-
 
 function getElementsWithUserId () {
 	const userSelectors = [
@@ -65,9 +73,7 @@ function getElementsWithUserId () {
 }
 
 function getTooltipsWithUserId () {
-	const userSelectors = [
-		'.reaction-summary-item.tooltipped:not(.user-name-replaced)'
-	];
+	const userSelectors = [ '.reaction-summary-item.tooltipped:not(.user-name-replaced)' ];
 	let els = document.querySelectorAll(userSelectors.join(','));
 	return Array.prototype.slice.call(els);
 }
@@ -98,16 +104,6 @@ function updateUserNames (ev, users) {
 }
 
 
-function isExternal (url) {
-	let u;
-	try { u = new URL(url); }
-	catch (e) { u = null; }
-	return (u && u.host !== location.host);
-}
-
-
-let isScrolling = false, isWheeling = false;
-const isScrollable = el => el && el.scrollWidth > el.offsetWidth + 5;
 
 function onWheel (e) {
 	if (!isScrolling || isWheeling) return;

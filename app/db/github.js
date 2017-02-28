@@ -1,6 +1,6 @@
 const GH = require('octonode');
-const Config = require('electron-config');
-const config = new Config();
+const $ = require('../util');
+const config = $.getConfig();
 
 let client = null;
 

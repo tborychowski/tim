@@ -1,6 +1,5 @@
 const $ = require('../util');
-const Config = require('electron-config');
-const config = new Config();
+const config = $.getConfig();
 const starsDB = require('../db/stars');
 const EVENT = require('../db/events');
 
@@ -45,7 +44,7 @@ function gotoUrl (url) {
 	if (url) el[0].value = url;
 	url = el[0].value.trim();
 
-	const validUrl = isValidUrl(url);
+	const validUrl = $.parseUrl(url);
 
 	if (!validUrl) {	// not a URL - do search
 		searchTerm = url;
@@ -55,13 +54,6 @@ function gotoUrl (url) {
 	starBox.toggleClass('is-starred', false);
 	if (url) $.trigger(EVENT.frame.goto, url);
 	$.trigger(EVENT.address.input.end);
-}
-
-function isValidUrl (url) {
-	let urlt;
-	try { urlt = new URL(url); }
-	catch (e) { urlt = null; }
-	return urlt;
 }
 
 

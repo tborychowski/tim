@@ -1,7 +1,6 @@
 const {shell, clipboard} = require('electron');
 const $ = require('../util');
-const Config = require('electron-config');
-const config = new Config();
+const config = $.getConfig();
 const EVENT = require('../db/events');
 
 

@@ -1,15 +1,12 @@
-const {shell, remote} = require('electron');
-const app = remote.app;
+const {shell, app} = require('electron').remote;
 const $ = require('../util');
-const Config = require('electron-config');
-const config = new Config();
+const config = $.getConfig();
 const EVENT = require('../db/events');
 
 
 let isReady = false, el, formEl, tokenLink, form, isVisible = false;
 
 const clickHandlers = {
-	// save: saveSettings,
 	cancel: hideSettings,
 	folder: () => shell.openExternal(`file://${app.getPath('userData')}`),
 	link: target => shell.openExternal(target[0].href),
@@ -76,9 +73,6 @@ function onClick (e) {
 
 function init () {
 	if (isReady) return;
-	// console.log('config file:', `${app.getPath('userData')}/config.json`);
-	// console.log('config:', config.get());
-
 	el = $('.settings');
 	tokenLink = el.find('.token-link')[0];
 	formEl = el.find('.settings-form');
@@ -96,5 +90,3 @@ function init () {
 module.exports = {
 	init
 };
-
-
