@@ -1,8 +1,6 @@
 const $ = require('../util');
+const config = $.getConfig();
 const GH = require('../db/github');
-const Config = require('electron-config');
-const config = new Config();
-const readFile = require('fs').readFileSync;
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
 const badge = require('../badge');
@@ -20,41 +18,16 @@ const webviewHandlers = {
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	actionClicked: () => checkNotifications(1000),
 
-	docReady: onDocReady,
-	cssReady: onCssReady,
-	isLogged: onIsLogged
+	docReady: () => $.injectCSS(webview, wpcss),
+	cssReady: () => setTimeout(() => { webview.removeClass('loading'); }, 100),
+	isLogged: (isit) => notifToggle.toggle(isLoggedIn = isit)
 };
-
-
-function injectCss () {
-	let css;
-	try { css = readFile(wpcss, 'utf8'); } catch (e) { css = ''; }
-	webview[0].send('injectCss', css);
-}
 
 
 function toggleDevTools () {
 	const wv = webview[0];
 	if (wv.isDevToolsOpened()) wv.closeDevTools();
 	else wv.openDevTools();
-}
-
-
-function onIsLogged (isit) {
-	isLoggedIn = isit;
-	notifToggle.toggle(isit);
-}
-
-function onNavigationEnd () {
-	// webview[0].openDevTools();
-}
-
-function onDocReady () {
-	injectCss();
-}
-
-function onCssReady () {
-	setTimeout(() => { webview.removeClass('loading'); }, 100);
 }
 
 
@@ -118,7 +91,6 @@ function init () {
 	content.html(html);
 	webview = el.find('#webview2');
 
-	webview.on('dom-ready', onNavigationEnd);
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
 		if (typeof fn === 'function') fn.apply(fn, ev.args);

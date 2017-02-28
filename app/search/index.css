@@ -10,11 +10,7 @@
 	border-radius: 0 0 6px 6px;
 	box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 	font-size: 13px;
-	transition: top .3s ease-out;
 }
-
-.search-bar.hidden { display: none; }
-.search-bar.visible { top: 37px }
 
 .search-bar:before,
 .search-bar:after { content: ''; position: absolute; width: 6px; height: 6px; top: 0; border: 1px solid #c2c0c2; }

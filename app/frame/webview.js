@@ -1,6 +1,19 @@
 const ipc = require('electron').ipcRenderer;
 const msg = ipc.sendToHost;
 
+const trim = (str, chars = '\\s') => str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
+
+function isExternal (url) {
+	let u;
+	try { u = new URL(url); }
+	catch (e) { u = null; }
+	return (u && u.host !== location.host);
+}
+
+let isScrolling = false, isWheeling = false;
+const isScrollable = el => (el && el.scrollWidth > el.offsetWidth + 5);
+
+
 
 // Throttle
 let domChangeTimer;
@@ -47,11 +60,6 @@ function injectCss (ev, css) {
 }
 
 
-function trim (str, chars) {
-	chars = chars || '\\s';
-	return str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
-}
-
 
 function getElementsWithUserId () {
 	const userSelectors = [
@@ -65,9 +73,7 @@ function getElementsWithUserId () {
 }
 
 function getTooltipsWithUserId () {
-	const userSelectors = [
-		'.reaction-summary-item.tooltipped:not(.user-name-replaced)'
-	];
+	const userSelectors = [ '.reaction-summary-item.tooltipped:not(.user-name-replaced)' ];
 	let els = document.querySelectorAll(userSelectors.join(','));
 	return Array.prototype.slice.call(els);
 }
@@ -98,24 +104,18 @@ function updateUserNames (ev, users) {
 }
 
 
-function isExternal (url) {
-	let u;
-	try { u = new URL(url); }
-	catch (e) { u = null; }
-	return (u && u.host !== location.host);
-}
-
-
-let isScrolling = false, isWheeling = false;
-const isScrollable = el => el && el.scrollWidth > el.offsetWidth + 5;
 
 function onWheel (e) {
 	if (!isScrolling || isWheeling) return;
 	isWheeling = true;
 	let el = e.target, isIt = false;
 	while (el.tagName && isIt === false) {
-		if (!isScrollable(el)) el = el.parentNode;
-		else isIt = true;
+		if (el.tagName === 'BODY') break;
+		else if (!isScrollable(el)) el = el.parentNode;
+		else {
+			isIt = true;
+			break;
+		}
 	}
 	if (!isIt) msg('swipe-allowed'); // handled in swiping.js
 }
@@ -142,10 +142,24 @@ function onClick (e) {
 	}
 }
 
+function getSelectionText() {
+	let text = '';
+	const activeEl = document.activeElement;
+	const activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+	const isInput = (activeElTagName === 'input' && /^(?:text|search|password|tel|url)$/i.test(activeEl.type));
+	if ((activeElTagName === 'textarea' || isInput) && typeof activeEl.selectionStart === 'number') {
+		text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+	}
+	else if (window.getSelection) text = window.getSelection().toString();
+	return text;
+}
+
 
 function onContextMenu (e) {
 	if (e.target.matches('a')) return msg('showLinkMenu', e.target.getAttribute('href'));
 	if (e.target.matches('img')) return msg('showImgMenu', e.target.getAttribute('src'));
+	const selText = getSelectionText();
+	if (selText) return msg('showSelectionMenu', selText);
 }
 
 

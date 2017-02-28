@@ -8,7 +8,7 @@ let win;
 
 app.on('ready', () => {
 	// Load the previous state with fallback to defaults
-	let mainWindowState = windowStateKeeper({ defaultWidth: 1000, defaultHeight: 800 });
+	const mainWindowState = windowStateKeeper({ defaultWidth: 1000, defaultHeight: 800 });
 
 	win = new BrowserWindow({
 		title: 'Github Browser',
@@ -16,7 +16,7 @@ app.on('ready', () => {
 		show: false,
 		// vibrancy: 'sidebar',
 		// transparent: true,
-		titleBarStyle: 'hidden-inset',
+		// titleBarStyle: 'hidden-inset',
 		x: mainWindowState.x,
 		y: mainWindowState.y,
 		width: mainWindowState.width,

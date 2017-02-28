@@ -102,6 +102,13 @@ function fuzzy (hay, s) {
 }
 
 
+function parseUrl (url) {
+	let urlt;
+	try { urlt = new URL(url); }
+	catch (e) { urlt = null; }
+	return urlt;
+}
+
 module.exports = {
 	fuzzy,
 	ltrim,
@@ -118,5 +125,6 @@ module.exports = {
 	sanitize,
 	serialize,
 	isNodeList,
+	parseUrl,
 	months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 };

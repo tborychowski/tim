@@ -1,8 +1,8 @@
 module.exports = {
 	address: {
 		input: {
-			key: 'when typing into the address bar',
-			end: 'when typing into the address bar has finished'
+			key: 'address-input',
+			end: 'address-input-end'
 		},
 		focus: 'focus-address'
 	},
@@ -17,20 +17,20 @@ module.exports = {
 		}
 	},
 	document: {
-		click: 'document-click'
+		click: 'document-clicked'
 	},
 	frame: {
-		goto: 'set the url for the main frame',
+		goto: 'frame-goto-url',
 		focused: 'frame-focused',
-		find: 'find-in-page',
 		purge: 'purge-frame-cache',
+		lookup: 'show-definition-for-selection',
 		devtools: 'frame-devtools-toggle'
 	},
 	history: {
-		focus: 'focus on the search results'
+		focus: 'focus-search-results'
 	},
 	menu: {
-		click: 'main menu has been clicked'
+		click: 'menu-clicked'
 	},
 	notifications: {
 		toggle: 'notifications-toggle',
@@ -44,6 +44,10 @@ module.exports = {
 		show: 'show-settings',
 		changed: 'on settings changed'
 	},
+	search: {
+		start: 'start-search',
+		stop: 'stop-search'
+	},
 	swipe: {
 		start: 'swipe-start',
 		end: 'swipe-end'
@@ -51,9 +55,9 @@ module.exports = {
 	url: {
 		change: {
 			start: 'url-change-start',
+			done: 'url-changed',		// url started changing or changed to issue; not yet fully loaded
 			end: 'url-change-end',
 			to: 'change-url',
-			done: 'url-changed'
 		}
 	}
 };

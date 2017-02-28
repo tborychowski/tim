@@ -1,25 +1,41 @@
 const {clipboard, remote, shell} = require('electron');
 const {Menu, getCurrentWindow} = remote;
-const Config = require('electron-config');
-const config = new Config();
 const $ = require('../util');
+const config = $.getConfig();
 const EVENT = require('../db/events');
 
-let isReady = false, URL = '';
+let isReady = false, URL = '', TXT = '';
 
-const templates = {};
 
-templates.link = [
-	{ label: 'Open in browser', click () { shell.openExternal(URL); }},
-	// { type: 'separator' },
-	{ label: 'Copy URL', click () { clipboard.writeText(URL); }},
-];
+function getTemplate (type) {
+	const templates = {};
+	let txt = TXT;
 
-templates.bookmark = [
-	...templates.link,
-	{ type: 'separator' },
-	{ label: 'Remove bookmark', click () { $.trigger(EVENT.bookmark.remove, { url: URL }); }},
-];
+	templates.link = [
+		{ label: 'Open in browser', click () { shell.openExternal(URL); }},
+		// { type: 'separator' },
+		{ label: 'Copy URL', click () { clipboard.writeText(URL); }},
+	];
+
+	templates.bookmark = [
+		...templates.link,
+		{ type: 'separator' },
+		{ label: 'Remove bookmark', click () { $.trigger(EVENT.bookmark.remove, { url: URL }); }},
+	];
+
+
+	if (txt && txt.length > 15) txt = txt.substr(0, 12) + '...';
+	templates.selection = [
+		{ label: `Look up "${txt}"`, click () { $.trigger(EVENT.frame.lookup, { txt: TXT }); }},
+		{ type: 'separator' },
+		{ role: 'copy' },
+		{ role: 'cut' },
+		{ role: 'paste' }
+	];
+
+	return templates[type];
+}
+
 
 
 function parseLink (link) {
@@ -41,9 +57,10 @@ function onContextMenu (e) {
 }
 
 
-function showMenu ({ url, type }) {
+function showMenu ({ type, url, txt }) {
 	if (url) URL = parseLink(url);
-	const tpl = templates[type];
+	if (txt) TXT = txt.trim();
+	const tpl = getTemplate(type);
 	if (tpl) Menu.buildFromTemplate(tpl).popup(getCurrentWindow());
 }
 

@@ -8,6 +8,7 @@ const components = [
 	'settings',
 	'notifications',
 	'history',
+	'search',
 	'main-menu',
 	'contextmenu',
 ];
