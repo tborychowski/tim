@@ -1,4 +1,5 @@
 body { min-width: auto !important; }
+body { margin-left: 300px; } /* this is required as macos lookup has an offset bug */
 
 .main-content { padding: 0; }
 

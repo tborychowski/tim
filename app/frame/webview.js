@@ -11,7 +11,7 @@ function isExternal (url) {
 }
 
 let isScrolling = false, isWheeling = false;
-const isScrollable = el => el && el.scrollWidth > el.offsetWidth + 5;
+const isScrollable = el => (el && el.scrollWidth > el.offsetWidth + 5);
 
 
 
@@ -110,8 +110,12 @@ function onWheel (e) {
 	isWheeling = true;
 	let el = e.target, isIt = false;
 	while (el.tagName && isIt === false) {
-		if (!isScrollable(el)) el = el.parentNode;
-		else isIt = true;
+		if (el.tagName === 'BODY') break;
+		else if (!isScrollable(el)) el = el.parentNode;
+		else {
+			isIt = true;
+			break;
+		}
 	}
 	if (!isIt) msg('swipe-allowed'); // handled in swiping.js
 }
@@ -138,10 +142,24 @@ function onClick (e) {
 	}
 }
 
+function getSelectionText() {
+	let text = '';
+	const activeEl = document.activeElement;
+	const activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
+	const isInput = (activeElTagName === 'input' && /^(?:text|search|password|tel|url)$/i.test(activeEl.type));
+	if ((activeElTagName === 'textarea' || isInput) && typeof activeEl.selectionStart === 'number') {
+		text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
+	}
+	else if (window.getSelection) text = window.getSelection().toString();
+	return text;
+}
+
 
 function onContextMenu (e) {
 	if (e.target.matches('a')) return msg('showLinkMenu', e.target.getAttribute('href'));
 	if (e.target.matches('img')) return msg('showImgMenu', e.target.getAttribute('src'));
+	const selText = getSelectionText();
+	if (selText) return msg('showSelectionMenu', selText);
 }
 
 

@@ -3,7 +3,6 @@ const $ = require('../util');
 const config = $.getConfig();
 const EVENT = require('../db/events');
 
-
 let isReady = false, el, starBox, btnBack, btnForw;
 
 const clickHandlers = {

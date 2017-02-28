@@ -7,8 +7,10 @@
 	padding: 0;
 	color: #eee;
 	background: #2B384D;
+	z-index: 10;
 }
-.sidebar a { color: inherit; display: block; }
+.sidebar a { color: inherit; display: block; text-decoration: none; }
+.sidebar a:hover { text-decoration: underline; }
 
 
 .sidebar h1 { font-size: 14px; font-weight: 300; line-height: 1; margin: 0; color: #eee;

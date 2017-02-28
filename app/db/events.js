@@ -23,6 +23,7 @@ module.exports = {
 		goto: 'frame-goto-url',
 		focused: 'frame-focused',
 		purge: 'purge-frame-cache',
+		lookup: 'show-definition-for-selection',
 		devtools: 'frame-devtools-toggle'
 	},
 	history: {

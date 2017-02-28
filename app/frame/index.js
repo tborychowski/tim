@@ -23,6 +23,7 @@ const webviewHandlers = {
 	externalLinkClicked: url => shell.openExternal(url),
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	showImgMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'img' }),
+	showSelectionMenu: txt => $.trigger(EVENT.contextmenu.show, { txt, type: 'selection' }),
 	isLogged: itIs => {
 		if (itIs) return;
 		$.trigger(EVENT.notifications.toggle, false);
@@ -149,6 +150,8 @@ function init () {
 	$.on(EVENT.frame.devtools, toggleDevTools);
 	$.on(EVENT.frame.purge, purge);
 	$.on(EVENT.settings.changed, () => gotoUrl(initialURL()));
+	$.on(EVENT.frame.lookup, () => webview[0].showDefinitionForSelection());
+
 
 	swiping(frame, webview);
 
