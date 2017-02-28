@@ -76,10 +76,11 @@ function swipeEnd () {
 
 
 function init (frm, wbv) {
-	if (isReady) return;
-
 	frame = frm;
 	webview = wbv;
+
+	if (isReady) return;
+
 
 	frame.on('wheel', onWheel);
 	$.on(EVENT.swipe.start, swipeStart);

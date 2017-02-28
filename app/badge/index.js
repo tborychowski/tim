@@ -5,14 +5,13 @@ const nativeImage = electron.nativeImage;
 const win = remote.getCurrentWindow();
 const appName = 'Github Browser';
 
-module.exports = function (text) {
-	text = (text === '0' ? '' : String(text || ''));
+module.exports = (text = '') => {
+	if (text === '0') text = '';
 
 	win.setTitle(appName + (text ? ` (${text})` : ''));
 
-	if (process.platform === 'darwin') {
-		app.dock.setBadge(text);
-	}
+	if (process.platform === 'darwin') app.dock.setBadge(text);
+
 	else if (process.platform === 'win32') {
 		if (text === '') {
 			win.setOverlayIcon(null, '');

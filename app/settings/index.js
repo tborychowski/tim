@@ -59,13 +59,6 @@ function hideSettings () {
 }
 
 
-function onMenuClick (target) {
-	if (target === 'open-settings') {
-		showSettings();
-	}
-}
-
-
 function onKeyUp (e) {
 	if (e.key === 'Escape') return hideSettings();
 }
@@ -94,7 +87,6 @@ function init () {
 	el.on('click', onClick);
 	formEl.on('submit', saveSettings);
 
-	$.on(EVENT.menu.click, onMenuClick);
 	$.on(EVENT.settings.show, showSettings);
 
 	isReady = true;

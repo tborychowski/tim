@@ -22,8 +22,8 @@ let webview, isReady = false, lastUrl = '';
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
 	externalLinkClicked: url => shell.openExternal(url),
-	showLinkMenu: url => $.trigger('show-link-menu', url),
-	showImgMenu: url => $.trigger('show-img-menu', url),
+	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
+	showImgMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'img' }),
 	isLogged: itIs => {
 		if (itIs) return;
 		$.trigger(EVENT.notifications.toggle, false);
@@ -34,18 +34,6 @@ const webviewHandlers = {
 	domChanged: onRendered,
 };
 
-const menuClickHandlers = {
-	'toggle-main-frame-devtools' () {
-		if (webview[0].isDevToolsOpened()) webview[0].closeDevTools();
-		else webview[0].openDevTools();
-	},
-	'clear-cookies' () {
-		config.clear();
-		webview[0].clearHistory();
-		ses.clearStorageData(webviewHandlers.isLogged);
-	},
-	'find-in-page' () { search.start(webview[0]); }
-};
 
 const gotoActions = {
 	prev: () => {
@@ -90,10 +78,22 @@ function injectCss () {
 	webview[0].send('injectCss', css);
 }
 
-
-function onMenuClick (target) {
-	if (menuClickHandlers[target]) menuClickHandlers[target]();
+function toggleDevTools () {
+	if (webview[0].isDevToolsOpened()) webview[0].closeDevTools();
+	else webview[0].openDevTools();
 }
+
+function purge () {
+	config.clear();
+	webview[0].clearHistory();
+	ses.clearStorageData(webviewHandlers.isLogged);
+}
+
+function findInPage () {
+	search.start(webview[0]);
+}
+
+
 
 function gotoUrl (url) {
 	search.stop();
@@ -169,7 +169,10 @@ function init () {
 
 
 	$.on(EVENT.frame.goto, gotoUrl);
-	$.on(EVENT.menu.click, onMenuClick);
+	$.on(EVENT.frame.devtools, toggleDevTools);
+	$.on(EVENT.frame.purge, purge);
+	$.on(EVENT.frame.find, findInPage);
+
 	$.on(EVENT.settings.changed, () => gotoUrl(initialURL()));
 
 	swiping(frame, webview);

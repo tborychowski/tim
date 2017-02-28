@@ -1,6 +1,6 @@
-const {shell, Menu} = require('electron');
-
-let win;
+const { shell, Menu } = require('electron').remote;
+const $ = require('../util');
+const EVENT = require('../db/events');
 
 const menuTemplate = [
 	{
@@ -11,7 +11,7 @@ const menuTemplate = [
 			{
 				label: 'Preferences...',
 				accelerator: 'CmdOrCtrl+,',
-				click () { win.webContents.send('menu', 'open-settings'); }
+				click () { $.trigger(EVENT.settings.show); }
 			},
 			{ type: 'separator' },
 			{ role: 'services', submenu: [] },
@@ -35,7 +35,7 @@ const menuTemplate = [
 			{
 				label: 'Find',
 				accelerator: 'CmdOrCtrl+F',
-				click () { win.webContents.send('menu', 'find-in-page'); }
+				click () { $.trigger(EVENT.frame.find); }
 			}
 		]
 	},
@@ -46,7 +46,7 @@ const menuTemplate = [
 			{
 				label: 'Focus address bar',
 				accelerator: 'CmdOrCtrl+L',
-				click () { win.webContents.send('menu', 'focus-addressbar'); }
+				click () { $.trigger(EVENT.address.focus); }
 			},
 			{ type: 'separator' },
 			{ role: 'resetzoom' },
@@ -70,18 +70,18 @@ const menuTemplate = [
 			{
 				label: 'Toggle Main Frame Developer Tools',
 				accelerator: '',
-				click () { win.webContents.send('menu', 'toggle-main-frame-devtools'); }
+				click () { $.trigger(EVENT.frame.devtools); }
 			},
 			{
 				label: 'Toggle Notifications Developer Tools',
 				accelerator: '',
-				click () { win.webContents.send('menu', 'toggle-notifications-devtools'); }
+				click () { $.trigger(EVENT.notifications.devtools); }
 			},
 			{ type: 'separator' },
 			{
 				label: 'Purge Everything (settings, cookies, history)',
 				accelerator: 'CmdOrCtrl+Shift+Backspace',
-				click () { win.webContents.send('menu', 'clear-cookies'); }
+				click () { $.trigger(EVENT.frame.purge); }
 			}
 		]
 	},
@@ -97,8 +97,12 @@ const menuTemplate = [
 
 
 
-module.exports = function (window) {
-	win = window;
+function init () {
 	const menu = Menu.buildFromTemplate(menuTemplate);
 	Menu.setApplicationMenu(menu);
+}
+
+
+module.exports = {
+	init
 };

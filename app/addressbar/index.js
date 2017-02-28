@@ -126,10 +126,6 @@ function onInput (e) {
 	$.trigger(EVENT.address.input.key, e);
 }
 
-function onMenuClick (target) {
-	if (target === 'focus-addressbar') focusAddressbar();
-}
-
 
 function init () {
 	if (isReady) return;
@@ -146,7 +142,6 @@ function init () {
 	$.on(EVENT.url.change.to, gotoUrl);
 	$.on(EVENT.url.change.done, onUrlChanged);
 	$.on(EVENT.address.focus, focusAddressbar);
-	$.on(EVENT.menu.click, onMenuClick);
 
 	isReady = true;
 }
