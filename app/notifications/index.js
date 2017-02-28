@@ -7,7 +7,7 @@ const badge = require('../badge');
 const EVENT = require('../db/events');
 
 
-let webview, isReady = false, el, content, notifToggle, isLoggedIn, loginTimer, notificationsTimer;
+let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer;
 
 const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 
@@ -20,7 +20,7 @@ const webviewHandlers = {
 
 	docReady: () => $.injectCSS(webview, wpcss),
 	cssReady: () => setTimeout(() => { webview.removeClass('loading'); }, 100),
-	isLogged: (isit) => notifToggle.toggle(isLoggedIn = isit)
+	// isLogged: (isit) => notifToggle.toggle(isLoggedIn = isit)
 };
 
 
@@ -44,7 +44,7 @@ function onFrameUrlChanged () {
 
 function toggle (show) {
 	config.set('state.notifications', !!show);
-	notifToggle.toggleClass('is-visible', !!show);
+	// notifToggle.toggleClass('is-visible', !!show);
 	el.toggleClass('visible', !!show);
 }
 
@@ -80,9 +80,8 @@ function checkNotifications (delay = 0) {
 function init () {
 	if (isReady) return;
 
-	el = $('#notifications-sidebar');
-	content = el.find('.repo-list');
-	notifToggle = $('.notification-toggle');
+	el = $('.subnav-notifications');
+	content = el.find('.subnav-section-list');
 
 
 	const html = `<webview id="webview2" preload="${wpjs}" class="loading"

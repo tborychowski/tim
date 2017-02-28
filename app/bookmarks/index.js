@@ -78,8 +78,8 @@ function fillIssues (issues) {
 function init () {
 	if (isReady) return;
 
-	el = $('#sidebar');
-	reposEl = el.find('.repo-list');
+	el = $('.subnav-bookmarks');
+	reposEl = el.find('.subnav-section-list');
 
 	getIssues();
 

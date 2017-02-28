@@ -45,7 +45,7 @@ function onClick (e) {
 	}
 }
 
-function onUrlChangeStart () { el.addClass('loading'); }
+function onUrlChangeStart () { hideConnectionError(); el.addClass('loading'); }
 function onUrlChangeEnd () { el.removeClass('loading'); }
 
 function onUrlChanged (webview) {

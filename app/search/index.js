@@ -1,17 +1,20 @@
 const $ = require('../util');
 const EVENT = require('../db/events');
 
-let webview, el, inp, info, isReady = false;
+let webview, el, inp, info, isReady = false, isVisible = false;
 const TOP_H = '37px';
 
 
 function show () {
+	if (isVisible) return;
+	isVisible = true;
 	el.show().animate({ top: 0 }, { top: TOP_H }).then(() => inp[0].focus());
 }
 
 
 function hide () {
-	if (!isReady) return;
+	if (!isReady || !isVisible) return;
+	isVisible = false;
 	inp[0].value = '';
 	highlightFindings();
 	updateInfo();

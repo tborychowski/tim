@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html>
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,14 +8,45 @@
  	<link rel="stylesheet" href="../node_modules/ionicons/dist/css/ionicons.css">
 </head>
 <body>
-	<header id="header">
-		<div class="side-header">
-			<div class="notification-toggle">
-				<a href="#" class="header-btn js-hide-notifications ion-md-notifications" title="Hide Notifications" data-go="hideNotifications"></a>
-				<a href="#" class="header-btn js-show-notifications ion-md-notifications-outline" title="Show Notifications" data-go="showNotifications"></a>
-			</div>
-		</div>
-		<div class="main-header">
+	<nav id="nav">
+		<a href="#" class="nav-btn nav-bookmarks active" data-go="bookmarks" title="Bookmarks">
+			<i class="icon"></i>
+			<span class="badge">0</span>
+		</a>
+		<a href="#" class="nav-btn nav-notifications" data-go="notifications" title="Notifications">
+			<i class="icon"></i>
+			<span class="badge">0</span>
+		</a>
+		<a href="#" class="nav-btn nav-myissues" data-go="myissues" title="My Issues">
+			<i class="icon"></i>
+			<span class="badge">0</span>
+		</a>
+	</nav>
+
+
+	<aside id="subnav">
+		<sections class="subnav-section subnav-bookmarks active">
+			<h1>Bookmarks</h1>
+			<div class="subnav-section-list"></div>
+		</sections>
+
+		<sections class="subnav-section subnav-notifications">
+			<h1>Notifications
+				<a href="#" class="nav-icon-btn js-refresh ion-md-refresh" title="Refresh Notifications" data-go="refresh"></a>
+			</h1>
+			<div class="subnav-section-list"></div>
+		</sections>
+
+		<sections class="subnav-section subnav-myissues">
+			<h1>My Issues
+				<a href="#" class="nav-icon-btn js-refresh ion-md-refresh" title="Refresh" data-go="refresh"></a>
+			</h1>
+			<div class="subnav-section-list"></div>
+		</sections>
+	</aside>
+
+	<section id="main">
+		<header id="header">
 			<div class="main-header-inner">
 				<a href="#" class="header-btn js-prev ion-md-arrow-back" title="Back" data-go="prev"></a>
 				<a href="#" class="header-btn js-next ion-md-arrow-forward" title="Forward" data-go="next"></a>
@@ -33,7 +63,6 @@
 					<input class="addressbar" autofocus />
 					<i class="header-btn js-sync ion-ios-nuclear"></i>
 					<i class="header-btn js-error ion-ios-alert-outline" title="Cannot connect to github. Check your network."></i>
-
 				</div>
 
 				<div class="history"><select class="history-list" size="2"></select></div>
@@ -49,29 +78,9 @@
 				<a class="search-btn btn-next ion-ios-arrow-down" title="Next" data-go="next"></a>
 				<a class="search-btn btn-close ion-ios-close" title="Close" data-go="close"></a>
 			</div>
-		</div>
-	</header>
-
-
-
-	<aside id="sidebar" class="sidebar">
-		<h1>Bookmarks</h1>
-		<div class="repo-list"></div>
-	</aside>
-
-	<aside id="notifications-sidebar" class="sidebar">
-		<h1>Notifications
-			<a href="#" class="header-btn js-refresh ion-md-refresh" title="Refresh Notifications" data-go="refresh"></a>
-		</h1>
-		<div class="repo-list"></div>
-	</aside>
-
-
-
-
-	<section id="frame"></section>
-
-
+		</header>
+		<section id="frame"></section>
+	</section>
 
 
 	<section class="settings">
@@ -100,4 +109,3 @@
 
 	<script src="app.js"></script>
 </body>
-</html>

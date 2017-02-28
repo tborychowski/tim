@@ -1,12 +1,13 @@
 const $ = require('./app/util');
 const init = c => require(`./app/${c}`).init();
 const components = [
+	'nav',
+	'bookmarks',
+	'notifications',
 	'header',
 	'frame',
-	'sidebar',
 	'addressbar',
 	'settings',
-	'notifications',
 	'history',
 	'search',
 	'main-menu',
