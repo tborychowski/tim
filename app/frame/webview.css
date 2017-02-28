@@ -52,6 +52,7 @@ body { margin-left: 300px; } /* this is required as macos lookup has an offset b
 .page-dashboard .news .alert { border: none; }
 .page-dashboard .news .account-switcher { display: none; }
 
+#new_issue { padding: 0 20px; }
 
 
 /* name, age, checkbox and avatars */
