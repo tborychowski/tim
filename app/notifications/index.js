@@ -11,6 +11,8 @@ let webview, isReady = false, el, content, isLoggedIn, loginTimer, notifications
 
 const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 
+const getNotificationsUrl = () => `${config.get('baseUrl')}notifications/participating`;
+// const getNotificationsUrl = () => `${config.get('baseUrl')}notifications`;
 
 const webviewHandlers = {
 	gotoRepo: repo => $.trigger(EVENT.url.change.to, $.trim(repo, '/') + '/issues'),
@@ -20,7 +22,10 @@ const webviewHandlers = {
 
 	docReady: () => $.injectCSS(webview, wpcss),
 	cssReady: () => setTimeout(() => { webview.removeClass('loading'); }, 100),
-	// isLogged: (isit) => notifToggle.toggle(isLoggedIn = isit)
+	isLogged: (isit) => {
+		// notifToggle.toggle(isLoggedIn = isit)
+		isLoggedIn = isit;
+	}
 };
 
 
@@ -85,7 +90,7 @@ function init () {
 
 
 	const html = `<webview id="webview2" preload="${wpjs}" class="loading"
-		src="${config.get('baseUrl')}notifications/participating" partition="persist:github"></webview>`;
+		src="${getNotificationsUrl()}" partition="persist:github"></webview>`;
 
 	content.html(html);
 	webview = el.find('#webview2');
