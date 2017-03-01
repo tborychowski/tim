@@ -1,7 +1,9 @@
 const $ = require('../util');
 const config = $.getConfig();
+const EVENT = require('../db/events');
 
 let isReady = false, el, subnav, buttons, sections;
+let notificationsBadge;
 
 function changeSection (sectionName) {
 	buttons.removeClass('active');
@@ -11,6 +13,12 @@ function changeSection (sectionName) {
 	subnav.find('.subnav-' + sectionName).addClass('active');
 	config.set('state.section', sectionName);
 }
+
+
+function onNotificationsCountUpdate (count) {
+	notificationsBadge.toggle(count > 0).html(count);
+}
+
 
 function onClick (e) {
 	let target = $(e.target).closest('.nav-btn');
@@ -28,12 +36,14 @@ function init () {
 	buttons = el.find('.nav-btn');
 	subnav = $('#subnav');
 	sections = subnav.find('.subnav-section');
+	notificationsBadge = el.find('.nav-notifications .badge');
 
 	el.on('click', onClick);
 
 	const currentSection = config.get('state.section');
 	if (currentSection) changeSection(currentSection);
 
+	$.on(EVENT.notifications.count, onNotificationsCountUpdate);
 
 	isReady = true;
 }

@@ -1,11 +1,9 @@
 const { remote, nativeImage } = require('electron');
 const app = remote.app;
 const win = remote.getCurrentWindow();
-const appName = 'Github Browser';
 
 module.exports = (text = 0) => {
 	text = '' + (text || '');
-	win.setTitle(appName + (text ? ` (${text})` : ''));
 
 	if (process.platform === 'darwin') app.dock.setBadge(text);
 

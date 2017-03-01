@@ -15,11 +15,11 @@ function init () {
 
 
 
-function getCount () {
+function getCount (participating = true) {
 	if (!client) init();
 	return new Promise(resolve => {
 		if (!client) return resolve(0);
-		client.me().notifications({ participating: true }, (err, resp) => {
+		client.me().notifications({ participating }, (err, resp) => {
 			if (err) return resolve(0);
 			resolve(resp.length);
 		});

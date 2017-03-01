@@ -8,11 +8,12 @@ const EVENT = require('../db/events');
 
 
 let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer;
-
 const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 
-const getNotificationsUrl = () => `${config.get('baseUrl')}notifications/participating`;
-// const getNotificationsUrl = () => `${config.get('baseUrl')}notifications`;
+const PARTICIPATING = true;
+
+
+const getNotificationsUrl = () => `${config.get('baseUrl')}notifications${PARTICIPATING ? '/participating' : ''}`;
 
 const webviewHandlers = {
 	gotoRepo: repo => $.trigger(EVENT.url.change.to, $.trim(repo, '/') + '/issues'),
@@ -73,9 +74,10 @@ function checkNotifications (delay = 0) {
 	if (notificationsTimer) clearTimeout(notificationsTimer);
 	if (delay) return notificationsTimer = setTimeout(checkNotifications, delay);
 
-	GH.getCount()
+	GH.getCount(PARTICIPATING)
 		.then(count => {
 			badge(count);
+			$.trigger(EVENT.notifications.count, count);
 			notificationsTimer = setTimeout(checkNotifications, refreshDelay);
 		});
 }

@@ -37,7 +37,8 @@ module.exports = {
 	},
 	notifications: {
 		toggle: 'notifications-toggle',
-		devtools: 'notification-devtools-toggle'
+		devtools: 'notification-devtools-toggle',
+		count: 'notifications-count-updated'
 	},
 	contextmenu: {
 		show: 'show-contextmenu',
