@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<svg width="22px" height="27px" viewBox="0 0 22 27" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<svg width="16px" height="20px" viewBox="0 0 16 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M1.991155,0 C0.891470458,0 0,0.898338318 0,2.00732994 L0,27 L10.9989238,20.2341724 L22,27 L22,2.00732994 C22,0.898712226 21.1103261,0 20.008845,0 L1.991155,0 Z" id="bookmark" fill="#FFFFFF"></path>
+        <g id="Artboard" transform="translate(-66.000000, -104.000000)" fill="#000000">
+            <g id="bookmark" transform="translate(66.000000, 104.000000)">
+                <path d="M1.99406028,0 C0.892771196,0 0,0.898212381 0,1.99079514 L0,20 L7.99921734,14.9882759 L16,20 L16,1.99079514 C16,0.891309342 15.1054862,0 14.0059397,0 L1.99406028,0 Z"></path>
+            </g>
+        </g>
     </g>
 </svg>
