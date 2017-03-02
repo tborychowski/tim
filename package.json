@@ -19,7 +19,7 @@
     "electron-window-state": "^4.0.1",
     "ionicons": "^3.0.0",
     "jenkins-api": "^0.2.8",
-    "octonode": "^0.7.9",
+    "octonode": "^0.7.10",
     "tingodb": "^0.5.1"
   },
   "devDependencies": {

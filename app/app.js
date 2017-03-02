@@ -13,6 +13,7 @@ const components = [
 	'search',
 	'main-menu',
 	'contextmenu',
+	'projects',
 ];
 
 components.forEach(init);

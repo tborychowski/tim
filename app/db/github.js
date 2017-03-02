@@ -6,15 +6,6 @@ let hostname = config.get('baseUrl').replace('https://', '') + 'api/v3';
 let client = null;
 
 
-function init () {
-	const token = config.get('ghToken');
-	if (!token) return;
-	client = GH.client(token, { hostname });
-	client.requestDefaults['strictSSL'] = false;
-}
-
-
-
 function getCount (participating = true) {
 	if (!client) init();
 	return new Promise(resolve => {
@@ -40,30 +31,6 @@ function getBuildUrl (pr) {
 }
 
 
-// function getIssue (repo, id) {
-// 	if (!client) init();
-// 	return new Promise(resolve => {
-// 		if (!client) return resolve();
-// 		const iss = client.issue(repo, id);
-// 		iss.info((err, resp) => {
-// 			if (err) return resolve();
-// 			resolve(resp);
-// 		});
-// 	});
-// }
-
-// function getIssueComments (repo, id) {
-// 	if (!client) init();
-// 	return new Promise(resolve => {
-// 		if (!client) return resolve();
-// 		const iss = client.issue(repo, id);
-// 		iss.comments((err, resp) => {
-// 			if (err) return resolve();
-// 			resolve(resp);
-// 		});
-// 	});
-// }
-
 function getPR (repo, id) {
 	if (!client) init();
 	return new Promise(resolve => {
@@ -77,12 +44,34 @@ function getPR (repo, id) {
 }
 
 
+function getProjects () {
+	if (!client) init();
+	return new Promise(resolve => {
+		if (!client) return resolve();
+		const repo = client.repo(config.get('repoToSearch'));
+		repo.projects((err, resp) => {
+			if (err) return resolve();
+			resolve(resp);
+		});
+	});
+}
+
+
+function init () {
+	const token = config.get('ghToken');
+	if (!token) return;
+	client = GH.client(token, { hostname });
+	client.requestDefaults.strictSSL = false;
+	client.requestDefaults.headers = {
+		Accept: 'application/vnd.github.inertia-preview+json'
+	};
+}
+
 
 
 module.exports = {
 	getCount,
 	getBuildUrl,
-	// getIssue,
-	// getIssueComments
-	getPR
+	getPR,
+	getProjects,
 };

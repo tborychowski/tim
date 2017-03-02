@@ -1,0 +1,9 @@
+.project-box { padding: 5px 20px; margin: 10px 0 0; font-size: 12px; font-weight: 100; }
+
+.project-box .btn { display: block; padding: 3px 0; font-size: 13px; }
+
+.project-box span {
+	display: block;
+	font-size: 12px;
+	color: rgba(255,255,255,0.5)
+}
