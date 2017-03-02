@@ -35,10 +35,8 @@ function buildInfo (jenkins, item) {
 
 
 
-
-// https://build-jenkins.wdf.sap.corp/jenkins/job/PullReqNew.build-user-research/52/
-
 function getStatus (url) {
+	if (!url) return;
 	const [host, parts] = $.trim(url, '/').split('/job/');
 	const [jobName, buildId] = parts.split('/');
 	const item = { jobName, buildId };

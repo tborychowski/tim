@@ -24,9 +24,9 @@
 
 
 
-.settings h1 { margin: 0 0 20px 0; }
+.settings h1 { margin: 0 0 10px 0; }
 
-.settings-form label { display: inline-block; padding: 5px; width: 100%; text-align: right; }
+.settings-form label { display: inline-block; padding: 20px 5px 5px; width: 100%; text-align: right; }
 .settings-form input { display: inline-block; padding: 5px; margin-left: 10px; width: calc(100% - 140px);  }
 .settings-form input:invalid,
 .settings-form textarea:invalid { background-color: rgba(255, 0, 0, 0.1); }
@@ -36,7 +36,7 @@
 }
 
 
-.settings-buttons { margin: 20px 0 0 0; text-align: right; }
+.settings-buttons { margin: 40px 0 0 0; text-align: right; }
 .settings-buttons .btn { font-size: 13px; }
 .settings-buttons .btn-left { float: left; }
 .settings-buttons .btn-save { font-weight: bold; }

@@ -4,6 +4,7 @@ const config = $.getConfig();
 const starsDB = require('../db/stars');
 const EVENT = require('../db/events');
 const jenkins = require('./jenkins');
+const github = require('../db/github');
 
 
 let isReady = false, el, reposEl;
@@ -13,7 +14,7 @@ const issueTypes = {
 	default: 'ion-ios-star-outline',
 };
 
-const DEFAULT_REPO_NAME = 'Pages';
+const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
 
@@ -43,42 +44,52 @@ function onClick (e) {
 }
 
 
-function updateStatus (pr, status) {
+function updateBuildStatus (pr, status) {
 	const ionCls = {
 		failure: 'ion-md-alert',
 		success: 'ion-md-checkmark-circle',
-		progress: ''
+		progress: 'ion-md-time'
 	};
 	const prBox = $(`.pr-${pr.id}`);
 	const statusBox = prBox.find('.build-status');
-	const progBox = prBox.find('.build-progress');
+	const statusIcon = prBox.find('.build-status .icon');
 	const progBoxIn = prBox.find('.build-progress-inner');
 
 	const result = status.result ? status.result : 'progress';
 	if (result) statusBox.addClass(result);
-	if (ionCls[result]) statusBox.addClass(ionCls[result]);
-	statusBox[0].title = status.result;
+	if (ionCls[result]) statusIcon.addClass(ionCls[result]);
+	statusBox[0].title = status.result || 'Open build job';
 	statusBox[0].href = pr.buildUrl;
 
-	progBox.toggle(status.progress && status.progress < 100);
 	progBoxIn[0].style.width = status.progress + '%';
 	if (!status.result) setTimeout(() => { monitorPr(pr); }, 10000);
 }
 
 
 function monitorPr (pr) {
-	jenkins.getStatus(pr.buildUrl).then(status => updateStatus(pr, status));
+	github
+		.getBuildUrl(pr)
+		.then(url => {
+			if (!url) return;
+			pr.buildUrl = url;
+			return jenkins.getStatus(url);
+		})
+		.then(status => status && updateBuildStatus(pr, status));
 }
 
 
 function getIssueHtml (issue) {
-	if (issue.buildUrl) monitorPr(issue);
-
-	return `<li class="pr-${issue.id}">
+	let statusBox = '';
+	if (issue.type === 'pr') {
+		monitorPr(issue);
+		statusBox = '<a href="#" class="build-status"><i class="icon"></i>' +
+			'<div class="build-progress"><div class="build-progress-inner"></div></div></a>';
+	}
+	const cls = issue.id ? `class="pr-${issue.id}"` : '';
+	return `<li ${cls}>
 		<i class="${issueTypes[issue.type || 'default']}"></i>
 		<a href="${issue.url}" class="btn bookmark" title="${issue.id}">${issue.name}</a>
-		${issue.buildUrl ? '<a href="#" class="build-status"></a>' : ''}
-		${issue.buildUrl ? '<div class="build-progress"><div class="build-progress-inner"></div></div>' : ''}
+		${statusBox}
 	</li>`;
 }
 

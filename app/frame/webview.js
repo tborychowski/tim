@@ -26,7 +26,6 @@ function _onDomChange () {
 	const isIssue = !!document.getElementById('discussion_bucket');
 	let issue = null, url = document.location.href;
 	if (url.indexOf('http') !== 0) url = '';	// network error
-	const isPR = !!document.querySelector('.mergeability-details');
 	if (isIssue) {
 		issue = {
 			name: document.querySelector('.js-issue-title').innerText,
@@ -35,23 +34,11 @@ function _onDomChange () {
 			type: document.querySelector('.tabnav-pr') ? 'pr' : 'issue',
 			url
 		};
-		if (isPR) issue.buildUrl = getJenkinsUrl();
 	}
 	// just a regular page
 	else issue = { name: document.title, url };
 
 	msg('domChanged', url, issue);
-}
-
-
-function getJenkinsUrl () {
-	const statusItems = document.querySelectorAll('.mergeability-details .merge-status-item');
-	for (let i = 0, item; item = statusItems[i]; i++) {
-		let txt = item.innerText.toLowerCase();
-		if (txt.indexOf('jenkins') === -1) continue;
-		return item.querySelector('.merge-status-details').getAttribute('href');
-	}
-	return '';
 }
 
 

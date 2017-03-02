@@ -47,6 +47,13 @@ body { min-width: auto !important; background: none; }
 .blankslate p { display: none; }
 
 
+.notifications .read .type-icon-state-open { color: #6cc644; }
+.notifications .read .type-icon-state-closed { color: #bd2c00; }
+.notifications .read .type-icon-state-merged { color: #6e5494; }
+.notifications .read .list-group-item-name>a { color: #ddd; }
+
+.notifications .read .list-group-item-name>a,
+.notifications .read .type-icon { opacity: 0.4; }
 
 
 /* name, age, checkbox and avatars */
