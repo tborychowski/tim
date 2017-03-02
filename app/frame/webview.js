@@ -23,7 +23,7 @@ function onDomChange () {
 }
 
 function _onDomChange () {
-	const isIssue = !!document.getElementById('discussion_bucket');
+	const isIssue = !!document.querySelector('#discussion_bucket, #files_bucket, #commits_bucket');
 	let issue = null, url = document.location.href;
 	if (url.indexOf('http') !== 0) url = '';	// network error
 	if (isIssue) {
