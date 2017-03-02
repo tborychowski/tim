@@ -30,16 +30,20 @@ function getIssues () {
 	starsDB.get().then(fillIssues);
 }
 
-
 function onClick (e) {
 	let target = $(e.target);
-	if (target.is('.btn')) {
+
+	if (target.is('.js-refresh')) {
+		e.preventDefault();
+		getIssues();
+	}
+	else if (target.is('.btn')) {
 		e.preventDefault();
 		$.trigger(EVENT.url.change.to, target[0].getAttribute('href'));
 	}
-	else if (target.is('.build-status')) {
+	else if (target.closest('.build-status')) {
 		e.preventDefault();
-		shell.openExternal(target[0].getAttribute('href'));
+		shell.openExternal(target.closest('.build-status')[0].getAttribute('href'));
 	}
 }
 

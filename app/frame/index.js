@@ -4,7 +4,6 @@ const args = getGlobal('appArgs');
 
 const $ = require('../util');
 const config = $.getConfig();
-const search = require('../search');
 const EVENT = require('../db/events');
 
 const realnames = require('../realnames');
@@ -85,9 +84,8 @@ function gotoUrl (url) {
 	}
 }
 
-
 function onNavigationStart () {
-	search.stop();
+	$.trigger(EVENT.search.stop);
 	config.set('state.url', webview[0].getURL());
 	$.trigger(EVENT.url.change.done, webview[0]);
 }
@@ -99,6 +97,8 @@ function onNavigationError (er) {
 
 function onRendered (url, issue) {
 	if (issue.url.indexOf('#') > -1) issue.url = issue.url.substr(0, issue.url.indexOf('#'));
+	issue.url = $.rtrim(issue.url, '\/files');
+	issue.url = $.rtrim(issue.url, '\/commits');
 
 	config.set('state.url', url);
 	config.set('state.issue', issue);

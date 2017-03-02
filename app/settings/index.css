@@ -15,11 +15,13 @@
 }
 #header,
 #frame,
-.sidebar { transition: opacity .3s ease-out, filter .3s ease-out; }
+#nav,
+#subnav { transition: filter .3s ease-out; }
 
 .show-settings #header,
 .show-settings #frame,
-.show-settings .sidebar { filter: brightness(0.5) blur(1px); pointer-events: none; }
+.show-settings #nav,
+.show-settings #subnav { filter: brightness(0.4); pointer-events: none; }
 .show-settings .settings { opacity: 1; transform: scale(1); }
 
 

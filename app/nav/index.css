@@ -40,6 +40,7 @@
 .nav-bookmarks .icon { -webkit-mask-image: url("../../assets/icon-bookmark.svg"); }
 .nav-notifications .icon { -webkit-mask-image: url("../../assets/icon-bell.svg"); }
 .nav-myissues .icon { -webkit-mask-image: url("../../assets/icon-inbox.svg"); }
+.nav-projects .icon { -webkit-mask-image: url("../../assets/icon-projects.svg"); }
 
 
 

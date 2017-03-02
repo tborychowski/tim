@@ -31,9 +31,16 @@ body { min-width: auto !important;
 
 
 /* projects view */
-.project-columns { width: auto; height: calc(100vh - 170px); margin-right: 0; }
 .project-columns-container { height: auto; }
-.project-column { height: calc(100vh - 240px); }
+.project-header { margin-top: 7px; }
+.new-project-column { margin-right: 10px; }
+
+.project-columns { width: auto; height: calc(100vh - 70px); margin-right: -30px; }
+.project-column { height: calc(100vh - 130px); }
+
+.project-full-screen .project-columns { height: calc(100vh - 62px); }
+.project-full-screen .project-column { height: calc(100vh - 120px); }
+
 
 
 /* notifications full view */
