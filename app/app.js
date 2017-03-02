@@ -1,6 +1,7 @@
 const $ = require('./app/util');
 const init = c => require(`./app/${c}`).init();
 const components = [
+	// 'spellchecker',
 	'nav',
 	'bookmarks',
 	'notifications',

@@ -2,6 +2,7 @@ const ipc = require('electron').ipcRenderer;
 const msg = ipc.sendToHost;
 
 const trim = (str, chars = '\\s') => str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
+const isScrollable = el => (el && el.scrollWidth > el.offsetWidth + 5);
 
 function isExternal (url) {
 	let u;
@@ -11,7 +12,6 @@ function isExternal (url) {
 }
 
 let isScrolling = false, isWheeling = false;
-const isScrollable = el => (el && el.scrollWidth > el.offsetWidth + 5);
 
 
 
@@ -26,7 +26,7 @@ function _onDomChange () {
 	const isIssue = !!document.getElementById('discussion_bucket');
 	let issue = null, url = document.location.href;
 	if (url.indexOf('http') !== 0) url = '';	// network error
-
+	const isPR = !!document.querySelector('.mergeability-details');
 	if (isIssue) {
 		issue = {
 			name: document.querySelector('.js-issue-title').innerText,
@@ -35,11 +35,23 @@ function _onDomChange () {
 			type: document.querySelector('.tabnav-pr') ? 'pr' : 'issue',
 			url
 		};
+		if (isPR) issue.buildUrl = getJenkinsUrl();
 	}
 	// just a regular page
 	else issue = { name: document.title, url };
 
 	msg('domChanged', url, issue);
+}
+
+
+function getJenkinsUrl () {
+	const statusItems = document.querySelectorAll('.mergeability-details .merge-status-item');
+	for (let i = 0, item; item = statusItems[i]; i++) {
+		let txt = item.innerText.toLowerCase();
+		if (txt.indexOf('jenkins') === -1) continue;
+		return item.querySelector('.merge-status-details').getAttribute('href');
+	}
+	return '';
 }
 
 
@@ -111,7 +123,7 @@ function onWheel (e) {
 	let el = e.target, isIt = false;
 	while (el.tagName && isIt === false) {
 		if (el.tagName === 'BODY') break;
-		else if (!isScrollable(el)) el = el.parentNode;
+		if (!isScrollable(el)) el = el.parentNode;
 		else {
 			isIt = true;
 			break;

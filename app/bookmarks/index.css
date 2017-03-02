@@ -1,10 +1,25 @@
-.repo-box { padding: 5px 0 10px 0; }
+.repo-box-issues { list-style: none; margin: 0; padding: 0; }
+
+.repo-box { padding: 0 0 15px; }
 .repo-box .hdr { padding: 10px 10px 12px 20px; display: block; }
 
-.repo-box li { padding: 5px 20px 5px 20px; display: flex; font-weight: 100; }
-.repo-box li i { width: 18px; min-width: 18px; font-size: 16px; margin: -1px 3px 0 0; }
-.repo-box li a { padding: 0; font-size: 12px; }
-.repo-box li em { color: #999; font-style: normal; font-size: 12px; margin-left: 3px; display: none; }
+.repo-box li { padding: 5px 20px 5px 20px; display: flex; font-weight: 100; position: relative; }
+.repo-box li a { padding: 0; font-size: 12px; flex: 1; }
 
+.repo-box li a.build-status,
+.repo-box li i { width: 18px; min-width: 18px; font-size: 16px; margin: -1px 3px 0 0; flex: initial; }
 
-.repo-box-issues { list-style: none; margin: 0; padding: 0; }
+.build-status.success { color: green; }
+.build-status.failure { color: red; }
+
+.build-progress {
+	position: absolute;
+	width: 255px;
+	height: 2px;
+	bottom: 0;
+	left: 18px;
+	border-radius: 5px;
+	background-color: #888;
+	display: none;
+}
+.build-progress-inner { height: 100%; background: green; border-radius: 5px; width: 0; }
