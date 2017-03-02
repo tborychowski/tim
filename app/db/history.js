@@ -46,10 +46,10 @@ function getById (_id) {
 
 
 function find (txt) {
-	const ltxt = txt.toLowerCase();
+	let ltxt = txt.toLowerCase();
 	return get().then(items => {
 		return items
-			.filter(item => $.fuzzy(item.name, txt))
+			.filter(item => ('' + item.id).indexOf(txt) > -1 || $.fuzzy(item.name, txt))
 			.sort((a, b) => {
 				const bv = b.name.toLowerCase().indexOf(ltxt);
 				const av = a.name.toLowerCase().indexOf(ltxt);

@@ -69,15 +69,18 @@
 						<a href="#" class="header-btn js-unstar ion-ios-bookmark" title="Remove Bookmark" data-go="unstar"></a>
 					</div>
 
-					<input class="addressbar" autofocus />
+					<input class="addr-input addressbar" autofocus tabindex="1" />
+					<input class="addr-input issue-id-bar" autocomplete="on" tabindex="3" />
+
 					<i class="header-btn js-sync ion-ios-nuclear"></i>
 					<i class="header-btn js-error ion-ios-alert-outline" title="Cannot connect to github. Check your network."></i>
 				</div>
 
-				<div class="history"><select class="history-list" size="2"></select></div>
+				<div class="history"><select class="history-list" size="2" tabindex="2"></select></div>
 
 				<a href="#" class="header-btn js-copy ion-md-link" title="Copy link" data-go="copy"></a>
 				<a href="#" class="header-btn js-browser ion-md-open" title="Open in browser" data-go="browser"></a>
+
 			</div>
 			<div class="main-header-border"></div>
 			<div class="search-bar hidden">
@@ -100,9 +103,9 @@
 
 			<label>Home button URL: <input name="homeUrl" placeholder="Defaults to Base URL"></label>
 
-			<label>Repo to search: <input name="repoToSearch" placeholder="Just Group/RepoName"></label>
-			<span class="settings-info-text">To make: BaseURL/<b>Group/RepoName</b>/issues?q=is:open is:issue...</span>
-			<span class="settings-info-text">e.g. https://github.com/<b>angular/angular</b>/issues?q=is:open is:issue...</span>
+			<label>Default repo: <input name="repoToSearch" placeholder="Group/RepoName"></label>
+			<span class="settings-info-text">e.g. Facebook/React</span>
+			<span class="settings-info-text">this will be used for Projects tab, searching, etc.</span>
 
 			<label>Github Token: <input name="ghToken" placeholder="token ID"></label>
 			<span class="settings-info-text"><a href="#" class="btn token-link" data-go="link">Click here to generate a token</a></span>

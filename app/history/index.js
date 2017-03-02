@@ -30,9 +30,10 @@ function onUrlChanged (webview, issue) {
 
 function getItemHtml (item, i) {
 	const repo = (item.repo ? item.repo.split('/').pop() : null);
-	const mod = (repo ? ` (${repo}#${item.id})` : '');
+	const mod = (repo ? ` | ${repo}` : '');
 	const selected = (i === 0 ? 'selected="selected"' : '');
-	return `<option ${selected} value="${item._id}">${item.name}${mod}</option>`;
+	const id = item.id ? `#${item.id} | ` : '';
+	return `<option ${selected} value="${item._id}">${id}${item.name}${mod}</option>`;
 }
 
 
@@ -45,7 +46,8 @@ function render (items) {
 }
 
 function onAddressInput (e) {
-	DB.find(e.target.value).then(render);
+	const txt = $.trim(e.target.value, '\\s|#');
+	DB.find(txt).then(render);
 }
 
 

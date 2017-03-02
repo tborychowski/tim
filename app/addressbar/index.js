@@ -3,7 +3,13 @@ const config = $.getConfig();
 const starsDB = require('../db/stars');
 const EVENT = require('../db/events');
 
-let isReady = false, el, starBox, lastShortUrl = '', lastFullUrl = '', lastIssue = '',
+let isReady = false,
+	el = null,
+	issueBox = null,
+	starBox,
+	lastShortUrl = '',
+	lastFullUrl = '',
+	lastIssue = '',
 	searchTerm = null;
 
 const baseUrl = $.rtrim(config.get('baseUrl'), '/');
@@ -23,6 +29,12 @@ function getFocusedText () {
 	return lastFullUrl;
 }
 
+
+function gotoIssue (id) {
+	const url = [baseUrl, repoToSearch, 'issues', id].join('/');
+	gotoUrl(url);
+
+}
 
 // BaseURL/Group/RepoName/issues?q=is:open is:issue...
 function getSearchUrl (q) {
@@ -65,6 +77,7 @@ function onUrlChanged (webview, issue) {
 	lastIssue = issue || {};
 
 	el[0].value = getUnfocusedText();
+	issueBox[0].value = (issue && issue.id ? issue.id : '');
 
 	if (issue && issue.url) checkIfBookmarked(issue.url);
 }
@@ -123,6 +136,7 @@ function init () {
 	if (isReady) return;
 
 	el = $('.addressbar');
+	issueBox = $('.issue-id-bar');
 	starBox = $('header .star-box');
 
 	el.on('focus', onFocus);
@@ -130,6 +144,9 @@ function init () {
 	el.on('keydown', onKeyDown);
 	el.on('keypress', onKeyPress);
 	el.on('input', onInput);
+
+	issueBox.on('focus', e => e.target.select());
+	issueBox.on('keypress', e => { if (e.key === 'Enter') gotoIssue(e.target.value); });
 
 	$.on(EVENT.url.change.to, gotoUrl);
 	$.on(EVENT.url.change.done, onUrlChanged);

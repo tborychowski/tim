@@ -45,7 +45,7 @@ header {
 header .disabled { pointer-events: none; opacity: 0.3; }
 
 header .js-sync,
-header .js-error { position: absolute; right: 8px; top: 0;  }
+header .js-error { position: absolute; right: 100px; top: 0;  }
 
 header .js-sync { opacity: 0; transition: opacity .3s ease-out; }
 
