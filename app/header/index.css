@@ -14,8 +14,6 @@ header {
 	min-width: 720px;
 }
 
-.side-header { width: 300px; padding: 6px 0 0 70px; }
-.main-header { flex: 1; position: relative; }
 .main-header-inner {
 	padding: 0 5px 0 0;
 	background-color: #eee;
@@ -49,7 +47,7 @@ header .disabled { pointer-events: none; opacity: 0.3; }
 header .js-sync,
 header .js-error { position: absolute; right: 8px; top: 0;  }
 
-header .js-sync { opacity: 0; transition: opacity .2s; }
+header .js-sync { opacity: 0; transition: opacity .3s ease-out; }
 
 header .js-error:hover,
 header .js-error { color: red; display: none; }
@@ -67,9 +65,6 @@ header.loading .js-stop { display: block; }
 
 header.error .js-sync { display: none; }
 header.error .js-error { display: block; }
-
-
-
 
 
 

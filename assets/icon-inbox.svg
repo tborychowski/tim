@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="18px" viewBox="0 0 22 18" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Artboard" transform="translate(-63.000000, -213.000000)" fill-rule="nonzero" fill="#000000">
+            <g id="inbox" transform="translate(63.000000, 213.000000)">
+                <path d="M11,11.4317499 L6.28571429,6.00130095 L9,6.00130095 L9,0 L13,0 L13,6.00130095 L15.7142857,6.00130095 L11,11.4317499 Z M21.3857374,10.8020455 L22,12.96 L22,16.0080585 C22,17.098949 21.1085295,18 20.008845,18 L1.991155,18 C0.889673948,18 0,17.1081774 0,16.0080585 L0,12.96 L0.622098214,10.8020455 L4.11375558,8.00617688 L6,8.00617688 L3.15041209,12 L6,12 L6,14.0003732 L16,14.0003732 L16,12 L18.839011,12 L16,8.00617688 L18.0344459,8.00617688 L21.3857374,10.8020455 Z"></path>
+            </g>
+        </g>
+    </g>
+</svg>

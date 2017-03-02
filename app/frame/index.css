@@ -1,11 +1,21 @@
+#main {
+	position: absolute;
+	left: 364px;
+	top: 0;
+	bottom: 0;
+	right: 0;
+	overflow: hidden;
+}
+
 #frame {
 	position: absolute;
 	top: 38px;
-	left: 0;
+	left: -364px;
 	right: 0;
 	bottom: 0;
 	background-color: #eee;
 	overflow: hidden;
+
 }
 
 webview {

@@ -104,7 +104,7 @@ sizzle.fn.isIn = function (...classes) {
  */
 function modElCls (el, action, cls, cond) {
 	if (!el || !el.length) return el;
-	cls = cls.split(' ');
+	cls = ('' + cls).split(' ');
 	if (typeof cond === 'boolean') {
 		el.forEach(e => cls.forEach(c => e.classList[action](c, cond)));
 	}

@@ -1,27 +1,43 @@
-body { min-width: auto !important; }
-body { margin-left: 300px; } /* this is required as macos lookup has an offset bug */
+body { min-width: auto !important;
+	margin-left: 364px;		/* this is required as macos lookup has an offset bug */
+}
 
-.main-content { padding: 0; }
 
-.pjax-loader-bar,
+.repository-topics-container,
 .repository-meta,
-.header,
-.site-footer,
+.repohead,
+.pjax-loader-bar,
 .flash-full.js-notice,
 .notification-actions .mute,
 .notification-center .tabnav,
-.repohead,
+.header,
+.site-footer,
 .protip,
-.site-footer-container { display: none; }
+.site-footer-container,
+.repository-content .overall-summary,
+.repository-content .repository-lang-stats-graph { display: none; }
+
+
+.main-content { padding: 0; }
+.container { width: auto; }
+
+
+/* files */
+
+.file-navigation { margin: 20px 20px 0; }
+.commit-tease { margin: 10px 20px 0; }
+.file-wrap { margin: -1px 20px 20px; }
+.readme { margin: 0 20px 20px; }
+
+
+/* projects view */
+.project-columns { width: auto; height: calc(100vh - 170px); margin-right: 0; }
+.project-columns-container { height: auto; }
+.project-column { height: calc(100vh - 240px); }
 
 
 /* notifications full view */
-.container { width: 100% !important; margin 0; padding: 0 !important;  }
-.gut-md { width: auto; margin: 0; }
-.gut-md>.col-3 { display: none; }
-.gut-md>.col-9 { float: none !important; width: 100%; padding: 0 !important; }
-.gut-md>.col-9 .blankslate { background: none; box-shadow: none; border: 0; }
-
+.notification-center { margin: -19px -15px -15px; }
 .notifications-list .boxed-group-inner { border-width: 1px 0; }
 .notifications-list .boxed-group { margin-bottom: 0; }
 .notifications-list .boxed-group>h3 { border-width: 0 0 1px 0; position: sticky; }
@@ -30,33 +46,50 @@ body { margin-left: 300px; } /* this is required as macos lookup has an offset b
 .notifications .list-group-item-name { max-width: 100%; margin-right: 220px; }
 .notifications .list-group-item-name a { max-width: 100%; }
 
+.gut-md { width: auto; margin: 0; }
+.gut-md>.col-3 { display: none; }
+.gut-md>.col-9 { float: none !important; width: 100%; }
+.gut-md>.col-9 .blankslate { background: none; box-shadow: none; border: 0; }
 
+
+
+
+/* issues list view */
 .issues-listing .border-right,
 .issues-listing .border-bottom,
 .issues-listing .border-left { border: none !important; }
 
 .issues-listing .subnav { display: none; }
 .issues-listing .table-list-header { border-width: 0 0 1px; border-radius: 0; margin: 0; }
-
-.files-bucket,
-.js-issues-results { padding: 20px 30px 30px 25px; }
-.timeline-new-comment { max-width: initial; }
-.previewable-comment-form textarea { max-height: none; min-height: 200px; }
-
 .issues-reset-query-wrapper { display: none; }
+
+
+
+/* issue timeline */
 .discussion-timeline { width: calc(100% - 220px); }
+.timeline-new-comment { max-width: initial; }
+.previewable-comment-form textarea { max-height: none; min-height: 240px; }
 
 
-.page-dashboard { padding: 30px; }
-.page-dashboard .news>.text-center { display: none; }
+/* PR tabs: commits & files */
+.files-bucket { padding: 20px 0; }
+.js-issues-results { padding: 20px; }
+
+
+
+/* maing gh landing page*/
 .page-dashboard .news .alert { border: none; }
+.page-dashboard .news>.text-center,
 .page-dashboard .news .account-switcher { display: none; }
 
 #new_issue { padding: 0 20px; }
 
 
+
+
+
 /* name, age, checkbox and avatars */
-@media (max-width: 850px) {
+@media (max-width: 1210px) {			/* should be 850, once the dict lookup offset bug is fixed */
 	.main-content { padding: 0 10px; }
 	.one-fourth { display: none; }
 	.three-fourths { width: 100%; }
@@ -65,20 +98,20 @@ body { margin-left: 300px; } /* this is required as macos lookup has an offset b
 }
 
 /* name, age and checkbox */
-@media (max-width: 550px) {
+@media (max-width: 910px) {			/* should be 550 */
 	.notifications .list-group-item-name { margin-right: 130px; }
 	.notification-actions>li.age { width: 90px; }
 	.notification-actions>li.tooltipped { display: none; }
 }
 
 /* name and checkbox */
-@media (max-width: 450px) {
+@media (max-width: 810px) {			/* should be 450 */
 	.notifications .list-group-item-name { margin-right: 25px; }
 	.notification-actions>li.age { display: none; }
 }
 
 /* just name */
-@media (max-width: 350px) {
+@media (max-width: 710px) {			/* should be 350 */
 	.notification-actions { display: none; }
 	.notifications .list-group-item-name { margin-right: 0; }
 }

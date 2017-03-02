@@ -32,9 +32,13 @@ module.exports = {
 	menu: {
 		click: 'menu-clicked'
 	},
+	nav: {
+		goto: 'nav-goto'
+	},
 	notifications: {
 		toggle: 'notifications-toggle',
-		devtools: 'notification-devtools-toggle'
+		devtools: 'notification-devtools-toggle',
+		count: 'notifications-count-updated'
 	},
 	contextmenu: {
 		show: 'show-contextmenu',
