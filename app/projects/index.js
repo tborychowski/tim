@@ -7,44 +7,48 @@ const users = require('../db/users');
 
 let isReady = false, el, listEl;
 const baseUrl = `${config.get('baseUrl')}/${config.get('repoToSearch')}/projects/`;
+const projectSort = (a, b) => a.name.localeCompare(b.name);
+
 
 function refresh () {
 	github.getProjects()
-		.then(projects => Promise.all(projects.map(remapProjectFields).map(updateUserName)))
-		.then(printProjects);
+		.then(projects => {
+			if (!projects || !projects.length) return Promise.resolve([]);
+			projects.sort(projectSort);
+			return Promise.all(projects.map(remapProjectFields));
+		})
+		.then(projects => listEl.html(projects.map(getProjectHtml).join('')));
 }
 
 
 function getProjectHtml (project) {
 	return `<div class="project-box">
+		<img class="avatar" src="${project.creator.avatar}" alt="${project.creator.name || project.creator.login}" />
 		<a href="${project.url}" class="btn">${project.name}</a>
-		<span>${project.authorName || project.authorId}</span>
+		<span>Updated: ${project.updated_at_str}</span>
 	</div>`;
 }
 
 function remapProjectFields (project) {
-	return {
+	project = {
 		_id: project.id,
 		id: project.number,
 		name: project.name,
 		body: project.body,
-		created_at: project.created_at,
-		updated_at: project.updated_at,
+		created_at: new Date(project.created_at),
+		updated_at: new Date(project.updated_at),
+		created_at_str: $.prettyDate(project.created_at),
+		updated_at_str: $.prettyDate(project.updated_at),
 		url: baseUrl + project.number,
-		authorId: project.creator.login
+		creator: {
+			login: project.creator.login,
+			avatar: project.creator.avatar_url
+		}
 	};
-}
-
-function updateUserName (project) {
-	return users.getById(project.authorId).then(usr => {
-		if (usr) project.authorName = usr.name;
+	return users.getById(project.login).then(usr => {
+		if (usr) project.creator.name = usr.name;
 		return project;
 	});
-}
-
-
-function printProjects (projects) {
-	listEl.html(projects.map(getProjectHtml).join(''));
 }
 
 

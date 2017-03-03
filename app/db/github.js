@@ -6,7 +6,15 @@ let hostname = config.get('baseUrl').replace('https://', '') + 'api/v3';
 let client = null;
 
 
-function getCount (participating = true) {
+/* TODO: use api if token given? */
+function getUserById (id) {
+	return $.get(`${config.get('baseUrl')}api/v3/users/${id}`)
+		.then(res => ({ id, name: res.name }))
+		.catch(err => console.log(err));
+}
+
+
+function getNotificationsCount (participating = true) {
 	if (!client) init();
 	return new Promise(resolve => {
 		if (!client) return resolve(0);
@@ -70,8 +78,9 @@ function init () {
 
 
 module.exports = {
-	getCount,
+	getNotificationsCount,
 	getBuildUrl,
 	getPR,
 	getProjects,
+	getUserById
 };

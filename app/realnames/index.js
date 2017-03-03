@@ -1,15 +1,9 @@
-const $ = require('../util');
-const config = $.getConfig();
+// const $ = require('../util');
+// const config = $.getConfig();
 const usersDB = require('../db/users');
+const github = require('../db/github');
 
 let webview;
-
-function fetchUserById (id) {
-	return $.get(`${config.get('baseUrl')}api/v3/users/${id}`)
-		.then(res => ({ id, name: res.name }))
-		.then(usr => (usersDB.add(usr), usr))
-		.catch(() => usersDB.add({ id, name: id }));
-}
 
 /**
  * Convert an array of users to object, e.g.
@@ -26,7 +20,7 @@ function matchIdsWithNames (idList, users) {
 	const uobj = uato(users);
 	const newUsers = idList.map(id => {
 		if (uobj[id]) return Promise.resolve(uobj[id]);
-		return fetchUserById(id);
+		return github.getUserById(id).then(usr => (usersDB.add(usr), usr));
 	});
 	return Promise.all(newUsers).then(uato);
 }

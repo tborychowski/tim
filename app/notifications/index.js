@@ -74,7 +74,7 @@ function checkNotifications (delay = 0) {
 	if (notificationsTimer) clearTimeout(notificationsTimer);
 	if (delay) return notificationsTimer = setTimeout(checkNotifications, delay);
 
-	GH.getCount(PARTICIPATING)
+	GH.getNotificationsCount(PARTICIPATING)
 		.then(count => {
 			badge(count);
 			$.trigger(EVENT.notifications.count, count);
