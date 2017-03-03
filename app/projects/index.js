@@ -22,11 +22,11 @@ function refresh () {
 
 
 function getProjectHtml (project) {
-	return `<div class="project-box">
+	return `<a href="${project.url}" class="btn project-box">
 		<img class="avatar" src="${project.creator.avatar}" alt="${project.creator.name || project.creator.login}" />
-		<a href="${project.url}" class="btn">${project.name}</a>
-		<span>Updated: ${project.updated_at_str}</span>
-	</div>`;
+		<span class="name">${project.name}</span>
+		<span class="time">Updated: ${project.updated_at_str}</span>
+	</a>`;
 }
 
 function remapProjectFields (project) {
@@ -59,7 +59,7 @@ function onClick (e) {
 		e.preventDefault();
 		refresh();
 	}
-	else if (target.is('.btn')) {
+	else if (target.closest('.btn')) {
 		e.preventDefault();
 		$.trigger(EVENT.url.change.to, target[0].getAttribute('href'));
 	}

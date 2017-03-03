@@ -29,6 +29,7 @@ function get () {
 
 
 function getById (id) {
+	if (!id) return Promise.resolve(id);
 	return new Promise ((resolve, reject) => {
 		collection.find({ id }, { _id: 0 }, (err, res) => {
 			if (err) return reject(err);
