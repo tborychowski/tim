@@ -1,10 +1,9 @@
 const { ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
+const isDev = require('electron-is-dev');
 let win = null;
 
-const DEBUG = false;
-
-if (DEBUG) {
+if (isDev) {
 	const log = require('electron-log');
 	autoUpdater.logger = log;
 	autoUpdater.logger.transports.file.level = 'debug';

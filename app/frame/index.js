@@ -1,7 +1,7 @@
 const {shell, session, getGlobal } = require('electron').remote;
+const isDev = require('electron-is-dev');
+
 const args = getGlobal('appArgs');
-
-
 const $ = require('../util');
 const config = $.getConfig();
 const EVENT = require('../db/events');
@@ -142,9 +142,9 @@ function init () {
 	});
 
 
-	// DEBUG
-	// webview.on('console-message', e => { console.log('WV:', e.message); });
-
+	if (isDev) {
+		webview.on('console-message', e => { console.log('WV:', e.message); });
+	}
 
 	$.on(EVENT.frame.goto, gotoUrl);
 	$.on(EVENT.frame.devtools, toggleDevTools);

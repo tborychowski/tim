@@ -36,7 +36,7 @@ function updateNotAvailable () {
 	dialog.showMessageBox({
 		type: 'info',
 		title: 'Update',
-		message: `You have the latest version of ${appName} ${appVersion}`,
+		message: `You have the latest version of\n${appName} ${appVersion}`,
 		buttons: [ 'OK' ]
 	});
 }
