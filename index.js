@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const EVENT = require('./app/db/events');
+const updater = require('./app/updater/main');
 
 const send = (name, val) => win.webContents.send(name, val);
 
@@ -31,6 +32,7 @@ app.on('ready', () => {
 	win.loadURL(`file://${__dirname}/index.html`);
 	win.show();
 
+	updater.init(win);
 });
 
 

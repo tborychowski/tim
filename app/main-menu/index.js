@@ -7,6 +7,10 @@ const menuTemplate = [
 		label: 'GithubBrowser',
 		submenu: [
 			{ role: 'about' },
+			{
+				label: 'Check for Updates...',
+				click () { $.trigger(EVENT.updater.check); }
+			},
 			{ type: 'separator' },
 			{
 				label: 'Preferences...',

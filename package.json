@@ -2,20 +2,33 @@
   "name": "github-browser",
   "productName": "Github Browser",
   "description": "Github browser.",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/tborychowski/github-browser.git"
   },
   "scripts": {
+    "postinstall": "install-app-deps",
     "start": "electron index.js",
-    "pack": "electron-packager . --icon './assets/icon.icns' --overwrite --platform=darwin"
+    "pack": "build --mac",
+    "release": "build --publish onTagOrDraft"
   },
   "author": "Tom",
   "license": "MIT",
+  "build": {
+    "appId": "com.electron.github-browser",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
+    "publish": [
+      "github"
+    ]
+  },
   "dependencies": {
     "electron-config": "^0.2.1",
+    "electron-log": "^1.3.0",
+    "electron-updater": "^1.8.1",
     "electron-window-state": "^4.0.1",
     "ionicons": "^3.0.0",
     "jenkins-api": "^0.2.8",
@@ -23,7 +36,8 @@
     "tingodb": "^0.5.1"
   },
   "devDependencies": {
-    "electron-packager": "^8.3.0",
-    "electron-prebuilt": "^1.4.11"
+    "electron": "^1.6.1",
+    "electron-builder": "^14.5.3",
+    "electron-packager": "^8.3.0"
   }
 }

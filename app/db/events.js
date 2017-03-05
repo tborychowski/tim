@@ -56,6 +56,9 @@ module.exports = {
 		start: 'swipe-start',
 		end: 'swipe-end'
 	},
+	updater: {
+		check: 'check-for-updates',
+	},
 	url: {
 		change: {
 			start: 'url-change-start',

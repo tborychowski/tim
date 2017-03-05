@@ -14,6 +14,7 @@ const components = [
 	'main-menu',
 	'contextmenu',
 	'projects',
+	'updater',
 ];
 
 components.forEach(init);

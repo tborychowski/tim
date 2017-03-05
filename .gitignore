@@ -1,6 +1,7 @@
 node_modules/
-storage/*.json
+dist/
 config.json
 *.sublime-*
 .DS_Store
 *-darwin-x64
+app-update.yml
