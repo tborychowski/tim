@@ -61,7 +61,7 @@ function onClick (e) {
 	}
 	else if (target.closest('.btn')) {
 		e.preventDefault();
-		$.trigger(EVENT.url.change.to, target[0].getAttribute('href'));
+		$.trigger(EVENT.url.change.to, target.closest('.btn')[0].getAttribute('href'));
 	}
 }
 
