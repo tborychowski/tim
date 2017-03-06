@@ -2,7 +2,7 @@
   "name": "github-browser",
   "productName": "Github Browser",
   "description": "Github browser.",
-  "version": "0.17.0",
+  "version": "0.17.1",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
     "postinstall": "install-app-deps",
     "start": "electron index.js",
     "pack": "build --mac",
-    "release": "build --publish always"
+    "release": "build --publish onTag"
   },
   "author": "Tom",
   "license": "MIT",
