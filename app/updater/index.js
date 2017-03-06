@@ -9,6 +9,7 @@ const appVersion = remote.app.getVersion();
 
 let IS_INITIAL = false;
 const send = (name, value) => ipcRenderer.send('updater', name, value);
+const log = msg => isDev && console.log(msg);
 
 const events = {
 	'checking-for-update': checkingForUpdate,
@@ -19,9 +20,6 @@ const events = {
 	'update-downloaded': updateDownloaded,
 };
 
-function log (msg) {
-	if (isDev) console.log(msg);
-}
 
 function checkingForUpdate () {
 	log('Checking for update...');
@@ -48,7 +46,8 @@ function updateNotAvailable () {
 			title: 'Update',
 			message: `You have the latest version of\n${appName} ${appVersion}`,
 			detail: 'No need to update',
-			buttons: [ 'OK' ]
+			buttons: [ 'OK' ],
+			defaultId: 0,
 		});
 	}
 	updatingDone();
