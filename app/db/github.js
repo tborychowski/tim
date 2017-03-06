@@ -1,6 +1,7 @@
 const GH = require('octonode');
 const $ = require('../util');
 const config = $.getConfig();
+const isDev = require('electron-is-dev');
 
 let hostname = config.get('baseUrl').replace('https://', '') + 'api/v3';
 let client = null;
@@ -20,6 +21,7 @@ function getNotificationsCount (participating = true) {
 	if (!client) return Promise.resolve(0);
 	return new Promise(resolve => {
 		client.me().notifications({ participating }, (err, resp) => {
+			if (err && isDev) console.log(err);
 			if (err) return resolve(0);
 			resolve(resp.length);
 		});
@@ -71,8 +73,9 @@ function init (isPreview) {
 		client = GH.client(token, { hostname });
 	}
 	client.requestDefaults.strictSSL = false;
-	if (isPreview) client.requestDefaults.headers = { Accept: 'application/vnd.github.inertia-preview+json' };
 
+	if (isPreview) client.requestDefaults.headers.Accept = 'application/vnd.github.inertia-preview+json';
+	else delete client.requestDefaults.headers.Accept;
 }
 
 

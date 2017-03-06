@@ -1,11 +1,13 @@
 const { ipcRenderer, remote } = require('electron');
 const $ = require('../util');
 const EVENT = require('../db/events');
+const isDev = require('electron-is-dev');
+
 const dialog = remote.dialog;
 const appName = remote.app.getName();
 const appVersion = remote.app.getVersion();
 
-
+let IS_INITIAL = false;
 const send = (name, value) => ipcRenderer.send('updater', name, value);
 
 const events = {
@@ -17,28 +19,39 @@ const events = {
 	'update-downloaded': updateDownloaded,
 };
 
+function log (msg) {
+	if (isDev) console.log(msg);
+}
 
 function checkingForUpdate () {
-	console.log('Checking for update...');
+	log('Checking for update...');
 }
 
 function updateAvailable (resp) {
+	log('Update available');
 	dialog.showMessageBox({
 		type: 'question',
 		title: 'Update',
-		message: `There is a newer version available.\nYou have: ${appVersion}\nAvailable: ${resp.version}`,
+		message: 'There is a newer version available.',
+		detail: `You have: ${appVersion}\nAvailable: ${resp.version}`,
 		buttons: [ 'Cancel', 'Download' ],
 		defaultId: 1,
 	}, res => { if (res === 1) send('download'); });
+	updatingDone();
 }
 
 function updateNotAvailable () {
-	dialog.showMessageBox({
-		type: 'info',
-		title: 'Update',
-		message: `You have the latest version of\n${appName} ${appVersion}`,
-		buttons: [ 'OK' ]
-	});
+	log('Update not available');
+	if (!IS_INITIAL) {
+		dialog.showMessageBox({
+			type: 'info',
+			title: 'Update',
+			message: `You have the latest version of\n${appName} ${appVersion}`,
+			detail: 'No need to update',
+			buttons: [ 'OK' ]
+		});
+	}
+	updatingDone();
 }
 
 function error () {
@@ -46,10 +59,11 @@ function error () {
 }
 
 function downloadProgress () {
-	console.log('Downloading update...');
+	log('Downloading update...');
 }
 
 function updateDownloaded () {
+	log('Update downloaded');
 	dialog.showMessageBox({
 		type: 'question',
 		title: 'Update',
@@ -60,8 +74,14 @@ function updateDownloaded () {
 }
 
 
-function checkForUpdates () {
+function checkForUpdates (isInitial = false) {
+	// don't show the "you have the latest" window, when triggered automatically
+	if (isInitial === true) IS_INITIAL = true;
 	send('check');
+}
+
+function updatingDone () {
+	IS_INITIAL = false;
 }
 
 
@@ -73,6 +93,7 @@ function onEvent (ev, name, params) {
 function init () {
 	ipcRenderer.on('updater', onEvent);
 	$.on(EVENT.updater.check, checkForUpdates);
+	setTimeout(() => checkingForUpdate(true), 5000);
 }
 
 

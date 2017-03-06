@@ -8,8 +8,10 @@ if (isDev) {
 	autoUpdater.logger = log;
 	autoUpdater.logger.transports.file.level = 'debug';
 	autoUpdater.updateConfigPath = './app-update.yml';
-	// autoUpdater.autoDownload = true;
+	autoUpdater.autoDownload = true;
 }
+else autoUpdater.autoDownload = false;
+
 
 const send = (name, val) => win.webContents.send('updater', name, val);
 
