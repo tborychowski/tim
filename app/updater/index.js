@@ -32,7 +32,7 @@ function updateAvailable (resp) {
 		title: 'Update',
 		message: 'There is a newer version available.',
 		detail: `You have: ${appVersion}\nAvailable: ${resp.version}`,
-		buttons: [ 'Cancel', 'Download' ],
+		buttons: [ 'Cancel', 'Update' ],
 		defaultId: 1,
 	}, res => { if (res === 1) send('download'); });
 	updatingDone();
@@ -92,7 +92,7 @@ function onEvent (ev, name, params) {
 function init () {
 	ipcRenderer.on('updater', onEvent);
 	$.on(EVENT.updater.check, checkForUpdates);
-	setTimeout(() => checkingForUpdate(true), 5000);
+	setTimeout(() => checkForUpdates(true), 5000);
 }
 
 
