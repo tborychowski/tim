@@ -10,9 +10,11 @@ let client = null;
 
 /* TODO: use api if token given? */
 function getUserById (id) {
-	return $.get(`${config.get('baseUrl')}api/v3/users/${id}`)
-		.then(res => ({ id, name: res.name }))
-		.catch(err => console.log(err));
+	return new Promise (resolve => {
+		$.get(`${config.get('baseUrl')}api/v3/users/${id}`)
+			.then(res => resolve({ id, name: res.name }))
+			.catch(() => resolve({ id }));
+	});
 }
 
 

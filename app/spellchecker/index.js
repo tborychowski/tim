@@ -5,7 +5,6 @@ const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('el
 
 
 function init () {
-	console.log(12313);
 	// window.spellCheckHandler = new SpellCheckHandler();
 	// window.spellCheckHandler.attachToInput();
 

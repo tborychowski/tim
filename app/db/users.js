@@ -5,6 +5,7 @@ const collection = db.collection('users.json');
 
 
 function add (item) {
+	if (!item) return Promise.resolve();
 	// { id: 'i123456', name: 'john john' }
 	return new Promise ((resolve, reject) => {
 		collection.insert(item, (err, res) => {
@@ -29,7 +30,7 @@ function get () {
 
 
 function getById (id) {
-	if (!id) return Promise.resolve(id);
+	if (!id) return Promise.resolve();
 	return new Promise ((resolve, reject) => {
 		collection.find({ id }, { _id: 0 }, (err, res) => {
 			if (err) return reject(err);

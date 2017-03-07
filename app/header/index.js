@@ -1,4 +1,5 @@
-const {shell, clipboard} = require('electron');
+const {clipboard} = require('electron');
+const {exec} = require('child_process');
 const $ = require('../util');
 const config = $.getConfig();
 const EVENT = require('../db/events');
@@ -10,7 +11,15 @@ const clickHandlers = {
 	next () { $.trigger(EVENT.frame.goto, 'next'); },
 	refresh () { $.trigger(EVENT.frame.goto, 'refresh'); },
 	stop () { $.trigger(EVENT.frame.goto, 'stop'); },
-	browser () { shell.openExternal(config.get('state.url')); },
+	browser () {
+		// shell.openExternal(config.get('state.url'));
+		const browser = config.get('browser') || '/Applications/Google Chrome.app';
+		const cmd = `open -a "${browser}" "${config.get('state.url')}"`;
+		exec(cmd, (err, stdout, stderr) => {
+			if (err || stderr) console.log(err || stderr);
+		});
+
+	},
 	copy () { clipboard.writeText(config.get('state.url')); },
 	hideNotifications () { $.trigger(EVENT.notifications.toggle, false); },
 	showNotifications () { $.trigger(EVENT.notifications.toggle, true); },

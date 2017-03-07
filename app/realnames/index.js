@@ -12,7 +12,7 @@ let webview;
  */
 function uato (users) {
 	const uobj = {};
-	for (let user of users) uobj[user.id] = user;
+	for (let user of users) if (user) uobj[user.id] = user;
 	return uobj;
 }
 
@@ -20,7 +20,11 @@ function matchIdsWithNames (idList, users) {
 	const uobj = uato(users);
 	const newUsers = idList.map(id => {
 		if (uobj[id]) return Promise.resolve(uobj[id]);
-		return github.getUserById(id).then(usr => (usersDB.add(usr), usr));
+		return github.getUserById(id)
+			.then(usr => {
+				usersDB.add(usr);
+				return usr;
+			});
 	});
 	return Promise.all(newUsers).then(uato);
 }

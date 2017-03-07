@@ -92,7 +92,7 @@ function onNavigationStart () {
 
 function onNavigationError (er) {
 	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger(EVENT.connection.error.show);
-	else console.log(er);
+	else console.log('NavigationError:', er);
 }
 
 function onRendered (url, issue) {
