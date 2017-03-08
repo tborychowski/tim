@@ -23,7 +23,7 @@
 <input id="address" readonly />
 <div id="page"></div>
 <script>
-	const url = location.search.substr(1);
+	const url = location.href.split('?').pop();
 	const tpl = `<webview id="frame" src="${url}" partition="persist:github"></webview>`;
 	const page = document.getElementById('page');
 	const inp = document.getElementById('address');

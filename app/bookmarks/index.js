@@ -14,6 +14,13 @@ const issueTypes = {
 	default: 'ion-ios-star-outline',
 };
 
+const statusIconCls = {
+	failure: 'ion-md-alert',
+	success: 'ion-md-checkmark-circle',
+	progress: 'ion-md-time'
+};
+
+
 const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
@@ -49,19 +56,16 @@ function onClick (e) {
 
 
 function updateBuildStatus (pr, status) {
-	const ionCls = {
-		failure: 'ion-md-alert',
-		success: 'ion-md-checkmark-circle',
-		progress: 'ion-md-time'
-	};
 	const prBox = $(`.pr-${pr.id}`);
 	const statusBox = prBox.find('.build-status');
 	const statusIcon = prBox.find('.build-status .icon');
 	const progBoxIn = prBox.find('.build-progress-inner');
 
+	if (!status) return statusBox.hide();
+
 	const result = status.result ? status.result : 'progress';
 	if (result) statusBox.addClass(result);
-	if (ionCls[result]) statusIcon.addClass(ionCls[result]);
+	if (statusIconCls[result]) statusIcon.addClass(statusIconCls[result]);
 	statusBox[0].title = status.result || 'Open build job';
 	statusBox[0].href = pr.buildUrl;
 
@@ -78,7 +82,7 @@ function monitorPr (pr) {
 			pr.buildUrl = url;
 			return jenkins.getStatus(url);
 		})
-		.then(status => status && updateBuildStatus(pr, status));
+		.then(status => updateBuildStatus(pr, status));
 }
 
 

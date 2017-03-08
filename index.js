@@ -13,7 +13,7 @@ app.on('ready', () => {
 
 	win = new BrowserWindow({
 		title: 'Github Browser',
-		icon:'assets/icon.png',
+		icon: __dirname + '/assets/icon.png',
 		show: false,
 		// vibrancy: 'sidebar',
 		// transparent: true,

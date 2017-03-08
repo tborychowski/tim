@@ -134,9 +134,10 @@ function onClick (e) {
 	const el = e.target;
 
 	if (e.metaKey || e.ctrlKey) {
-		if (el.tagName === 'IMG') msg('showPreview', e.target.getAttribute('src'));
-		else if (el.tagName === 'A') msg('showPreview', e.target.getAttribute('href'));
-		if (el.closest('a')) {
+		const a = el.closest('a');
+		if (el.tagName === 'IMG') msg('showPreview', e.target.src);
+		else if (a) msg('showPreview', a.href);
+		if (a) {
 			e.stopPropagation();
 			e.preventDefault();
 		}
