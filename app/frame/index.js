@@ -20,8 +20,11 @@ let webview, isReady = false, lastUrl = '';
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
 	externalLinkClicked: url => shell.openExternal(url),
+
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	showImgMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'img' }),
+	showPreview: url => $.trigger(EVENT.preview, url),
+
 	showSelectionMenu: txt => $.trigger(EVENT.contextmenu.show, { txt, type: 'selection' }),
 	isLogged: itIs => {
 		if (itIs) return;

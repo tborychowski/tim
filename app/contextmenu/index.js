@@ -2,6 +2,7 @@ const {clipboard, remote, shell} = require('electron');
 const {Menu, getCurrentWindow} = remote;
 const $ = require('../util');
 const config = $.getConfig();
+const preview = require('../preview');
 const EVENT = require('../db/events');
 
 let isReady = false, URL = '', TXT = '';
@@ -12,9 +13,14 @@ function getTemplate (type) {
 	let txt = TXT;
 
 	templates.link = [
-		{ label: 'Open in browser', click () { shell.openExternal(URL); }},
-		// { type: 'separator' },
+		{ label: 'Preview', click () { preview.open(URL); }},
+		{ type: 'separator' },
 		{ label: 'Copy URL', click () { clipboard.writeText(URL); }},
+		{ label: 'Open in browser', click () { shell.openExternal(URL); }},
+	];
+
+	templates.img = [
+		...templates.link,
 	];
 
 	templates.bookmark = [
@@ -50,6 +56,8 @@ function onContextMenu (e) {
 	const tar = e.target, url = tar.getAttribute('href');
 	let type;
 
+	if (tar.matches('webview')) return;
+
 	if (tar.matches('a.bookmark')) type = 'bookmark';
 	else if (tar.matches('a')) type = 'link';
 
@@ -65,10 +73,29 @@ function showMenu ({ type, url, txt }) {
 }
 
 
+function showPreview (url) {
+	preview.open(parseLink(url));
+}
+
+
+function onDocumentClick (e) {
+	if (e.metaKey || e.ctrlKey) {
+		const a = e.target.closest('a');
+		if (a && a.matches('#subnav a')) {
+			showPreview(a.getAttribute('href'));
+			e.stopPropagation();
+			e.preventDefault();
+		}
+	}
+}
+
+
 function init () {
 	if (isReady) return;
 	document.addEventListener('contextmenu', onContextMenu);
+	document.addEventListener('click', onDocumentClick);
 	$.on(EVENT.contextmenu.show, showMenu);
+	$.on(EVENT.preview, showPreview);
 	isReady = true;
 }
 

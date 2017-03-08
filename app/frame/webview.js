@@ -87,7 +87,7 @@ function gatherUserIds () {
 function updateUserNames (ev, users) {
 	getElementsWithUserId().forEach(el => {
 		const id = trim(el.innerText, '@');
-		if (users[id]) {
+		if (users[id] && users[id].name) {
 			el.innerText = `${users[id].name}`;
 			el.title = `${id}`;
 			el.classList.add('user-name-replaced');
@@ -132,6 +132,16 @@ function onSwipeEnd () {
 function onClick (e) {
 	msg('documentClicked');
 	const el = e.target;
+
+	if (e.metaKey || e.ctrlKey) {
+		if (el.tagName === 'IMG') msg('showPreview', e.target.getAttribute('src'));
+		else if (el.tagName === 'A') msg('showPreview', e.target.getAttribute('href'));
+		if (el.closest('a')) {
+			e.stopPropagation();
+			e.preventDefault();
+		}
+		return;
+	}
 	if (el.tagName === 'A') {
 		if (isExternal(el.href)) {
 			e.preventDefault();
@@ -155,8 +165,8 @@ function getSelectionText() {
 
 
 function onContextMenu (e) {
-	if (e.target.matches('a')) return msg('showLinkMenu', e.target.getAttribute('href'));
 	if (e.target.matches('img')) return msg('showImgMenu', e.target.getAttribute('src'));
+	if (e.target.matches('a')) return msg('showLinkMenu', e.target.getAttribute('href'));
 	const selText = getSelectionText();
 	if (selText) return msg('showSelectionMenu', selText);
 }

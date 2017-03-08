@@ -3,94 +3,69 @@ const $ = require('../util');
 const EVENT = require('../db/events');
 const isDev = require('electron-is-dev');
 
-const dialog = remote.dialog;
+const dialog = require('./dialog');
 const appName = remote.app.getName();
 const appVersion = remote.app.getVersion();
 
-let IS_INITIAL = false;
+let SILENT = false;
+let IS_DOWNLOADING = false;
 const send = (name, value) => ipcRenderer.send('updater', name, value);
 const log = msg => isDev && console.log(msg);
 
 const events = {
-	'checking-for-update': checkingForUpdate,
+	'checking-for-update': () => log('Checking for update...'),
 	'update-available': updateAvailable,
 	'update-not-available': updateNotAvailable,
-	'error': error,
-	'download-progress': downloadProgress,
+	'error': () => dialog.error('There was an error with the upload.\nPlease try again later.'),
+	'download-progress': log('Downloading update...'),
 	'update-downloaded': updateDownloaded,
 };
 
 
-function checkingForUpdate () {
-	log('Checking for update...');
-}
-
-function updateAvailable (resp) {
-	log('Update available');
-	dialog.showMessageBox({
-		type: 'question',
-		title: 'Update',
-		message: 'There is a newer version available.',
-		detail: `You have: ${appVersion}\nAvailable: ${resp.version}`,
-		buttons: [ 'Cancel', 'Update' ],
-		defaultId: 1,
-	}, res => { if (res === 1) send('download'); });
-	updatingDone();
+function checkForUpdates (silent) {
+	if (IS_DOWNLOADING) dialog.info('The update was found and it\'s already downloading.', 'Please be patient.');
+	SILENT = (silent === true);
+	send('check');
 }
 
 function updateNotAvailable () {
 	log('Update not available');
-	if (!IS_INITIAL) {
-		dialog.showMessageBox({
-			type: 'info',
-			title: 'Update',
-			message: `You have the latest version of\n${appName} ${appVersion}`,
-			detail: 'No need to update',
-			buttons: [ 'OK' ],
-			defaultId: 0,
-		});
-	}
-	updatingDone();
+	if (!SILENT) dialog.info(`You have the latest version of\n${appName} ${appVersion}`, 'No need to update');
+	SILENT = false;
 }
 
-function error () {
-	dialog.showErrorBox('Error', 'There was an error with the upload.\nPlease try again later.');
+function updateAvailable (resp) {
+	log('Update available');
+	if (SILENT) return download();
+	dialog.question({
+		message: 'There is a newer version available.',
+		detail: `You have: ${appVersion}\nAvailable: ${resp.version}`,
+		buttons: [ 'Cancel', 'Update' ]
+	})
+	.then(download);
 }
 
-function downloadProgress () {
-	log('Downloading update...');
+function download () {
+	IS_DOWNLOADING = true;
+	send('download');
 }
 
 function updateDownloaded () {
 	log('Update downloaded');
-	dialog.showMessageBox({
-		type: 'question',
-		title: 'Update',
+	dialog.question({
 		message: 'Update downloaded.\nDo you want to install it now or next time you start the app?',
-		buttons: [ 'Install later', 'Quit and install' ],
-		defaultId: 1,
-	}, res => { if (res === 1) send('install'); });
+		buttons: [ 'Install later', 'Quit and install' ]
+	})
+	.then(() => send('install'));
+	SILENT = false;
 }
 
-
-function checkForUpdates (isInitial = false) {
-	// don't show the "you have the latest" window, when triggered automatically
-	if (isInitial === true) IS_INITIAL = true;
-	send('check');
-}
-
-function updatingDone () {
-	IS_INITIAL = false;
-}
-
-
-function onEvent (ev, name, params) {
-	if (typeof events[name] === 'function') events[name](params);
-}
 
 
 function init () {
-	ipcRenderer.on('updater', onEvent);
+	ipcRenderer.on('updater', (ev, name, params) => {
+		if (typeof events[name] === 'function') events[name](params);
+	});
 	$.on(EVENT.updater.check, checkForUpdates);
 	setTimeout(() => checkForUpdates(true), 5000);
 }

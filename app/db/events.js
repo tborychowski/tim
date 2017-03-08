@@ -42,8 +42,9 @@ module.exports = {
 	},
 	contextmenu: {
 		show: 'show-contextmenu',
-		hide: 'hide-contextmenu'
+		hide: 'hide-contextmenu',
 	},
+	preview: 'show-preview',
 	settings: {
 		show: 'show-settings',
 		changed: 'on settings changed'
