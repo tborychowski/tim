@@ -15,6 +15,7 @@
 		color: #444;
 		border: none;
 		background: rgba(255,255,255,.5);
+		box-shadow: 0 1px 1px rgba(0,0,0,0.1);
 	}
 	#page { position: absolute; top: 26px; bottom: 0; left: 0; right: 0; }
 </style>
@@ -23,7 +24,7 @@
 <input id="address" readonly />
 <div id="page"></div>
 <script>
-	const url = location.href.split('?').pop();
+	const url = decodeURIComponent(location.href.split('?').pop());
 	const tpl = `<webview id="frame" src="${url}" partition="persist:github"></webview>`;
 	const page = document.getElementById('page');
 	const inp = document.getElementById('address');

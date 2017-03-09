@@ -20,6 +20,7 @@ function open (url) {
 
 	win.on('closed', () => { win = null; });
 
+	url = encodeURIComponent(url);
 	win.loadURL(`file://${__dirname}/index.html?${url}`);
 }
 
