@@ -40,8 +40,8 @@ function init () {
 
 	el.on('click', onClick);
 
-	const currentSection = config.get('state.section');
-	if (currentSection) changeSection(currentSection);
+	const sect = config.get('state.section');
+	if (sect) changeSection(sect);
 
 	$.on(EVENT.notifications.count, onNotificationsCountUpdate);
 

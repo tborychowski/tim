@@ -74,6 +74,8 @@ function init () {
 	listEl = el.find('.subnav-section-list');
 
 	el.on('click', onClick);
+	$.on(EVENT.projects.refresh, refresh);
+
 
 	refresh();
 

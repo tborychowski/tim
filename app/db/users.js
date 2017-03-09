@@ -3,6 +3,8 @@ const DB = require('tingodb')().Db;
 const db = new DB(app.getPath('userData'), {});
 const collection = db.collection('users.json');
 
+collection.ensureIndex({ 'id': 1 }, { unique: true });
+
 
 function add (item) {
 	if (!item) return Promise.resolve();
@@ -18,13 +20,13 @@ function add (item) {
 
 function get () {
 	return new Promise ((resolve, reject) => {
-		collection.find({}, { _id: 0 }, (err, res) => {
-			if (err) return reject(err);
-			res.sort({ repo: 1, id: 1 }).toArray((err2, items) => {
-				if (err2) return reject(err2);
+		collection
+			.find({}, { _id: 0 })
+			.sort({ repo: 1, id: 1 })
+			.toArray((err, items) => {
+				if (err) return reject(err);
 				resolve(items);
 			});
-		});
 	});
 }
 
@@ -32,12 +34,9 @@ function get () {
 function getById (id) {
 	if (!id) return Promise.resolve();
 	return new Promise ((resolve, reject) => {
-		collection.find({ id }, { _id: 0 }, (err, res) => {
+		collection.findOne({ id }, { _id: 0 }, (err, res) => {
 			if (err) return reject(err);
-			res.toArray((err2, items) => {
-				if (err2) return reject(err2);
-				resolve(items[0]);
-			});
+			resolve(res);
 		});
 	});
 }

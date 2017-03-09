@@ -36,6 +36,11 @@ function unstar () {
 	starBox.removeClass('is-starred');
 }
 
+function toggleStar () {
+	if (starBox.hasClass('is-starred')) clickHandlers.unstar();
+	else clickHandlers.star();
+}
+
 function showConnectionError () {
 	el.addClass('error');
 }
@@ -80,6 +85,7 @@ function init () {
 	$.on(EVENT.connection.error.hide, hideConnectionError);
 	$.on(EVENT.bookmark.add, star);
 	$.on(EVENT.bookmark.remove, unstar);
+	$.on(EVENT.bookmark.toggle, toggleStar);
 
 	isReady = true;
 }

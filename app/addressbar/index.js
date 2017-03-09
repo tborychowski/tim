@@ -36,6 +36,11 @@ function gotoIssue (id) {
 
 }
 
+function star (exists) {
+	starBox.toggleClass('is-starred', !!exists);
+	$.trigger(EVENT.bookmark.exists, !!exists);
+}
+
 // BaseURL/Group/RepoName/issues?q=is:open is:issue...
 function getSearchUrl (q) {
 	const query = 'issues?q=is:open is:issue ' + q;
@@ -44,9 +49,7 @@ function getSearchUrl (q) {
 
 function checkIfBookmarked (url) {
 	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
-	starsDB.getByUrl(url).then(res => {
-		starBox.toggleClass('is-starred', !!res);
-	});
+	starsDB.getByUrl(url).then(star);
 }
 
 
@@ -63,7 +66,7 @@ function gotoUrl (url) {
 		url = getSearchUrl(url);
 	}
 
-	starBox.toggleClass('is-starred', false);
+	star(false);
 	if (url) $.trigger(EVENT.frame.goto, url);
 	$.trigger(EVENT.address.input.end);
 }

@@ -26,23 +26,24 @@ const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
 function starIssue (issue) {
-	starsDB.add(issue).then(getIssues);
+	starsDB.add(issue).then(refresh);
 }
 
 function unstarIssue (issue) {
-	starsDB.remove(issue).then(getIssues);
+	starsDB.remove(issue).then(refresh);
 }
 
-function getIssues () {
+function refresh () {
 	starsDB.get().then(fillIssues);
 }
+
 
 function onClick (e) {
 	let target = $(e.target);
 
 	if (target.is('.js-refresh')) {
 		e.preventDefault();
-		getIssues();
+		refresh();
 	}
 	else if (target.is('.btn')) {
 		e.preventDefault();
@@ -137,11 +138,12 @@ function init () {
 	el = $('.subnav-bookmarks');
 	reposEl = el.find('.subnav-section-list');
 
-	getIssues();
+	refresh();
 
 	el.on('click', onClick);
 	$.on(EVENT.bookmark.add, starIssue);
 	$.on(EVENT.bookmark.remove, unstarIssue);
+	$.on(EVENT.bookmarks.refresh, refresh);
 
 	isReady = true;
 }
