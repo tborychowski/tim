@@ -10,6 +10,11 @@ module.exports = {
 	bookmark: {
 		add: 'add-bookmark',
 		remove: 'remove-bookmark',
+		toggle: 'bookmark-toggle',
+		exists: 'bookmark-exists'
+	},
+	bookmarks: {
+		refresh: 'refresh-bookmarks'
 	},
 	connection: {
 		error: {
@@ -33,6 +38,9 @@ module.exports = {
 	menu: {
 		click: 'menu-clicked'
 	},
+	myissues: {
+		refresh: 'refresh-my-issues'
+	},
 	nav: {
 		goto: 'nav-goto'
 	},
@@ -47,6 +55,9 @@ module.exports = {
 		hide: 'hide-contextmenu',
 	},
 	preview: 'show-preview',
+	projects: {
+		refresh: 'refresh-projects'
+	},
 	settings: {
 		show: 'show-settings',
 		changed: 'on settings changed'

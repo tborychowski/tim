@@ -46,7 +46,7 @@ function render (items) {
 }
 
 function onAddressInput (e) {
-	const txt = $.trim(e.target.value, '\\s|#');
+	const txt = $.trim(e.target.value, '#');
 	DB.find(txt).then(render);
 }
 
