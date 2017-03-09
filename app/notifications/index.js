@@ -104,6 +104,7 @@ function init () {
 
 	el.on('click', onClick);
 
+	$.on(EVENT.notifications.refresh, refresh);
 	$.on(EVENT.notifications.toggle, toggle);
 	$.on(EVENT.notifications.devtools, toggleDevTools);
 	$.on(EVENT.settings.changed, () => refresh(true));

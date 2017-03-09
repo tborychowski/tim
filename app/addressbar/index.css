@@ -30,3 +30,6 @@ header.error .addressbar { padding-right: 40px; }
 .star-box.is-starred .js-star { display: none; }
 .star-box.is-starred .js-unstar { display: inline; }
 
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }

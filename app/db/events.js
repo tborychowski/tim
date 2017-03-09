@@ -4,7 +4,8 @@ module.exports = {
 			key: 'address-input',
 			end: 'address-input-end'
 		},
-		focus: 'focus-address'
+		focus: 'focus-address',
+		issueFocus: 'focus-issue-box',
 	},
 	bookmark: {
 		add: 'add-bookmark',
@@ -38,7 +39,8 @@ module.exports = {
 	notifications: {
 		toggle: 'notifications-toggle',
 		devtools: 'notification-devtools-toggle',
-		count: 'notifications-count-updated'
+		count: 'notifications-count-updated',
+		refresh: 'refresh-notifications'
 	},
 	contextmenu: {
 		show: 'show-contextmenu',

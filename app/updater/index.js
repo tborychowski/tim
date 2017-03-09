@@ -17,7 +17,7 @@ const events = {
 	'update-available': updateAvailable,
 	'update-not-available': updateNotAvailable,
 	'error': () => dialog.error('There was an error with the upload.\nPlease try again later.'),
-	'download-progress': log('Downloading update...'),
+	'download-progress': () => log('Downloading update...'),
 	'update-downloaded': updateDownloaded,
 };
 
@@ -67,7 +67,7 @@ function init () {
 		if (typeof events[name] === 'function') events[name](params);
 	});
 	$.on(EVENT.updater.check, checkForUpdates);
-	setTimeout(() => checkForUpdates(true), 5000);
+	if (!isDev) setTimeout(() => checkForUpdates(true), 5000);
 }
 
 

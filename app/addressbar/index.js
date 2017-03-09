@@ -103,6 +103,10 @@ function focusAddressbar () {
 	setTimeout(() => { el[0].select(); }, 10);
 }
 
+function focusIssuebox () {
+	setTimeout(() => { issueBox[0].select(); }, 10);
+}
+
 
 
 function onFocus () {
@@ -151,6 +155,7 @@ function init () {
 	$.on(EVENT.url.change.to, gotoUrl);
 	$.on(EVENT.url.change.done, onUrlChanged);
 	$.on(EVENT.address.focus, focusAddressbar);
+	$.on(EVENT.address.issueFocus, focusIssuebox);
 
 	isReady = true;
 }
