@@ -27,12 +27,12 @@ function initBar () {
 	});
 
 	const btnAddressbar = new TouchBarButton({
-		label: 'Search or type url                                               ',	// these are nbsp chars
+		label: 'Search or type url                                   ',	// these are nbsp chars
 		click: () => $.trigger(EVENT.address.focus)
 	});
 
 	const btnIssueNo = new TouchBarButton({
-		label: 'Issue #                                  ',
+		label: 'Issue #                   ',
 		click: () => $.trigger(EVENT.address.issueFocus)
 	});
 

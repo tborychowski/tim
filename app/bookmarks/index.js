@@ -62,14 +62,16 @@ function updateBuildStatus (pr, status) {
 	const statusIcon = prBox.find('.build-status .icon');
 	const progBoxIn = prBox.find('.build-progress-inner');
 
-	if (!status) return statusBox.hide();
+	if (!status) return;// statusBox.hide();
+	statusBox.show();
 
-	const result = status.result ? status.result : 'progress';
+	const result = status.result ? status.result : status.progress < 100 ? 'progress' : '';
 	if (result) statusBox.addClass(result);
 	if (statusIconCls[result]) statusIcon.addClass(statusIconCls[result]);
-	statusBox[0].title = status.result || 'Open build job';
-	statusBox[0].href = pr.buildUrl;
-
+	if (statusBox.length) {
+		statusBox[0].title = status.result || 'Open build job';
+		statusBox[0].href = pr.buildUrl;
+	}
 	progBoxIn[0].style.width = status.progress + '%';
 	if (!status.result) setTimeout(() => { monitorPr(pr); }, 10000);
 }

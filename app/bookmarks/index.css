@@ -14,7 +14,7 @@
 .build-status.progress { color: rgba(255, 255, 255, 0.5); }
 
 
-.build-status { position: absolute; bottom: 5px; left: 40px; right: 25px; height: 10px; padding: 4px 0; }
+.build-status { position: absolute; bottom: 0; left: 41px; right: 23px; height: 10px; padding: 4px 0; display: none; }
 .build-status .icon { position: absolute; right: -8px; bottom: -3px; }
 .build-status.progress .icon { animation: blink 5s linear infinite; }
 

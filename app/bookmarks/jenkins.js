@@ -26,7 +26,7 @@ function parseBuildData (item, data) {
 function buildInfo (jenkins, item) {
 	return new Promise(resolve  => {
 		jenkins.build_info(item.jobName, item.buildId, (err, data) => {
-			if (err) return resolve(item);
+			if (err) return resolve();
 			item = parseBuildData(item, data);
 			resolve(item);
 		});

@@ -42,8 +42,8 @@ function getById (_id) {
 
 
 function find (txt) {
+	txt = new RegExp('.*' + ('' + txt).split(' ').join('.*') + '.*', 'i');
 	return new Promise ((resolve, reject) => {
-		txt = new RegExp('.*' + txt.split(' ').join('.*') + '.*', 'i');
 		collection
 			.find({ $or: [ {id: txt}, {name: txt} ]})
 			.sort({ visited: -1 })
