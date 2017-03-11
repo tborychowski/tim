@@ -1,7 +1,5 @@
 const $ = require('../util');
-const config = $.getConfig();
-const starsDB = require('../db/stars');
-const EVENT = require('../db/events');
+const { config, EVENT, stars } = require('../services');
 
 let isReady = false,
 	el = null,
@@ -49,7 +47,7 @@ function getSearchUrl (q) {
 
 function checkIfBookmarked (url) {
 	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
-	starsDB.getByUrl(url).then(star);
+	stars.getByUrl(url).then(star);
 }
 
 

@@ -1,9 +1,7 @@
 const {TouchBar, getCurrentWindow} = require('electron').remote;
 const {TouchBarButton, TouchBarSpacer} = TouchBar;
-
+const { config, EVENT } = require('../services');
 const $ = require('../util');
-const EVENT = require('../db/events');
-const config = $.getConfig();
 
 let btnBookmark;
 

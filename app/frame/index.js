@@ -3,8 +3,7 @@ const isDev = require('electron-is-dev');
 
 const args = getGlobal('appArgs');
 const $ = require('../util');
-const config = $.getConfig();
-const EVENT = require('../db/events');
+const { config, EVENT } = require('../services');
 
 const realnames = require('../realnames');
 const swiping = require('./swiping');
@@ -112,6 +111,7 @@ function onRendered (url, issue) {
 
 function loadingStart () {
 	webview.addClass('loading');
+	webview[0].focus();
 	$.trigger(EVENT.url.change.start);
 }
 
@@ -119,7 +119,7 @@ function loadingStop () {
 	const newUrl = webview[0].getURL();
 	webview.removeClass('loading');
 	$.trigger(EVENT.url.change.end);
-	if (lastUrl !== newUrl) webview[0].focus();
+	// if (lastUrl !== newUrl) webview[0].focus();
 	lastUrl = newUrl;
 }
 

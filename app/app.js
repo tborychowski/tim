@@ -22,7 +22,8 @@ components.forEach(init);
 
 
 const ipc = require('electron').ipcRenderer;
-const EVENT = require('./app/db/events');
+const { EVENT } = require('./app/services');
+
 ipc.on('event', (ev, name) => $.trigger(name));
 ipc.on(EVENT.frame.goto, (ev, url) => $.trigger(EVENT.frame.goto, url));
 

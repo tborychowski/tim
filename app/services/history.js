@@ -42,10 +42,13 @@ function getById (_id) {
 
 
 function find (txt) {
-	txt = new RegExp('.*' + ('' + txt).split(' ').join('.*') + '.*', 'i');
+	txt = '.*' + ('' + txt).split(' ').join('.*') + '.*';
 	return new Promise ((resolve, reject) => {
 		collection
-			.find({ $or: [ {id: txt}, {name: txt} ]})
+			.find({ $or: [
+				{id: { $regex: txt, $options: 'i' }},
+				{name: { $regex: txt, $options: 'i' }},
+			]})
 			.sort({ visited: -1 })
 			.toArray((err, items) => {
 				if (err) return reject(err);

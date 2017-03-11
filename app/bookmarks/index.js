@@ -1,10 +1,6 @@
 const { shell } = require('electron').remote;
+const { config, EVENT, stars, github, jenkins } = require('../services');
 const $ = require('../util');
-const config = $.getConfig();
-const starsDB = require('../db/stars');
-const EVENT = require('../db/events');
-const jenkins = require('./jenkins');
-const github = require('../db/github');
 
 
 let isReady = false, el, reposEl;
@@ -26,15 +22,15 @@ const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
 function starIssue (issue) {
-	starsDB.add(issue).then(refresh);
+	stars.add(issue).then(refresh);
 }
 
 function unstarIssue (issue) {
-	starsDB.remove(issue).then(refresh);
+	stars.remove(issue).then(refresh);
 }
 
 function refresh () {
-	starsDB.get().then(fillIssues);
+	stars.get().then(fillIssues);
 }
 
 

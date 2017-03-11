@@ -1,7 +1,4 @@
-// const $ = require('../util');
-// const config = $.getConfig();
-const usersDB = require('../db/users');
-const github = require('../db/github');
+const { users, github } = require('../services');
 
 let webview;
 
@@ -10,19 +7,19 @@ let webview;
  * from [{id: '1', name: 'a'}, {id: '2', name: 'b'}]
  * to { 1: {id: '1', name: 'a'}, 2: {id: '2', name: 'b'} }
  */
-function uato (users) {
+function uato (userList) {
 	const uobj = {};
-	for (let user of users) if (user) uobj[user.id] = user;
+	for (let user of userList) if (user) uobj[user.id] = user;
 	return uobj;
 }
 
-function matchIdsWithNames (idList, users) {
-	const uobj = uato(users);
+function matchIdsWithNames (idList, userList) {
+	const uobj = uato(userList);
 	const newUsers = idList.map(id => {
 		if (uobj[id]) return Promise.resolve(uobj[id]);
 		return github.getUserById(id)
 			.then(usr => {
-				usersDB.add(usr);
+				users.add(usr);
 				return usr;
 			});
 	});
@@ -31,8 +28,8 @@ function matchIdsWithNames (idList, users) {
 
 
 function getAll (idList) {
-	return usersDB.get()
-		.then(users => matchIdsWithNames(idList, users))
+	return users.get()
+		.then(userList => matchIdsWithNames(idList, userList))
 		.then(res => webview.send('userIdsAndNames', res));
 }
 

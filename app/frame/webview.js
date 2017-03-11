@@ -46,7 +46,7 @@ function observeChanges () {
 	const observer = new MutationObserver(onDomChange);
 	const target = document.querySelector('div[role=main]');
 	if (target) observer.observe(target, { childList: true, subtree: true });
-	else console.log('Observer target not found');
+	// else console.log('Observer target not found');
 	// observer.disconnect();
 }
 

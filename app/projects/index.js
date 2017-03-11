@@ -1,9 +1,5 @@
 const $ = require('../util');
-const config = $.getConfig();
-const EVENT = require('../db/events');
-const github = require('../db/github');
-const users = require('../db/users');
-
+const { config, EVENT, users, github } = require('../services');
 
 let isReady = false, el, listEl;
 const baseUrl = `${config.get('baseUrl')}/${config.get('repoToSearch')}/projects/`;

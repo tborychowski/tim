@@ -1,6 +1,5 @@
 const $ = require('../util');
-const DB = require('../db/history');
-const EVENT = require('../db/events');
+const { EVENT, history } = require('../services');
 
 
 let el, listEl, isVisible = false, isReady = false;
@@ -24,7 +23,7 @@ function show () {
 function onUrlChanged (webview, issue) {
 	if (!issue) return;
 	issue.visited = new Date();
-	DB.add(issue);
+	history.add(issue);
 }
 
 
@@ -47,14 +46,14 @@ function render (items) {
 
 function onAddressInput (e) {
 	const txt = $.trim(e.target.value, '#');
-	DB.find(txt).then(render);
+	history.find(txt).then(render);
 }
 
 
 
 function onKeyPress (e) {
 	if (e.key === 'Enter' || (e.type === 'click' && e.target.tagName === 'OPTION')) {
-		DB.getById(e.target.value).then(item => $.trigger(EVENT.url.change.to, item.url));
+		history.getById(e.target.value).then(item => $.trigger(EVENT.url.change.to, item.url));
 	}
 }
 

@@ -1,5 +1,5 @@
 const $ = require('../util');
-const EVENT = require('../db/events');
+const { EVENT } = require('../services');
 
 
 let frame, webview, isReady = false;
