@@ -1,6 +1,6 @@
 const { ipcRenderer, remote } = require('electron');
+const { EVENT } = require('../services');
 const $ = require('../util');
-const EVENT = require('../db/events');
 const isDev = require('electron-is-dev');
 
 const dialog = require('./dialog');

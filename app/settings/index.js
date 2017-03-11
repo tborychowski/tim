@@ -1,7 +1,6 @@
 const {shell, app} = require('electron').remote;
 const $ = require('../util');
-const config = $.getConfig();
-const EVENT = require('../db/events');
+const { config, EVENT } = require('../services');
 
 
 let isReady = false, el, formEl, tokenLink, form, isVisible = false;

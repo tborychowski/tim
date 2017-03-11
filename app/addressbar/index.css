@@ -1,4 +1,4 @@
-.addressbar-input-wrapper { flex: 1; display: flex; position: relative; }
+.addressbar-input-wrapper { flex: 1; display: flex; position: relative; background-color: inherit; }
 
 
 .addr-input {

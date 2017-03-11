@@ -1,8 +1,7 @@
 const {clipboard} = require('electron');
 const {exec} = require('child_process');
+const { config, EVENT } = require('../services');
 const $ = require('../util');
-const config = $.getConfig();
-const EVENT = require('../db/events');
 
 let isReady = false, el, starBox, btnBack, btnForw;
 

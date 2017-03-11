@@ -1,6 +1,6 @@
 const { shell, Menu } = require('electron').remote;
 const $ = require('../util');
-const EVENT = require('../db/events');
+const { EVENT } = require('../services');
 
 const menuTemplate = [
 	{

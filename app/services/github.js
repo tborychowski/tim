@@ -1,7 +1,7 @@
 const GH = require('octonode');
-const $ = require('../util');
-const config = $.getConfig();
 const isDev = require('electron-is-dev');
+const $ = require('../util');
+const config = require('./config');
 
 let hostname = config.get('baseUrl').replace('https://', '') + 'api/v3';
 let client = null;

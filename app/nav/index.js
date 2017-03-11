@@ -1,6 +1,5 @@
 const $ = require('../util');
-const config = $.getConfig();
-const EVENT = require('../db/events');
+const { config, EVENT } = require('../services');
 
 let isReady = false, el, subnav, buttons, sections;
 let notificationsBadge;

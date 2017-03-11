@@ -127,6 +127,16 @@ function prettyDate (time) {
 		day_diff < 31 && Math.ceil(day_diff / 7) + ' weeks ago';
 }
 
+
+function injectCSS (webview, path) {
+	const readFile = require('fs').readFileSync;
+	let css;
+	try { css = readFile(path, 'utf8'); }
+	catch (e) { css = ''; }
+	webview[0].send('injectCss', css);
+}
+
+
 module.exports = {
 	fuzzy,
 	ltrim,
@@ -146,4 +156,5 @@ module.exports = {
 	parseUrl,
 	months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 	prettyDate,
+	injectCSS,
 };
