@@ -1,7 +1,8 @@
 const {app, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
-const EVENT = require('./app/db/events');
+const EVENT = require('./app/services/events');
 const updater = require('./app/updater/main');
+
 
 const send = (name, val) => win.webContents.send(name, val);
 

@@ -6,21 +6,19 @@ const $ = require('../util');
 let btnBookmark;
 
 function initBar () {
-	// const btnBack = new TouchBarButton({
-	// 	label: '←',
-	// 	click: () => $.trigger(EVENT.frame.goto, 'prev')
-	// });
-	// const btnForward = new TouchBarButton({
-	// 	label: '→',
-	// 	click: () => $.trigger(EVENT.frame.goto, 'next')
-	// });
+	const btnRefreshSidebar = new TouchBarButton({
+		icon: './assets/tb-refresh.png',
+		backgroundColor: '#2C384D',
+		click: refreshSidebar
+	});
+
 	const btnRefresh = new TouchBarButton({
-		label: '↻',
+		icon: './assets/tb-refresh.png',
 		click: () => $.trigger(EVENT.frame.goto, 'refresh')
 	});
 
 	btnBookmark = new TouchBarButton({
-		label: '☆',
+		icon: './assets/tb-bookmark-outline.png',
 		click: () => $.trigger(EVENT.bookmark.toggle)
 	});
 
@@ -34,17 +32,9 @@ function initBar () {
 		click: () => $.trigger(EVENT.address.issueFocus)
 	});
 
-	const btnRefreshSidebar = new TouchBarButton({
-		label: '↻',
-		backgroundColor: '#2C384D',
-		click: refreshSidebar
-	});
-
 	return new TouchBar([
 		btnRefreshSidebar,
 		new TouchBarSpacer({ size: 'medium' }),
-		// btnBack,
-		// btnForward,
 		btnAddressbar,
 		btnIssueNo,
 		btnRefresh,
@@ -55,8 +45,11 @@ function initBar () {
 
 
 function bookmarkExists (exists) {
-	btnBookmark.label = exists ? '★' : '☆';
-	btnBookmark.backgroundColor = exists ? '#E7837C' : '#444';
+	const icons = {
+		empty: './assets/tb-bookmark-outline.png',
+		full: './assets/tb-bookmark.png',
+	};
+	btnBookmark.icon = exists ? icons.full : icons.empty;
 }
 
 
