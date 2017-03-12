@@ -1,5 +1,5 @@
-const {TouchBar, getCurrentWindow} = require('electron').remote;
-const {TouchBarButton, TouchBarSpacer} = TouchBar;
+const { TouchBar, getCurrentWindow } = require('electron').remote;
+const { TouchBarButton, TouchBarSpacer } = TouchBar;
 const { config, EVENT } = require('../services');
 const $ = require('../util');
 
@@ -24,6 +24,7 @@ function initBar () {
 
 	const btnAddressbar = new TouchBarButton({
 		label: 'Search or type url                                   ',	// these are nbsp chars
+		// image: './assets/tb-logo.png',
 		click: () => $.trigger(EVENT.address.focus)
 	});
 
@@ -49,6 +50,7 @@ function bookmarkExists (exists) {
 		empty: './assets/tb-bookmark-outline.png',
 		full: './assets/tb-bookmark.png',
 	};
+	btnBookmark.backgroundColor = exists ? '#555' : '#444';
 	btnBookmark.icon = exists ? icons.full : icons.empty;
 }
 
