@@ -11,7 +11,7 @@ const components = [
 	'settings',
 	'history',
 	'search',
-	'main-menu',
+	'mainmenu',
 	'contextmenu',
 	'projects',
 	'updater',
