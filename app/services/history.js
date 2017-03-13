@@ -1,7 +1,5 @@
-const app = require('electron').remote.app;
-const DB = require('tingodb')().Db;
-const db = new DB(app.getPath('userData'), {});
-const collection = db.collection('history.json');
+const helper = require('./helper');
+const collection = helper.getCollection('history');
 
 collection.ensureIndex({ 'url': 1 }, { unique: true });
 

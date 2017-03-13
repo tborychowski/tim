@@ -1,5 +1,4 @@
-const { shell } = require('electron').remote;
-const { config, EVENT, stars, github, jenkins } = require('../services');
+const { config, EVENT, stars, github, jenkins, helper } = require('../services');
 const $ = require('../util');
 
 
@@ -47,7 +46,7 @@ function onClick (e) {
 	}
 	else if (target.closest('.build-status')) {
 		e.preventDefault();
-		shell.openExternal(target.closest('.build-status')[0].getAttribute('href'));
+		helper.openInBrowser(target.closest('.build-status')[0].getAttribute('href'));
 	}
 }
 

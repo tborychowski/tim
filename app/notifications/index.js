@@ -1,10 +1,8 @@
 const $ = require('../util');
-const { config, EVENT, github } = require('../services');
+const { config, EVENT, github, helper } = require('../services');
 
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
-const badge = require('../badge');
-
 
 let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer;
 const refreshDelay = 5 * 60 * 1000; // every 5 minutes
@@ -75,7 +73,7 @@ function checkNotifications (delay = 0) {
 
 	github.getNotificationsCount(PARTICIPATING)
 		.then(count => {
-			badge(count);
+			helper.setBadge(count);
 			$.trigger(EVENT.notifications.count, count);
 			notificationsTimer = setTimeout(checkNotifications, refreshDelay);
 		});

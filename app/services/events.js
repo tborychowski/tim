@@ -22,6 +22,10 @@ module.exports = {
 			hide: 'hide-connection-error',
 		}
 	},
+	contextmenu: {
+		show: 'show-contextmenu',
+		hide: 'hide-contextmenu',
+	},
 	document: {
 		click: 'document-clicked'
 	},
@@ -42,7 +46,7 @@ module.exports = {
 		refresh: 'refresh-my-issues'
 	},
 	nav: {
-		goto: 'nav-goto'
+		goto: 'nav-goto',
 	},
 	notifications: {
 		toggle: 'notifications-toggle',
@@ -50,21 +54,20 @@ module.exports = {
 		count: 'notifications-count-updated',
 		refresh: 'refresh-notifications'
 	},
-	contextmenu: {
-		show: 'show-contextmenu',
-		hide: 'hide-contextmenu',
-	},
 	preview: 'show-preview',
 	projects: {
 		refresh: 'refresh-projects'
 	},
-	settings: {
-		show: 'show-settings',
-		changed: 'on settings changed'
-	},
 	search: {
 		start: 'start-search',
 		stop: 'stop-search'
+	},
+	section: {
+		refresh: 'refresh-section'
+	},
+	settings: {
+		show: 'show-settings',
+		changed: 'on settings changed'
 	},
 	swipe: {
 		start: 'swipe-start',

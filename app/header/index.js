@@ -1,6 +1,4 @@
-const {clipboard} = require('electron');
-const {exec} = require('child_process');
-const { config, EVENT } = require('../services');
+const { config, EVENT, helper } = require('../services');
 const $ = require('../util');
 
 let isReady = false, el, starBox, btnBack, btnForw;
@@ -10,16 +8,8 @@ const clickHandlers = {
 	next () { $.trigger(EVENT.frame.goto, 'next'); },
 	refresh () { $.trigger(EVENT.frame.goto, 'refresh'); },
 	stop () { $.trigger(EVENT.frame.goto, 'stop'); },
-	browser () {
-		// shell.openExternal(config.get('state.url'));
-		const browser = config.get('browser') || '/Applications/Google Chrome.app';
-		const cmd = `open -a "${browser}" "${config.get('state.url')}"`;
-		exec(cmd, (err, stdout, stderr) => {
-			if (err || stderr) console.log(err || stderr);
-		});
-
-	},
-	copy () { clipboard.writeText(config.get('state.url')); },
+	browser () { helper.openInBrowser(config.get('state.url')); },
+	copy () { helper.copyToClipboard(config.get('state.url')); },
 	hideNotifications () { $.trigger(EVENT.notifications.toggle, false); },
 	showNotifications () { $.trigger(EVENT.notifications.toggle, true); },
 	home () { $.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl')); },

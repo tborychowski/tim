@@ -1,9 +1,9 @@
-const {shell, session, getGlobal } = require('electron').remote;
+const { session, getGlobal } = require('electron').remote;
 const isDev = require('electron-is-dev');
 
 const args = getGlobal('appArgs');
 const $ = require('../util');
-const { config, EVENT } = require('../services');
+const { config, EVENT, helper } = require('../services');
 
 const realnames = require('../realnames');
 const swiping = require('./swiping');
@@ -18,7 +18,7 @@ let webview, isReady = false, lastUrl = '';
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
-	externalLinkClicked: url => shell.openExternal(url),
+	externalLinkClicked: url => helper.openInBrowser(url),
 
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	showImgMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'img' }),
