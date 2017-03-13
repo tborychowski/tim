@@ -2,29 +2,30 @@ const { TouchBar, getCurrentWindow } = require('electron').remote;
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
 const { config, EVENT } = require('../services');
 const $ = require('../util');
-
+const path = require('path');
+const imgPath = path.resolve(__dirname, '..', '..', 'assets');
 let btnBookmark;
 
 function initBar () {
 	const btnRefreshSidebar = new TouchBarButton({
-		icon: './assets/tb-refresh.png',
+		icon: imgPath + '/tb-refresh.png',
 		backgroundColor: '#2C384D',
 		click: refreshSidebar
 	});
 
 	const btnRefresh = new TouchBarButton({
-		icon: './assets/tb-refresh.png',
+		icon: imgPath + '/tb-refresh.png',
 		click: () => $.trigger(EVENT.frame.goto, 'refresh')
 	});
 
 	btnBookmark = new TouchBarButton({
-		icon: './assets/tb-bookmark-outline.png',
+		icon: imgPath + '/tb-bookmark-outline.png',
 		click: () => $.trigger(EVENT.bookmark.toggle)
 	});
 
 	const btnAddressbar = new TouchBarButton({
 		label: 'Search or type url                                   ',	// these are nbsp chars
-		// image: './assets/tb-logo.png',
+		// image: imgPath + '/tb-logo.png',
 		click: () => $.trigger(EVENT.address.focus)
 	});
 
@@ -47,8 +48,8 @@ function initBar () {
 
 function bookmarkExists (exists) {
 	const icons = {
-		empty: './assets/tb-bookmark-outline.png',
-		full: './assets/tb-bookmark.png',
+		empty: imgPath + '/tb-bookmark-outline.png',
+		full: imgPath + '/tb-bookmark.png',
 	};
 	btnBookmark.backgroundColor = exists ? '#555' : '#444';
 	btnBookmark.icon = exists ? icons.full : icons.empty;
