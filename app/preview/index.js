@@ -1,4 +1,5 @@
-const {BrowserWindow, app} = require('electron').remote;
+const { BrowserWindow } = require('electron').remote;
+const { helper } = require('../services');
 const windowStateKeeper = require('electron-window-state');
 
 function open (url) {
@@ -6,7 +7,7 @@ function open (url) {
 		defaultWidth: 1000,
 		defaultHeight: 800,
 		file: 'preview-window-state.json',
-		path: app.getPath('userData')
+		path: helper.getUserDataFolder()
 	});
 
 	let win = new BrowserWindow({

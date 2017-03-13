@@ -1,6 +1,5 @@
-const {clipboard, remote, shell} = require('electron');
-const {Menu, getCurrentWindow} = remote;
-const { config, EVENT } = require('../services');
+const { Menu, getCurrentWindow } = require('electron').remote;
+const { config, EVENT, helper } = require('../services');
 const $ = require('../util');
 const preview = require('../preview');
 
@@ -14,8 +13,8 @@ function getTemplate (type) {
 	templates.link = [
 		{ label: 'Preview', click () { preview.open(URL); }},
 		{ type: 'separator' },
-		{ label: 'Copy URL', click () { clipboard.writeText(URL); }},
-		{ label: 'Open in browser', click () { shell.openExternal(URL); }},
+		{ label: 'Copy URL', click () { helper.copyToClipboard(URL); }},
+		{ label: 'Open in browser', click () { helper.openInBrowser(URL); }},
 	];
 
 	templates.img = [

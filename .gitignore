@@ -4,3 +4,4 @@ app-update.yml
 *.sublime-*
 .DS_Store
 *.log
+_stuff

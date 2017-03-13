@@ -1,16 +1,15 @@
 const { TouchBar, getCurrentWindow } = require('electron').remote;
 const { TouchBarButton, TouchBarSpacer } = TouchBar;
-const { config, EVENT } = require('../services');
+const { EVENT } = require('../services');
 const $ = require('../util');
-const path = require('path');
-const imgPath = path.resolve(__dirname, '..', '..', 'assets');
+const imgPath = require('path').resolve(__dirname, '..', '..', 'assets');
 let btnBookmark;
 
 function initBar () {
 	const btnRefreshSidebar = new TouchBarButton({
 		icon: imgPath + '/tb-refresh.png',
 		backgroundColor: '#2C384D',
-		click: refreshSidebar
+		click: () => $.trigger(EVENT.section.refresh)
 	});
 
 	const btnRefresh = new TouchBarButton({
@@ -41,7 +40,6 @@ function initBar () {
 		btnIssueNo,
 		btnRefresh,
 		btnBookmark,
-
 	]);
 }
 
@@ -53,18 +51,6 @@ function bookmarkExists (exists) {
 	};
 	btnBookmark.backgroundColor = exists ? '#555' : '#444';
 	btnBookmark.icon = exists ? icons.full : icons.empty;
-}
-
-
-function refreshSidebar () {
-	const currentSection = config.get('state.section');
-	const handlers = {
-		notifications: EVENT.notifications.refresh,
-		bookmarks: EVENT.bookmarks.refresh,
-		projects: EVENT.projects.refresh,
-		myissues: EVENT.myissues.refresh
-	};
-	$.trigger(handlers[currentSection]);
 }
 
 

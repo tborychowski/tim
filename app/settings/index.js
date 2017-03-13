@@ -1,14 +1,13 @@
-const {shell, app} = require('electron').remote;
+const { config, EVENT, helper } = require('../services');
 const $ = require('../util');
-const { config, EVENT } = require('../services');
 
 
 let isReady = false, el, formEl, tokenLink, form, isVisible = false;
 
 const clickHandlers = {
 	cancel: hideSettings,
-	folder: () => shell.openExternal(`file://${app.getPath('userData')}`),
-	link: target => shell.openExternal(target[0].href),
+	folder: () => helper.openSettingsFolder(),
+	link: target => helper.openInBrowser(target[0].href),
 };
 
 

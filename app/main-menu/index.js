@@ -1,6 +1,6 @@
-const { shell, Menu } = require('electron').remote;
+const { Menu } = require('electron').remote;
+const { EVENT, helper } = require('../services');
 const $ = require('../util');
-const { EVENT } = require('../services');
 
 const menuTemplate = [
 	{
@@ -97,7 +97,7 @@ const menuTemplate = [
 		role: 'help',
 		submenu: [
 			{ label: 'Github Page', click () {
-				shell.openExternal('https://github.com/tborychowski/github-browser');
+				helper.openInBrowser('https://github.com/tborychowski/github-browser');
 			}}
 		]
 	}

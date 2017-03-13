@@ -5,6 +5,7 @@ const history = require('./history');
 const stars = require('./stars');
 const users = require('./users');
 const jenkins = require('./jenkins');
+const helper = require('./helper');
 
 
 
@@ -17,4 +18,5 @@ module.exports = {
 	history,
 	stars,
 	users,
+	helper,
 };
