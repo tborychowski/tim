@@ -24,7 +24,7 @@ function initBar () {
 
 	const btnAddressbar = new TouchBarButton({
 		label: 'Search or type url                                   ',	// these are nbsp chars
-		// image: imgPath + '/tb-logo.png',
+		// icon: imgPath + '/tb-logo.png',
 		click: () => $.trigger(EVENT.address.focus)
 	});
 

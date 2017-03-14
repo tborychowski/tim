@@ -3,7 +3,8 @@ const isDev = require('electron-is-dev');
 const $ = require('../util');
 const config = require('./config');
 
-let hostname = config.get('baseUrl').replace('https://', '') + 'api/v3';
+let apiUrl = config.get('baseUrl') + 'api/v3';
+let hostname = apiUrl.replace('https://', '');
 let client = null;
 
 
@@ -11,7 +12,7 @@ let client = null;
 /* TODO: use api if token given? */
 function getUserById (id) {
 	return new Promise (resolve => {
-		$.get(`${config.get('baseUrl')}api/v3/users/${id}`)
+		$.get(`${apiUrl}/users/${id}`)
 			.then(res => resolve({ id, name: res.name }))
 			.catch(() => resolve({ id }));
 	});
