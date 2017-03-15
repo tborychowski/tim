@@ -22,6 +22,10 @@ body { min-width: auto !important;
 .container { width: auto; }
 
 
+/* position: sticky causes some rendering issues on retina screens */
+.discussion-sidebar-item.sidebar-labels { transform: translate3d(0,0,0); }
+
+
 /* files */
 
 .file-navigation { margin: 20px 20px 0; }

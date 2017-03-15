@@ -182,6 +182,7 @@ function init () {
 	ipc.on('gatherUserIds', gatherUserIds);
 	ipc.on('userIdsAndNames', updateUserNames);
 	ipc.on('injectCss', injectCss);
+	ipc.on('zoom', (ev, zoom) => { document.body.style.zoom = zoom * 0.1 + 1; });
 
 	ipc.on('swipe-start', onSwipeStart);
 	ipc.on('swipe-end', onSwipeEnd);

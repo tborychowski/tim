@@ -9,13 +9,13 @@ const menuTemplate = [
 			{ role: 'about' },
 			{
 				label: 'Check for Updates...',
-				click () { $.trigger(EVENT.updater.check); }
+				click: () => $.trigger(EVENT.updater.check)
 			},
 			{ type: 'separator' },
 			{
 				label: 'Preferences...',
 				accelerator: 'CmdOrCtrl+,',
-				click () { $.trigger(EVENT.settings.show); }
+				click: () => $.trigger(EVENT.settings.show)
 			},
 			{ type: 'separator' },
 			{ role: 'services', submenu: [] },
@@ -39,7 +39,7 @@ const menuTemplate = [
 			{
 				label: 'Find',
 				accelerator: 'CmdOrCtrl+F',
-				click () { $.trigger(EVENT.search.start); }
+				click: () => $.trigger(EVENT.search.start)
 			}
 		]
 	},
@@ -49,17 +49,29 @@ const menuTemplate = [
 			{
 				label: 'Reload',
 				accelerator: 'CmdOrCtrl+R',
-				click () { $.trigger(EVENT.frame.goto, 'refresh'); }
+				click: () => $.trigger(EVENT.frame.goto, 'refresh')
 			},
 			{
 				label: 'Focus address bar',
 				accelerator: 'CmdOrCtrl+L',
-				click () { $.trigger(EVENT.address.focus); }
+				click: () => $.trigger(EVENT.address.focus)
 			},
 			{ type: 'separator' },
-			{ role: 'resetzoom' },
-			{ role: 'zoomin' },
-			{ role: 'zoomout' },
+			{
+				label: 'Reset Zoom',
+				accelerator: 'CmdOrCtrl+0',
+				click: () => $.trigger(EVENT.frame.resetzoom)
+			},
+			{
+				label: 'Zoom In',
+				accelerator: 'CmdOrCtrl+Plus',
+				click: () => $.trigger(EVENT.frame.zoomin)
+			},
+			{
+				label: 'Zoom Out',
+				accelerator: 'CmdOrCtrl+-',
+				click: () => $.trigger(EVENT.frame.zoomout)
+			},
 			{ type: 'separator' },
 			{ role: 'togglefullscreen' }
 		]
@@ -78,27 +90,28 @@ const menuTemplate = [
 			{
 				label: 'Toggle Main Frame Developer Tools',
 				accelerator: '',
-				click () { $.trigger(EVENT.frame.devtools); }
+				click: () => $.trigger(EVENT.frame.devtools)
 			},
 			{
 				label: 'Toggle Notifications Developer Tools',
 				accelerator: '',
-				click () { $.trigger(EVENT.notifications.devtools); }
+				click: () => $.trigger(EVENT.notifications.devtools)
 			},
 			{ type: 'separator' },
 			{
 				label: 'Purge Everything (settings, cookies, history)',
 				accelerator: 'CmdOrCtrl+Shift+Backspace',
-				click () { $.trigger(EVENT.frame.purge); }
+				click: () => $.trigger(EVENT.frame.purge)
 			}
 		]
 	},
 	{
 		role: 'help',
 		submenu: [
-			{ label: 'Github Page', click () {
-				helper.openInBrowser('https://github.com/tborychowski/github-browser');
-			}}
+			{
+				label: 'Github Page',
+				click: () => helper.openInBrowser('https://github.com/tborychowski/github-browser')
+			}
 		]
 	}
 ];

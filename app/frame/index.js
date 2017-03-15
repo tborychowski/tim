@@ -1,4 +1,5 @@
 const { session, getGlobal } = require('electron').remote;
+const { webFrame } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -15,7 +16,7 @@ const wpcss = `${__dirname}/webview.css`;
 
 const ses = session.fromPartition('persist:github');
 
-let webview, isReady = false, lastUrl = '';
+let webview, isReady = false, lastUrl = '', pageZoom = 0;
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
@@ -132,6 +133,12 @@ function loadingStop () {
 }
 
 
+function setZoom (n) {
+	pageZoom = (n === 0 ? 0 : pageZoom + n);
+	webview[0].send('zoom', pageZoom);
+}
+
+
 function init () {
 	if (isReady) return;
 
@@ -162,6 +169,10 @@ function init () {
 	$.on(EVENT.frame.purge, purge);
 	$.on(EVENT.settings.changed, () => gotoUrl(initialURL()));
 	$.on(EVENT.frame.lookup, () => webview[0].showDefinitionForSelection());
+
+	$.on(EVENT.frame.zoomout, () => setZoom(-1));
+	$.on(EVENT.frame.zoomin, () => setZoom(1));
+	$.on(EVENT.frame.resetzoom, () => setZoom(0));
 
 
 	swiping(frame, webview);

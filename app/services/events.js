@@ -34,7 +34,10 @@ module.exports = {
 		focused: 'frame-focused',
 		purge: 'purge-frame-cache',
 		lookup: 'show-definition-for-selection',
-		devtools: 'frame-devtools-toggle'
+		devtools: 'frame-devtools-toggle',
+		zoomin: 'frame-zoom-in',
+		zoomout: 'frame-zoom-out',
+		resetzoom: 'frame-zoom-reset',
 	},
 	history: {
 		focus: 'focus-search-results'

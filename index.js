@@ -22,7 +22,7 @@ app.on('ready', () => {
 		x: mainWindowState.x,
 		y: mainWindowState.y,
 		width: mainWindowState.width,
-		height: mainWindowState.height
+		height: mainWindowState.height,
 	});
 	win.on('closed', () => win = null);
 	win.on('scroll-touch-begin', () => { send('event', EVENT.swipe.start); });
@@ -32,6 +32,8 @@ app.on('ready', () => {
 
 	win.loadURL(`file://${__dirname}/index.html`);
 	win.show();
+
+	// win.webContents.openDevTools();
 
 	updater.init(win);
 });
