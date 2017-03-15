@@ -1,4 +1,5 @@
 const { session, getGlobal } = require('electron').remote;
+const path = require('path');
 const isDev = require('electron-is-dev');
 
 const args = getGlobal('appArgs');
@@ -30,7 +31,7 @@ const webviewHandlers = {
 		$.trigger(EVENT.notifications.toggle, false);
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
-	linkClicked: loadingStart,
+	linkClicked,
 	docReady: () => $.injectCSS(webview, wpcss),
 	domChanged: onRendered,
 };
@@ -53,6 +54,13 @@ const gotoActions = {
 	stop: () => { webview[0].stop(); loadingStop(); }
 };
 
+
+function linkClicked (url, href) {
+	if (href[0] === '#') return;	// don't do loading for local links
+	if (path.extname(url)) return;	// don't do loading for file downloads
+
+	loadingStart();
+}
 
 function initialURL (initial) {
 	if (initial && args) {
