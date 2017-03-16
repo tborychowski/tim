@@ -29,7 +29,7 @@ function _onDomChange () {
 	if (isIssue) {
 		issue = {
 			name: document.querySelector('.js-issue-title').innerText,
-			id: document.querySelector('.gh-header-number').innerText.substr(1),
+			number: document.querySelector('.gh-header-number').innerText.substr(1),
 			repo: document.querySelector('.js-repo-nav .reponav-item').getAttribute('href').substr(1),
 			type: document.querySelector('.tabnav-pr') ? 'pr' : 'issue',
 			url

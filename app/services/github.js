@@ -24,7 +24,7 @@ function getNotificationsCount (participating = true) {
 	if (!client) return Promise.resolve(0);
 	return new Promise(resolve => {
 		client.me().notifications({ participating }, (err, resp) => {
-			if (err && isDev) console.log(err);
+			// if (err && isDev) console.log(err);
 			if (err) return resolve(0);
 			resolve(resp.length);
 		});

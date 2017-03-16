@@ -1,4 +1,4 @@
-const { config, EVENT, stars, github, jenkins, helper } = require('../services');
+const { config, EVENT, bookmarks, github, jenkins, helper } = require('../services');
 const $ = require('../util');
 
 
@@ -21,15 +21,15 @@ const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
 function starIssue (issue) {
-	stars.add(issue).then(refresh);
+	bookmarks.add(issue).then(refresh);
 }
 
 function unstarIssue (issue) {
-	stars.remove(issue).then(refresh);
+	bookmarks.remove(issue).then(refresh);
 }
 
 function refresh () {
-	stars.get().then(fillIssues);
+	bookmarks.get().then(fillIssues);
 }
 
 

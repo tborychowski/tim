@@ -1,5 +1,4 @@
 const { session, getGlobal } = require('electron').remote;
-const { webFrame } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -16,7 +15,7 @@ const wpcss = `${__dirname}/webview.css`;
 
 const ses = session.fromPartition('persist:github');
 
-let webview, isReady = false, lastUrl = '', pageZoom = 0;
+let webview, isReady = false, pageZoom = 0;
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
@@ -108,6 +107,7 @@ function onNavigationError (er) {
 
 function onRendered (url, issue) {
 	if (issue.url.indexOf('#') > -1) issue.url = issue.url.substr(0, issue.url.indexOf('#'));
+
 	issue.url = $.rtrim(issue.url, '\/files');
 	issue.url = $.rtrim(issue.url, '\/commits');
 
@@ -125,11 +125,8 @@ function loadingStart () {
 }
 
 function loadingStop () {
-	const newUrl = webview[0].getURL();
 	webview.removeClass('loading');
 	$.trigger(EVENT.url.change.end);
-	// if (lastUrl !== newUrl) webview[0].focus();
-	lastUrl = newUrl;
 }
 
 
@@ -160,9 +157,7 @@ function init () {
 	});
 
 
-	if (isDev) {
-		webview.on('console-message', e => { console.log('WV:', e.message); });
-	}
+	// if (isDev) webview.on('console-message', e => { console.log('WV:', e.message); });
 
 	$.on(EVENT.frame.goto, gotoUrl);
 	$.on(EVENT.frame.devtools, toggleDevTools);

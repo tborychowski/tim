@@ -22,8 +22,8 @@ function show () {
 
 function onUrlChanged (webview, issue) {
 	if (!issue) return;
-	issue.visited = new Date();
-	history.add(issue);
+	issue.visited = +new Date();
+	if (issue.url) history.add(issue);
 }
 
 
@@ -31,8 +31,8 @@ function getItemHtml (item, i) {
 	const repo = (item.repo ? item.repo.split('/').pop() : null);
 	const mod = (repo ? ` | ${repo}` : '');
 	const selected = (i === 0 ? 'selected="selected"' : '');
-	const id = item.id ? `#${item.id} | ` : '';
-	return `<option ${selected} value="${item._id}">${id}${item.name}${mod}</option>`;
+	const id = item.id ? `#${item.number} | ` : '';
+	return `<option ${selected} value="${item.id}">${id}${item.name}${mod}</option>`;
 }
 
 
