@@ -45,7 +45,7 @@ function getPR (repo, id) {
 
 
 function getBuildUrl (pr) {
-	return getPR(pr.repo, pr.id)
+	return getPR(pr.repo, pr.number)
 		.then(resp => resp && $.get(resp.statuses_url))
 		.then(statuses => {
 			if (!statuses || !statuses.length) return '';

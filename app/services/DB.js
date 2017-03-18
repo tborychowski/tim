@@ -14,7 +14,6 @@ class DB {
 	run (sql, vals, fn = 'run') {
 		return new Promise(resolve => {
 			const st = this.db.prepare(sql);
-			console.log(st, vals);
 			const res = vals ? st[fn](vals) : st[fn]();
 			resolve(res);
 		})

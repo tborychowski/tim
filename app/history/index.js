@@ -31,7 +31,7 @@ function getItemHtml (item, i) {
 	const repo = (item.repo ? item.repo.split('/').pop() : null);
 	const mod = (repo ? ` | ${repo}` : '');
 	const selected = (i === 0 ? 'selected="selected"' : '');
-	const id = item.id ? `#${item.number} | ` : '';
+	const id = item.number ? `#${item.number} | ` : '';
 	return `<option ${selected} value="${item.id}">${id}${item.name}${mod}</option>`;
 }
 

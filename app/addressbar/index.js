@@ -4,7 +4,7 @@ const { config, EVENT, bookmarks } = require('../services');
 let isReady = false,
 	el = null,
 	issueBox = null,
-	starBox,
+	bookmarkBox,
 	lastShortUrl = '',
 	lastFullUrl = '',
 	lastIssue = '',
@@ -34,8 +34,8 @@ function gotoIssue (id) {
 
 }
 
-function star (exists) {
-	starBox.toggleClass('is-starred', !!exists);
+function bookmark (exists) {
+	bookmarkBox.toggleClass('is-starred', !!exists);
 	$.trigger(EVENT.bookmark.exists, !!exists);
 }
 
@@ -47,7 +47,7 @@ function getSearchUrl (q) {
 
 function checkIfBookmarked (url) {
 	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
-	bookmarks.getByUrl(url).then(star);
+	bookmarks.getByUrl(url).then(bookmark);
 }
 
 
@@ -64,7 +64,7 @@ function gotoUrl (url) {
 		url = getSearchUrl(url);
 	}
 
-	star(false);
+	bookmark(false);
 	if (url) $.trigger(EVENT.frame.goto, url);
 	$.trigger(EVENT.address.input.end);
 }
@@ -78,7 +78,7 @@ function onUrlChanged (webview, issue) {
 	lastIssue = issue || {};
 
 	el[0].value = getUnfocusedText();
-	issueBox[0].value = (issue && issue.id ? issue.id : '');
+	issueBox[0].value = (issue && issue.number ? issue.number : '');
 
 	if (issue && issue.url) checkIfBookmarked(issue.url);
 }
@@ -142,7 +142,7 @@ function init () {
 
 	el = $('.addressbar');
 	issueBox = $('.issue-id-bar');
-	starBox = $('header .star-box');
+	bookmarkBox = $('header .star-box');
 
 	el.on('focus', onFocus);
 	el.on('blur', onBlur);

@@ -52,7 +52,7 @@ function onClick (e) {
 
 
 function updateBuildStatus (pr, status) {
-	const prBox = $(`.pr-${pr.id}`);
+	const prBox = $(`.pr-${pr.number}`);
 	const statusBox = prBox.find('.build-status');
 	const statusIcon = prBox.find('.build-status .icon');
 	const progBoxIn = prBox.find('.build-progress-inner');
@@ -91,10 +91,10 @@ function getIssueHtml (issue) {
 		statusBox = '<a href="#" class="build-status"><i class="icon"></i>' +
 			'<div class="build-progress"><div class="build-progress-inner"></div></div></a>';
 	}
-	const cls = issue.id ? `class="pr-${issue.id}"` : '';
+	const cls = issue.number ? `class="pr-${issue.number}"` : '';
 	return `<li ${cls}>
 		<i class="${issueTypes[issue.type || 'default']}"></i>
-		<a href="${issue.url}" class="btn bookmark" title="${issue.id}">${issue.name}</a>
+		<a href="${issue.url}" class="btn bookmark" title="${issue.number}">${issue.name}</a>
 		${statusBox}
 	</li>`;
 }

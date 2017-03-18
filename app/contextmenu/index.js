@@ -45,7 +45,6 @@ function getTemplate (type) {
 function parseLink (link) {
 	link = '' + link;
 	if (link.indexOf('http') !== 0) link = config.get('baseUrl') + link;
-	console.log(link);
 	return link;
 }
 
