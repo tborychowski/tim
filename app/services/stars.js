@@ -1,58 +1,32 @@
-const helper = require('./helper');
-const collection = helper.getCollection('stars');
+const DB = require('./DB');
+const db = new DB('stars', 'url');
 
-collection.ensureIndex({ 'url': 1 }, { unique: true });
 
-function add (issue) {
-	// { id: 3214, name: 'issue name', repo: 'angular/angular' }
-	issue.updated_at = +new Date();
-	return new Promise ((resolve, reject) => {
-		collection.insert(issue, (err, res) => {
-			if (err) return reject(err);
-			resolve(res);
-		});
-	});
+
+function add (item) {
+	if (!item) return Promise.resolve();
+	item.updated_at = +new Date();
+	return db.add(item);
 }
 
-function remove (issue) {
-	return new Promise ((resolve, reject) => {
-		collection.remove({ url: issue.url }, (err, res) => {
-			if (err) return reject(err);
-			resolve(res);
-		});
-	});
+
+function remove (item) {
+	return db.del({ url: item.url });
 }
+
 
 function get () {
-	return new Promise ((resolve, reject) => {
-		collection
-			.find({})
-			.sort({ repo: 1, id: 1 })
-			.toArray((err, items) => {
-				if (err) return reject(err);
-				resolve(items);
-			});
-	});
+	return db.find({ repo: 1, id: 1 });
 }
 
 
 function getByUrl (url) {
-	return new Promise ((resolve, reject) => {
-		collection.findOne({ url }, (err, res) => {
-			if (err) return reject(err);
-			resolve(res);
-		});
-	});
+	return db.findOne({ url });
 }
 
 
 function setUnread (id, unread) {
-	return new Promise ((resolve, reject) => {
-		collection.update({ id }, {$set: { unread }}, (err, res) => {
-			if (err) return reject(err);
-			resolve(res);
-		});
-	});
+	return db.update({ id }, { unread });
 }
 
 

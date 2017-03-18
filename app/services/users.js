@@ -1,42 +1,21 @@
-const helper = require('./helper');
-const collection = helper.getCollection('users');
-
-collection.ensureIndex({ 'id': 1 }, { unique: true });
+const DB = require('./DB');
+const db = new DB('users', 'id');
 
 
 function add (item) {
 	if (!item) return Promise.resolve();
-	// { id: 'i123456', name: 'john john' }
-	return new Promise ((resolve, reject) => {
-		collection.insert(item, (err, res) => {
-			if (err) return reject(err);
-			resolve(res);
-		});
-	});
+	return db.add(item);
 }
 
 
 function get () {
-	return new Promise ((resolve, reject) => {
-		collection
-			.find({}, { _id: 0 })
-			.sort({ repo: 1, id: 1 })
-			.toArray((err, items) => {
-				if (err) return reject(err);
-				resolve(items);
-			});
-	});
+	return db.find({ repo: 1, id: 1 });
 }
 
 
 function getById (id) {
 	if (!id) return Promise.resolve();
-	return new Promise ((resolve, reject) => {
-		collection.findOne({ id }, { _id: 0 }, (err, res) => {
-			if (err) return reject(err);
-			resolve(res);
-		});
-	});
+	return db.findOne({ id });
 }
 
 

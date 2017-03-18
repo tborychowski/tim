@@ -3,7 +3,6 @@ const {shell, app, getCurrentWindow} = remote;
 const {exec} = require('child_process');
 const config = require('./config');
 const isDev = require('electron-is-dev');
-const DB = require('tingodb')().Db;
 
 
 const getUserDataFolder = () => app.getPath('userData');
@@ -19,12 +18,6 @@ function openInBrowser (url) {
 const copyToClipboard = (txt) => clipboard.writeText(txt);
 const openFolder = (path) => shell.openExternal(`file://${path}`);
 const openSettingsFolder = () => openFolder(getUserDataFolder());
-
-function getCollection (name) {
-	name = name.replace(/\.json$/, '') + '.json';
-	const db = new DB(getUserDataFolder(), {});
-	return db.collection(name);
-}
 
 
 function setBadge (text = 0) {
@@ -67,6 +60,5 @@ module.exports = {
 	openFolder,
 	openSettingsFolder,
 	getUserDataFolder,
-	getCollection,
 	setBadge,
 };
