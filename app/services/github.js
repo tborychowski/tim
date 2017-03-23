@@ -73,7 +73,6 @@ function getBuildUrl (pr) {
 
 
 function getProjects () {
-	// return Promise.resolve(mockedProjects);
 	init(true);
 	if (!client) return Promise.resolve(0);
 	return new Promise(resolve => {
