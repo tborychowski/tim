@@ -2,19 +2,24 @@ const { Menu, app } = require('electron').remote;
 const { EVENT, helper } = require('../services');
 const $ = require('../util');
 const name = app.getName();
+const ver = app.getVersion();
 
 const menuTemplate = [
 	{
 		label: 'GithubBrowser',
 		submenu: [
 			{ role: 'about' },
+			{ type: 'separator' },
 			{
 				label: 'Check for Updates...',
 				click: () => $.trigger(EVENT.updater.check)
 			},
 			{
 				label: 'Changelog',
-				click: () => helper.openInBrowser('https://github.com/tborychowski/github-browser/blob/master/CHANGELOG.md')
+				click: () => {
+					const changelogUrl = 'https://github.com/tborychowski/github-browser/releases/tag/v' + ver;
+					helper.openInBrowser(changelogUrl);
+				}
 			},
 			{ type: 'separator' },
 			{
