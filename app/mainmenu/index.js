@@ -1,6 +1,7 @@
-const { Menu } = require('electron').remote;
+const { Menu, app } = require('electron').remote;
 const { EVENT, helper } = require('../services');
 const $ = require('../util');
+const name = app.getName();
 
 const menuTemplate = [
 	{
@@ -19,6 +20,10 @@ const menuTemplate = [
 			},
 			{ type: 'separator' },
 			{ role: 'services', submenu: [] },
+			{ type: 'separator' },
+			{ label: 'Hide ' + name, accelerator: 'Command+H', role: 'hide' },
+			{ label: 'Hide Others', accelerator: 'Command+Shift+H', role: 'hideothers' },
+			{ label: 'Show All', role: 'unhide' },
 			{ type: 'separator' },
 			{ role: 'quit' }
 		]

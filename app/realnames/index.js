@@ -19,7 +19,7 @@ function matchIdsWithNames (idList, userList) {
 		if (uobj[id]) return Promise.resolve(uobj[id]);
 		return github.getUserById(id)
 			.then(usr => {
-				users.add(usr);
+				if (usr.name) users.add(usr);
 				return usr;
 			});
 	});
