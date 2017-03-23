@@ -1,13 +1,14 @@
 const $ = require('../util');
 const { config, EVENT, github, helper } = require('../services');
+const isDev = require('electron-is-dev');
 
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
 
-let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer;
+let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer, backBtn;
 const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 
-const PARTICIPATING = true;
+const PARTICIPATING = !isDev;
 
 
 const getNotificationsUrl = () => `${config.get('baseUrl')}notifications${PARTICIPATING ? '/participating' : ''}`;
@@ -17,13 +18,9 @@ const webviewHandlers = {
 	goto: url => $.trigger(EVENT.url.change.to, url),
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	actionClicked: () => checkNotifications(1000),
-
 	docReady: () => $.injectCSS(webview, wpcss),
 	cssReady: () => setTimeout(() => { webview.removeClass('loading'); }, 100),
-	isLogged: (isit) => {
-		// notifToggle.toggle(isLoggedIn = isit)
-		isLoggedIn = isit;
-	}
+	isLogged: (isit) => { isLoggedIn = isit; }
 };
 
 
@@ -45,9 +42,19 @@ function onFrameUrlChanged () {
 }
 
 
+function checkIfRootUrl () {
+	const curr = webview[0].getURL();
+	backBtn.toggle(curr !== getNotificationsUrl());
+}
+
+function backToRoot (e) {
+	e.preventDefault();
+	webview[0].loadURL(getNotificationsUrl());
+
+}
+
 function toggle (show) {
 	config.set('state.notifications', !!show);
-	// notifToggle.toggleClass('is-visible', !!show);
 	el.toggleClass('visible', !!show);
 }
 
@@ -86,6 +93,7 @@ function init () {
 
 	el = $('.subnav-notifications');
 	content = el.find('.subnav-section-list');
+	backBtn = $('.subnav-notifications .js-prev');
 
 
 	const html = `<webview id="webview2" preload="${wpjs}" class="loading"
@@ -94,12 +102,15 @@ function init () {
 	content.html(html);
 	webview = el.find('#webview2');
 
+	webview.on('did-frame-finish-load', checkIfRootUrl);
+
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
 		if (typeof fn === 'function') fn.apply(fn, ev.args);
 	});
 
 	el.on('click', onClick);
+	backBtn.on('click', backToRoot);
 
 	$.on(EVENT.notifications.refresh, refresh);
 	$.on(EVENT.notifications.toggle, toggle);
