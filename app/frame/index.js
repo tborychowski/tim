@@ -1,5 +1,4 @@
 const { session, getGlobal } = require('electron').remote;
-const { webFrame } = require('electron');
 const path = require('path');
 const isDev = require('electron-is-dev');
 
@@ -16,7 +15,7 @@ const wpcss = `${__dirname}/webview.css`;
 
 const ses = session.fromPartition('persist:github');
 
-let webview, isReady = false, lastUrl = '', pageZoom = 0;
+let webview, isReady = false, pageZoom = 0;
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
@@ -41,26 +40,22 @@ const webviewHandlers = {
 const gotoActions = {
 	prev: () => {
 		if (webview[0].canGoBack()) {
-			loadingStart();
 			webview[0].goBack();
 		}
 	},
 	next: () => {
 		if (webview[0].canGoForward()) {
-			loadingStart();
 			webview[0].goForward();
 		}
 	},
-	refresh: () => { loadingStart(); webview[0].reload(); },
-	stop: () => { webview[0].stop(); loadingStop(); }
+	refresh: () => webview[0].reload(),
+	stop: () => webview[0].stop()
 };
 
 
 function linkClicked (url, href) {
 	if (href[0] === '#') return;	// don't do loading for local links
 	if (path.extname(url)) return;	// don't do loading for file downloads
-
-	loadingStart();
 }
 
 function initialURL (initial) {
@@ -89,10 +84,7 @@ function gotoUrl (url) {
 	$.trigger(EVENT.search.stop);
 	if (typeof url !== 'string' || !url.length || !webview.length) return;
 	if (url in gotoActions) gotoActions[url]();
-	else if (webview[0].loadURL) {
-		loadingStart();
-		webview[0].loadURL(url);
-	}
+	else if (webview[0].loadURL) webview[0].loadURL(url);
 }
 
 function onNavigationStart () {
@@ -103,7 +95,7 @@ function onNavigationStart () {
 
 function onNavigationError (er) {
 	if (er.errorDescription === 'ERR_NAME_NOT_RESOLVED') $.trigger(EVENT.connection.error.show);
-	else console.log('NavigationError:', er);
+	else if (isDev) console.log('NavigationError:', er);
 }
 
 function onRendered (url, issue) {
@@ -115,7 +107,6 @@ function onRendered (url, issue) {
 	config.set('state.issue', issue);
 	$.trigger(EVENT.url.change.done, webview[0], issue);
 	realnames.replace(webview[0]);
-	setTimeout(loadingStop, 100);
 }
 
 function loadingStart () {
@@ -125,11 +116,8 @@ function loadingStart () {
 }
 
 function loadingStop () {
-	const newUrl = webview[0].getURL();
 	webview.removeClass('loading');
 	$.trigger(EVENT.url.change.end);
-	// if (lastUrl !== newUrl) webview[0].focus();
-	lastUrl = newUrl;
 }
 
 
@@ -158,6 +146,10 @@ function init () {
 		const fn = webviewHandlers[ev.channel];
 		if (typeof fn === 'function') fn.apply(fn, ev.args);
 	});
+
+
+	webview.on('did-start-loading', loadingStart);
+	webview.on('did-stop-loading', loadingStop);
 
 
 	if (isDev) {

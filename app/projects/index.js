@@ -18,29 +18,19 @@ function refresh () {
 
 
 function getProjectHtml (project) {
-	return `<a href="${project.url}" class="btn project-box">
-		<img class="avatar" src="${project.creator.avatar}" alt="${project.creator.name || project.creator.login}" />
+	return `<a href="${project.html_url}" class="btn project-box">
+		<img class="avatar" src="${project.creator.avatar_url}"
+			alt="${project.creator.name || project.creator.login}" />
 		<span class="name">${project.name}</span>
 		<span class="time">Updated: ${project.updated_at_str}</span>
 	</a>`;
 }
 
+
 function remapProjectFields (project) {
-	project = {
-		_id: project.id,
-		id: project.number,
-		name: project.name,
-		body: project.body,
-		created_at: new Date(project.created_at),
-		updated_at: new Date(project.updated_at),
-		created_at_str: $.prettyDate(project.created_at),
-		updated_at_str: $.prettyDate(project.updated_at),
-		url: baseUrl + project.number,
-		creator: {
-			login: project.creator.login,
-			avatar: project.creator.avatar_url
-		}
-	};
+	project.created_at_str = $.prettyDate(project.created_at);
+	project.updated_at_str = $.prettyDate(project.updated_at);
+
 	return users.getById(project.login).then(usr => {
 		if (usr) project.creator.name = usr.name;
 		return project;
