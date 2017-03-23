@@ -12,6 +12,10 @@ const menuTemplate = [
 				label: 'Check for Updates...',
 				click: () => $.trigger(EVENT.updater.check)
 			},
+			{
+				label: 'Changelog',
+				click: () => helper.openInBrowser('https://github.com/tborychowski/github-browser/blob/master/CHANGELOG.md')
+			},
 			{ type: 'separator' },
 			{
 				label: 'Preferences...',
