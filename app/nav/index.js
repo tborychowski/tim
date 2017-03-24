@@ -33,7 +33,7 @@ function onNotificationsCountUpdate (count) {
 
 
 function onClick (e) {
-	let target = $(e.target).closest('.nav-btn');
+	const target = $(e.target).closest('.nav-btn');
 	const go = target && target.data('go');
 	if (!target || !go) return;
 	e.preventDefault();
