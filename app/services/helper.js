@@ -19,6 +19,10 @@ const copyToClipboard = (txt) => clipboard.writeText(txt);
 const openFolder = (path) => shell.openExternal(`file://${path}`);
 const openSettingsFolder = () => openFolder(getUserDataFolder());
 
+function openChangelog (ver) {
+	ver = ver ? `tag/v${ver}` : 'latest';
+	openInBrowser(`https://github.com/tborychowski/github-browser/releases/${ver}`);
+}
 
 function setBadge (text = 0) {
 	text = parseInt(text, 10);
@@ -61,4 +65,5 @@ module.exports = {
 	openSettingsFolder,
 	getUserDataFolder,
 	setBadge,
+	openChangelog
 };

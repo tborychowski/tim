@@ -79,7 +79,7 @@ function checkNotifications (delay = 0) {
 	if (delay) return notificationsTimer = setTimeout(checkNotifications, delay);
 
 	github.getNotificationsCount(PARTICIPATING)
-		.then(count => {
+		.then((count = 0) => {
 			helper.setBadge(count);
 			$.trigger(EVENT.notifications.count, count);
 			notificationsTimer = setTimeout(checkNotifications, refreshDelay);

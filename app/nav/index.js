@@ -1,7 +1,7 @@
 const $ = require('../util');
 const { config, EVENT } = require('../services');
 
-let isReady = false, el, subnav, buttons, sections, currentSection;
+let isReady = false, el, subnav, buttons, sections, currentSection, btnUpdate;
 let notificationsBadge;
 
 
@@ -34,10 +34,11 @@ function onNotificationsCountUpdate (count) {
 
 function onClick (e) {
 	let target = $(e.target).closest('.nav-btn');
-	if (target) {
-		e.preventDefault();
-		changeSection(target.data('go'));
-	}
+	const go = target && target.data('go');
+	if (!target || !go) return;
+	e.preventDefault();
+	if (go === 'update') return $.trigger(EVENT.updater.nav.clicked);
+	changeSection(go);
 }
 
 
@@ -46,6 +47,7 @@ function init () {
 
 	el = $('#nav');
 	buttons = el.find('.nav-btn');
+	btnUpdate = el.find('.nav-update');
 	subnav = $('#subnav');
 	sections = subnav.find('.subnav-section');
 	notificationsBadge = el.find('.nav-notifications .badge');
@@ -57,6 +59,7 @@ function init () {
 
 	$.on(EVENT.notifications.count, onNotificationsCountUpdate);
 	$.on(EVENT.section.refresh, refreshSection);
+	$.on(EVENT.updater.nav.show, () => btnUpdate.show());
 
 	isReady = true;
 }

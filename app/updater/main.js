@@ -18,7 +18,7 @@ const send = (name, val) => win.webContents.send('updater', name, val);
 autoUpdater.on('checking-for-update', (ev) => send('checking-for-update', ev));
 autoUpdater.on('update-available', (ev) => { send('update-available', ev); });
 autoUpdater.on('update-not-available', (ev) => send('update-not-available', ev));
-autoUpdater.on('error', (ev, err) => send('updater-error', JSON.stringify({ev, err}) ));
+autoUpdater.on('error', (ev) => send('update-error', ev));
 autoUpdater.on('download-progress', (ev, progressObj) => send('download-progress', progressObj));
 autoUpdater.on('update-downloaded', (ev) => send('update-downloaded', ev));
 

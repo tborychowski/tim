@@ -10,7 +10,7 @@ let webview;
 function uato (userList) {
 	const uobj = {};
 	for (let user of userList) if (user) uobj[user.id] = user;
-	return uobj;
+	return uobj || [];
 }
 
 function matchIdsWithNames (idList, userList) {

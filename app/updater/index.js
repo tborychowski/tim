@@ -1,11 +1,12 @@
 const { ipcRenderer, remote } = require('electron');
-const { EVENT } = require('../services');
+const { EVENT, helper } = require('../services');
 const $ = require('../util');
 const isDev = require('electron-is-dev');
 
 const dialog = require('./dialog');
 const appName = remote.app.getName();
 const appVersion = remote.app.getVersion();
+let availableVersion = null;
 
 let SILENT = false;
 let IS_DOWNLOADING = false;
@@ -19,8 +20,16 @@ const events = {
 	'update-not-available': updateNotAvailable,
 	'download-progress': () => log('Downloading update...'),
 	'update-downloaded': updateDownloaded,
-	error: () => dialog.error('There was an error with the upload.\nPlease try again later.'),
+	'update-error': (err) => {
+		if (SILENT && isDev) log('Update error', err);
+		else dialog.error('There was an error with the upload.\nPlease try again later.');
+	},
 };
+
+
+function showChangelog () {
+	helper.openChangelog(availableVersion);
+}
 
 
 function checkForUpdates (silent) {
@@ -32,19 +41,25 @@ function checkForUpdates (silent) {
 function updateNotAvailable () {
 	log('Update not available');
 	if (!SILENT) dialog.info(`You have the latest version of\n${appName} ${appVersion}`, 'No need to update');
-	SILENT = false;
 }
 
 function updateAvailable (resp) {
 	log('Update available');
+	availableVersion = resp.version;
 	if (SILENT) return download();
+
+	$.trigger(EVENT.updater.nav.show);
 	dialog.question({
 		message: 'There is a newer version available.',
-		detail: `You have: ${appVersion}\nAvailable: ${resp.version}`,
-		buttons: [ 'Cancel', 'Update' ]
+		detail: `You have: ${appVersion}\nAvailable: ${availableVersion}`,
+		buttons: [ 'Cancel', 'Update', 'Changelog' ]
 	})
-	.then(download);
+	.then(res => {
+		if (res === 1) return download();
+		if (res === 2) return showChangelog();
+	});
 }
+
 
 function download () {
 	IS_DOWNLOADING = true;
@@ -53,14 +68,21 @@ function download () {
 
 function updateDownloaded () {
 	log('Update downloaded');
-	dialog.question({
-		message: 'Update downloaded.\nDo you want to install it now or next time you start the app?',
-		buttons: [ 'Install later', 'Quit and install' ]
-	})
-	.then(() => send('install'));
-	SILENT = false;
+	if (SILENT) $.trigger(EVENT.updater.nav.show);
+	else updateDownloadedInstall();
 }
 
+
+function updateDownloadedInstall () {
+	dialog.question({
+		message: 'Update downloaded.\nDo you want to install it now or next time you start the app?',
+		buttons: [ 'Install later', 'Quit and install', 'Changelog' ]
+	})
+	.then(res => {
+		if (res === 1) return send('install');
+		if (res === 2) return showChangelog();
+	});
+}
 
 
 function init () {
@@ -68,6 +90,7 @@ function init () {
 		if (typeof events[name] === 'function') events[name](params);
 	});
 	$.on(EVENT.updater.check, checkForUpdates);
+	$.on(EVENT.updater.nav.clicked, updateDownloadedInstall);
 	if (!isDev) setTimeout(() => checkForUpdates(true), 5000);
 }
 
