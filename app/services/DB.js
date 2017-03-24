@@ -46,7 +46,7 @@ class DB {
 				.sort(sort)
 				.toArray((err, items) => {
 					if (err) return reject(err);
-					resolve(items);
+					resolve(items || []);
 				});
 		});
 	}

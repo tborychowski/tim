@@ -10,30 +10,26 @@ const menuTemplate = [
 		submenu: [
 			{ role: 'about' },
 			{ type: 'separator' },
-			{
-				label: 'Check for Updates...',
-				click: () => $.trigger(EVENT.updater.check)
-			},
-			{
-				label: 'Changelog',
-				click: () => {
-					const changelogUrl = 'https://github.com/tborychowski/github-browser/releases/tag/v' + ver;
-					helper.openInBrowser(changelogUrl);
-				}
-			},
+
+			{ label: 'Check for Updates...', click: () => $.trigger(EVENT.updater.check) },
+			{ label: 'Changelog', click: () => helper.openChangelog(ver) },
 			{ type: 'separator' },
+
 			{
 				label: 'Preferences...',
 				accelerator: 'CmdOrCtrl+,',
 				click: () => $.trigger(EVENT.settings.show)
 			},
 			{ type: 'separator' },
+
 			{ role: 'services', submenu: [] },
 			{ type: 'separator' },
+
 			{ label: 'Hide ' + name, accelerator: 'Command+H', role: 'hide' },
 			{ label: 'Hide Others', accelerator: 'Command+Shift+H', role: 'hideothers' },
 			{ label: 'Show All', role: 'unhide' },
 			{ type: 'separator' },
+
 			{ role: 'quit' }
 		]
 	},

@@ -45,6 +45,13 @@
 .nav-projects .icon { -webkit-mask-image: url("../../assets/icon-projects.svg"); }
 
 
+.nav-bottom { position: absolute; left: 0; right: 0; bottom: 10px; }
+
+.nav-update { text-align: center; border-radius: 20px; display: none; }
+.nav-update .icon { font-size: 29px; border-radius: 20px; line-height: 40px; color: #fff; background: none; }
+.nav-update:hover { background: rgba(44, 190, 78, 0.5); }
+
+
 
 
 

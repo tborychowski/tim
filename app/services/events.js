@@ -78,6 +78,10 @@ module.exports = {
 	},
 	updater: {
 		check: 'check-for-updates',
+		nav: {
+			show: 'update-nav-show',
+			clicked: 'update-nav-clicked',
+		}
 	},
 	url: {
 		change: {

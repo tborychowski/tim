@@ -27,7 +27,7 @@ function question ({ message, detail, buttons}) {
 			detail,
 			buttons,
 			defaultId: 1,
-		}, res => { if (res === 1) resolve(); else reject(); });
+		}, res => { if (res > 0) resolve(res); else reject(); });
 	});
 }
 
