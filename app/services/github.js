@@ -1,4 +1,4 @@
-const GH = require('octonode');
+const octonode = require('octonode');
 const $ = require('../util');
 const config = require('./config');
 const isDev = require('electron-is-dev');
@@ -11,7 +11,7 @@ let client = null;
 const DEBUG = false;
 
 
-function callGH (api, {id, repo, participating }) {
+function github (api, {id, repo, participating }) {
 	const isPreviewApi = (api === 'projects');
 
 	init(isPreviewApi);
@@ -36,21 +36,21 @@ function getUserByIdFromPublicApi (id) {
 }
 
 function getUserById (id) {
-	const fn = token ? callGH('user', { id }) : getUserByIdFromPublicApi(id);
+	const fn = token ? github('user', { id }) : getUserByIdFromPublicApi(id);
 	return fn.then(res => res ? { id, name: res.name } : { id });
 }
 
 function getNotificationsCount (participating = true) {
-	return callGH('notifications', { participating }).then(res => res.length || 0);
+	return github('notifications', { participating }).then(res => res.length || 0);
 }
 
 function getPR (repo, id) {
-	return callGH('pr', { repo, id });
+	return github('pr', { repo, id });
 
 }
 
 function getProjects () {
-	return callGH('projects', { repo: config.get('repoToSearch') });
+	return github('projects', { repo: config.get('repoToSearch') });
 }
 
 
@@ -72,7 +72,7 @@ function getBuildUrl (pr) {
 function init (isPreview) {
 	if (!client) {
 		if (!token) return;
-		client = GH.client(token, { hostname });
+		client = octonode.client(token, { hostname });
 	}
 	client.requestDefaults.strictSSL = false;
 
