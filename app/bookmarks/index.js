@@ -36,18 +36,15 @@ function refresh () {
 function onClick (e) {
 	let target = $(e.target);
 
-	if (target.is('.js-refresh')) {
-		e.preventDefault();
-		refresh();
-	}
+	if (target.is('.js-refresh')) refresh();
 	else if (target.is('.btn')) {
-		e.preventDefault();
 		$.trigger(EVENT.url.change.to, target[0].getAttribute('href'));
 	}
 	else if (target.closest('.build-status')) {
-		e.preventDefault();
 		helper.openInBrowser(target.closest('.build-status')[0].getAttribute('href'));
 	}
+	else return;
+	e.preventDefault();
 }
 
 
