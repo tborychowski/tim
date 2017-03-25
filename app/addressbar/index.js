@@ -1,5 +1,5 @@
 const $ = require('../util');
-const { config, EVENT, stars } = require('../services');
+const { config, EVENT, bookmarks } = require('../services');
 
 let isReady = false,
 	el = null,
@@ -47,7 +47,7 @@ function getSearchUrl (q) {
 
 function checkIfBookmarked (url) {
 	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
-	stars.getByUrl(url).then(star);
+	bookmarks.getByUrl(url).then(star);
 }
 
 

@@ -2,7 +2,7 @@ const EVENT = require('./events');
 const config = require('./config');
 const github = require('./github');
 const history = require('./history');
-const stars = require('./stars');
+const bookmarks = require('./bookmarks');
 const users = require('./users');
 const jenkins = require('./jenkins');
 const helper = require('./helper');
@@ -18,7 +18,7 @@ module.exports = {
 	jenkins,
 
 	history,
-	stars,
+	bookmarks,
 	users,
 	helper,
 };

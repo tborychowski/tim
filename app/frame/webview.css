@@ -74,6 +74,7 @@ body { min-width: auto !important;
 .issues-listing .table-list-header { border-width: 0 0 1px; border-radius: 0; margin: 0; }
 .issues-reset-query-wrapper { display: none; }
 
+.js-navigation-item.js-issue-row.unread { box-shadow: 1px 0 0 #ccc inset, 6px 0 0 #0366d6 inset; }
 
 
 /* issue timeline */

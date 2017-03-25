@@ -1,9 +1,9 @@
-const { config, EVENT, stars, github, jenkins, helper } = require('../services');
+const { config, EVENT, bookmarks, github, jenkins, helper } = require('../services');
 const $ = require('../util');
 
 
 let isReady = false, el, reposEl;
-const issueTypes = {
+const issueTypeCls = {
 	pr: 'ion-ios-git-pull-request',
 	issue: 'ion-ios-bug-outline',
 	default: 'ion-ios-star-outline',
@@ -20,16 +20,16 @@ const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
 
-function starIssue (issue) {
-	stars.add(issue).then(refresh);
+function addBookmark (issue) {
+	bookmarks.add(issue).then(refresh);
 }
 
-function unstarIssue (issue) {
-	stars.remove(issue).then(refresh);
+function removeBookmark (issue) {
+	bookmarks.remove(issue).then(refresh);
 }
 
 function refresh () {
-	stars.get().then(fillIssues);
+	bookmarks.get().then(fillIssues);
 }
 
 
@@ -93,7 +93,7 @@ function getIssueHtml (issue) {
 	}
 	const cls = issue.id ? `class="pr-${issue.id}"` : '';
 	return `<li ${cls}>
-		<i class="${issueTypes[issue.type || 'default']}"></i>
+		<i class="${issueTypeCls[issue.type || 'default']}"></i>
 		<a href="${issue.url}" class="btn bookmark" title="${issue.id}">${issue.name}</a>
 		${statusBox}
 	</li>`;
@@ -138,8 +138,8 @@ function init () {
 	refresh();
 
 	el.on('click', onClick);
-	$.on(EVENT.bookmark.add, starIssue);
-	$.on(EVENT.bookmark.remove, unstarIssue);
+	$.on(EVENT.bookmark.add, addBookmark);
+	$.on(EVENT.bookmark.remove, removeBookmark);
 	$.on(EVENT.bookmarks.refresh, refresh);
 
 	isReady = true;

@@ -31,6 +31,15 @@ function toggleDevTools () {
 }
 
 
+function loadingStart () {
+	webview.addClass('loading');
+}
+
+function loadingStop () {
+	webview.removeClass('loading');
+}
+
+
 /**
  * If not logged in to GH:
  * when the url changes in the main frame - try refreshing notifications
@@ -96,13 +105,16 @@ function init () {
 	backBtn = $('.subnav-notifications .js-prev');
 
 
-	const html = `<webview id="webview2" preload="${wpjs}" class="loading"
+	const html = `<webview id="webview2" preload="${wpjs}" class="notifications-webview loading"
 		src="${getNotificationsUrl()}" partition="persist:github"></webview>`;
 
 	content.html(html);
 	webview = el.find('#webview2');
 
+
 	webview.on('did-frame-finish-load', checkIfRootUrl);
+	webview.on('did-start-loading', loadingStart);
+	webview.on('did-stop-loading', loadingStop);
 
 	webview.on('ipc-message', function (ev) {
 		const fn = webviewHandlers[ev.channel];
