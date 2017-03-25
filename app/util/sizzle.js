@@ -163,6 +163,15 @@ sizzle.fn.data = function (key) {
 
 
 
+sizzle.fn.attr = function (attr, value) {
+	if (!this || !this.length) return false;
+	if (typeof value === 'undefined') return this[0].getAttribute(attr);
+	this.forEach(el => { el.setAttribute(attr, value); });
+};
+
+
+
+
 sizzle.fn.animate = function (from, to, options = {}, cb) {
 	const opts = Object.assign({},  { duration: 300, easing: 'ease-out' }, options);
 	const all = this.map(el => {

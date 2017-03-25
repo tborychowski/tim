@@ -19,6 +19,10 @@ const statusIconCls = {
 const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
+function getIssueCls (i){
+	const repo = (i.repo || '').replace('/', '-');
+	return i.id ? `issue-${repo}-${i.id}` : '';
+}
 
 function addBookmark (issue) {
 	bookmarks.add(issue).then(refresh);
@@ -29,32 +33,33 @@ function removeBookmark (issue) {
 }
 
 function refresh () {
-	bookmarks.get().then(fillIssues);
+	bookmarks.get()
+		.then(fillIssues)
+		.then(github.checkIssuesForUpdates)
+		.then(updateUnread);
 }
 
 
 function onClick (e) {
+	e.preventDefault();
 	let target = $(e.target);
 
-	if (target.is('.js-refresh')) refresh();
-	else if (target.is('.btn')) {
-		$.trigger(EVENT.url.change.to, target[0].getAttribute('href'));
-	}
-	else if (target.closest('.build-status')) {
-		helper.openInBrowser(target.closest('.build-status')[0].getAttribute('href'));
-	}
-	else return;
-	e.preventDefault();
+	if (target.is('.js-refresh')) return refresh();
+	if (target.is('.btn')) return openIssue(target);
+
+	target = target.closest('.build-status');
+	if (target) return helper.openInBrowser(target.attr('href'));
 }
 
 
 function updateBuildStatus (pr, status) {
-	const prBox = $(`.pr-${pr.id}`);
+	if (!status) return;// statusBox.hide();
+
+	const prBox = $(`.${getIssueCls(pr)}`);
 	const statusBox = prBox.find('.build-status');
 	const statusIcon = prBox.find('.build-status .icon');
 	const progBoxIn = prBox.find('.build-progress-inner');
 
-	if (!status) return;// statusBox.hide();
 	statusBox.show();
 
 	const result = status.result ? status.result : status.progress < 100 ? 'progress' : '';
@@ -88,8 +93,7 @@ function getIssueHtml (issue) {
 		statusBox = '<a href="#" class="build-status"><i class="icon"></i>' +
 			'<div class="build-progress"><div class="build-progress-inner"></div></div></a>';
 	}
-	const cls = issue.id ? `class="pr-${issue.id}"` : '';
-	return `<li ${cls}>
+	return `<li class="${getIssueCls(issue)} ${issue.unread ? 'unread' : ''}">
 		<i class="${issueTypeCls[issue.type || 'default']}"></i>
 		<a href="${issue.url}" class="btn bookmark" title="${issue.id}">${issue.name}</a>
 		${statusBox}
@@ -122,8 +126,26 @@ function fillIssues (issues) {
 	const html = [];
 	for (let repo in remap) html.push(getRepoHtml(remap[repo]));
 	reposEl.html(html.join(''));
+	return issues;
 }
 
+
+function updateUnread (issues) {
+	issues.forEach(i => {
+		bookmarks.setUnread(i.id, i.unread);
+		$(`.${getIssueCls(i)}`).toggleClass('unread', i.unread);
+	});
+}
+
+
+function openIssue (iel) {
+	const url = iel.attr('href');
+	const iBox = iel.closest('.unread');
+	if (iBox.length) iBox.removeClass('unread');
+
+	$.trigger(EVENT.url.change.to, url);
+	bookmarks.setUnreadByUrl(url, false);
+}
 
 
 function init () {
