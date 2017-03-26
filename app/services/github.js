@@ -71,7 +71,7 @@ function getBuildUrl (pr) {
 }
 
 
-function getIssueLastComment (issue, comments) {
+function getLastIssueComment (issue, comments) {
 	if (!comments || !comments.length) return issue;
 	const lastComment = comments.pop();
 	issue.lastCommentDate = +new Date(lastComment.updated_at);
@@ -83,7 +83,7 @@ function getIssueLastComment (issue, comments) {
 
 function getIssueLastUpdateDate (issue) {
 	return github('issue-comments', { repo: issue.repo, id: issue.id })
-		.then(comments => getIssueLastComment(issue, comments));
+		.then(comments => getLastIssueComment(issue, comments));
 }
 
 
