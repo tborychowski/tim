@@ -11,7 +11,7 @@ let client = null;
 const DEBUG = false;
 
 
-function github (api, {id, repo, participating }) {
+function github (api, { id, repo, participating }) {
 	const isPreviewApi = (api === 'projects');
 
 	init(isPreviewApi);
@@ -26,6 +26,7 @@ function github (api, {id, repo, participating }) {
 		if (api === 'user') return client.user(id).info(cb);
 		if (api === 'pr') return client.pr(repo, id).info(cb);
 		if (api === 'projects') return client.repo(repo).projects(cb);
+		if (api === 'issue-comments') return client.issue(repo, id).comments(cb);
 	});
 }
 
@@ -46,8 +47,9 @@ function getNotificationsCount (participating = true) {
 
 function getPR (repo, id) {
 	return github('pr', { repo, id });
-
 }
+
+
 
 function getProjects () {
 	return github('projects', { repo: config.get('repoToSearch') });
@@ -63,10 +65,36 @@ function getCIjobUrl (statuses) {
 
 }
 
+
 function getBuildUrl (pr) {
 	return getPR(pr.repo, pr.id).then(resp => resp && $.get(resp.statuses_url)).then(getCIjobUrl);
 }
 
+
+function checkIfLastCommentIsUnread (issue, comments) {
+	if (!comments || !comments.length) return issue;
+	const lastComment = comments.pop();
+	issue.lastCommentDate = +new Date(lastComment.updated_at);
+
+	if (issue.updated_at && issue.lastCommentDate > issue.updated_at) issue.unread = true;
+	return issue;
+}
+
+
+function checkForUnreadComments (issue) {
+	return github('issue-comments', { repo: issue.repo, id: issue.id })
+		.then(comments => checkIfLastCommentIsUnread(issue, comments));
+}
+
+
+function checkIssuesForUpdates (issues) {
+	issues = issues
+		.filter(i => i.type in { pr: 1, issue: 1 })
+		.filter(i => !i.unread)								// ignore when already marked as unread
+		.map(checkForUnreadComments);
+
+	return Promise.all(issues).then(res => res.filter(i => i.unread));
+}
 
 
 function init (isPreview) {
@@ -87,5 +115,6 @@ module.exports = {
 	getBuildUrl,
 	getPR,
 	getProjects,
-	getUserById
+	getUserById,
+	checkIssuesForUpdates,
 };

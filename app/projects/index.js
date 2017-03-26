@@ -39,16 +39,14 @@ function remapProjectFields (project) {
 
 
 function onClick (e) {
+	e.preventDefault();
+
 	let target = $(e.target);
 
-	if (target.is('.js-refresh')) {
-		e.preventDefault();
-		refresh();
-	}
-	else if (target.closest('.btn')) {
-		e.preventDefault();
-		$.trigger(EVENT.url.change.to, target.closest('.btn')[0].getAttribute('href'));
-	}
+	if (target.is('.js-refresh')) return refresh();
+
+	target = target.closest('.btn');
+	if (target) return $.trigger(EVENT.url.change.to, target.attr('href'));
 }
 
 

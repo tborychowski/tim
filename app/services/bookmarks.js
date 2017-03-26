@@ -30,6 +30,11 @@ function setUnread (id, unread) {
 }
 
 
+function setUnreadByUrl (url, unread) {
+	return db.update({ url }, { unread });
+}
+
+
 
 module.exports = {
 	add,
@@ -37,4 +42,5 @@ module.exports = {
 	get,
 	getByUrl,
 	setUnread,
+	setUnreadByUrl,
 };
