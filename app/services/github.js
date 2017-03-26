@@ -71,7 +71,7 @@ function getBuildUrl (pr) {
 }
 
 
-function getLastIssueComment (issue, comments) {
+function checkIfLastCommentIsUnread (issue, comments) {
 	if (!comments || !comments.length) return issue;
 	const lastComment = comments.pop();
 	issue.lastCommentDate = +new Date(lastComment.updated_at);
@@ -81,17 +81,17 @@ function getLastIssueComment (issue, comments) {
 }
 
 
-function getIssueLastUpdateDate (issue) {
+function checkForUnreadComments (issue) {
 	return github('issue-comments', { repo: issue.repo, id: issue.id })
-		.then(comments => getLastIssueComment(issue, comments));
+		.then(comments => checkIfLastCommentIsUnread(issue, comments));
 }
 
 
 function checkIssuesForUpdates (issues) {
 	issues = issues
 		.filter(i => i.type in { pr: 1, issue: 1 })
-		.filter(i => !i.unread)
-		.map(getIssueLastUpdateDate);
+		.filter(i => !i.unread)								// ignore when already marked as unread
+		.map(checkForUnreadComments);
 
 	return Promise.all(issues).then(res => res.filter(i => i.unread));
 }
