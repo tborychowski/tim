@@ -132,8 +132,8 @@ function fillIssues (issues) {
 
 function updateUnread (issues) {
 	issues.forEach(i => {
-		bookmarks.setUnread(i.id, i.unread);
-		$(`.${getIssueCls(i)}`).toggleClass('unread', i.unread);
+		bookmarks.setUnread(i.id, true);
+		$(`.${getIssueCls(i)}`).addClass('unread');
 	});
 }
 
