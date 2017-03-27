@@ -31,7 +31,8 @@ function setUnread (id, unread) {
 
 
 function setUnreadByUrl (url, unread) {
-	return db.update({ url }, { unread });
+	const updated_at = +new Date();
+	return db.update({ url }, { unread, updated_at });
 }
 
 
