@@ -11,23 +11,8 @@ let client = null;
 const DEBUG = false;
 
 
-function github (api, { id, repo, participating }) {
-	const isPreviewApi = (api === 'projects');
-
-	init(isPreviewApi);
-	return new Promise(resolve => {
-		if (!client) return resolve(null);
-		const cb = (err, resp) => {
-			if (err && DEBUG) console.error(api.toUpperCase(), err);
-			resolve(err ? null : resp);
-		};
-
-		if (api === 'notifications') return client.me().notifications({ participating }, cb);
-		if (api === 'user') return client.user(id).info(cb);
-		if (api === 'pr') return client.pr(repo, id).info(cb);
-		if (api === 'projects') return client.repo(repo).projects(cb);
-		if (api === 'issue-comments') return client.issue(repo, id).comments(cb);
-	});
+function showError (api, err) {
+	if (err && DEBUG) console.error(api, err);
 }
 
 function getUserByIdFromPublicApi (id) {
@@ -36,23 +21,55 @@ function getUserByIdFromPublicApi (id) {
 	});
 }
 
-function getUserById (id) {
-	const fn = token ? github('user', { id }) : getUserByIdFromPublicApi(id);
-	return fn.then(res => res ? { id, name: res.name } : { id });
+function getUserByIdFromApi (id) {
+	init();
+	return new Promise(resolve => {
+		if (!client) return resolve(null);
+		client.user(id).info((err, res) => {
+			showError('USER', err);
+			if (err) resolve();
+			resolve(res);
+		});
+	});
 }
+
+function getUserById (id) {
+	const fn = token ? getUserByIdFromApi : getUserByIdFromPublicApi;
+	return fn(id).then(res => res ? { id, name: res.name } : { id });
+}
+
+
 
 function getNotificationsCount (participating = true) {
-	return github('notifications', { participating }).then(res => res.length || 0);
+	init();
+	return new Promise(resolve => {
+		if (!client) return resolve();
+		client.me().notifications({ participating, per_page: 1 }, (err, res, headers) => {
+			showError('NOTIFICATIONS', err);
+			if (err || !headers.link) return resolve();
+			const lastPage = headers.link.split(',').pop();
+			let total = 0;
+			if (lastPage.indexOf('rel="last"') > -1) {
+				const pages = lastPage.match(/^.*page=(\d+).*$/);
+				if (pages && pages.length) total = pages[1];
+				total = Math.min(total, 9999);
+			}
+			resolve(total);
+		});
+	});
 }
-
-function getPR (repo, id) {
-	return github('pr', { repo, id });
-}
-
 
 
 function getProjects () {
-	return github('projects', { repo: config.get('repoToSearch') });
+	init(true);
+	return new Promise(resolve => {
+		if (!client) return resolve();
+		client.repo(config.get('repoToSearch')).projects((err, res) => {
+			showError('PROJECTS', err);
+			if (err) resolve();
+			resolve(res);
+		});
+	});
 }
 
 
@@ -63,6 +80,19 @@ function getCIjobUrl (statuses) {
 	const url = statuses && statuses.length ? statuses[0].target_url : '';
 	return url;
 
+}
+
+
+function getPR (repo, id) {
+	init();
+	return new Promise(resolve => {
+		if (!client) return resolve();
+		client.pr(repo, id).info((err, res) => {
+			showError('PR', err);
+			if (err) resolve();
+			resolve(res);
+		});
+	});
 }
 
 
@@ -82,8 +112,15 @@ function checkIfLastCommentIsUnread (issue, comments) {
 
 
 function checkForUnreadComments (issue) {
-	return github('issue-comments', { repo: issue.repo, id: issue.id })
-		.then(comments => checkIfLastCommentIsUnread(issue, comments));
+	init();
+	return new Promise(resolve => {
+		if (!client) return resolve(issue);
+		client.issue(issue.repo, issue.id).comments((err, res) => {
+			showError('USER', err);
+			if (err) resolve(issue);
+			resolve(checkIfLastCommentIsUnread(issue, res));
+		});
+	});
 }
 
 
