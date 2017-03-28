@@ -27,7 +27,7 @@ function openChangelog (ver) {
 function setBadge (text = 0) {
 	text = parseInt(text, 10);
 	if (process.platform !== 'win32') app.setBadgeCount(text);
-	else {
+	else {														// yep, this is for windows...
 		const win = getCurrentWindow();
 		if (text === 0) return win.setOverlayIcon(null, '');
 		const canvas = document.createElement('canvas');

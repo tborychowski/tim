@@ -1,14 +1,15 @@
-const GH = require('./class.gh');
-const $ = require('../util');
+const GitHub = require('./class.gh');
+const jenkins = require('./jenkins');
 const config = require('./config');
 const isDev = require('electron-is-dev');
 
 const hostname = isDev ? 'https://api.github.com' : config.get('baseUrl') + 'api/v3';
-const github = new GH(config.get('ghToken'), hostname);
+const github = new GitHub(config.get('ghToken'), hostname);
+const ci_url = config.get('ciUrl');
 
 
 
-/*** HELPERS **************************************************************************************/
+/*** TRANSFORMERS *********************************************************************************/
 function getTotalFromNotificationsHeader (headers) {
 	const lastPage = headers.link.split(',').pop();
 	let total = 0;
@@ -20,14 +21,23 @@ function getTotalFromNotificationsHeader (headers) {
 	return total;
 }
 
-function getCIjobUrl (statuses) {
-	if (!statuses || !statuses.length) return '';
-	const ci_url = config.get('ciUrl');
-	if (ci_url) statuses = statuses.filter(s => s.target_url.indexOf(ci_url) > -1);
-	const url = statuses && statuses.length ? statuses[0].target_url : '';
-	return url;
+function getCItargetUrlFromStatuses (statuses) {
+	if (!statuses || !statuses.length || !ci_url) return;
+	const status = statuses
+		.filter(s => s.target_url)
+		.filter(s => s.target_url.indexOf(ci_url) > -1)[0];
+	return status && status.target_url || '';
 }
-/*** HELPERS **************************************************************************************/
+
+
+function getJenkinsStatus (pr, stat) {
+	const url = getCItargetUrlFromStatuses(stat.statuses);
+	if (!url) return { result: stat.state };
+	pr.buildUrl = url;
+	return jenkins.getStatus(url);
+}
+/**************************************************************************************************/
+
 
 
 
@@ -47,22 +57,22 @@ function getProjects () {
 }
 
 
-function getPR (repo, id) {
-	return github.get(`/repos/${repo}/pulls/${id}`);
+function getCommitStatuses (repo, sha) {
+	return github.get(`/repos/${repo}/commits/${sha}/status`);
+
 }
 
 
-function getBuildUrl (pr) {
-	return getPR(pr.repo, pr.id)
-		.then(resp => resp && $.get(resp.statuses_url))
-		.then(getCIjobUrl);
+function getBuildStatus (pr) {
+	return github.get(`/repos/${pr.repo}/pulls/${pr.id}`)
+		.then(res => getCommitStatuses(pr.repo, res.head.sha))
+		.then(res => getJenkinsStatus(pr, res));
 }
 
 
 function checkForUnreadComments (issue) {
 	let params = {};
 	if (issue.updated_at) params.since = new Date(issue.updated_at).toISOString();
-
 	return github.get(`/repos/${issue.repo}/issues/${issue.id}/comments`, params)
 		.then(res => {
 			if (res.length) issue.unread = true;
@@ -81,8 +91,7 @@ function checkIssuesForUpdates (issues) {
 
 module.exports = {
 	getNotificationsCount,
-	getBuildUrl,
-	getPR,
+	getBuildStatus,
 	getProjects,
 	getUserById,
 	checkIssuesForUpdates,

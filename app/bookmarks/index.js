@@ -1,8 +1,11 @@
-const { config, EVENT, bookmarks, github, jenkins, helper } = require('../services');
+const { config, EVENT, bookmarks, github, helper } = require('../services');
 const $ = require('../util');
 
 
 let isReady = false, el, reposEl;
+
+const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
+
 const issueTypeCls = {
 	pr: 'ion-ios-git-pull-request',
 	issue: 'ion-ios-bug-outline',
@@ -16,7 +19,6 @@ const statusIconCls = {
 };
 
 
-const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
 
 
 function getIssueCls (i){
@@ -76,12 +78,7 @@ function updateBuildStatus (pr, status) {
 
 function monitorPr (pr) {
 	github
-		.getBuildUrl(pr)
-		.then(url => {
-			if (!url) return;
-			pr.buildUrl = url;
-			return jenkins.getStatus(url);
-		})
+		.getBuildStatus(pr)
 		.then(status => updateBuildStatus(pr, status));
 }
 
