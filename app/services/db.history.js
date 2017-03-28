@@ -1,4 +1,4 @@
-const DB = require('./DB');
+const DB = require('./class.db');
 const db = new DB('history', 'url');
 
 

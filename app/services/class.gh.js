@@ -13,8 +13,8 @@ module.exports = class GitHub {
 	getOptions (url, qs = {}, fullResp = false) {
 		const uri = `${this.host}${url}`;
 		const headers = { 'User-Agent': 'GithubBrowser' };
-		if (this.token) qs.access_token = this.token;
 		if (url.indexOf('projects') > -1) headers.Accept = 'application/vnd.github.inertia-preview+json';
+		if (this.token) qs.access_token = this.token;
 
 		return { uri, qs, headers, json: true, resolveWithFullResponse: fullResp, strictSSL: false };
 	}

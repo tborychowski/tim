@@ -1,7 +1,7 @@
+const GH = require('./class.gh');
 const $ = require('../util');
 const config = require('./config');
 const isDev = require('electron-is-dev');
-const GH = require('./GH');
 
 const hostname = isDev ? 'https://api.github.com' : config.get('baseUrl') + 'api/v3';
 const github = new GH(config.get('ghToken'), hostname);
@@ -53,15 +53,16 @@ function getPR (repo, id) {
 
 
 function getBuildUrl (pr) {
-	return getPR(pr.repo, pr.id).then(resp => resp && $.get(resp.statuses_url)).then(getCIjobUrl);
+	return getPR(pr.repo, pr.id)
+		.then(resp => resp && $.get(resp.statuses_url))
+		.then(getCIjobUrl);
 }
 
 
 function checkForUnreadComments (issue) {
 	let params = {};
-	if (issue.updated_at) {
-		params.since = new Date(issue.updated_at).toISOString();
-	}
+	if (issue.updated_at) params.since = new Date(issue.updated_at).toISOString();
+
 	return github.get(`/repos/${issue.repo}/issues/${issue.id}/comments`, params)
 		.then(res => {
 			if (res.length) issue.unread = true;

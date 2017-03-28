@@ -8,7 +8,7 @@ function getCollection (name) {
 }
 
 
-class DB {
+module.exports = class DB {
 
 	constructor (colName, index) {
 		this.collection = getCollection(colName);
@@ -79,6 +79,3 @@ class DB {
 	}
 
 }
-
-
-module.exports = DB;

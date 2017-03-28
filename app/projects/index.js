@@ -1,8 +1,7 @@
 const $ = require('../util');
-const { config, EVENT, users, github } = require('../services');
+const { EVENT, users, github } = require('../services');
 
 let isReady = false, el, listEl;
-const baseUrl = `${config.get('baseUrl')}/${config.get('repoToSearch')}/projects/`;
 const projectSort = (a, b) => a.name.localeCompare(b.name);
 
 
@@ -42,9 +41,7 @@ function onClick (e) {
 	e.preventDefault();
 
 	let target = $(e.target);
-
 	if (target.is('.js-refresh')) return refresh();
-
 	target = target.closest('.btn');
 	if (target) return $.trigger(EVENT.url.change.to, target.attr('href'));
 }
@@ -59,7 +56,6 @@ function init () {
 
 	el.on('click', onClick);
 	$.on(EVENT.projects.refresh, refresh);
-
 
 	refresh();
 

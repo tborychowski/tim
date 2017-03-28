@@ -1,5 +1,5 @@
 const $ = require('../util');
-const {EVENT } = require('../services');
+const {EVENT} = require('../services');
 
 let webview, el, inp, info, isReady = false, isVisible = false;
 const TOP_H = '37px';

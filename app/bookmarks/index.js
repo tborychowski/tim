@@ -141,7 +141,7 @@ function updateUnread (issues) {
 function openIssue (iel) {
 	const url = iel.attr('href');
 	const iBox = iel.closest('.unread');
-	if (iBox.length) iBox.removeClass('unread');
+	if (iBox && iBox.length) iBox.removeClass('unread');
 
 	$.trigger(EVENT.url.change.to, url);
 	bookmarks.setUnreadByUrl(url, false);
