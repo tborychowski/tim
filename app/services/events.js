@@ -66,7 +66,8 @@ module.exports = {
 		stop: 'stop-search'
 	},
 	section: {
-		refresh: 'refresh-section'
+		refresh: 'refresh-section',
+		badge: 'set-section-badge'
 	},
 	settings: {
 		show: 'show-settings',

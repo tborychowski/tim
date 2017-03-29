@@ -2,7 +2,6 @@ const $ = require('../util');
 const { config, EVENT } = require('../services');
 
 let isReady = false, el, subnav, buttons, sections, currentSection, btnUpdate;
-let notificationsBadge;
 
 
 function refreshSection (section = currentSection) {
@@ -26,9 +25,9 @@ function changeSection (sectionName) {
 	config.set('state.section', sectionName);
 }
 
-
-function onNotificationsCountUpdate (count) {
-	notificationsBadge.toggle(count > 0).html(count);
+function setSectionBadge (section, count) {
+	const badge = el.find(`.nav-${section} .badge`);
+	badge.toggle(count > 0).html(count);
 }
 
 
@@ -50,16 +49,15 @@ function init () {
 	btnUpdate = el.find('.nav-update');
 	subnav = $('#subnav');
 	sections = subnav.find('.subnav-section');
-	notificationsBadge = el.find('.nav-notifications .badge');
 
 	el.on('click', onClick);
 
 	const sect = config.get('state.section');
 	if (sect) changeSection(sect);
 
-	$.on(EVENT.notifications.count, onNotificationsCountUpdate);
 	$.on(EVENT.section.refresh, refreshSection);
 	$.on(EVENT.updater.nav.show, () => btnUpdate.show());
+	$.on(EVENT.section.badge, setSectionBadge);
 
 	isReady = true;
 }

@@ -5,6 +5,7 @@ const components = [
 	'nav',
 	'bookmarks',
 	'notifications',
+	'myissues',
 	'header',
 	'frame',
 	'addressbar',

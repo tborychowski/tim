@@ -132,6 +132,7 @@ function updateUnread (issues) {
 		bookmarks.setUnread(i.id, true);
 		$(`.${getIssueCls(i)}`).addClass('unread');
 	});
+	$.trigger(EVENT.section.badge, 'bookmarks', issues.length);
 }
 
 

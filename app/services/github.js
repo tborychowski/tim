@@ -56,6 +56,9 @@ function getProjects () {
 	return github.get(`/repos/${config.get('repoToSearch')}/projects`);
 }
 
+function getMyIssues () {
+	return github.get('/issues', { per_page: 100 });
+}
 
 function getCommitStatuses (repo, sha) {
 	return github.get(`/repos/${repo}/commits/${sha}/status`);
@@ -82,10 +85,14 @@ function checkForUnreadComments (issue) {
 
 
 function checkIssuesForUpdates (issues) {
-	issues = issues
+	const issuesToProcess = issues
 		.filter(i => i.type in { pr: 1, issue: 1 } && !i.unread) // ignore when already marked as unread
 		.map(checkForUnreadComments);
-	return Promise.all(issues).then(res => res.filter(i => i.unread));
+	return Promise.all(issuesToProcess)
+		.then(res => res.filter(i => i.unread))
+		.then(processedIssues => {
+			return issues.filter(i => i.unread).concat(processedIssues);
+		});
 }
 
 
@@ -95,4 +102,5 @@ module.exports = {
 	getProjects,
 	getUserById,
 	checkIssuesForUpdates,
+	getMyIssues,
 };
