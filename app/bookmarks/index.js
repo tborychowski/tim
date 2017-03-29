@@ -132,6 +132,7 @@ function updateUnread (issues) {
 		bookmarks.setUnread(i.id, true);
 		$(`.${getIssueCls(i)}`).addClass('unread');
 	});
+	$.trigger(EVENT.section.badge, 'bookmarks', issues.length);
 }
 
 
@@ -141,7 +142,7 @@ function openIssue (iel) {
 	if (iBox && iBox.length) iBox.removeClass('unread');
 
 	$.trigger(EVENT.url.change.to, url);
-	bookmarks.setUnreadByUrl(url, false);
+	bookmarks.setUnreadByUrl(url, false).then(refresh);
 }
 
 
