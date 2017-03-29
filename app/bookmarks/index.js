@@ -142,7 +142,7 @@ function openIssue (iel) {
 	if (iBox && iBox.length) iBox.removeClass('unread');
 
 	$.trigger(EVENT.url.change.to, url);
-	bookmarks.setUnreadByUrl(url, false);
+	bookmarks.setUnreadByUrl(url, false).then(refresh);
 }
 
 

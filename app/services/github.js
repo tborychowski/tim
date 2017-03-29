@@ -11,8 +11,8 @@ const ci_url = config.get('ciUrl');
 
 /*** TRANSFORMERS *********************************************************************************/
 function getTotalFromNotificationsHeader (headers) {
-	const lastPage = headers.link.split(',').pop();
-	let total = 0;
+	let lastPage = '',  total = 0;
+	if (headers && headers.link) lastPage = headers.link.split(',').pop();
 	if (lastPage.indexOf('rel="last"') > -1) {
 		const pages = lastPage.match(/^.*page=(\d+).*$/);
 		if (pages && pages.length) total = pages[1];

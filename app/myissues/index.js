@@ -10,12 +10,12 @@ const issueTypeCls = {
 
 
 function refresh () {
-	github.getMyIssues()
-		.then(render);
+	github.getMyIssues().then(render);
 }
 
 
 function render (issues) {
+	console.log(issues);
 	const remap = {};
 	issues.forEach(iss => {
 		const repo = iss.repository.owner.login + '/' + iss.repository.name;
@@ -26,16 +26,17 @@ function render (issues) {
 	for (let repo in remap) html.push(getRepoHtml(remap[repo]));
 	listEl.html(html.join(''));
 
-	// TODO: badge only unread issues!
 	$.trigger(EVENT.section.badge, 'myissues', issues.length);
 
 	return issues;
 }
 
 function getIssueHtml (issue) {
-	return `<li class="">
+	const updated = $.prettyDate(issue.updated_at);
+	return `<li class="issue-box">
 		<i class="${issueTypeCls[issue.pull_request ? 'pr' : 'issue']}"></i>
 		<a href="${issue.html_url}" class="btn bookmark" title="${issue.number}">${issue.title}</a>
+		<div class="issue-date">updated: ${updated}</div>
 	</li>`;
 
 }
