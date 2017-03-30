@@ -1,33 +1,24 @@
 .settings {
 	position: absolute;
 	z-index: 200;
-	top: calc(50% - 300px);
+	top: 100px;
+	bottom: 100px;
+	min-height: 250px;
 	left: calc(50% - 300px);
 	width: 600px;
 	background-color: #fff;
-	padding: 30px 40px;
+	padding: 0;
 	box-shadow: 0 2px 30px #000;
 	border-radius: 3px;
 	display: none;
 	opacity: 0;
 	transform: scale(0.8);
 	transition: all .3s ease-out;
+	overflow: hidden;
 }
-#header,
-#frame,
-#nav,
-#subnav { transition: filter .3s ease-out; }
 
-.show-settings #header,
-.show-settings #frame,
-.show-settings #nav,
-.show-settings #subnav { filter: brightness(0.4); pointer-events: none; }
-.show-settings .settings { opacity: 1; transform: scale(1); }
-
-
-
-.settings h1 { margin: 0 0 10px 0; }
-
+.settings-form { display: flex; flex-direction: column; height: 100%; }
+.settings-form h2 { font-size: 16px; margin: 0; padding: 20px 0 0; }
 .settings-form label { display: inline-block; padding: 20px 5px 5px; width: 100%; text-align: right; }
 .settings-form input { display: inline-block; padding: 5px; margin-left: 10px; width: calc(100% - 140px);  }
 .settings-form input:invalid,
@@ -38,9 +29,69 @@
 }
 
 
-.settings-buttons { margin: 40px 0 0 0; text-align: right; }
-.settings-buttons .btn { font-size: 13px; }
+
+
+.settings-scroller {
+	flex: 1;
+	overflow: auto;
+	flex-grow: grow;
+	padding: 0 40px 40px;
+	height: 100%;
+	min-height: 100px;
+}
+
+
+.settings h1 {
+	margin: 0;
+	padding: 20px 40px;
+	position: relative;
+	background-color: #f3f3f3;
+	border-bottom: 1px solid #ccc;
+}
+
+
+.settings-buttons {
+	border-top: 1px solid #ccc;
+	margin: 0;
+	padding: 15px 40px;
+	text-align: right;
+	position: relative;
+	background-color: #f3f3f3;
+}
+.settings-buttons .btn {
+	font-size: 13px;
+	background-color: #fff;
+	border-radius: 3px;
+	border: 1px solid #ccc;
+	padding: 10px 30px;
+	cursor: pointer;
+	text-decoration: none;
+	color: #333;
+}
+.settings-buttons .btn:hover { border-color: #999; }
+
 .settings-buttons .btn-left { float: left; }
-.settings-buttons .btn-save { font-weight: bold; }
+.settings-buttons .btn-save { font-weight: bold; margin-left: 10px;
+	background-color: rgba(0, 180, 255, 0.2);
+}
 
 .settings-info-text { font-size: 11px; color: #999; margin-left: 146px; display: block; }
+
+
+
+
+
+
+
+/* SHOW SETTINGS */
+
+#header,
+#frame,
+#nav,
+#subnav { transition: filter .3s ease-out; }
+
+.show-settings #header,
+.show-settings #frame,
+.show-settings #nav,
+.show-settings #subnav { filter: brightness(0.4); pointer-events: none; }
+.show-settings .settings { opacity: 1; transform: scale(1); }

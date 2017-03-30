@@ -27,7 +27,7 @@ module.exports = {
 		hide: 'hide-contextmenu',
 	},
 	document: {
-		click: 'document-clicked'
+		clicked: 'document-clicked'
 	},
 	frame: {
 		goto: 'frame-goto-url',

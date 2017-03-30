@@ -15,7 +15,7 @@ function refresh () {
 
 
 function render (issues) {
-	console.log(issues);
+	if (!issues) return;
 	const remap = {};
 	issues.forEach(iss => {
 		const repo = iss.repository.owner.login + '/' + iss.repository.name;

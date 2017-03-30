@@ -68,6 +68,10 @@ function onClick (e) {
 	}
 }
 
+function documentClicked (e) {
+	if (e && e.target && e.target.closest('.settings')) return;
+	hideSettings();
+}
 
 function init () {
 	if (isReady) return;
@@ -80,6 +84,7 @@ function init () {
 	formEl.on('submit', saveSettings);
 
 	$.on(EVENT.settings.show, showSettings);
+	$.on(EVENT.document.clicked, documentClicked);
 
 	isReady = true;
 }

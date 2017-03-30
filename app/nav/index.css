@@ -51,6 +51,9 @@
 .nav-update .icon { font-size: 29px; border-radius: 20px; line-height: 40px; color: #fff; background: none; }
 .nav-update:hover { background: rgba(44, 190, 78, 0.5); }
 
+.nav-settings { text-align: center; }
+.nav-settings .icon { font-size: 29px; border-radius: 20px; line-height: 40px; color: #fff; background: none; }
+
 
 
 

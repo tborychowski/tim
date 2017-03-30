@@ -30,6 +30,9 @@
 			<a href="#" class="nav-btn nav-update" data-go="update" title="Update available. Click to see details.">
 				<i class="icon ion-md-arrow-round-up"></i>
 			</a>
+			<a href="#" class="nav-btn nav-settings" data-go="settings" title="Open preferences">
+				<i class="icon ion-md-settings"></i>
+			</a>
 		</div>
 	</nav>
 
@@ -103,27 +106,32 @@
 
 
 	<section class="settings">
-		<h1>Preferences</h1>
 		<form class="settings-form">
+			<h1>Preferences</h1>
+			<div class="settings-scroller">
+				<h2>Essentials</h2>
 
-			<label>Base URL: <input name="baseUrl" required></label>
+				<label>Base URL: <input name="baseUrl" required></label>
 
-			<label>Home button URL: <input name="homeUrl" placeholder="Defaults to Base URL"></label>
+				<label>Github Token: <input name="ghToken" placeholder="token ID"></label>
+				<span class="settings-info-text"><a href="#" class="btn token-link" data-go="link">Click here to generate a token</a></span>
+				<span class="settings-info-text">(make sure to select: <b>"repo/public_repo"</b> and <b>"notifications"</b> scopes)</span>
 
-			<label>Default repo: <input name="repoToSearch" placeholder="Group/RepoName"></label>
-			<span class="settings-info-text">e.g. Facebook/React</span>
-			<span class="settings-info-text">this will be used for Projects tab, searching, etc.</span>
+				<label>Default repo: <input name="repoToSearch" placeholder="owner/repo-name"></label>
+				<span class="settings-info-text">e.g. facebook/react</span>
+				<span class="settings-info-text">this will be used for Projects tab, searching, etc.</span>
 
-			<label>Github Token: <input name="ghToken" placeholder="token ID"></label>
-			<span class="settings-info-text"><a href="#" class="btn token-link" data-go="link">Click here to generate a token</a></span>
-			<span class="settings-info-text">(make sure to select: "repo/public_repo" and "notifications" scopes)</span>
 
-			<label>CI URL: <input name="ciUrl" placeholder="e.g. Travis, Jenkins host URL"></label>
-			<span class="settings-info-text">This will allow to monitor job build status on bookmarked PRs</span>
+				<h2>Optional</h2>
 
-			<label>Default Browser: <input name="browser" placeholder="defaults to: /Applications/Google Chrome.app"></label>
-			<span class="settings-info-text">This will allow to open pages in this browser</span>
+				<label>CI URL: <input name="ciUrl" placeholder="e.g. Travis or Jenkins base URL"></label>
+				<span class="settings-info-text">This will allow to monitor job build status on bookmarked PRs</span>
 
+				<label>Home button URL: <input name="homeUrl" placeholder="Defaults to Base URL"></label>
+
+				<label>Default Browser: <input name="browser" placeholder="defaults to: /Applications/Google Chrome.app"></label>
+				<span class="settings-info-text">This will allow to open pages in this browser</span>
+			</div>
 			<div class="settings-buttons">
 				<a href="#" class="btn btn-left btn-folder" data-go="folder">Open settings folder</a>
 				<button class="btn btn-cancel" data-go="cancel" type="button">Cancel</button>

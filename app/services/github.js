@@ -31,8 +31,8 @@ function getCItargetUrlFromStatuses (statuses) {
 
 
 function getJenkinsStatus (pr, stat) {
-	const url = getCItargetUrlFromStatuses(stat.statuses);
-	if (!url) return { result: stat.state };
+	const url = getCItargetUrlFromStatuses(stat && stat.statuses);
+	if (!url) return { result: stat && stat.state };
 	pr.buildUrl = url;
 	return jenkins.getStatus(url);
 }
@@ -48,7 +48,7 @@ function getUserById (id) {
 
 function getNotificationsCount (participating = true) {
 	return github.get('/notifications', { participating, per_page: 1 }, true)
-		.then(res => getTotalFromNotificationsHeader(res.headers));
+		.then(res => res && getTotalFromNotificationsHeader(res.headers));
 }
 
 
@@ -68,7 +68,7 @@ function getCommitStatuses (repo, sha) {
 
 function getBuildStatus (pr) {
 	return github.get(`/repos/${pr.repo}/pulls/${pr.id}`)
-		.then(res => getCommitStatuses(pr.repo, res.head.sha))
+		.then(res => getCommitStatuses(pr.repo, res && res.head && res.head.sha))
 		.then(res => getJenkinsStatus(pr, res));
 }
 
@@ -78,7 +78,7 @@ function checkForUnreadComments (issue) {
 	if (issue.updated_at) params.since = new Date(issue.updated_at).toISOString();
 	return github.get(`/repos/${issue.repo}/issues/${issue.id}/comments`, params)
 		.then(res => {
-			if (res.length) issue.unread = true;
+			if (res && res.length) issue.unread = true;
 			return issue;
 		});
 }
