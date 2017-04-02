@@ -1,7 +1,11 @@
-/* better typeof */
-function type (obj) {
-	return obj ? Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() : 'undefined';
-}
+const type = obj => obj ? Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() : 'undefined';
+
+const trim = (str, chars = '\\s') => ('' + str).replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
+const ltrim = (str, chars = '\\s') => ('' + str).replace(new RegExp(`^${chars}+`), '');
+const rtrim = (str, chars = '\\s') => ('' + str).replace(new RegExp(`${chars}+$`), '');
+
+const rand = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min);
+
 
 function isNumber (v) {
 	if (typeof v === 'number') return true;
@@ -41,56 +45,11 @@ function isObjectEmpty (x) {
 	return Object.keys(x).length === 0;
 }
 
-function rand (max, min = 0) {
-	return Math.floor(Math.random() * (max - min + 1) + min);
-}
-
-function each (arr, cb, scope) {
-	if (!arr) return;
-	if (type(arr) === 'object') {
-		for (let key in arr) cb.call(scope || cb, arr[key], key);
-	}
-	else {
-		for (let i = 0, item; item = arr[i]; i++) {
-			cb.call(scope || cb, item, i);
-		}
-	}
-	// return Array.prototype.forEach.call(collection, cb);
-}
-
 function sanitize (v) {
 	const div = document.createElement('DIV');
 	div.innerHTML = v || '';
 	return div.textContent || div.innerText || '';
 }
-
-function merge (target, ...sources) {
-	if (!target) throw new TypeError('Cannot convert first argument to object');
-	const to = Object(target);
-	for (let source of sources) {
-		let keys = Object.keys(Object(source));
-		for (let key of keys) {
-			let desc = Object.getOwnPropertyDescriptor(source, key);
-			if (desc !== undefined && desc.enumerable) to[key] = source[key];
-		}
-	}
-	return to;
-}
-
-
-function isNodeList (nodes) {
-	return (typeof nodes === 'object') &&
-		/^(htmlcollection|nodelist|object)$/.test(type(nodes)) &&
-		(nodes.length === 0 || (typeof nodes[0] === 'object' && nodes[0].nodeType > 0));
-}
-
-
-function trim (str, chars) {
-	chars = chars || '\\s';
-	return ('' + str).replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
-}
-function ltrim (str, chars) { return ('' + str).replace(new RegExp('^' + (chars ? chars : '\\s') + '+'), ''); }
-function rtrim (str, chars) { return ('' + str).replace(new RegExp((chars ? chars : '\\s') + '+$'), ''); }
 
 
 function fuzzy (hay, s) {
@@ -144,15 +103,12 @@ module.exports = {
 	trim,
 	type,
 	rand,
-	each,
 	isNumber,
 	formatNumber,
 	varToRealType,
 	isObjectEmpty,
-	merge,
 	sanitize,
 	serialize,
-	isNodeList,
 	parseUrl,
 	months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
 	prettyDate,

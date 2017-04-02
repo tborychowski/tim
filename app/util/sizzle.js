@@ -1,4 +1,7 @@
-const util = require('./util');
+const type = obj => obj ? Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() : 'undefined';
+const isNodeList = nodes => (typeof nodes === 'object') &&
+		/^(htmlcollection|nodelist|object)$/.test(type(nodes)) &&
+		(nodes.length === 0 || (typeof nodes[0] === 'object' && nodes[0].nodeType > 0));
 
 
 function sizzle (mixed, context) {
@@ -14,7 +17,7 @@ function sizzle (mixed, context) {
 	else el = (context || document).querySelectorAll(mixed);
 
 	if (el.nodeType) el = [el];
-	else if (util.isNodeList(el)) el = Array.prototype.slice.call(el);
+	else if (isNodeList(el)) el = Array.from(el);
 
 	return Object.assign(el || [], sizzle.fn);
 }
@@ -22,7 +25,6 @@ function sizzle (mixed, context) {
 
 sizzle.fn = {};
 sizzle.fn.find = function (selector) { return sizzle(selector, this[0]); };
-
 sizzle.fn.first = function () { return sizzle(this[0]); };
 sizzle.fn.last = function () { return sizzle(this[this.length - 1]); };
 sizzle.fn.eq = function (idx) { return sizzle(this[idx || 0]); };
@@ -58,41 +60,15 @@ sizzle.fn.off = function (eventName, cb) {
 	return this;
 };
 
-
-sizzle.fn.closest = function (cls) {
-	if (!this || !this.length) return false;
-	let has = false, el = this[0];
-	while (!has && el) {
-		has = el.matches(cls);
-		if (has) return sizzle(el);
-		el = el.parentNode;
-		if (el.tagName === 'HTML') return null;
-	}
-	return null;
-};
-
 sizzle.fn.is = function (selector) {
 	if (!this || !this.length) return false;
 	return this[0].matches(selector);
 };
 
-/**
- * Check if target is, or is inside, a selector
- * @param  {object}  target  - dom element
- * @param  {string}  ...cls  - classes/selectors
- * @example
- *    Helper.isTargetIn(el, 'cls1', 'cls2')
- * @return {Boolean}
- */
-sizzle.fn.isIn = function (...classes) {
-	let target = (this && this.length ? this : null);
-	if (target) {
-		for (let cls of classes) if (target.closest(cls)) return true;
-	}
-	return false;
+sizzle.fn.closest = function (cls) {
+	if (!this || !this.length) return false;
+	return sizzle(this[0].closest(cls));
 };
-
-
 
 /**
  * Modify element class list
@@ -162,7 +138,6 @@ sizzle.fn.data = function (key) {
 };
 
 
-
 sizzle.fn.attr = function (attr, value) {
 	if (!this || !this.length) return false;
 	if (typeof value === 'undefined') return this[0].getAttribute(attr);
@@ -170,27 +145,21 @@ sizzle.fn.attr = function (attr, value) {
 };
 
 
-
-
 sizzle.fn.animate = function (from, to, options = {}, cb) {
 	const opts = Object.assign({},  { duration: 300, easing: 'ease-out' }, options);
-	const all = this.map(el => {
-		return new Promise (resolve => {
-			const anim = el.animate([from, to], opts);
-			anim.oncancel = resolve;
-			anim.onfinish = () => {
-				for (let prop in to) el.style[prop] = to[prop];	// make sure the style sticks after the animation
-				resolve();
-			};
-		});
-	});
+	const all = this.map(el => new Promise (resolve => {
+		const anim = el.animate([from, to], opts);
+		anim.oncancel = resolve;
+		anim.onfinish = () => {
+			for (let prop in to) el.style[prop] = to[prop];	// make sure the style sticks after the animation
+			resolve();
+		};
+	}));
 	const promiseAll = Promise.all(all);
 	if (typeof cb !== 'function') return promiseAll;
 	promiseAll.then(cb);
 	return this;
 };
-
-
 
 
 module.exports = sizzle;
