@@ -47,7 +47,7 @@
 .nav-settings .icon { -webkit-mask-image: url("../../assets/icon-settings.svg"); }
 
 
-.nav-bottom { position: absolute; left: 0; right: 0; bottom: 10px; }
+.nav-bottom { position: absolute; left: 0; right: 0; bottom: 0; }
 
 .nav-update { border-radius: 20px; background: #4D7321; display: none; }
 .nav-update .icon { border-radius: 20px; }
