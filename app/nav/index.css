@@ -43,16 +43,16 @@
 .nav-notifications .icon { -webkit-mask-image: url("../../assets/icon-bell.svg"); }
 .nav-myissues .icon { -webkit-mask-image: url("../../assets/icon-inbox.svg"); }
 .nav-projects .icon { -webkit-mask-image: url("../../assets/icon-projects.svg"); }
+.nav-update .icon { -webkit-mask-image: url("../../assets/icon-update.svg"); }
+.nav-settings .icon { -webkit-mask-image: url("../../assets/icon-settings.svg"); }
 
 
 .nav-bottom { position: absolute; left: 0; right: 0; bottom: 10px; }
 
-.nav-update { text-align: center; border-radius: 20px; display: none; }
-.nav-update .icon { font-size: 29px; border-radius: 20px; line-height: 40px; color: #fff; background: none; }
-.nav-update:hover { background: rgba(44, 190, 78, 0.5); }
+.nav-update { border-radius: 20px; background: #4D7321; display: none; }
+.nav-update .icon { border-radius: 20px; }
+.nav-update:hover { background: #82B209; }
 
-.nav-settings { text-align: center; }
-.nav-settings .icon { font-size: 29px; border-radius: 20px; line-height: 40px; color: #fff; background: none; }
 
 
 

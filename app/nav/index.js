@@ -36,6 +36,7 @@ function onClick (e) {
 	const go = target && target.data('go');
 	if (!target || !go) return;
 	e.preventDefault();
+	e.stopPropagation();
 	if (go === 'update') return $.trigger(EVENT.updater.nav.clicked);
 	if (go === 'settings') return $.trigger(EVENT.settings.show);
 	changeSection(go);
