@@ -132,7 +132,6 @@ function fillIssues (issues) {
 function updateUnread (issues) {
 	const unread = issues.filter(i => i.unread);
 
-	console.log(issues);
 	unread.forEach(issue => {
 		bookmarks.setUnread(issue.id, true);
 		$(`.${getIssueCls(issue)}`).addClass('unread');
