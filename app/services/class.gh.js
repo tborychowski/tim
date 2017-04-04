@@ -8,6 +8,7 @@ module.exports = class GitHub {
 		this.host = host;
 		this.token = token;
 		this.user_agent = 'GithubBrowser';
+		this.reqCount = 0;
 	}
 
 	getOptions (url, qs = {}, fullResp = false) {
@@ -21,6 +22,8 @@ module.exports = class GitHub {
 
 
 	get (url, params, fullResp = false) {
+		this.reqCount++;
+		console.log('No of GH requests so far:', this.reqCount);
 		const options = this.getOptions(url, params, fullResp);
 		return REQ(options)
 			.then(res => {

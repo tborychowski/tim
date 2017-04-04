@@ -33,8 +33,9 @@ function render (issues) {
 
 function getIssueHtml (issue) {
 	const updated = $.prettyDate(issue.updated_at);
-	return `<li class="issue-box">
-		<i class="${issueTypeCls[issue.pull_request ? 'pr' : 'issue']}"></i>
+	const state = issue.state || '';
+	return `<li class="issue-box ${state}">
+		<i class="issue-icon ${issueTypeCls[issue.pull_request ? 'pr' : 'issue']}" title="${state}"></i>
 		<a href="${issue.html_url}" class="btn bookmark" title="${issue.number}">${issue.title}</a>
 		<div class="issue-date">updated: ${updated}</div>
 	</li>`;
@@ -57,7 +58,7 @@ function onClick (e) {
 	let target = $(e.target);
 	if (target.is('.js-refresh')) return refresh();
 	target = target.closest('.btn');
-	if (target) return $.trigger(EVENT.url.change.to, target.attr('href'));
+	if (target && target.length) return $.trigger(EVENT.url.change.to, target.attr('href'));
 }
 
 

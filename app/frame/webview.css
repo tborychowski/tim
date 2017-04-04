@@ -23,7 +23,7 @@ body { min-width: auto !important;
 
 
 /* position: sticky causes some rendering issues on retina screens */
-.discussion-sidebar-item.sidebar-labels { transform: translate3d(0,0,0); }
+// .discussion-sidebar-item.sidebar-labels { transform: translate3d(0,0,0); position: relative; }
 
 
 /* files */

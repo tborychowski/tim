@@ -8,7 +8,8 @@ const TOP_H = '37px';
 function show () {
 	if (isVisible) return;
 	isVisible = true;
-	el.show().animate({ top: 0 }, { top: TOP_H }).then(() => inp[0].focus());
+	el.show().animate({ top: 0 }, { top: TOP_H });
+	inp[0].focus();
 }
 
 
@@ -18,7 +19,8 @@ function hide () {
 	inp[0].value = '';
 	highlightFindings();
 	updateInfo();
-	el.animate({ top: TOP_H }, { top: 0 }).then(() => $.trigger(EVENT.address.focus));
+	el.animate({ top: TOP_H }, { top: 0 });
+	$.trigger(EVENT.address.focus);
 }
 
 

@@ -60,6 +60,14 @@ function getMyIssues () {
 	return github.get('/issues', { per_page: 100 });
 }
 
+function getIssue (repo, id) {
+	return github.get(`/repos/${repo}/issues/${id}`);
+}
+
+function getIssueComments (repo, id, params) {
+	return github.get(`/repos/${repo}/issues/${id}/comments`, params);
+}
+
 function getCommitStatuses (repo, sha) {
 	return github.get(`/repos/${repo}/commits/${sha}/status`);
 
@@ -74,25 +82,29 @@ function getBuildStatus (pr) {
 
 
 function checkForUnreadComments (issue) {
+	if (issue.unread) return issue;
 	let params = {};
 	if (issue.updated_at) params.since = new Date(issue.updated_at).toISOString();
-	return github.get(`/repos/${issue.repo}/issues/${issue.id}/comments`, params)
+	return getIssueComments(issue.repo, issue.id, params)
 		.then(res => {
 			if (res && res.length) issue.unread = true;
 			return issue;
 		});
 }
 
+function checkIssueState (issue) {
+	return getIssue(issue.repo, issue.id).then(res => {
+		issue.state = res.state;
+		return issue;
+	});
+}
+
 
 function checkIssuesForUpdates (issues) {
 	const issuesToProcess = issues
-		.filter(i => i.type in { pr: 1, issue: 1 } && !i.unread) // ignore when already marked as unread
-		.map(checkForUnreadComments);
-	return Promise.all(issuesToProcess)
-		.then(res => res.filter(i => i.unread))
-		.then(processedIssues => {
-			return issues.filter(i => i.unread).concat(processedIssues);
-		});
+		.filter(i => i.type in { pr: 1, issue: 1 }) // ignore when already marked as unread
+		.map(issue => checkIssueState(issue).then(checkForUnreadComments));
+	return Promise.all(issuesToProcess);
 }
 
 

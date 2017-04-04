@@ -1,5 +1,9 @@
 .issue-box { flex-wrap: wrap; }
 
+.issue-box.open .issue-icon { color: #28a745; -webkit-text-stroke: 0.5px #28a745; }
+.issue-box.closed .issue-icon { color: #cb2431; -webkit-text-stroke: 0.5px #cb2431; }
+
+
 .issue-box .issue-date {
 	font-size: 10px;
 	width: 100%;

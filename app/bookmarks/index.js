@@ -22,7 +22,7 @@ const statusIconCls = {
 
 
 function getIssueCls (i){
-	const repo = (i.repo || '').replace('/', '-');
+	const repo = (i.repo || '').replace(/[\/\.]/g, '-').toLowerCase();
 	return i.id ? `issue-${repo}-${i.id}` : '';
 }
 
@@ -90,8 +90,10 @@ function getIssueHtml (issue) {
 		statusBox = '<a href="#" class="build-status"><i class="icon"></i>' +
 			'<div class="build-progress"><div class="build-progress-inner"></div></div></a>';
 	}
-	return `<li class="${getIssueCls(issue)} ${issue.unread ? 'unread' : ''}">
-		<i class="${issueTypeCls[issue.type || 'default']}"></i>
+	const cls = ['issue-box', getIssueCls(issue), issue.state];
+	if (issue.unread) cls.push('unread');
+	return `<li class="${cls.join(' ')}">
+		<i class="issue-icon ${issueTypeCls[issue.type || 'default']}"></i>
 		<a href="${issue.url}" class="btn bookmark" title="${issue.id}">${issue.name}</a>
 		${statusBox}
 	</li>`;
@@ -128,11 +130,18 @@ function fillIssues (issues) {
 
 
 function updateUnread (issues) {
-	issues.forEach(i => {
-		bookmarks.setUnread(i.id, true);
-		$(`.${getIssueCls(i)}`).addClass('unread');
+	const unread = issues.filter(i => i.unread);
+
+	console.log(issues);
+	unread.forEach(issue => {
+		bookmarks.setUnread(issue.id, true);
+		$(`.${getIssueCls(issue)}`).addClass('unread');
 	});
-	$.trigger(EVENT.section.badge, 'bookmarks', issues.length);
+
+	issues.forEach(issue => {
+		$(`.${getIssueCls(issue)}`).addClass(issue.state);
+	});
+	$.trigger(EVENT.section.badge, 'bookmarks', unread.length);
 }
 
 
