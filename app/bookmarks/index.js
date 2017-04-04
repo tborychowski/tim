@@ -138,6 +138,7 @@ function updateUnread (issues) {
 	});
 
 	issues.forEach(issue => {
+		bookmarks.setState(issue.id, issue.state);
 		$(`.${getIssueCls(issue)}`).addClass(issue.state);
 	});
 	$.trigger(EVENT.section.badge, 'bookmarks', unread.length);

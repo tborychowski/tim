@@ -87,7 +87,12 @@ function checkForUnreadComments (issue) {
 	if (issue.updated_at) params.since = new Date(issue.updated_at).toISOString();
 	return getIssueComments(issue.repo, issue.id, params)
 		.then(res => {
-			if (res && res.length) issue.unread = true;
+			let comments = res && res.length ? res : [];
+			if (comments) {
+				const myId = github.user && github.user.id || null;
+				comments = res.filter(i => i.user.id !== myId);
+			}
+			if (comments.length) issue.unread = true;
 			return issue;
 		});
 }

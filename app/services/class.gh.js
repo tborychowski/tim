@@ -9,6 +9,8 @@ module.exports = class GitHub {
 		this.token = token;
 		this.user_agent = 'GithubBrowser';
 		this.reqCount = 0;
+
+		this.get('/user').then(res => { this.user = res; });
 	}
 
 	getOptions (url, qs = {}, fullResp = false) {
@@ -19,7 +21,6 @@ module.exports = class GitHub {
 
 		return { uri, qs, headers, json: true, resolveWithFullResponse: fullResp, strictSSL: false };
 	}
-
 
 	get (url, params, fullResp = false) {
 		this.reqCount++;
