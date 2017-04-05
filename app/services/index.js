@@ -9,7 +9,7 @@ const bookmarks = require('./db.bookmarks');
 const users = require('./db.users');
 
 
-
+const isDev = require('./isDev');
 
 
 module.exports = {
@@ -22,4 +22,5 @@ module.exports = {
 	bookmarks,
 	users,
 	helper,
+	isDev,
 };

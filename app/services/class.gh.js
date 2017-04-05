@@ -1,5 +1,5 @@
 const REQ = require('request-promise-native');
-const isDev = require('electron-is-dev');
+const isDev = require('./isDev');
 
 
 module.exports = class GitHub {

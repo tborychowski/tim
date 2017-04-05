@@ -2,7 +2,7 @@ const {clipboard, remote, nativeImage} = require('electron');
 const {shell, app, getCurrentWindow} = remote;
 const {exec} = require('child_process');
 const config = require('./config');
-const isDev = require('electron-is-dev');
+const isDev = require('./isDev');
 
 
 const getUserDataFolder = () => app.getPath('userData');

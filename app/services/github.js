@@ -2,7 +2,8 @@ const GitHub = require('./class.gh');
 const jenkins = require('./jenkins');
 const config = require('./config');
 
-const hostname = config.get('baseUrl') + 'api/v3';
+const baseUrl = config.get('baseUrl');
+const hostname = baseUrl.indexOf('https://github.com') > -1 ? 'https://api.github.com' : baseUrl + 'api/v3';
 const github = new GitHub(config.get('ghToken'), hostname);
 const ci_url = config.get('ciUrl');
 
@@ -88,7 +89,7 @@ function checkForUnreadComments (issue) {
 	return getIssueComments(issue.repo, issue.id, params)
 		.then(res => {
 			let comments = res && res.length ? res : [];
-			if (comments) {
+			if (comments && res) {
 				const myId = github.user && github.user.id || null;
 				comments = res.filter(i => i.user.id !== myId);
 			}
@@ -99,7 +100,7 @@ function checkForUnreadComments (issue) {
 
 function checkIssueState (issue) {
 	return getIssue(issue.repo, issue.id).then(res => {
-		issue.state = res.state;
+		if (res) issue.state = res.state;
 		return issue;
 	});
 }

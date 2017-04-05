@@ -1,6 +1,5 @@
-const { session, getGlobal } = require('electron').remote;
+const { session, getGlobal, isDev } = require('electron').remote;
 const path = require('path');
-const isDev = require('electron-is-dev');
 
 const args = getGlobal('appArgs');
 const $ = require('../util');

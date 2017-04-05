@@ -1,6 +1,6 @@
 const { ipcMain } = require('electron');
 const { autoUpdater } = require('electron-updater');
-const isDev = require('electron-is-dev');
+const isDev = require('../services/isDev');
 let win = null;
 
 if (isDev) {

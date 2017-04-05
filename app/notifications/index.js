@@ -1,6 +1,5 @@
 const $ = require('../util');
-const { config, EVENT, github, helper } = require('../services');
-const isDev = require('electron-is-dev');
+const { config, EVENT, github, helper, isDev } = require('../services');
 
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
