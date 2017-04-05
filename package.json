@@ -12,7 +12,7 @@
     "postinstall": "install-app-deps",
     "start": "electron index.js",
     "pack": "build --mac",
-    "publish": "build --publish always"
+    "release": "build --publish always"
   },
   "author": "Tom",
   "license": "MIT",
