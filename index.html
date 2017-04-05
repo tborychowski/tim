@@ -9,11 +9,11 @@
 </head>
 <body>
 	<nav id="nav">
-		<a href="#" class="nav-btn nav-notifications" data-go="notifications" title="Notifications">
+		<a href="#" class="nav-btn nav-notifications active" data-go="notifications" title="Notifications">
 			<i class="icon"></i>
 			<span class="badge">0</span>
 		</a>
-		<a href="#" class="nav-btn nav-bookmarks active" data-go="bookmarks" title="Bookmarks">
+		<a href="#" class="nav-btn nav-bookmarks" data-go="bookmarks" title="Bookmarks">
 			<i class="icon"></i>
 			<span class="badge">0</span>
 		</a>
@@ -38,16 +38,16 @@
 
 
 	<aside id="subnav">
-		<sections class="subnav-section subnav-bookmarks active">
-			<h1>Bookmarks</h1>
-			<a href="#" class="nav-icon-btn header-btn js-refresh ion-md-refresh" title="Refresh Bookmarks" data-go="refresh"></a>
-			<div class="subnav-section-list"></div>
-		</sections>
-
-		<sections class="subnav-section subnav-notifications">
+		<sections class="subnav-section subnav-notifications active">
 			<a href="#" class="nav-icon-btn nav-icon-btn-left header-btn js-prev ion-md-arrow-back" title="Back" data-go="prev"></a>
 			<h1>Notifications</h1>
 			<a href="#" class="nav-icon-btn header-btn js-refresh ion-md-refresh" title="Refresh Notifications" data-go="refresh"></a>
+			<div class="subnav-section-list"></div>
+		</sections>
+
+		<sections class="subnav-section subnav-bookmarks">
+			<h1>Bookmarks</h1>
+			<a href="#" class="nav-icon-btn header-btn js-refresh ion-md-refresh" title="Refresh Bookmarks" data-go="refresh"></a>
 			<div class="subnav-section-list"></div>
 		</sections>
 

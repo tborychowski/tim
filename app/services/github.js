@@ -1,9 +1,8 @@
 const GitHub = require('./class.gh');
 const jenkins = require('./jenkins');
 const config = require('./config');
-const isDev = require('electron-is-dev');
 
-const hostname = isDev ? 'https://api.github.com' : config.get('baseUrl') + 'api/v3';
+const hostname = config.get('baseUrl') + 'api/v3';
 const github = new GitHub(config.get('ghToken'), hostname);
 const ci_url = config.get('ciUrl');
 
@@ -53,6 +52,7 @@ function getNotificationsCount (participating = true) {
 
 
 function getProjects () {
+	if (!config.get('repoToSearch')) return Promise.resolve([]);
 	return github.get(`/repos/${config.get('repoToSearch')}/projects`);
 }
 

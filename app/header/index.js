@@ -10,8 +10,6 @@ const clickHandlers = {
 	stop () { $.trigger(EVENT.frame.goto, 'stop'); },
 	browser () { helper.openInBrowser(config.get('state.url')); },
 	copy () { helper.copyToClipboard(config.get('state.url')); },
-	hideNotifications () { $.trigger(EVENT.notifications.toggle, false); },
-	showNotifications () { $.trigger(EVENT.notifications.toggle, true); },
 	home () { $.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl')); },
 	star () { $.trigger(EVENT.bookmark.add, config.get('state.issue')); },
 	unstar () { $.trigger(EVENT.bookmark.remove, config.get('state.issue')); },

@@ -19,7 +19,7 @@ const webviewHandlers = {
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	actionClicked: () => checkNotifications(1000),
 	docReady: () => $.injectCSS(webview, wpcss),
-	cssReady: () => setTimeout(() => { webview.removeClass('loading'); }, 100),
+	// cssReady: () => setTimeout(() => { webview.removeClass('loading'); }, 100),
 	isLogged: (isit) => { isLoggedIn = isit; }
 };
 
@@ -36,7 +36,7 @@ function loadingStart () {
 }
 
 function loadingStop () {
-	webview.removeClass('loading');
+	if (isLoggedIn) webview.removeClass('loading');
 }
 
 
@@ -60,11 +60,6 @@ function backToRoot (e) {
 	e.preventDefault();
 	webview[0].loadURL(getNotificationsUrl());
 
-}
-
-function toggle (show) {
-	config.set('state.notifications', !!show);
-	el.toggleClass('visible', !!show);
 }
 
 function refresh (fullReload) {
@@ -125,12 +120,9 @@ function init () {
 	backBtn.on('click', backToRoot);
 
 	$.on(EVENT.notifications.refresh, refresh);
-	$.on(EVENT.notifications.toggle, toggle);
 	$.on(EVENT.notifications.devtools, toggleDevTools);
 	$.on(EVENT.settings.changed, () => refresh(true));
 	$.on(EVENT.url.change.end, onFrameUrlChanged);
-
-	toggle(config.get('state.notifications'));
 
 	checkNotifications();
 

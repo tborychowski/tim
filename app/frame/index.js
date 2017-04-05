@@ -15,7 +15,7 @@ const wpcss = `${__dirname}/webview.css`;
 
 const ses = session.fromPartition('persist:github');
 
-let webview, isReady = false, pageZoom = 0;
+let webview, isReady = false, pageZoom = 0, isLoggedIn = false;
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
@@ -27,8 +27,10 @@ const webviewHandlers = {
 
 	showSelectionMenu: txt => $.trigger(EVENT.contextmenu.show, { txt, type: 'selection' }),
 	isLogged: itIs => {
-		if (itIs) return;
-		$.trigger(EVENT.notifications.toggle, false);
+		if (itIs && !isLoggedIn) {
+			isLoggedIn = true;
+			$.trigger(EVENT.settings.changed);
+		}
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
 	linkClicked,
@@ -76,6 +78,14 @@ function purge () {
 	config.clear();
 	webview[0].clearHistory();
 	ses.clearStorageData(webviewHandlers.isLogged);
+	setTimeout(() => {
+		gotoUrl(initialURL(true));
+		helper.setBadge(0);
+		$.trigger(EVENT.section.badge, 'notifications', 0);
+		$.trigger(EVENT.section.badge, 'myissues', 0);
+		$.trigger(EVENT.section.badge, 'bookmarks', 0);
+		$.trigger(EVENT.settings.changed);
+	});
 }
 
 
