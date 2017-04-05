@@ -20,8 +20,8 @@ const events = {
 	'download-progress': () => log('Downloading update...'),
 	'update-downloaded': updateDownloaded,
 	'update-error': (err) => {
-		if (SILENT && isDev) log('Update error', err);
-		else dialog.error('There was an error with the upload.\nPlease try again later.');
+		if (SILENT || isDev) log('Update error', err);
+		else dialog.error('There was an error with the update.\nPlease try again later.');
 	},
 };
 

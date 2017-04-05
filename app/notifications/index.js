@@ -119,6 +119,7 @@ function init () {
 	backBtn.on('click', backToRoot);
 
 	$.on(EVENT.notifications.refresh, refresh);
+	$.on(EVENT.notifications.reload, () => refresh(true));
 	$.on(EVENT.notifications.devtools, toggleDevTools);
 	$.on(EVENT.settings.changed, () => refresh(true));
 	$.on(EVENT.url.change.end, onFrameUrlChanged);

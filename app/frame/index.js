@@ -16,6 +16,7 @@ const ses = session.fromPartition('persist:github');
 
 let webview, isReady = false, pageZoom = 0, isLoggedIn = false;
 
+
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
 	externalLinkClicked: url => helper.openInBrowser(url),
@@ -28,7 +29,7 @@ const webviewHandlers = {
 	isLogged: itIs => {
 		if (itIs && !isLoggedIn) {
 			isLoggedIn = true;
-			$.trigger(EVENT.settings.changed);
+			$.trigger(EVENT.notifications.reload);
 		}
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
@@ -83,7 +84,7 @@ function purge () {
 		$.trigger(EVENT.section.badge, 'notifications', 0);
 		$.trigger(EVENT.section.badge, 'myissues', 0);
 		$.trigger(EVENT.section.badge, 'bookmarks', 0);
-		$.trigger(EVENT.settings.changed);
+		$.trigger(EVENT.notifications.reload);
 	});
 }
 

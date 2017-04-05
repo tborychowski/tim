@@ -55,7 +55,8 @@ module.exports = {
 		toggle: 'notifications-toggle',
 		devtools: 'notification-devtools-toggle',
 		count: 'notifications-count-updated',
-		refresh: 'refresh-notifications'
+		refresh: 'refresh-notifications',
+		reload: 'reload-notifications'
 	},
 	preview: 'show-preview',
 	projects: {
