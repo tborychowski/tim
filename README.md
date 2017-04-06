@@ -2,19 +2,14 @@
 Browse github orderly.
 
 ### Features
-- Gives you **only 1 page** (no tabs, no clutter. just focus). If you really, really must see a link in another window you can use "Preview" feature (cmd+click or right-click on a link/image)
-- Minimalist & functional design
-- Dock **badge** shows the number of new notifications
+- Gives you **only 1 page** (no tabs, no clutter. just focus). If you really, really must see a link in another window you can use "Preview" feature (cmd+click or right-click on a link/image) or open it in your designated browser (chrome by default)
+- Minimalist & extremely functional design
+- Dock **badge** shows the number of unread notifications
 - Tweaked github css to make it responsive and hide unimportant blocks (headers, footers)
-- Has 4 main sections:
-  - notifications - see what's going on, and dismiss merged PRs without leaving the page
-  - bookmarks - stash any page. Issue/PR pages are grouped by repository name. PR bookmarks will show build job progress (tested only with jenkins for now)
-  - my issues - work in progress
-  - projects - a view of all projects for a default repository
 - **Auto updater** (like chrome - updates the app in the background)
 - Works with **Github Enterprise**
 - **TouchBar** Support
-
+- 4 main sections: notifications, bookmarks, my issues and projects (see more details below)
 
 ### Download
 Check the [Releases](https://github.com/tborychowski/github-browser/releases) for the latest version.
@@ -22,10 +17,36 @@ Check the [Releases](https://github.com/tborychowski/github-browser/releases) fo
 
 ### Screenshots
 
+#### Notifications 
+- quickly see what's going on, 
+- dismiss merged PRs without leaving the page
+
 ![Notifications](screens/1-notifications.png)
+
+
+#### Bookmarks
+- stash any page
+- issue/PR pages are grouped by repository name
+- PR bookmarks will show build job progress and status (only jenkins for now)
+- red dot will show you if there are new comments on an issue/PR since you bookmarked it
+- type icon (issue or PR) will change colour based on the status (open - green; closed - red) - like in GH
+
 ![Bookmarks](screens/2-bookmarks.png)
+
+
+#### My Issues
+- list all issues assigned to the currenlty logged-in user (based on the token provided in settings)
+- like bookmarks - shows icon colour based on the status and red dot for unread comments
+
 ![My Issues](screens/3-myissues.png)
+
+
+#### Projects
+- a view of all projects for the default repository (provided in Settings)
+
 ![Projects](screens/4-projects.png)
+
+#### Settings
 ![Settings](screens/5-settings.png)
 
 
