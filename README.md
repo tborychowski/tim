@@ -20,6 +20,15 @@ Browse github orderly.
 Check the [Releases](https://github.com/tborychowski/github-browser/releases) for the latest version.
 
 
+### Screenshots
+
+![Notifications](screens/1-notifications.png)
+![Bookmarks](screens/2-bookmarks.png)
+![My Issues](screens/3-myissues.png)
+![Projects](screens/4-projects.png)
+![Settings](screens/5-settings.png)
+
+
 ### Dev install
 ```sh
 git clone https://github.com/tborychowski/github-browser.git
