@@ -24,7 +24,7 @@ Check the [Releases](https://github.com/tborychowski/github-browser/releases) fo
 ```sh
 git clone https://github.com/tborychowski/github-browser.git
 cd github-browser
-yarn
+npm i
 npm start
 ```
 
