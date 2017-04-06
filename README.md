@@ -18,7 +18,7 @@ Browse github orderly.
 Check the [Releases](https://github.com/tborychowski/github-browser/releases) for the latest version.
 
 
-## Screenshots
+## More Screenshots
 
 #### Notifications 
 - quickly see what's going on, 
