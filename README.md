@@ -1,7 +1,7 @@
 # Github Browser
 Browse github orderly.
 
-### Features
+## Features
 - Gives you **only 1 page** (no tabs, no clutter. just focus). If you really, really must see a link in another window you can use "Preview" feature (cmd+click or right-click on a link/image) or open it in your designated browser (chrome by default)
 - Minimalist & extremely functional design
 - Dock **badge** shows the number of unread notifications
@@ -9,13 +9,13 @@ Browse github orderly.
 - **Auto updater** (like chrome - updates the app in the background)
 - Works with **Github Enterprise**
 - **TouchBar** Support
-- 4 main sections: notifications, bookmarks, my issues and projects (see more details below)
 
-### Download
+
+## Download
 Check the [Releases](https://github.com/tborychowski/github-browser/releases) for the latest version.
 
 
-### Screenshots
+## Screenshots
 
 #### Notifications 
 - quickly see what's going on, 
@@ -50,7 +50,7 @@ Check the [Releases](https://github.com/tborychowski/github-browser/releases) fo
 ![Settings](screens/5-settings.png)
 
 
-### Dev install
+## Dev install
 ```sh
 git clone https://github.com/tborychowski/github-browser.git
 cd github-browser
@@ -59,5 +59,5 @@ npm start
 ```
 
 
-### License
+## License
 *MIT*
