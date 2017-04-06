@@ -1,7 +1,7 @@
 # Github Browser
 Browse github orderly.
 
-![Screenshot](screens/0-sreenshot.png)
+![Screenshot](screens/0-screenshot.png)
 
 ## Features
 - Gives you **only 1 page** (no tabs, no clutter. just focus). If you really, really must see a link in another window you can use "Preview" feature (cmd+click or right-click on a link/image) or open it in your designated browser (chrome by default)
