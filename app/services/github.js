@@ -3,7 +3,7 @@ const jenkins = require('./jenkins');
 const config = require('./config');
 
 const baseUrl = config.get('baseUrl');
-const hostname = baseUrl.indexOf('https://github.com') > -1 ? 'https://api.github.com' : baseUrl + 'api/v3';
+const hostname = baseUrl && baseUrl.indexOf('https://github.com') > -1 ? 'https://api.github.com' : baseUrl + 'api/v3';
 const github = new GitHub(config.get('ghToken'), hostname);
 const ci_url = config.get('ciUrl');
 
