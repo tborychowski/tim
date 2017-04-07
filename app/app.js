@@ -29,3 +29,4 @@ ipc.on('event', (ev, name) => $.trigger(name));
 ipc.on(EVENT.frame.goto, (ev, url) => $.trigger(EVENT.frame.goto, url));
 
 document.addEventListener('click', e => $.trigger(EVENT.document.clicked, e));
+document.addEventListener('keyup', e => $.trigger(EVENT.document.keyup, e));

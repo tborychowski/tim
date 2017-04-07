@@ -43,7 +43,7 @@ function onClick (e) {
 	let target = $(e.target);
 	if (target.is('.js-refresh')) return refresh();
 	target = target.closest('.btn');
-	if (target) return $.trigger(EVENT.url.change.to, target.attr('href'));
+	if (target.length) return $.trigger(EVENT.url.change.to, target.attr('href'));
 }
 
 

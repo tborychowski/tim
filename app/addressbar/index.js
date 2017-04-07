@@ -136,6 +136,11 @@ function onInput (e) {
 	$.trigger(EVENT.address.input.key, e);
 }
 
+function onIssueBoxFocus(e) {
+	e.target.select();
+	$.trigger(EVENT.address.input.end);
+}
+
 
 function init () {
 	if (isReady) return;
@@ -150,7 +155,7 @@ function init () {
 	el.on('keypress', onKeyPress);
 	el.on('input', onInput);
 
-	issueBox.on('focus', e => e.target.select());
+	issueBox.on('focus', onIssueBoxFocus);
 	issueBox.on('keypress', e => { if (e.key === 'Enter') gotoIssue(e.target.value); });
 
 	$.on(EVENT.url.change.to, gotoUrl);

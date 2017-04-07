@@ -173,6 +173,20 @@ function onContextMenu (e) {
 }
 
 
+function onKeyUp (e) {
+	if (document.activeElement.matches('input,select,textarea,iframe')) return;
+	const ev = {
+		key: e.key,
+		keyCode: e.keyCode,
+		metaKey: e.metaKey,
+		ctrlKey: e.ctrlKey,
+		shiftKey: e.shiftKey,
+		type: e.type
+	};
+	msg('keyup', ev);
+}
+
+
 function init () {
 	observeChanges();
 
@@ -190,6 +204,7 @@ function init () {
 	document.addEventListener('click', onClick);
 	document.addEventListener('contextmenu', onContextMenu);
 	document.addEventListener('wheel', onWheel);
+	document.addEventListener('keyup', onKeyUp);
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');

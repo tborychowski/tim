@@ -38,6 +38,18 @@ function onContextMenu (e) {
 	if (e.target.matches('a')) msg('showLinkMenu', e.target.getAttribute('href'));
 }
 
+function onKeyUp (e) {
+	if (document.activeElement.matches('input,select,textarea,iframe')) return;
+	const ev = {
+		key: e.key,
+		keyCode: e.keyCode,
+		metaKey: e.metaKey,
+		ctrlKey: e.ctrlKey,
+		shiftKey: e.shiftKey,
+		type: e.type
+	};
+	msg('keyup', ev);
+}
 
 
 function init () {
@@ -49,6 +61,7 @@ function init () {
 	ipc.on('injectCss', injectCss);
 	document.addEventListener('click', onClick, true);
 	document.addEventListener('contextmenu', onContextMenu);
+	document.addEventListener('keyup', onKeyUp);
 
 
 	msg('isLogged', document.body.classList.contains('logged-in'));

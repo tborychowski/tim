@@ -50,7 +50,7 @@ function onClick (e) {
 	if (target.is('.btn')) return openIssue(target);
 
 	target = target.closest('.build-status');
-	if (target) return helper.openInBrowser(target.attr('href'));
+	if (target.length) return helper.openInBrowser(target.attr('href'));
 }
 
 

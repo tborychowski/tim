@@ -30,10 +30,17 @@ function setSectionBadge (section, count) {
 	badge.toggle(count > 0).html(count);
 }
 
+function onKeyUp (e) {
+	if (e.key === 'r' && !e.metaKey && !e.ctrlKey) {
+		// if real event and focused on these - ignore
+		if ($.type(e) === 'keyboardevent' && document.activeElement.matches('input,select,textarea,webview')) return;
+		refreshSection();	// if not input or event passed from webview
+	}
+}
 
 function onClick (e) {
 	const target = $(e.target).closest('.nav-btn');
-	const go = target && target.data('go');
+	const go = target.length && target.data('go');
 	if (!target || !go) return;
 	e.preventDefault();
 	e.stopPropagation();
@@ -60,6 +67,7 @@ function init () {
 	$.on(EVENT.section.refresh, refreshSection);
 	$.on(EVENT.updater.nav.show, () => btnUpdate.show());
 	$.on(EVENT.section.badge, setSectionBadge);
+	$.on(EVENT.document.keyup, onKeyUp);
 
 	isReady = true;
 }
