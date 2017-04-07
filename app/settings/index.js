@@ -61,6 +61,11 @@ function onKeyUp (e) {
 
 function onClick (e) {
 	let target = $(e.target), to;
+	if (target.is('.token-link') && !config.get('baseUrl')) {
+		const baseUrl = form.get().baseUrl;
+		if (!baseUrl) return e.preventDefault();
+		tokenLink.href = $.trim(baseUrl, '/') + '/settings/tokens';
+	}
 	if (target.is('.btn')) to = target.data('go');
 	if (to && clickHandlers[to]) {
 		e.preventDefault();
