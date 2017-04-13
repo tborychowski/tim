@@ -9,8 +9,9 @@ let availableVersion = null;
 
 let SILENT = false;
 let IS_DOWNLOADING = false;
+
 const send = (name, value) => ipcRenderer.send('updater', name, value);
-const log = msg => isDev && console.log(msg);
+const log = (...args) => isDev && console.log.apply(console, args);
 
 
 const events = {

@@ -86,12 +86,12 @@
 /* SHOW SETTINGS */
 
 #header,
-#frame,
+#main,
 #nav,
 #subnav { transition: filter .3s ease-out; }
 
 .show-settings #header,
-.show-settings #frame,
+.show-settings #main,
 .show-settings #nav,
 .show-settings #subnav { filter: brightness(0.4); pointer-events: none; }
 .show-settings .settings { opacity: 1; transform: scale(1); }

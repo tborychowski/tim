@@ -1,4 +1,4 @@
-#main { position: absolute; left: 364px; top: 0; bottom: 0; right: 0; overflow: hidden; }
+#main { position: absolute; left: 364px; top: 0; bottom: 0; right: 0; overflow: hidden; background-color: #fff; }
 
 #frame { position: absolute; top: 38px; left: -364px; right: 0; bottom: 0; overflow: hidden; }
 
