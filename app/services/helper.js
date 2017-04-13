@@ -58,6 +58,25 @@ function setBadge (text = 0) {
 }
 
 
+
+const pageTypes = [
+	{ reg: /\/issues\/\d+/, 		type: 'timeline',	desc: 'issue' },
+	{ reg: /\/pull\/\d+\/files/, 	type: 'list',		desc: 'pr file diff' },
+	{ reg: /\/pull\/\d+\/commits/,	type: 'list',		desc: 'pr commit list' },
+	{ reg: /\/pull\/\d+/, 			type: 'timeline',	desc: 'pr' },
+	{ reg: /\/issues\/?/, 			type: 'list',		desc: 'issue list' },
+	{ reg: /\/pulls/, 				type: 'list',		desc: 'pr list' },
+	{ reg: /\/blob\//, 				type: 'list',		desc: 'single file view' },
+];
+
+function getPageTypeFromUrl (url = '') {
+	url = url.split(/[?#]/)[0];
+	for (const {reg, type} of pageTypes) if (reg.test(url)) return type;
+	return 'timeline';
+}
+
+
+
 module.exports = {
 	openInBrowser,
 	copyToClipboard,
@@ -65,5 +84,6 @@ module.exports = {
 	openSettingsFolder,
 	getUserDataFolder,
 	setBadge,
-	openChangelog
+	openChangelog,
+	getPageTypeFromUrl
 };

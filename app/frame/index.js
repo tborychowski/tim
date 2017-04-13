@@ -14,7 +14,7 @@ const wpcss = `${__dirname}/webview.css`;
 
 const ses = session.fromPartition('persist:github');
 
-let webview, isReady = false, pageZoom = 0, isLoggedIn = false;
+let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false, urlLoading = '';
 
 
 const webviewHandlers = {
@@ -92,6 +92,7 @@ function purge () {
 
 
 function gotoUrl (url) {
+	urlLoading = (url instanceof Event ? url.url : url);
 	$.trigger(EVENT.search.stop);
 	if (typeof url !== 'string' || !url.length || !webview.length) return;
 	if (url in gotoActions) gotoActions[url]();
@@ -121,14 +122,19 @@ function onRendered (url, issue) {
 }
 
 function loadingStart () {
-	webview.addClass('loading');
+	if (!urlLoading) urlLoading = webview.attr('src');
+	const pageType = helper.getPageTypeFromUrl(urlLoading);
+
+	skeleton.attr('class', `skeleton ${pageType}`);
+	frame.addClass('loading');
 	webview[0].focus();
 	$.trigger(EVENT.url.change.start);
 }
 
 function loadingStop () {
-	webview.removeClass('loading');
+	frame.removeClass('loading');
 	$.trigger(EVENT.url.change.end);
+	urlLoading = '';
 }
 
 
@@ -141,12 +147,13 @@ function setZoom (n) {
 function init () {
 	if (isReady) return;
 
-	const frame = $('#frame');
-	const html = `<webview id="webview" class="loading" preload="${wpjs}"
-		src="${initialURL(true)}" partition="persist:github"></webview>`;
+	frame = $('#frame');
+	const html = `<webview id="webview" preload="${wpjs}" src="${initialURL(true)}" partition="persist:github"></webview>
+		<div class="skeleton"><div class="skeleton-header"></div><div class="skeleton-sidebar"></div><div class="skeleton-main"></div><div class="skeleton-shine"></div></div>`;
 
 	frame.html(html);
 	webview = frame.find('#webview');
+	skeleton = frame.find('.skeleton');
 
 
 	webview.on('focus', () => $.trigger(EVENT.frame.focused));
