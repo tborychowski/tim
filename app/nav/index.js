@@ -31,10 +31,20 @@ function setSectionBadge (section, count) {
 }
 
 function onKeyUp (e) {
-	if (e.key === 'r' && !e.metaKey && !e.ctrlKey) {
+	const handledKeys = {
+		r: refreshSection,
+		1: () => changeSection('notifications'),
+		2: () => changeSection('bookmarks'),
+		3: () => changeSection('myissues'),
+		4: () => changeSection('projects')
+	};
+
+	if (e.key in handledKeys && !e.metaKey && !e.ctrlKey) {
 		// if real event and focused on these - ignore
 		if ($.type(e) === 'keyboardevent' && document.activeElement.matches('input,select,textarea,webview')) return;
-		refreshSection();	// if not input or event passed from webview
+
+		// if not input or event passed from webview:
+		handledKeys[e.key]();
 	}
 }
 

@@ -45,6 +45,4 @@
 .build-status.failure .build-progress-inner { background: rgba(0, 0, 0, 0.3); }
 
 
-@keyframes blink {
-	50% { opacity: 0; }
-}
+@keyframes blink { 50% { opacity: 0.2; } }

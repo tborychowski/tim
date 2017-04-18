@@ -4,11 +4,14 @@ const $ = require('../util');
 
 let isReady = false, el, reposEl;
 
-const DEFAULT_REPO_NAME = 'Pages';	// for ungrouped pages
+const DEFAULT_REPO_NAME = 'Pages';		// for ungrouped pages
+const DEFAULT_PROJECTS_REPO_NAME = 'Projects';	// for ungrouped projects
 
 const issueTypeCls = {
 	pr: 'ion-ios-git-pull-request',
 	issue: 'ion-ios-bug-outline',
+	project: 'ion-md-cube',
+	page: 'ion-ios-star-outline',
 	default: 'ion-ios-star-outline',
 };
 
@@ -36,6 +39,7 @@ function removeBookmark (issue) {
 
 function refresh () {
 	bookmarks.get()
+		.then(findRepoNames)
 		.then(fillIssues)
 		.then(github.checkIssuesForUpdates)
 		.then(updateUnread);
@@ -92,6 +96,7 @@ function getIssueHtml (issue) {
 	}
 	const cls = ['issue-box', getIssueCls(issue), issue.state];
 	if (issue.unread) cls.push('unread');
+	console.log(issue.type);
 	return `<li class="${cls.join(' ')}">
 		<i class="issue-icon ${issueTypeCls[issue.type || 'default']}"></i>
 		<a href="${issue.url}" class="btn bookmark" title="${issue.id}">${issue.name}</a>
@@ -105,7 +110,9 @@ function getRepoHtml (repo) {
 	let repoName = repo.name.split('/').pop();
 	const url = `${config.get('baseUrl')}${repo.name}/issues`;
 
-	if (repoName === DEFAULT_REPO_NAME) repoName = `<span class="hdr">${repoName}</span>`;
+	if (repoName === DEFAULT_REPO_NAME || repoName === DEFAULT_PROJECTS_REPO_NAME) {
+		repoName = `<span class="hdr">${repoName}</span>`;
+	}
 	else repoName = `<a href="${url}" class="hdr btn">${repoName}</a>`;
 
 	return `<div class="repo-box ${repo.name}"><h2>${repoName}</h2>
@@ -114,12 +121,28 @@ function getRepoHtml (repo) {
 }
 
 
+function findRepoNames (issues) {
+	return issues.map(iss => {
+		if (!iss.repo) {
+			if (helper.getPageActualTypeFromUrl(iss.url) === 'project') {
+				iss.repo = DEFAULT_PROJECTS_REPO_NAME;
+				iss.type = 'project';
+			}
+			else {
+				iss.repo = DEFAULT_REPO_NAME;
+				iss.type = 'page';
+			}
+		}
+		return iss;
+	});
+}
+
+
 function fillIssues (issues) {
 	const remap = {};
 	issues.forEach(iss => {
-		const repo = iss.repo || DEFAULT_REPO_NAME;
-		remap[repo] = remap[repo] || { name: repo, items: [] };
-		if (iss.url) remap[repo].items.push(iss);
+		remap[iss.repo] = remap[iss.repo] || { name: iss.repo, items: [] };
+		if (iss.url) remap[iss.repo].items.push(iss);
 	});
 
 	const html = [];

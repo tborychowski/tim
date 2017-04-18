@@ -23,7 +23,7 @@ body { min-width: auto !important;
 
 
 /* position: sticky causes some rendering issues on retina screens */
-// .discussion-sidebar-item.sidebar-labels { transform: translate3d(0,0,0); position: relative; }
+/* .discussion-sidebar-item.sidebar-labels { transform: translate3d(0,0,0); position: relative; } */
 
 
 /* files */
@@ -35,7 +35,7 @@ body { min-width: auto !important;
 
 
 /* projects view */
-.project-columns-container { height: auto; }
+.project-columns-container { height: 100%; }
 .project-header { margin-top: 7px; }
 .new-project-column { margin-right: 10px; }
 

@@ -60,19 +60,25 @@ function setBadge (text = 0) {
 
 
 const pageTypes = [
-	{ reg: /\/issues\/\d+/, 		type: 'timeline',	desc: 'issue' },
-	{ reg: /\/pull\/\d+\/files/, 	type: 'list',		desc: 'pr file diff' },
-	{ reg: /\/pull\/\d+\/commits/,	type: 'list',		desc: 'pr commit list' },
-	{ reg: /\/pull\/\d+/, 			type: 'timeline',	desc: 'pr' },
-	{ reg: /\/issues\/?/, 			type: 'list',		desc: 'issue list' },
-	{ reg: /\/pulls/, 				type: 'list',		desc: 'pr list' },
-	{ reg: /\/blob\//, 				type: 'list',		desc: 'single file view' },
+	{ reg: /\/issues\/\d+/, 		type: 'timeline',	actualType: 'issue',		desc: 'issue' },
+	{ reg: /\/pull\/\d+\/files/, 	type: 'list',		actualType: 'pr-files',		desc: 'pr file diff' },
+	{ reg: /\/pull\/\d+\/commits/,	type: 'list',		actualType: 'pr-commits',	desc: 'pr commit list' },
+	{ reg: /\/pull\/\d+/, 			type: 'timeline',	actualType: 'pr',			desc: 'pr' },
+	{ reg: /\/issues\/?/, 			type: 'list',		actualType: 'issues',		desc: 'issue list' },
+	{ reg: /\/pulls/, 				type: 'list',		actualType: 'pr-list',		desc: 'pr list' },
+	{ reg: /\/blob\//, 				type: 'list',		actualType: 'file',			desc: 'single file view' },
+	{ reg: /\/projects\/\d+/, 		type: 'list',		actualType: 'project',		desc: 'project board' },
 ];
 
 function getPageTypeFromUrl (url = '') {
 	url = url.split(/[?#]/)[0];
 	for (const {reg, type} of pageTypes) if (reg.test(url)) return type;
 	return 'timeline';
+}
+
+function getPageActualTypeFromUrl (url = '') {
+	url = url.split(/[?#]/)[0];
+	for (const {reg, actualType} of pageTypes) if (reg.test(url)) return actualType;
 }
 
 
@@ -85,5 +91,6 @@ module.exports = {
 	getUserDataFolder,
 	setBadge,
 	openChangelog,
-	getPageTypeFromUrl
+	getPageTypeFromUrl,
+	getPageActualTypeFromUrl,
 };
