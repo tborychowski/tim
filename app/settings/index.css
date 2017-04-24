@@ -19,8 +19,10 @@
 
 .settings-form { display: flex; flex-direction: column; height: 100%; }
 .settings-form h2 { font-size: 16px; margin: 0; padding: 20px 0 0; }
-.settings-form label { display: inline-block; padding: 20px 5px 5px; width: 100%; text-align: right; }
-.settings-form input { display: inline-block; padding: 5px; margin-left: 10px; width: calc(100% - 140px);  }
+.settings-form label { padding: 20px 5px 5px; width: 100%;
+	display: flex; align-items: center; justify-content: space-between;
+}
+.settings-form input { padding: 5px; margin-left: 10px; width: calc(100% - 140px);  }
 .settings-form input:invalid,
 .settings-form textarea:invalid { background-color: rgba(255, 0, 0, 0.1); }
 
@@ -28,7 +30,8 @@
 	vertical-align: top; resize: vertical; min-height: 3em; height: 5em;
 }
 
-
+.settings-form input[name="browser"] { width: calc(100% - 176px); margin-right: -18px;  }
+.settings-form input[name="ghToken"] { width: calc(100% - 224px); margin-right: -34px;  }
 
 
 .settings-scroller {
@@ -49,6 +52,19 @@
 	border-bottom: 1px solid #ccc;
 }
 
+.settings .btn {
+	font-size: 14px;
+	background-color: #f1f1f1;
+	border-radius: 3px;
+	border: 1px solid #ccc;
+	padding: 3px 5px;
+	cursor: pointer;
+	text-decoration: none;
+	color: #333;
+	display: inline-block;
+}
+
+.settings-info-text .btn { margin: 10px 0; }
 
 .settings-buttons {
 	border-top: 1px solid #ccc;
@@ -58,22 +74,11 @@
 	position: relative;
 	background-color: #f3f3f3;
 }
-.settings-buttons .btn {
-	font-size: 13px;
-	background-color: #fff;
-	border-radius: 3px;
-	border: 1px solid #ccc;
-	padding: 10px 30px;
-	cursor: pointer;
-	text-decoration: none;
-	color: #333;
-}
-.settings-buttons .btn:hover { border-color: #999; }
 
+.settings-buttons .btn { padding: 10px 30px; background-color: #fff; }
+.settings-buttons .btn:hover { border-color: #999; }
 .settings-buttons .btn-left { float: left; }
-.settings-buttons .btn-save { font-weight: bold; margin-left: 10px;
-	background-color: rgba(0, 180, 255, 0.2);
-}
+.settings-buttons .btn-save { font-weight: bold; margin-left: 10px; background-color: rgba(0, 180, 255, 0.2); }
 
 .settings-info-text { font-size: 11px; color: #999; margin-left: 146px; display: block; }
 

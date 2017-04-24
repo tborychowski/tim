@@ -1,3 +1,4 @@
+const {app, dialog} = require('electron').remote;
 const { config, EVENT, helper } = require('../services');
 const $ = require('../util');
 
@@ -8,8 +9,21 @@ const clickHandlers = {
 	cancel: hideSettings,
 	folder: () => helper.openSettingsFolder(),
 	link: target => helper.openInBrowser(target[0].href),
+	findBrowser
 };
 
+
+function findBrowser () {
+	let defaultPath = ({
+		darwin: '/Applications',
+		win32: 'C:\\Program Files\\',
+		linux: app.getPath('home')
+	})[process.platform];
+
+	const opts = {title: 'Select browser', buttonLabel: 'Select', defaultPath, properties: ['openFile']};
+	const cb = ([browser]) => form.set({ browser });
+	dialog.showOpenDialog(opts, cb);
+}
 
 function validate (settings) {
 	if (!formEl[0].checkValidity()) return false;

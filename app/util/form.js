@@ -52,7 +52,7 @@ Form.prototype.set = function (params = {}, clear) {
 		}
 
 		// if clear==true and no value = clear field, otherwise - leave it as it was
-		if (clear !== true && value === undefined) continue;
+		if (clear !== true && (value === undefined || !params[name])) continue;
 
 		// if no value - clear field
 		if (value === null || value === undefined) value = '';

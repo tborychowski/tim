@@ -20,6 +20,7 @@ Browse github orderly.
 Check the [Releases](https://github.com/tborychowski/github-browser/releases) for the latest version.
 
 
+
 ## More Screenshots
 
 #### Notifications
@@ -27,6 +28,7 @@ Check the [Releases](https://github.com/tborychowski/github-browser/releases) fo
 - dismiss merged PRs without leaving the page
 
 ![Notifications](screens/1-notifications.png)
+
 
 
 #### Bookmarks
