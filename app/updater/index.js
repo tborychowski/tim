@@ -1,8 +1,7 @@
 const { ipcRenderer, remote } = require('electron');
-const { EVENT, helper, isDev } = require('../services');
+const { EVENT, helper, isDev, dialog } = require('../services');
 const $ = require('../util');
 
-const dialog = require('./dialog');
 const appName = remote.app.getName();
 const appVersion = remote.app.getVersion();
 let availableVersion = null;
@@ -33,14 +32,22 @@ function showChangelog () {
 
 
 function checkForUpdates (silent) {
-	if (IS_DOWNLOADING) dialog.info('The update was found and it\'s already downloading.', 'Please be patient.');
+	if (IS_DOWNLOADING) dialog.info({
+		title: 'Update',
+		message: 'The update was found and it\'s already downloading.',
+		detail: 'Please be patient.'
+	});
 	SILENT = (silent === true);
 	send('check');
 }
 
 function updateNotAvailable () {
 	log('Update not available');
-	if (!SILENT) dialog.info(`You have the latest version of\n${appName} ${appVersion}`, 'No need to update');
+	if (!SILENT) dialog.info({
+		title: 'Update',
+		message: `You have the latest version of\n${appName} ${appVersion}`,
+		detail: 'No need to update'
+	});
 }
 
 function updateAvailable (resp) {
@@ -50,6 +57,7 @@ function updateAvailable (resp) {
 
 	$.trigger(EVENT.updater.nav.show);
 	dialog.question({
+		title: 'Update',
 		message: 'There is a newer version available.',
 		detail: `You have: ${appVersion}\nAvailable: ${availableVersion}`,
 		buttons: [ 'Cancel', 'Update', 'Changelog' ]
@@ -75,6 +83,7 @@ function updateDownloaded () {
 
 function updateDownloadedInstall () {
 	dialog.question({
+		title: 'Update',
 		message: 'Update downloaded.\nDo you want to install it now or next time you start the app?',
 		buttons: [ 'Install later', 'Quit and install', 'Changelog' ]
 	})

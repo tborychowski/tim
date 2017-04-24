@@ -96,7 +96,6 @@ function getIssueHtml (issue) {
 	}
 	const cls = ['issue-box', getIssueCls(issue), issue.state];
 	if (issue.unread) cls.push('unread');
-	console.log(issue.type);
 	return `<li class="${cls.join(' ')}">
 		<i class="issue-icon ${issueTypeCls[issue.type || 'default']}"></i>
 		<a href="${issue.url}" class="btn bookmark" title="${issue.id}">${issue.name}</a>

@@ -4,13 +4,15 @@ const isDev = require('./isDev');
 
 module.exports = class GitHub {
 
-	constructor (token, host = 'https://api.github.com') {
-		this.host = host;
-		this.token = token;
+	constructor () {
 		this.user_agent = 'GithubBrowser';
 		this.reqCount = 0;
+	}
 
-		this.get('/user').then(res => { this.user = res; });
+	setOptions (token, host = 'https://api.github.com') {
+		this.host = host;
+		this.token = token;
+		if (!this.user) this.get('/user').then(res => { this.user = res; });
 	}
 
 	getOptions (url, qs = {}, fullResp = false) {
