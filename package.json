@@ -37,7 +37,7 @@
     "tingodb": "^0.5.1"
   },
   "devDependencies": {
-    "electron": "beta",
-    "electron-builder": "^16.8.3"
+    "electron": "^1.6.7",
+    "electron-builder": "^17.0.1"
   }
 }

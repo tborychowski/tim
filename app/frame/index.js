@@ -1,10 +1,11 @@
-const { session, getGlobal, isDev } = require('electron').remote;
+const { session, getGlobal } = require('electron').remote;
 const path = require('path');
-
+const ses = session.fromPartition('persist:github');
 const args = getGlobal('appArgs');
-const $ = require('../util');
-const { config, EVENT, helper } = require('../services');
 
+const { config, EVENT, helper, isDev } = require('../services');
+
+const $ = require('../util');
 const realnames = require('../realnames');
 const swiping = require('./swiping');
 
@@ -12,7 +13,6 @@ const swiping = require('./swiping');
 const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
 
-const ses = session.fromPartition('persist:github');
 
 let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false, urlLoading = '';
 
@@ -54,6 +54,7 @@ const gotoActions = {
 	refresh: () => webview[0].reload(),
 	stop: () => webview[0].stop()
 };
+
 
 
 function linkClicked (url, href) {
@@ -134,6 +135,7 @@ function loadingStart () {
 function loadingStop () {
 	frame.removeClass('loading');
 	$.trigger(EVENT.url.change.end);
+	webview[0].focus();
 	urlLoading = '';
 }
 

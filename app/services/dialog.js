@@ -6,10 +6,10 @@ function error (message = '') {
 }
 
 
-function info (message = '', detail = '') {
+function info ({ title = '', message = '', detail = '' }) {
 	dialog.showMessageBox({
 		type: 'info',
-		title: 'Update',
+		title,
 		message,
 		detail,
 		buttons: [ 'OK' ],
@@ -18,11 +18,11 @@ function info (message = '', detail = '') {
 }
 
 
-function question ({ message, detail, buttons}) {
+function question ({ title, message, detail, buttons}) {
 	return new Promise((resolve, reject) => {
 		dialog.showMessageBox({
 			type: 'question',
-			title: 'Update',
+			title,
 			message,
 			detail,
 			buttons,

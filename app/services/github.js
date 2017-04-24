@@ -1,12 +1,17 @@
 const GitHub = require('./class.gh');
 const jenkins = require('./jenkins');
 const config = require('./config');
-
-const baseUrl = config.get('baseUrl');
-const hostname = baseUrl && baseUrl.indexOf('https://github.com') > -1 ? 'https://api.github.com' : baseUrl + 'api/v3';
-const github = new GitHub(config.get('ghToken'), hostname);
 const ci_url = config.get('ciUrl');
+const gh = new GitHub();
 
+
+
+function github (url) {
+	const baseUrl = config.get('baseUrl');
+	const hostname = baseUrl && baseUrl.indexOf('https://github.com') > -1 ? 'https://api.github.com' : baseUrl + 'api/v3';
+	gh.setOptions(config.get('ghToken'), hostname);
+	return gh.get(url);
+}
 
 
 /*** TRANSFORMERS *********************************************************************************/
@@ -42,41 +47,42 @@ function getJenkinsStatus (pr, stat) {
 
 
 function getUserById (id) {
-	return github.get(`/users/${id}`).then(res => res ? { id, name: res.name } : { id });
+	return github(`/users/${id}`).then(res => res ? { id, name: res.name } : { id });
 }
 
 
 function getNotificationsCount (participating = true) {
-	return github.get('/notifications', { participating, per_page: 1 }, true)
+	return github('/notifications', { participating, per_page: 1 }, true)
 		.then(res => res && getTotalFromNotificationsHeader(res.headers));
 }
 
 
 function getProjects () {
 	if (!config.get('repoToSearch')) return Promise.resolve([]);
-	return github.get(`/repos/${config.get('repoToSearch')}/projects`);
+	return github(`/repos/${config.get('repoToSearch')}/projects`);
 }
 
 function getMyIssues () {
-	return github.get('/issues', { per_page: 100 });
+	return github('/issues', { per_page: 100 });
 }
 
 function getIssue (repo, id) {
-	return github.get(`/repos/${repo}/issues/${id}`);
+	return github(`/repos/${repo}/issues/${id}`);
 }
 
 function getIssueComments (repo, id, params) {
-	return github.get(`/repos/${repo}/issues/${id}/comments`, params);
+	return github(`/repos/${repo}/issues/${id}/comments`, params);
 }
 
 function getCommitStatuses (repo, sha) {
-	return github.get(`/repos/${repo}/commits/${sha}/status`);
+	if (!sha) return Promise.resolve([]);
+	return github(`/repos/${repo}/commits/${sha}/status`);
 
 }
 
 
 function getBuildStatus (pr) {
-	return github.get(`/repos/${pr.repo}/pulls/${pr.id}`)
+	return github(`/repos/${pr.repo}/pulls/${pr.id}`)
 		.then(res => getCommitStatuses(pr.repo, res && res.head && res.head.sha))
 		.then(res => getJenkinsStatus(pr, res));
 }
@@ -93,6 +99,12 @@ function checkForUnreadComments (issue) {
 				const myId = github.user && github.user.id || null;
 				comments = res.filter(i => i.user.id !== myId);
 			}
+
+			//FIXME: github api suddenly ignores since and returns all comments
+			const since = new Date(params.since);
+			comments = comments.filter(c => new Date(c.updated_at) > since);
+
+
 			if (comments.length) issue.unread = true;
 			return issue;
 		});
@@ -108,7 +120,7 @@ function checkIssueState (issue) {
 
 function checkIssuesForUpdates (issues) {
 	const issuesToProcess = issues
-		.filter(i => i.type in { pr: 1, issue: 1 }) // ignore when already marked as unread
+		.filter(i => i.type in { pr: 1, issue: 1 })
 		.map(issue => checkIssueState(issue).then(checkForUnreadComments));
 	return Promise.all(issuesToProcess);
 }

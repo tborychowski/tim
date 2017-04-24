@@ -1,18 +1,10 @@
 const ipc = require('electron').ipcRenderer;
 const msg = ipc.sendToHost;
+const realnames = require('../realnames/realnames-webview');
+const helper = require('./webview-helper');
 
-const trim = (str, chars = '\\s') => str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
-const isScrollable = el => (el && el.scrollWidth > el.offsetWidth + 5);
-
-function isExternal (url) {
-	let u;
-	try { u = new URL(url); }
-	catch (e) { u = null; }
-	return (u && u.host !== location.host);
-}
 
 let isScrolling = false, isWheeling = false;
-
 
 
 // Throttle
@@ -23,22 +15,8 @@ function onDomChange () {
 }
 
 function _onDomChange () {
-	const isIssue = !!document.querySelector('#discussion_bucket, #files_bucket, #commits_bucket');
-	let issue = null, url = document.location.href;
-	if (url.indexOf('http') !== 0) url = '';	// network error
-	if (isIssue) {
-		issue = {
-			name: document.querySelector('.js-issue-title').innerText,
-			id: document.querySelector('.gh-header-number').innerText.substr(1),
-			repo: document.querySelector('.js-repo-nav .reponav-item').getAttribute('href').substr(1),
-			type: document.querySelector('.tabnav-pr') ? 'pr' : 'issue',
-			url
-		};
-	}
-	// just a regular page
-	else issue = { name: document.title, url };
-
-	msg('domChanged', url, issue);
+	const issue = helper.getIssueDetails(document);
+	msg('domChanged', issue.url, issue);
 }
 
 
@@ -51,73 +29,10 @@ function observeChanges () {
 }
 
 
-function injectCss (ev, css) {
-	const style = document.createElement('style');
-	style.innerHTML = css;
-	document.head.appendChild(style);
-	msg('cssReady');
-}
-
-
-
-function getElementsWithUserId () {
-	const userSelectors = [
-		'.issues-listing .author:not(.user-name-replaced)',
-		'.sidebar-assignee .assignee:not(.user-name-replaced)',
-		'.user-mention:not(.user-name-replaced)',
-		'a .discussion-item-entity:not(.user-name-replaced):not(code)',
-		'.project-card .d-block a.text-gray-dark:not(.user-name-replaced)'
-	];
-	let els = document.querySelectorAll(userSelectors.join(','));
-	return Array.prototype.slice.call(els);
-}
-
-function getTooltipsWithUserId () {
-	const userSelectors = [ '.reaction-summary-item.tooltipped:not(.user-name-replaced)' ];
-	let els = document.querySelectorAll(userSelectors.join(','));
-	return Array.prototype.slice.call(els);
-}
-
-
-function gatherUserIds () {
-	const ids = getElementsWithUserId().map(el => trim(el.innerText, '@'));
-	msg('userIdsGathered', [...new Set(ids)]);	// send unique list
-}
-
-
-function updateUserNames (ev, users) {
-	getElementsWithUserId().forEach(el => {
-		const id = trim(el.innerText, '@');
-		if (users[id] && users[id].name) {
-			el.innerText = `${users[id].name}`;
-			el.title = `${id}`;
-			el.classList.add('user-name-replaced');
-		}
-	});
-	getTooltipsWithUserId().forEach(el => {
-		if (el.classList.contains('user-name-replaced')) return;
-		let lbl = el.getAttribute('aria-label');
-		for (let id in users) lbl = lbl.replace(id, users[id].name);
-		el.setAttribute('aria-label', lbl);
-		el.classList.add('user-name-replaced');
-	});
-}
-
-
-
 function onWheel (e) {
 	if (!isScrolling || isWheeling) return;
 	isWheeling = true;
-	let el = e.target, isIt = false;
-	while (el.tagName && isIt === false) {
-		if (el.tagName === 'BODY') break;
-		if (!isScrollable(el)) el = el.parentNode;
-		else {
-			isIt = true;
-			break;
-		}
-	}
-	if (!isIt) msg('swipe-allowed'); // handled in swiping.js
+	if (!helper.isScrollable(e.target)) msg('swipe-allowed'); // handled in swiping.js
 }
 
 function onSwipeStart () {
@@ -145,7 +60,7 @@ function onClick (e) {
 		return;
 	}
 	if (el.tagName === 'A') {
-		if (isExternal(el.href)) {
+		if (helper.isExternal(el.href)) {
 			e.preventDefault();
 			msg('externalLinkClicked', el.href);
 		}
@@ -153,29 +68,18 @@ function onClick (e) {
 	}
 }
 
-function getSelectionText() {
-	let text = '';
-	const activeEl = document.activeElement;
-	const activeElTagName = activeEl ? activeEl.tagName.toLowerCase() : null;
-	const isInput = (activeElTagName === 'input' && /^(?:text|search|password|tel|url)$/i.test(activeEl.type));
-	if ((activeElTagName === 'textarea' || isInput) && typeof activeEl.selectionStart === 'number') {
-		text = activeEl.value.slice(activeEl.selectionStart, activeEl.selectionEnd);
-	}
-	else if (window.getSelection) text = window.getSelection().toString();
-	return text;
-}
-
 
 function onContextMenu (e) {
 	if (e.target.matches('img')) return msg('showImgMenu', e.target.getAttribute('src'));
 	if (e.target.matches('a')) return msg('showLinkMenu', e.target.getAttribute('href'));
-	const selText = getSelectionText();
+	const selText = helper.getSelectionText(document);
 	if (selText) return msg('showSelectionMenu', selText);
 }
 
 
+
 function onKeyUp (e) {
-	if (document.activeElement.matches('input,select,textarea,iframe')) return;
+	if (document.activeElement.matches('input,select,iframe,textarea')) return;
 	const ev = {
 		key: e.key,
 		keyCode: e.keyCode,
@@ -194,9 +98,11 @@ function init () {
 	const aid = document.querySelector('.accessibility-aid');
 	if (aid) aid.remove();
 
-	ipc.on('gatherUserIds', gatherUserIds);
-	ipc.on('userIdsAndNames', updateUserNames);
-	ipc.on('injectCss', injectCss);
+	ipc.on('gatherUserIds', () => msg('userIdsGathered', realnames.gatherUserIds(document)));
+	ipc.on('userIdsAndNames', (ev, users) => realnames.updateUserNames(document, users));
+
+
+	ipc.on('injectCss', (ev, css) => helper.injectCss(document, css));
 	ipc.on('zoom', (ev, zoom) => { document.body.style.zoom = zoom * 0.1 + 1; });
 
 	ipc.on('swipe-start', onSwipeStart);
