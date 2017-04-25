@@ -5,24 +5,32 @@ const config = require('./config');
 const isDev = require('./isDev');
 
 
-const getUserDataFolder = () => app.getPath('userData');
+const applicationsPath = () => ({
+	darwin: '/Applications/',
+	win32: 'C:\\Program Files\\',
+	linux: '/usr/bin/'
+}[process.platform]);
+
+const getOpenBrowserCmd = (browser, url) => ({
+	darwin: `open -a "${browser}" "${url}"`,
+	win32: `"${browser}" "${url}"`,
+	linux: `"${browser}" "${url}"`
+}[process.platform]);
+
 function openInBrowser (url) {
-	// shell.openExternal(config.get('state.url'));
-	const browser = config.get('browser') || '/Applications/Google Chrome.app';
-	const cmd = `open -a "${browser}" "${url}"`;
-	exec(cmd, (err, stdout, stderr) => {
+	const browser = config.get('browser');
+	if (!browser) return shell.openExternal(url);
+	exec(getOpenBrowserCmd(browser, url), (err, stdout, stderr) => {
 		if ((err || stderr) && isDev) console.log(err || stderr);
 	});
 }
 
+const getUserDataFolder = () => app.getPath('userData');
 const copyToClipboard = (txt) => clipboard.writeText(txt);
 const openFolder = (path) => shell.openExternal(`file://${path}`);
 const openSettingsFolder = () => openFolder(getUserDataFolder());
+const openChangelog = ver => openInBrowser(`https://github.com/tborychowski/github-browser/releases/${ver ? `tag/v${ver}` : 'latest'}`);
 
-function openChangelog (ver) {
-	ver = ver ? `tag/v${ver}` : 'latest';
-	openInBrowser(`https://github.com/tborychowski/github-browser/releases/${ver}`);
-}
 
 function setBadge (text = 0) {
 	text = parseInt(text, 10);
@@ -93,4 +101,5 @@ module.exports = {
 	openChangelog,
 	getPageTypeFromUrl,
 	getPageActualTypeFromUrl,
+	applicationsPath,
 };

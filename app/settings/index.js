@@ -1,4 +1,4 @@
-const {app, dialog} = require('electron').remote;
+const {dialog} = require('electron').remote;
 const { config, EVENT, helper } = require('../services');
 const $ = require('../util');
 
@@ -14,12 +14,7 @@ const clickHandlers = {
 
 
 function findBrowser () {
-	let defaultPath = ({
-		darwin: '/Applications',
-		win32: 'C:\\Program Files\\',
-		linux: app.getPath('home')
-	})[process.platform];
-
+	let defaultPath = helper.applicationsPath();
 	const opts = {title: 'Select browser', buttonLabel: 'Select', defaultPath, properties: ['openFile']};
 	const cb = ([browser]) => form.set({ browser });
 	dialog.showOpenDialog(opts, cb);

@@ -6,11 +6,11 @@ const gh = new GitHub();
 
 
 
-function github (url) {
+function github () {
 	const baseUrl = config.get('baseUrl');
 	const hostname = baseUrl && baseUrl.indexOf('https://github.com') > -1 ? 'https://api.github.com' : baseUrl + 'api/v3';
 	gh.setOptions(config.get('ghToken'), hostname);
-	return gh.get(url);
+	return gh.get.apply(gh, arguments);
 }
 
 
