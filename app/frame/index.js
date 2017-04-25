@@ -15,7 +15,6 @@ const wpcss = `${__dirname}/webview.css`;
 
 let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false, urlLoading = '';
 
-
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
 	externalLinkClicked: url => helper.openInBrowser(url),
@@ -76,14 +75,13 @@ function purge () {
 
 
 
-function gotoUrl (url) {
+function gotoUrl (where) {
 	$.trigger(EVENT.search.stop);
-	urlLoading = (url instanceof Event ? url.url : url);
-	if (typeof url !== 'string' || !url.length || !webview.length) return;
-	if (!(url instanceof Event)) {
-		if (url in gotoActions) gotoActions[url]();
-		else if (webview[0].loadURL) webview[0].loadURL(url);
-	}
+	const isEvent = (where instanceof Event);
+	urlLoading = (isEvent ? where.url : where);
+	if (typeof urlLoading !== 'string' || !urlLoading || !webview.length) return;
+	if (urlLoading in gotoActions) gotoActions[urlLoading]();
+	else if (!isEvent && webview[0].loadURL) webview[0].loadURL(urlLoading);
 }
 
 function onNavigationStart () {
