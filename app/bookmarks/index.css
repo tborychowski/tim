@@ -4,7 +4,7 @@
 .repo-box .hdr { padding: 10px 10px 12px 20px; display: block; }
 
 .repo-box li { padding: 5px 20px 15px 20px; display: flex; font-weight: 100; position: relative; }
-.repo-box li a.btn { padding: 0; font-size: 12px; flex: 1; }
+.repo-box li a.btn { padding: 0; font-size: 14px; flex: 1; }
 
 .repo-box li .build-status .icon,
 .repo-box li i { width: 18px; min-width: 18px; font-size: 14px; margin: -1px 3px 0 0; }
