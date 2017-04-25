@@ -1,5 +1,4 @@
 const { session, getGlobal } = require('electron').remote;
-const path = require('path');
 const ses = session.fromPartition('persist:github');
 const args = getGlobal('appArgs');
 
@@ -22,11 +21,11 @@ const webviewHandlers = {
 	externalLinkClicked: url => helper.openInBrowser(url),
 	keyup: e => $.trigger(EVENT.document.keyup, e),
 
+	showPreview: url => $.trigger(EVENT.preview, url),
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	showImgMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'img' }),
-	showPreview: url => $.trigger(EVENT.preview, url),
-
 	showSelectionMenu: txt => $.trigger(EVENT.contextmenu.show, { txt, type: 'selection' }),
+
 	isLogged: itIs => {
 		if (itIs && !isLoggedIn) {
 			isLoggedIn = true;
@@ -34,33 +33,18 @@ const webviewHandlers = {
 		}
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
-	linkClicked,
 	docReady: () => $.injectCSS(webview, wpcss),
 	domChanged: onRendered,
 };
 
 
 const gotoActions = {
-	prev: () => {
-		if (webview[0].canGoBack()) {
-			webview[0].goBack();
-		}
-	},
-	next: () => {
-		if (webview[0].canGoForward()) {
-			webview[0].goForward();
-		}
-	},
+	prev: () => { if (webview[0].canGoBack()) webview[0].goBack(); },
+	next: () => { if (webview[0].canGoForward()) webview[0].goForward(); },
 	refresh: () => webview[0].reload(),
 	stop: () => webview[0].stop()
 };
 
-
-
-function linkClicked (url, href) {
-	if (href[0] === '#') return;	// don't do loading for local links
-	if (path.extname(url)) return;	// don't do loading for file downloads
-}
 
 function initialURL (initial) {
 	if (initial && args) {
@@ -93,11 +77,13 @@ function purge () {
 
 
 function gotoUrl (url) {
-	urlLoading = (url instanceof Event ? url.url : url);
 	$.trigger(EVENT.search.stop);
+	urlLoading = (url instanceof Event ? url.url : url);
 	if (typeof url !== 'string' || !url.length || !webview.length) return;
-	if (url in gotoActions) gotoActions[url]();
-	else if (webview[0].loadURL) webview[0].loadURL(url);
+	if (!(url instanceof Event)) {
+		if (url in gotoActions) gotoActions[url]();
+		else if (webview[0].loadURL) webview[0].loadURL(url);
+	}
 }
 
 function onNavigationStart () {

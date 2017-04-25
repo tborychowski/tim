@@ -64,7 +64,6 @@ function onClick (e) {
 			e.preventDefault();
 			msg('externalLinkClicked', el.href);
 		}
-		else msg('linkClicked', el.href, el.getAttribute('href'));
 	}
 }
 
