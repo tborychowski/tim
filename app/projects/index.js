@@ -1,5 +1,5 @@
 const $ = require('../util');
-const { EVENT, users, github } = require('../services');
+const { EVENT, users, github, config } = require('../services');
 
 let isReady = false, el, listEl;
 const projectSort = (a, b) => a.name.localeCompare(b.name);
@@ -29,6 +29,9 @@ function getProjectHtml (project) {
 function remapProjectFields (project) {
 	project.created_at_str = $.prettyDate(project.created_at);
 	project.updated_at_str = $.prettyDate(project.updated_at);
+
+	const repo = project.owner_url.split('/').splice(-2).join('/');
+	project.html_url = `${config.get('baseUrl')}${repo}/projects/${project.number}`;
 
 	return users.getById(project.login).then(usr => {
 		if (usr) project.creator.name = usr.name;

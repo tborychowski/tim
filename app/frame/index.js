@@ -45,6 +45,17 @@ const gotoActions = {
 };
 
 
+function gotoUrl (where) {
+	$.trigger(EVENT.search.stop);
+	const isEvent = (where instanceof Event);
+	urlLoading = (isEvent ? where.url : where);
+	if (typeof urlLoading !== 'string' || !urlLoading || !webview.length) return;
+	if (urlLoading in gotoActions) gotoActions[urlLoading]();
+	else if (!isEvent && webview[0].loadURL) webview[0].loadURL(urlLoading);
+}
+
+
+
 function initialURL (initial) {
 	if (initial && args) {
 		const url = $.parseUrl(args.pop());
@@ -74,15 +85,6 @@ function purge () {
 }
 
 
-
-function gotoUrl (where) {
-	$.trigger(EVENT.search.stop);
-	const isEvent = (where instanceof Event);
-	urlLoading = (isEvent ? where.url : where);
-	if (typeof urlLoading !== 'string' || !urlLoading || !webview.length) return;
-	if (urlLoading in gotoActions) gotoActions[urlLoading]();
-	else if (!isEvent && webview[0].loadURL) webview[0].loadURL(urlLoading);
-}
 
 function onNavigationStart () {
 	$.trigger(EVENT.search.stop);

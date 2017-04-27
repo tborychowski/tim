@@ -1,8 +1,8 @@
 # Github Browser
 Browse github orderly.
 
-
 ![Screenshot](screens/0-screenshot.png)
+
 
 
 ## Features
@@ -16,8 +16,11 @@ Browse github orderly.
 - **TouchBar** Support
 
 
+
+
 ## Download
 Check the [Releases](https://github.com/tborychowski/github-browser/releases) for the latest version.
+
 
 
 
@@ -55,6 +58,8 @@ Check the [Releases](https://github.com/tborychowski/github-browser/releases) fo
 
 #### Settings
 ![Settings](screens/5-settings.png)
+
+
 
 
 ## Dev install
