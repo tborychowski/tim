@@ -90,13 +90,10 @@ function isMath (e) {
 }
 
 // digits + navigation + copy/cut/paste + math operators
-function isAllowed (e) {
+function isCutCopyPaste (e) {
 	const k = e.keyCode;
-	const allowed = isNavChar(e);
-	const isCtrlXCV = (e && e.ctrlKey === true) && (k === keys.X || k === keys.C || k === keys.V);
-	const math = isMath(e);
-
-	return isDigit(e) || allowed || isCtrlXCV || math;
+	const ctrlOrCmd = e && (e.ctrlKey === true || e.metaKey === true);
+	return ctrlOrCmd && (k === keys.X || k === keys.C || k === keys.V);
 }
 
 // a - z
@@ -108,13 +105,19 @@ function isNavChar (e) { return allowedChars[e.keyCode] === 1; }
 
 function isDigit (e) { return digits[e.keyCode] === 1 && !e.shiftKey; }
 
+function isNumberField (e) {
+	const isEnter = (e.keyCode === 13);
+	return isDigit(e) || isNavChar(e) || isCutCopyPaste(e) || isEnter;
+}
 
 
 module.exports = {
 	keys,
 	isNavChar,
-	isAllowed,
+	isCutCopyPaste,
 	isDigit,
 	isAlpha,
-	isAlphaNumeric
+	isMath,
+	isAlphaNumeric,
+	isNumberField
 };

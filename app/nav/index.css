@@ -3,7 +3,14 @@
 }
 
 
-#nav { position: absolute; width: var(--nav-bar-width); top: 0; left: 0; bottom: 0; background: #111B2D; }
+#nav {
+	position: absolute;
+	width: var(--nav-bar-width);
+	top: 0;
+	left: 0;
+	bottom: 0;
+	background: #111B2D;
+}
 
 .nav-btn {
 	display: block;
@@ -58,8 +65,15 @@
 
 
 
-#subnav { position: absolute; width: 300px; top: 0; left: var(--nav-bar-width); bottom: 0;
-	color: #eee; background: #2C384D; box-shadow: 1px 0 0 rgba(255,255,255, .1) inset;
+#subnav {
+	position: absolute;
+	width: 300px;
+	top: 0;
+	left: var(--nav-bar-width);
+	bottom: 0;
+	color: #eee;
+	background: #2C384D;
+	box-shadow: 1px 0 0 rgba(255,255,255, .1) inset;
 }
 
 .subnav-section { position: absolute; top: 0; bottom: 0; right: 0; left: 0; display: none; }

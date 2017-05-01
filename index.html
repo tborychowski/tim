@@ -80,7 +80,7 @@
 					</div>
 
 					<input class="addr-input addressbar" autofocus tabindex="1" />
-					<input class="addr-input issue-id-bar" autocomplete="on" tabindex="3" type="number" />
+					<input class="addr-input issue-id-bar" autocomplete="on" tabindex="3" />
 
 					<i class="header-btn js-sync"></i>
 					<i class="header-btn js-error ion-ios-alert-outline" title="Cannot connect to github. Check your network."></i>
@@ -114,7 +114,7 @@
 				<label>Base URL: <input name="baseUrl" required></label>
 
 				<label>Github Token: <input name="ghToken" placeholder="token ID">
-					<button class="btn token-link" data-go="link">Generate</button>
+					<button class="btn token-link" data-go="link" type="button">Generate</button>
 				</label>
 				<span class="settings-info-text">(make sure to select: <b>"repo/public_repo"</b> and <b>"notifications"</b> scopes)</span>
 
@@ -131,7 +131,7 @@
 				<label>Home button URL: <input name="homeUrl" placeholder="Defaults to Base URL"></label>
 
 				<label>Default Browser: <input name="browser" placeholder="use the OS default browser or select">
-					<button class="btn settings-form-button" data-go="findBrowser">...</button>
+					<button class="btn settings-form-button" data-go="findBrowser" type="button">...</button>
 				</label>
 				<span class="settings-info-text">This will allow to open pages in another browser</span>
 			</div>

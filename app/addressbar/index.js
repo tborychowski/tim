@@ -141,6 +141,20 @@ function onIssueBoxFocus(e) {
 	$.trigger(EVENT.address.input.end);
 }
 
+function onIssueBoxKeydown (e) {
+	if (!$.isNumberField(e)) return e.preventDefault();
+}
+
+function onIssueBoxKeyup (e) {
+	const val = e.target.value;
+	if (!(/^\d*$/).test(val)) e.target.value = parseInt(val, 10) || '';
+}
+
+function onIssueBoxPaste (e) {
+	const pasteText = e.clipboardData && e.clipboardData.getData('Text');
+	if (!(/^\d*$/).test(pasteText)) e.preventDefault();
+}
+
 
 function init () {
 	if (isReady) return;
@@ -157,6 +171,10 @@ function init () {
 
 	issueBox.on('focus', onIssueBoxFocus);
 	issueBox.on('keypress', e => { if (e.key === 'Enter') gotoIssue(e.target.value); });
+	issueBox.on('keydown', onIssueBoxKeydown);
+	issueBox.on('keyup', onIssueBoxKeyup);
+	issueBox.on('paste', onIssueBoxPaste);
+
 
 	$.on(EVENT.url.change.to, gotoUrl);
 	$.on(EVENT.url.change.done, onUrlChanged);
