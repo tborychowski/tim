@@ -52,8 +52,19 @@ function getRepoHtml (repo) {
 	</div>`;
 }
 
+
+let throttled = null;
+const throttle = () => {
+	if (throttled) clearTimeout(throttled);
+	throttled = setTimeout(() => { throttled = null; }, 1000);
+};
+
+
 function onClick (e) {
 	e.preventDefault();
+
+	if (throttled) return throttle();	// if clicked during quiet time - throttle again
+	throttle();
 
 	let target = $(e.target);
 	if (target.is('.js-refresh')) return refresh();
