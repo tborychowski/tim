@@ -16,6 +16,7 @@ function onDomChange () {
 
 function _onDomChange () {
 	const issue = helper.getIssueDetails(document);
+	scrollToLastComment(issue);
 	msg('domChanged', issue.url, issue);
 }
 
@@ -28,6 +29,15 @@ function observeChanges () {
 	// observer.disconnect();
 }
 
+
+
+function scrollToLastComment (issue) {
+	if (location.hash) return;
+	if (issue.type !=='issue' && issue.type !=='pr') return;
+	const comments = document.querySelectorAll('#discussion_bucket .js-discussion .js-comment-container');
+	const lastComment = Array.from(comments).pop();
+	if (lastComment) lastComment.scrollIntoViewIfNeeded();
+}
 
 function onWheel (e) {
 	if (!isScrolling || isWheeling) return;
