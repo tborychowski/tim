@@ -34,8 +34,8 @@ function showChangelog () {
 function checkForUpdates (silent) {
 	if (IS_DOWNLOADING) dialog.info({
 		title: 'Update',
-		message: 'The update was found and it\'s already downloading.',
-		detail: 'Please be patient.'
+		message: 'An update was found and is downloading.',
+		detail: 'Thanks for your patience!'
 	});
 	SILENT = (silent === true);
 	send('check');
@@ -46,7 +46,7 @@ function updateNotAvailable () {
 	if (!SILENT) dialog.info({
 		title: 'Update',
 		message: `You have the latest version of\n${appName} ${appVersion}`,
-		detail: 'No need to update'
+		detail: 'There are no new updates at this time.'
 	});
 }
 
