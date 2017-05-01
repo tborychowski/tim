@@ -1,7 +1,7 @@
 const { config, EVENT, helper } = require('../services');
 const $ = require('../util');
 
-let isReady = false, el, starBox, btnBack, btnForw;
+let isReady = false, el, starBox, btnBack, btnForw, confirmEl;
 
 const clickHandlers = {
 	prev () { $.trigger(EVENT.frame.goto, 'prev'); },
@@ -39,6 +39,12 @@ function hideConnectionError () {
 
 function onClick (e) {
 	let target = $(e.target);
+
+	if (target.is('.js-copy')) {
+		confirmEl.addClass('flash');
+		setTimeout(() => { confirmEl.removeClass('flash'); }, 1600);
+	}
+
 	if (target.is('.header-btn')) {
 		e.preventDefault();
 		const to = target.data('go');
@@ -62,6 +68,8 @@ function init () {
 	starBox = el.find('.star-box');
 	btnBack = el.find('.js-prev');
 	btnForw = el.find('.js-next');
+	confirmEl =  $('.copy-link-confirmation');
+
 
 	el.on('click', onClick);
 
