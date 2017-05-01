@@ -26,7 +26,7 @@ module.exports = class GitHub {
 
 	get (url, params, fullResp = false) {
 		this.reqCount++;
-		// console.log('No of GH requests so far:', this.reqCount);
+		if (isDev) console.log('No of GH requests so far:', this.reqCount);
 		const options = this.getOptions(url, params, fullResp);
 		return REQ(options)
 			.then(res => {

@@ -169,8 +169,11 @@ function updateUnread (issues) {
 	});
 
 	issues.forEach(issue => {
-		bookmarks.setState(issue.id, issue.state);
-		$(`.${getIssueCls(issue)}`).addClass(issue.state);
+		bookmarks.update(issue.id, { name: issue.name, state: issue.state });
+		$(`.${getIssueCls(issue)}`)
+			.addClass(issue.state)
+			.find('.bookmark')
+			.html(issue.name);
 	});
 	$.trigger(EVENT.section.badge, 'bookmarks', unread.length);
 }
@@ -180,11 +183,14 @@ function openIssue (iel) {
 	const url = iel.attr('href');
 	const iBox = iel.closest('.unread');
 	if (iBox && iBox.length) iBox.removeClass('unread');
-
 	$.trigger(EVENT.url.change.to, url);
-	bookmarks.setUnreadByUrl(url, false).then(refresh);
 }
 
+
+function onUrlChanged (wv, { url }) {
+	if (!url) return;
+	bookmarks.setUnreadByUrl(url, false).then(res => { if (res) refresh(); });
+}
 
 function init () {
 	if (isReady) return;
@@ -198,6 +204,9 @@ function init () {
 	$.on(EVENT.bookmark.add, addBookmark);
 	$.on(EVENT.bookmark.remove, removeBookmark);
 	$.on(EVENT.bookmarks.refresh, refresh);
+
+	$.on(EVENT.url.change.done, onUrlChanged);
+
 
 	isReady = true;
 }

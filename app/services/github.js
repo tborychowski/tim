@@ -112,7 +112,10 @@ function checkForUnreadComments (issue) {
 
 function checkIssueState (issue) {
 	return getIssue(issue.repo, issue.id).then(res => {
-		if (res) issue.state = res.state;
+		if (res) {
+			issue.state = res.state;
+			issue.name = res.title;
+		}
 		return issue;
 	});
 }

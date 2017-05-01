@@ -25,6 +25,10 @@ function getByUrl (url) {
 }
 
 
+function update (id, fields) {
+	return db.update({ id }, fields);
+}
+
 function setState (id, state) {
 	return db.update({ id }, { state });
 }
@@ -45,6 +49,7 @@ module.exports = {
 	add,
 	remove,
 	get,
+	update,
 	getByUrl,
 	setUnread,
 	setState,
