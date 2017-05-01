@@ -1,5 +1,5 @@
 html { overflow-x: hidden; }
-body { min-width: auto !important; background: none; }
+body { min-width: auto !important; background: none; user-select: none; }
 
 .main-content { padding: 0; }
 

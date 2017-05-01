@@ -15,7 +15,20 @@ function reload () {
 }
 
 
+let throttled = null;
+const throttle = () => {
+	if (throttled) clearTimeout(throttled);
+	throttled = setTimeout(() => { throttled = null; }, 1000);
+};
+
+
 function onClick (e) {
+	if (throttled) {
+		e.preventDefault();
+		return throttle();	// if clicked during quiet time - throttle again
+	}
+	throttle();
+
 	const el = e.target;
 
 	if (el.matches('.notifications-list .notifications-repo-link')) {
