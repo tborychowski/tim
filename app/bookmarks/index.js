@@ -10,9 +10,9 @@ const DEFAULT_PROJECTS_REPO_NAME = 'Projects';	// for ungrouped projects
 const issueTypeCls = {
 	pr: 'ion-ios-git-pull-request',
 	issue: 'ion-ios-bug-outline',
-	project: 'ion-md-cube',
-	page: 'ion-ios-star-outline',
-	default: 'ion-ios-star-outline',
+	project: 'ion-ios-cube-outline',
+	page: 'ion-ios-document-outline',
+	default: 'ion-ios-document-outline',
 };
 
 const statusIconCls = {
@@ -187,9 +187,9 @@ function openIssue (iel) {
 }
 
 
-function onUrlChanged (wv, { url }) {
-	if (!url) return;
-	bookmarks.setUnreadByUrl(url, false).then(res => { if (res) refresh(); });
+function onUrlChanged (wv, issue) {
+	if (!issue.url) return;
+	bookmarks.setUnreadByUrl(issue.url, false).then(res => { if (res) refresh(); });
 }
 
 function init () {
