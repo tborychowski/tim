@@ -16,7 +16,6 @@ function onDomChange () {
 
 function _onDomChange () {
 	const issue = helper.getIssueDetails(document);
-	scrollToLastComment(issue);
 	msg('domChanged', issue.url, issue);
 }
 
@@ -124,6 +123,9 @@ function init () {
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');
+
+	const issue = helper.getIssueDetails(document);
+	scrollToLastComment(issue);
 
 	onDomChange();
 }

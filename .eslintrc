@@ -5,6 +5,9 @@
         "node": true,
         "browser": true
     },
+    "parserOptions": {
+        "sourceType": "module"
+    },
     "rules": {
         "indent": [2, "tab"],
         "quotes": [2, "single", "avoid-escape"],
