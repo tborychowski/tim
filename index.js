@@ -3,13 +3,19 @@ const windowStateKeeper = require('electron-window-state');
 const EVENT = require('./app/services/events');
 const updater = require('./app/updater/main');
 
-
-const send = (name, val) => win.webContents.send(name, val);
-
 let win;
 
-app.on('ready', () => {
-	// Load the previous state with fallback to defaults
+const send = (name, val) => win.webContents.send(name, val);
+function openUrl (ev, url) {
+	if (win && win.webContents) {
+		win.restore();
+		send(EVENT.frame.goto, url);
+		if (ev) ev.preventDefault();
+	}
+	else global.appArgs = [url];		// opening URL in closed GHB
+}
+
+function createWindow () {
 	const mainWindowState = windowStateKeeper({ defaultWidth: 1000, defaultHeight: 800 });
 
 	win = new BrowserWindow({
@@ -25,8 +31,9 @@ app.on('ready', () => {
 		height: mainWindowState.height,
 	});
 	win.on('closed', () => win = null);
-	win.on('scroll-touch-begin', () => { send('event', EVENT.swipe.start); });
-	win.on('scroll-touch-end', () => { send('event', EVENT.swipe.end); });
+	win.on('scroll-touch-begin', () => send('event', EVENT.swipe.start));
+	win.on('scroll-touch-end', () => send('event', EVENT.swipe.end));
+	win.webContents.on('crashed', () => { win.destroy(); createWindow(); });
 
 	mainWindowState.manage(win);
 
@@ -36,18 +43,10 @@ app.on('ready', () => {
 	// win.webContents.openDevTools();
 
 	updater.init(win);
-});
-
-
-app.on('open-url', (ev, url) => {		// opening URL in GHB
-	if (win && win.webContents) {
-		win.restore();
-		send(EVENT.frame.goto, url);
-		if (ev) ev.preventDefault();
-	}
-	else global.appArgs = [url];		// opening URL in closed GHB
-});
+}
 
 app.on('window-all-closed', app.quit);
+app.on('ready', createWindow);
+app.on('open-url', openUrl);			// opening URL in GHB
 
 global.appArgs = process.argv;			// opening URL from CLI
