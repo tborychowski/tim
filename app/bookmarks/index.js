@@ -17,6 +17,7 @@ const issueTypeCls = {
 
 const statusIconCls = {
 	failure: 'ion-md-alert',
+	aborted: 'ion-md-alert',
 	success: 'ion-md-checkmark-circle',
 	progress: 'ion-md-time'
 };
@@ -37,12 +38,17 @@ function removeBookmark (issue) {
 	bookmarks.remove(issue).then(refresh);
 }
 
-function refresh () {
-	bookmarks.get()
+function refresh (drawOnly) {
+	const promise = bookmarks
+		.get()
 		.then(findRepoNames)
-		.then(fillIssues)
-		.then(github.checkIssuesForUpdates)
-		.then(updateUnread);
+		.then(fillIssues);
+
+	if (!drawOnly) {	// = full refresh
+		promise
+			.then(github.checkIssuesForUpdates)
+			.then(updateUnread);
+	}
 }
 
 let throttled = null;
@@ -81,7 +87,7 @@ function updateBuildStatus (pr, status) {
 	if (result) statusBox.addClass(result);
 	if (statusIconCls[result]) statusIcon.addClass(statusIconCls[result]);
 	if (statusBox.length) {
-		statusBox[0].title = status.result || 'Open build job';
+		statusBox[0].title = $.ucfirst(status.result) || 'Open build job';
 		statusBox[0].href = pr.buildUrl;
 	}
 	progBoxIn[0].style.width = status.progress + '%';
@@ -189,7 +195,7 @@ function openIssue (iel) {
 
 function onUrlChanged (wv, issue) {
 	if (!issue.url) return;
-	bookmarks.setUnreadByUrl(issue.url, false).then(res => { if (res) refresh(); });
+	bookmarks.setUnreadByUrl(issue.url, false).then(res => { if (res) refresh(true); });
 }
 
 function init () {

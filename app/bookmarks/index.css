@@ -29,6 +29,7 @@
 
 
 .build-status.success { color: yellowgreen; }
+.build-status.aborted,
 .build-status.failure { color: firebrick; }
 .build-status.progress { color: rgba(255, 255, 255, 0.5); }
 
@@ -42,6 +43,7 @@
 
 
 .build-status.success .build-progress-inner,
+.build-status.aborted .build-progress-inner,
 .build-status.failure .build-progress-inner { background: rgba(0, 0, 0, 0.3); }
 
 

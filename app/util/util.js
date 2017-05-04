@@ -6,6 +6,8 @@ const rtrim = (str, chars = '\\s') => ('' + str).replace(new RegExp(`${chars}+$`
 
 const rand = (max, min = 0) => Math.floor(Math.random() * (max - min + 1) + min);
 
+const ucfirst = (s) => s.toLowerCase().replace(/\b([a-z])/gi, c => c.toUpperCase());
+
 
 function isNumber (v) {
 	if (typeof v === 'number') return true;
@@ -101,6 +103,7 @@ module.exports = {
 	ltrim,
 	rtrim,
 	trim,
+	ucfirst,
 	type,
 	rand,
 	isNumber,

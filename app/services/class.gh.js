@@ -7,12 +7,22 @@ module.exports = class GitHub {
 	constructor () {
 		this.user_agent = 'GithubBrowser';
 		this.reqCount = 0;
+		this.fetchingUser = false;
+	}
+
+	fetchUser () {
+		if (this.user || this.fetchingUser) return;
+		this.fetchingUser = true;
+		this.get('/user').then(res => {
+			this.user = res;
+			this.fetchingUser = false;
+		});
 	}
 
 	setOptions (token, host = 'https://api.github.com') {
 		this.host = host;
 		this.token = token;
-		if (!this.user) this.get('/user').then(res => { this.user = res; });
+		this.fetchUser();
 	}
 
 	getOptions (url, qs = {}, fullResp = false) {
@@ -26,7 +36,10 @@ module.exports = class GitHub {
 
 	get (url, params, fullResp = false) {
 		this.reqCount++;
-		if (isDev) console.log('No of GH requests so far:', this.reqCount);
+		if (isDev) {
+			// console.log(url, params);
+			console.log('No of GH requests so far:', this.reqCount);
+		}
 		const options = this.getOptions(url, params, fullResp);
 		return REQ(options)
 			.then(res => {
