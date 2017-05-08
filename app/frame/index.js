@@ -13,7 +13,9 @@ const wpjs = `file://${__dirname}/webview.js`;
 const wpcss = `${__dirname}/webview.css`;
 
 
-let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false, urlLoading = '';
+let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false,
+	lastURL = '',
+	urlLoading = '';
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
@@ -104,8 +106,9 @@ function onRendered (url, issue) {
 
 	config.set('state.url', url);
 	config.set('state.issue', issue);
-	$.trigger(EVENT.url.change.done, webview[0], issue);
 	realnames.replace(webview[0]);
+	if (lastURL !== url) $.trigger(EVENT.url.change.done, webview[0], issue);
+	lastURL = url;
 }
 
 function loadingStart () {
