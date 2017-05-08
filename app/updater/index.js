@@ -32,13 +32,15 @@ function showChangelog () {
 
 
 function checkForUpdates (silent) {
-	if (IS_DOWNLOADING) dialog.info({
-		title: 'Update',
-		message: 'An update was found and is downloading.',
-		detail: 'Thanks for your patience!'
-	});
+	if (IS_DOWNLOADING) {
+		dialog.info({
+			title: 'Update',
+			message: 'An update was found and is downloading.',
+			detail: 'Thanks for your patience!'
+		});
+	}
 	SILENT = (silent === true);
-	send('check');
+	send('checkForUpdates');
 }
 
 function updateNotAvailable () {
@@ -71,13 +73,14 @@ function updateAvailable (resp) {
 
 function download () {
 	IS_DOWNLOADING = true;
-	send('download');
+	send('downloadUpdate');
 }
 
 function updateDownloaded () {
 	log('Update downloaded');
-	if (SILENT) $.trigger(EVENT.updater.nav.show);
-	else updateDownloadedInstall();
+	if (SILENT) return $.trigger(EVENT.updater.nav.show);
+
+	updateDownloadedInstall();
 }
 
 
@@ -88,7 +91,7 @@ function updateDownloadedInstall () {
 		buttons: [ 'Install later', 'Quit and install', 'Changelog' ]
 	})
 	.then(res => {
-		if (res === 1) return send('install');
+		if (res === 1) return send('quitAndInstall');
 		if (res === 2) return showChangelog();
 	});
 }

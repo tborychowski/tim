@@ -194,8 +194,10 @@ function openIssue (iel) {
 
 
 function onUrlChanged (wv, issue) {
-	if (!issue.url) return;
-	bookmarks.setUnreadByUrl(issue.url, false).then(res => { if (res) refresh(true); });
+	if (!issue || !issue.url) return;
+	bookmarks.setUnreadByUrl(issue.url, false).then(res => {
+		if (res) refresh(true);
+	});
 }
 
 function init () {
