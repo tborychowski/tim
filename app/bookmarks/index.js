@@ -81,7 +81,7 @@ function updateBuildStatus (pr, status) {
 	const statusIcon = prBox.find('.build-status .icon');
 	const progBoxIn = prBox.find('.build-progress-inner');
 
-	statusBox.show();
+	// statusBox.show();
 
 	const result = status.result ? status.result : status.progress < 100 ? 'progress' : '';
 	if (result) statusBox[0].className = `build-status ${result}`;
@@ -111,7 +111,7 @@ function getIssueHtml (issue) {
 		statusBox = '<a href="#" class="build-status"><i class="icon"></i>' +
 			'<div class="build-progress"><div class="build-progress-inner"></div></div></a>';
 	}
-	const cls = ['issue-box', getIssueCls(issue), issue.state];
+	const cls = ['issue-box', getIssueCls(issue), issue.state, `type-${issue.type}`];
 	if (issue.unread) cls.push('unread');
 	return `<li class="${cls.join(' ')}">
 		<i class="issue-icon ${issueTypeCls[issue.type || 'default']}"></i>

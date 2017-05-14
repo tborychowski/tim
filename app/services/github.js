@@ -36,6 +36,7 @@ function getCItargetUrlFromStatuses (statuses) {
 
 
 function getJenkinsStatus (pr, stat) {
+	if (!stat) return;
 	const url = getCItargetUrlFromStatuses(stat && stat.statuses);
 	if (!url) return { result: stat && stat.state };
 	pr.buildUrl = url;
@@ -75,7 +76,7 @@ function getIssueComments (repo, id, params) {
 }
 
 function getCommitStatuses (repo, sha) {
-	if (!sha) return Promise.resolve([]);
+	if (!sha) return Promise.resolve();
 	return github(`/repos/${repo}/commits/${sha}/status`);
 
 }

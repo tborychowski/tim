@@ -38,6 +38,8 @@
 .build-status .icon { position: absolute; right: -8px; bottom: -3px; }
 .build-status.progress .icon { animation: blink 5s linear infinite; }
 
+.type-pr .build-status { display: block; }
+
 .build-progress { height: 1px; border-radius: 5px; background-color: #888; width: calc(100% - 20px); }
 .build-progress-inner { height: 100%; background: greenyellow; border-radius: 5px; width: 0; }
 
