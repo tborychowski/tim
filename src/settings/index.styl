@@ -1,0 +1,159 @@
+.settings
+	position absolute
+	z-index 200
+	top 100px
+	bottom 100px
+	min-height 250px
+	left calc(50% - 300px)
+	width 600px
+	background-color #fff
+	padding 0
+	box-shadow 0 2px 30px #000
+	border-radius 3px
+	display none
+	opacity 0
+	transform scale(0.8)
+	transition all .3s ease-out
+	overflow hidden
+
+	h1
+		margin 0
+		padding 20px 40px
+		position relative
+		background-color #f3f3f3
+		border-bottom 1px solid #ccc
+
+
+	.btn
+		font-size 14px
+		background-color #f1f1f1
+		border-radius 3px
+		border 1px solid #ccc
+		padding 3px 5px
+		cursor pointer
+		text-decoration none
+		color #333
+		display inline-block
+
+
+
+.settings-form
+	display flex
+	flex-direction column
+	height 100%
+
+	h2
+		font-size 16px
+		margin 0
+		padding 20px 0 0
+
+	label
+		padding 20px 5px 5px
+		width 100%
+		display flex
+		align-items center
+		justify-content space-between
+
+	input
+		padding 5px
+		margin-left 10px
+		width calc(100% - 140px)
+
+	input:invalid
+	textarea:invalid
+		background-color rgba(255, 0, 0, 0.1)
+
+
+	textarea
+		display inline-block
+		padding 5px
+		margin-left 10px
+		width calc(100% - 140px)
+		vertical-align top
+		resize vertical
+		min-height 3em
+		height 5em
+
+
+	input[name="browser"]
+		width calc(100% - 176px)
+		margin-right -18px
+
+	input[name="ghToken"]
+		width calc(100% - 224px)
+		margin-right -34px
+
+
+
+.settings-scroller
+	flex 1
+	overflow auto
+	flex-grow grow
+	padding 0 40px 40px
+	height 100%
+	min-height 100px
+
+
+.settings-info-text .btn
+	margin 10px 0
+
+
+.settings-buttons
+	border-top 1px solid #ccc
+	margin 0
+	padding 15px 40px
+	text-align right
+	position relative
+	background-color #f3f3f3
+
+
+	.btn
+		padding 10px 30px
+		background-color #fff
+
+		&:hover
+			border-color #999
+
+	.btn-left
+		float left
+
+	.btn-save
+		font-weight bold
+		margin-left 10px
+		background-color rgba(0, 180, 255, 0.2)
+
+
+.settings-info-text
+	font-size 11px
+	color #999
+	margin-left 146px
+	display block
+
+
+
+
+
+
+
+
+/* SHOW SETTINGS */
+
+#header
+#main
+#nav
+#subnav
+	transition filter .3s ease-out
+
+
+.show-settings
+	#header
+	#main
+	#nav
+	#subnav
+		filter brightness(0.4)
+		pointer-events none
+
+	.settings
+		opacity 1
+		transform scale(1)
+

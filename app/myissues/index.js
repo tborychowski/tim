@@ -1,80 +1,78 @@
-const $ = require('../util');
-const { EVENT, config, github } = require('../services');
+'use strict';
 
-let isReady = false, el, listEl;
-const issueTypeCls = {
+var $ = require('../util');
+
+var _require = require('../services'),
+    EVENT = _require.EVENT,
+    config = _require.config,
+    github = _require.github;
+
+var isReady = false,
+    el = void 0,
+    listEl = void 0;
+var issueTypeCls = {
 	pr: 'ion-ios-git-pull-request',
 	issue: 'ion-ios-bug-outline',
-	default: 'ion-ios-star-outline',
+	default: 'ion-ios-star-outline'
 };
 
-
-function refresh () {
+function refresh() {
 	github.getMyIssues().then(render);
 }
 
-
-function render (issues) {
+function render(issues) {
 	if (!issues) return;
-	const remap = {};
-	issues.forEach(iss => {
-		const repo = iss.repository.owner.login + '/' + iss.repository.name;
+	var remap = {};
+	issues.forEach(function (iss) {
+		var repo = iss.repository.owner.login + '/' + iss.repository.name;
 		remap[repo] = remap[repo] || { name: repo, items: [] };
 		remap[repo].items.push(iss);
 	});
-	const html = [];
-	for (let repo in remap) html.push(getRepoHtml(remap[repo]));
-	listEl.html(html.join(''));
+	var html = [];
+	for (var repo in remap) {
+		html.push(getRepoHtml(remap[repo]));
+	}listEl.html(html.join(''));
 
 	$.trigger(EVENT.section.badge, 'myissues', issues.length);
 
 	return issues;
 }
 
-function getIssueHtml (issue) {
-	const updated = $.prettyDate(issue.updated_at);
-	const state = issue.state || '';
-	return `<li class="issue-box ${state}">
-		<i class="issue-icon ${issueTypeCls[issue.pull_request ? 'pr' : 'issue']}" title="${state}"></i>
-		<a href="${issue.html_url}" class="btn bookmark" title="${issue.number}">${issue.title}</a>
-		<div class="issue-date">updated: ${updated}</div>
-	</li>`;
-
+function getIssueHtml(issue) {
+	var updated = $.prettyDate(issue.updated_at);
+	var state = issue.state || '';
+	return '<li class="issue-box ' + state + '">\n\t\t<i class="issue-icon ' + issueTypeCls[issue.pull_request ? 'pr' : 'issue'] + '" title="' + state + '"></i>\n\t\t<a href="' + issue.html_url + '" class="btn bookmark" title="' + issue.number + '">' + issue.title + '</a>\n\t\t<div class="issue-date">updated: ' + updated + '</div>\n\t</li>';
 }
 
-function getRepoHtml (repo) {
-	const issuesHtml = repo.items.map(getIssueHtml).join('');
-	let repoName = repo.name.split('/').pop();
-	const url = `${config.get('baseUrl')}${repo.name}/issues`;
-	repoName = `<a href="${url}" class="hdr btn">${repoName}</a>`;
-	return `<div class="repo-box ${repo.name}"><h2>${repoName}</h2>
-		<ul class="repo-box-issues">${issuesHtml}</ul>
-	</div>`;
+function getRepoHtml(repo) {
+	var issuesHtml = repo.items.map(getIssueHtml).join('');
+	var repoName = repo.name.split('/').pop();
+	var url = '' + config.get('baseUrl') + repo.name + '/issues';
+	repoName = '<a href="' + url + '" class="hdr btn">' + repoName + '</a>';
+	return '<div class="repo-box ' + repo.name + '"><h2>' + repoName + '</h2>\n\t\t<ul class="repo-box-issues">' + issuesHtml + '</ul>\n\t</div>';
 }
 
-
-let throttled = null;
-const throttle = () => {
+var throttled = null;
+var throttle = function throttle() {
 	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 1000);
+	throttled = setTimeout(function () {
+		throttled = null;
+	}, 1000);
 };
 
-
-function onClick (e) {
+function onClick(e) {
 	e.preventDefault();
 
-	if (throttled) return throttle();	// if clicked during quiet time - throttle again
+	if (throttled) return throttle(); // if clicked during quiet time - throttle again
 	throttle();
 
-	let target = $(e.target);
+	var target = $(e.target);
 	if (target.is('.js-refresh')) return refresh();
 	target = target.closest('.btn');
 	if (target.length) return $.trigger(EVENT.url.change.to, target.attr('href'));
 }
 
-
-
-function init () {
+function init() {
 	if (isReady) return;
 
 	el = $('.subnav-myissues');
@@ -88,7 +86,6 @@ function init () {
 	isReady = true;
 }
 
-
 module.exports = {
-	init
+	init: init
 };

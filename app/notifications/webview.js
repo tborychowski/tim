@@ -1,42 +1,40 @@
-const ipc = require('electron').ipcRenderer;
-const msg = ipc.sendToHost;
+'use strict';
 
+var ipc = require('electron').ipcRenderer;
+var msg = ipc.sendToHost;
 
-function injectCss (ev, css) {
-	const style = document.createElement('style');
+function injectCss(ev, css) {
+	var style = document.createElement('style');
 	style.innerHTML = css;
 	document.head.appendChild(style);
 	msg('cssReady');
 }
 
-
-function reload () {
+function reload() {
 	document.querySelector('.filter-list .filter-item.selected').click();
 }
 
-
-let throttled = null;
-const throttle = () => {
+var throttled = null;
+var throttle = function throttle() {
 	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 1000);
+	throttled = setTimeout(function () {
+		throttled = null;
+	}, 1000);
 };
 
-
-function onClick (e) {
+function onClick(e) {
 	if (throttled) {
 		e.preventDefault();
-		return throttle();	// if clicked during quiet time - throttle again
+		return throttle(); // if clicked during quiet time - throttle again
 	}
 	throttle();
 
-	const el = e.target;
+	var el = e.target;
 
 	if (el.matches('.notifications-list .notifications-repo-link')) {
 		e.preventDefault();
 		msg('gotoRepo', el.href);
-	}
-
-	else if (el.matches('.notifications-list .js-navigation-open')) {
+	} else if (el.matches('.notifications-list .js-navigation-open')) {
 		e.preventDefault();
 		msg('goto', el.href);
 	}
@@ -46,14 +44,13 @@ function onClick (e) {
 	}
 }
 
-
-function onContextMenu (e) {
+function onContextMenu(e) {
 	if (e.target.matches('a')) msg('showLinkMenu', e.target.getAttribute('href'));
 }
 
-function onKeyUp (e) {
+function onKeyUp(e) {
 	if (document.activeElement.matches('input,select,textarea,iframe')) return;
-	const ev = {
+	var ev = {
 		key: e.key,
 		keyCode: e.keyCode,
 		metaKey: e.metaKey,
@@ -64,11 +61,9 @@ function onKeyUp (e) {
 	msg('keyup', ev);
 }
 
-
-function init () {
-	const aid = document.querySelector('.accessibility-aid');
+function init() {
+	var aid = document.querySelector('.accessibility-aid');
 	if (aid) aid.remove();
-
 
 	ipc.on('reload', reload);
 	ipc.on('injectCss', injectCss);
@@ -76,10 +71,8 @@ function init () {
 	document.addEventListener('contextmenu', onContextMenu);
 	document.addEventListener('keyup', onKeyUp);
 
-
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');
 }
-
 
 document.addEventListener('DOMContentLoaded', init);

@@ -1,44 +1,55 @@
-const util = require('./util');
+'use strict';
 
-const baseUrl = '';
+var util = require('./util');
 
-function ajax (options) {
+var baseUrl = '';
+
+function ajax(options) {
 	if (typeof options === 'string') options = { url: options };
 
-	let resp;
-	let data = options.data || '';
-	const req = new XMLHttpRequest();
+	var resp = void 0;
+	var data = options.data || '';
+	var req = new XMLHttpRequest();
 
 	options.url = baseUrl + options.url;
 	options.method = options.method || 'GET';
 	options.type = options.type || 'json';
 
 	if (data) {
-		if (options.method.toLowerCase() === 'get') options.url += util.serialize(data);
-		else if (options.type === 'json') data = JSON.stringify(data);
+		if (options.method.toLowerCase() === 'get') options.url += util.serialize(data);else if (options.type === 'json') data = JSON.stringify(data);
 	}
-	return new Promise((resolve, reject) => {
+	return new Promise(function (resolve, reject) {
 		req.open(options.method, options.url, true);
-		req.onload = () => {
+		req.onload = function () {
 			if (req.status >= 200 && req.status < 400) {
-				try { resp = JSON.parse(req.responseText); }
-				catch (e) { resp = req.responseText; }
+				try {
+					resp = JSON.parse(req.responseText);
+				} catch (e) {
+					resp = req.responseText;
+				}
 				resolve(resp);
-			}
-			else reject(req.statusText);
+			} else reject(req.statusText);
 		};
-		req.onerror = () => reject(req.statusText);
-		req.setRequestHeader('Content-Type', `application/${options.type}; charset=UTF-8`);
+		req.onerror = function () {
+			return reject(req.statusText);
+		};
+		req.setRequestHeader('Content-Type', 'application/' + options.type + '; charset=UTF-8');
 		req.send(data);
 	});
 }
 
-
-
 module.exports = {
-	ajax,
-	get: (url, data) => ajax({ url, data: data || {} }),
-	post: (url, data) => ajax({ url, data: data || {}, method: 'POST' }),
-	put: (url, data) => ajax({ url, data: data || {}, method: 'PUT' }),
-	del: (url, data) => ajax({ url, data: data || {}, method: 'DELETE' })
+	ajax: ajax,
+	get: function get(url, data) {
+		return ajax({ url: url, data: data || {} });
+	},
+	post: function post(url, data) {
+		return ajax({ url: url, data: data || {}, method: 'POST' });
+	},
+	put: function put(url, data) {
+		return ajax({ url: url, data: data || {}, method: 'PUT' });
+	},
+	del: function del(url, data) {
+		return ajax({ url: url, data: data || {}, method: 'DELETE' });
+	}
 };

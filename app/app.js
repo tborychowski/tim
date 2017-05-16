@@ -1,32 +1,30 @@
-const $ = require('./app/util');
-const init = c => require(`./app/${c}`).init();
-const components = [
-	// 'spellchecker',
-	'nav',
-	'bookmarks',
-	'notifications',
-	'myissues',
-	'header',
-	'frame',
-	'addressbar',
-	'settings',
-	'history',
-	'search',
-	'mainmenu',
-	'contextmenu',
-	'projects',
-	'updater',
-	'touchbar',
-];
+'use strict';
+
+var $ = require('./app/util');
+var init = function init(c) {
+	return require('./app/' + c).init();
+};
+var components = [
+// 'spellchecker',
+'nav', 'bookmarks', 'notifications', 'myissues', 'header', 'frame', 'addressbar', 'settings', 'history', 'search', 'mainmenu', 'contextmenu', 'projects', 'updater', 'touchbar'];
 
 components.forEach(init);
 
+var ipc = require('electron').ipcRenderer;
 
-const ipc = require('electron').ipcRenderer;
-const { EVENT } = require('./app/services');
+var _require = require('./app/services'),
+    EVENT = _require.EVENT;
 
-ipc.on('event', (ev, name) => $.trigger(name));
-ipc.on(EVENT.frame.goto, (ev, url) => $.trigger(EVENT.frame.goto, url));
+ipc.on('event', function (ev, name) {
+	return $.trigger(name);
+});
+ipc.on(EVENT.frame.goto, function (ev, url) {
+	return $.trigger(EVENT.frame.goto, url);
+});
 
-document.addEventListener('click', e => $.trigger(EVENT.document.clicked, e));
-document.addEventListener('keyup', e => $.trigger(EVENT.document.keyup, e));
+document.addEventListener('click', function (e) {
+	return $.trigger(EVENT.document.clicked, e);
+});
+document.addEventListener('keyup', function (e) {
+	return $.trigger(EVENT.document.keyup, e);
+});

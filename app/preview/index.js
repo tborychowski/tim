@@ -1,16 +1,21 @@
-const { BrowserWindow } = require('electron').remote;
-const { helper } = require('../services');
-const windowStateKeeper = require('electron-window-state');
+'use strict';
 
-function open (url) {
-	const windowState = windowStateKeeper({
+var BrowserWindow = require('electron').remote.BrowserWindow;
+
+var _require = require('../services'),
+    helper = _require.helper;
+
+var windowStateKeeper = require('electron-window-state');
+
+function open(url) {
+	var windowState = windowStateKeeper({
 		defaultWidth: 1000,
 		defaultHeight: 800,
 		file: 'preview-window-state.json',
 		path: helper.getUserDataFolder()
 	});
 
-	let win = new BrowserWindow({
+	var win = new BrowserWindow({
 		vibrancy: 'popover',
 		x: windowState.x,
 		y: windowState.y,
@@ -19,13 +24,14 @@ function open (url) {
 	});
 	windowState.manage(win);
 
-	win.on('closed', () => { win = null; });
+	win.on('closed', function () {
+		win = null;
+	});
 
 	url = encodeURIComponent(url);
-	win.loadURL(`file://${__dirname}/index.html?${url}`);
+	win.loadURL('file://' + __dirname + '/index.html?' + url);
 }
 
-
 module.exports = {
-	open
+	open: open
 };

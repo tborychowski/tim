@@ -1,65 +1,68 @@
-const $ = require('../util');
-const { config, EVENT, bookmarks } = require('../services');
+'use strict';
 
-let isReady = false,
-	el = null,
-	issueBox = null,
-	starBox,
-	lastShortUrl = '',
-	lastFullUrl = '',
-	lastIssue = '',
-	searchTerm = null;
+var $ = require('../util');
 
-const baseUrl = $.rtrim(config.get('baseUrl'), '/');
-const repoToSearch = config.get('repoToSearch');
+var _require = require('../services'),
+    config = _require.config,
+    EVENT = _require.EVENT,
+    bookmarks = _require.bookmarks;
 
+var isReady = false,
+    el = null,
+    issueBox = null,
+    starBox = void 0,
+    lastShortUrl = '',
+    lastFullUrl = '',
+    lastIssue = '',
+    searchTerm = null;
 
-function getUnfocusedText () {
+var baseUrl = $.rtrim(config.get('baseUrl'), '/');
+var repoToSearch = config.get('repoToSearch');
+
+function getUnfocusedText() {
 	if (searchTerm) return searchTerm;
 	if (!lastIssue || !lastIssue.name) return lastShortUrl || '';
-	const mod = lastIssue.repo ? lastIssue.repo.split('/').pop() : '';
-	let url = `${mod} / ${lastIssue.name}`;
+	var mod = lastIssue.repo ? lastIssue.repo.split('/').pop() : '';
+	var url = mod + ' / ' + lastIssue.name;
 	return url.replace(/(^[\/\s]+)|([\/\s]+$)/g, '');
 }
 
-function getFocusedText () {
+function getFocusedText() {
 	if (searchTerm) return searchTerm;
 	return lastFullUrl;
 }
 
-
-function gotoIssue (id) {
-	const url = [baseUrl, repoToSearch, 'issues', id].join('/');
+function gotoIssue(id) {
+	var url = [baseUrl, repoToSearch, 'issues', id].join('/');
 	gotoUrl(url);
-
 }
 
-function star (exists) {
+function star(exists) {
 	starBox.toggleClass('is-starred', !!exists);
 	$.trigger(EVENT.bookmark.exists, !!exists);
 }
 
 // BaseURL/Group/RepoName/issues?q=is:open is:issue...
-function getSearchUrl (q) {
-	const query = 'issues?q=is:open is:issue ' + q;
+function getSearchUrl(q) {
+	var query = 'issues?q=is:open is:issue ' + q;
 	return [baseUrl, repoToSearch, query].join('/');
 }
 
-function checkIfBookmarked (url) {
+function checkIfBookmarked(url) {
 	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
 	bookmarks.getByUrl(url).then(star);
 }
 
-
-function gotoUrl (url) {
+function gotoUrl(url) {
 	searchTerm = null;
 
 	if (url) el[0].value = url;
 	url = el[0].value.trim();
 
-	const validUrl = $.parseUrl(url);
+	var validUrl = $.parseUrl(url);
 
-	if (!validUrl) {	// not a URL - do search
+	if (!validUrl) {
+		// not a URL - do search
 		searchTerm = url;
 		url = getSearchUrl(url);
 	}
@@ -69,8 +72,7 @@ function gotoUrl (url) {
 	$.trigger(EVENT.address.input.end);
 }
 
-
-function onUrlChanged (webview, issue) {
+function onUrlChanged(webview, issue) {
 	if (issue) searchTerm = null;
 
 	lastFullUrl = config.get('state.url');
@@ -78,52 +80,47 @@ function onUrlChanged (webview, issue) {
 	lastIssue = issue || {};
 
 	el[0].value = getUnfocusedText();
-	issueBox[0].value = (issue && issue.id ? issue.id : '');
+	issueBox[0].value = issue && issue.id ? issue.id : '';
 
 	if (issue && issue.url) checkIfBookmarked(issue.url);
 }
 
+function shortenUrl() {
+	var url = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 
-function shortenUrl (url = '') {
-	if (url.indexOf('?q=') > -1) {	// it's search url
-		return searchTerm = url
-			.split('?q=').pop()
-			.replace(/is(:|%3A)(issue|open|closed)/g, '')
-			.replace(/(%20|\+)/g, ' ')
-			.trim();
+	if (url.indexOf('?q=') > -1) {
+		// it's search url
+		return searchTerm = url.split('?q=').pop().replace(/is(:|%3A)(issue|open|closed)/g, '').replace(/(%20|\+)/g, ' ').trim();
 	}
-	return url
-		.replace(config.get('baseUrl'), '')
-		.replace('pull/', '')
-		.replace('issues/', '')
-		.split('#')
-		.shift();
+	return url.replace(config.get('baseUrl'), '').replace('pull/', '').replace('issues/', '').split('#').shift();
 }
 
-function focusAddressbar () {
-	setTimeout(() => { el[0].select(); }, 10);
+function focusAddressbar() {
+	setTimeout(function () {
+		el[0].select();
+	}, 10);
 }
 
-function focusIssuebox () {
-	setTimeout(() => { issueBox[0].select(); }, 10);
+function focusIssuebox() {
+	setTimeout(function () {
+		issueBox[0].select();
+	}, 10);
 }
 
-
-
-function onFocus () {
+function onFocus() {
 	el[0].value = getFocusedText();
 	el[0].select();
 }
 
-function onBlur () {
+function onBlur() {
 	el[0].value = getUnfocusedText();
 }
 
-function onKeyPress (e) {
+function onKeyPress(e) {
 	if (e.key === 'Enter') return gotoUrl();
 }
 
-function onKeyDown (e) {
+function onKeyDown(e) {
 	if (e.key === 'ArrowDown') return $.trigger(EVENT.history.focus);
 	if (e.key === 'Escape') {
 		e.target.value = getFocusedText();
@@ -132,7 +129,7 @@ function onKeyDown (e) {
 	}
 }
 
-function onInput (e) {
+function onInput(e) {
 	$.trigger(EVENT.address.input.key, e);
 }
 
@@ -141,22 +138,21 @@ function onIssueBoxFocus(e) {
 	$.trigger(EVENT.address.input.end);
 }
 
-function onIssueBoxKeydown (e) {
+function onIssueBoxKeydown(e) {
 	if (!$.isNumberField(e)) return e.preventDefault();
 }
 
-function onIssueBoxKeyup (e) {
-	const val = e.target.value;
-	if (!(/^\d*$/).test(val)) e.target.value = parseInt(val, 10) || '';
+function onIssueBoxKeyup(e) {
+	var val = e.target.value;
+	if (!/^\d*$/.test(val)) e.target.value = parseInt(val, 10) || '';
 }
 
-function onIssueBoxPaste (e) {
-	const pasteText = e.clipboardData && e.clipboardData.getData('Text');
-	if (!(/^\d*$/).test(pasteText)) e.preventDefault();
+function onIssueBoxPaste(e) {
+	var pasteText = e.clipboardData && e.clipboardData.getData('Text');
+	if (!/^\d*$/.test(pasteText)) e.preventDefault();
 }
 
-
-function init () {
+function init() {
 	if (isReady) return;
 
 	el = $('.addressbar');
@@ -170,11 +166,12 @@ function init () {
 	el.on('input', onInput);
 
 	issueBox.on('focus', onIssueBoxFocus);
-	issueBox.on('keypress', e => { if (e.key === 'Enter') gotoIssue(e.target.value); });
+	issueBox.on('keypress', function (e) {
+		if (e.key === 'Enter') gotoIssue(e.target.value);
+	});
 	issueBox.on('keydown', onIssueBoxKeydown);
 	issueBox.on('keyup', onIssueBoxKeyup);
 	issueBox.on('paste', onIssueBoxPaste);
-
 
 	$.on(EVENT.url.change.to, gotoUrl);
 	$.on(EVENT.url.change.done, onUrlChanged);
@@ -184,7 +181,6 @@ function init () {
 	isReady = true;
 }
 
-
 module.exports = {
-	init
+	init: init
 };

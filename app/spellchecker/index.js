@@ -1,10 +1,11 @@
-const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
+'use strict';
 
+var _require = require('electron-spellchecker'),
+    SpellCheckHandler = _require.SpellCheckHandler,
+    ContextMenuListener = _require.ContextMenuListener,
+    ContextMenuBuilder = _require.ContextMenuBuilder;
 
-
-
-
-function init () {
+function init() {
 	// window.spellCheckHandler = new SpellCheckHandler();
 	// window.spellCheckHandler.attachToInput();
 
@@ -18,7 +19,6 @@ function init () {
 
 }
 
-
 module.exports = {
-	init
+	init: init
 };

@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
 	address: {
 		input: {
@@ -5,7 +7,7 @@ module.exports = {
 			end: 'address-input-end'
 		},
 		focus: 'focus-address',
-		issueFocus: 'focus-issue-box',
+		issueFocus: 'focus-issue-box'
 	},
 	bookmark: {
 		add: 'add-bookmark',
@@ -19,12 +21,12 @@ module.exports = {
 	connection: {
 		error: {
 			show: 'show-connection-error',
-			hide: 'hide-connection-error',
+			hide: 'hide-connection-error'
 		}
 	},
 	contextmenu: {
 		show: 'show-contextmenu',
-		hide: 'hide-contextmenu',
+		hide: 'hide-contextmenu'
 	},
 	document: {
 		clicked: 'document-clicked',
@@ -38,7 +40,7 @@ module.exports = {
 		devtools: 'frame-devtools-toggle',
 		zoomin: 'frame-zoom-in',
 		zoomout: 'frame-zoom-out',
-		resetzoom: 'frame-zoom-reset',
+		resetzoom: 'frame-zoom-reset'
 	},
 	history: {
 		focus: 'focus-search-results'
@@ -50,7 +52,7 @@ module.exports = {
 		refresh: 'refresh-my-issues'
 	},
 	nav: {
-		goto: 'nav-goto',
+		goto: 'nav-goto'
 	},
 	notifications: {
 		toggle: 'notifications-toggle',
@@ -83,15 +85,15 @@ module.exports = {
 		check: 'check-for-updates',
 		nav: {
 			show: 'update-nav-show',
-			clicked: 'update-nav-clicked',
+			clicked: 'update-nav-clicked'
 		}
 	},
 	url: {
 		change: {
 			start: 'url-change-start',
-			done: 'url-changed',		// url started changing or changed to issue; not yet fully loaded
+			done: 'url-changed', // url started changing or changed to issue; not yet fully loaded
 			end: 'url-change-end',
-			to: 'change-url',
+			to: 'change-url'
 		}
 	}
 };

@@ -1,27 +1,24 @@
-const DB = require('./class.db');
-const db = new DB('users', 'id');
+'use strict';
 
+var DB = require('./class.db');
+var db = new DB('users', 'id');
 
-function add (item) {
+function add(item) {
 	if (!item) return Promise.resolve();
 	return db.add(item);
 }
 
-
-function get () {
+function get() {
 	return db.find({ repo: 1, id: 1 });
 }
 
-
-function getById (id) {
+function getById(id) {
 	if (!id) return Promise.resolve();
-	return db.findOne({ id });
+	return db.findOne({ id: id });
 }
 
-
-
 module.exports = {
-	add,
-	get,
-	getById,
+	add: add,
+	get: get,
+	getById: getById
 };

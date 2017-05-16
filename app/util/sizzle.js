@@ -1,34 +1,44 @@
-const type = obj => obj ? Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() : 'undefined';
-const isNodeList = nodes => (typeof nodes === 'object') &&
-		/^(htmlcollection|nodelist|object)$/.test(type(nodes)) &&
-		(nodes.length === 0 || (typeof nodes[0] === 'object' && nodes[0].nodeType > 0));
+'use strict';
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
 
-function sizzle (mixed, context) {
+var type = function type(obj) {
+	return obj ? Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() : 'undefined';
+};
+var isNodeList = function isNodeList(nodes) {
+	return (typeof nodes === 'undefined' ? 'undefined' : _typeof(nodes)) === 'object' && /^(htmlcollection|nodelist|object)$/.test(type(nodes)) && (nodes.length === 0 || _typeof(nodes[0]) === 'object' && nodes[0].nodeType > 0);
+};
+
+function sizzle(mixed, context) {
 	if (!mixed) return [];
-	let el;
+	var el = void 0;
 	if (typeof mixed !== 'string') el = mixed;
 
 	// is html - create new element
 	else if (/<[a-z][\s\S]*>/i.test(mixed)) {
-		el = (new DOMParser()).parseFromString(mixed, 'text/html').body.firstChild;
-	}
-	// is selector - find element
-	else el = (context || document).querySelectorAll(mixed);
+			el = new DOMParser().parseFromString(mixed, 'text/html').body.firstChild;
+		}
+		// is selector - find element
+		else el = (context || document).querySelectorAll(mixed);
 
-	if (el.nodeType) el = [el];
-	else if (isNodeList(el)) el = Array.from(el);
+	if (el.nodeType) el = [el];else if (isNodeList(el)) el = Array.from(el);
 
 	return Object.assign(el || [], sizzle.fn);
 }
 
-
 sizzle.fn = {};
-sizzle.fn.find = function (selector) { return sizzle(selector, this[0]); };
-sizzle.fn.first = function () { return sizzle(this[0]); };
-sizzle.fn.last = function () { return sizzle(this[this.length - 1]); };
-sizzle.fn.eq = function (idx) { return sizzle(this[idx || 0]); };
-
+sizzle.fn.find = function (selector) {
+	return sizzle(selector, this[0]);
+};
+sizzle.fn.first = function () {
+	return sizzle(this[0]);
+};
+sizzle.fn.last = function () {
+	return sizzle(this[this.length - 1]);
+};
+sizzle.fn.eq = function (idx) {
+	return sizzle(this[idx || 0]);
+};
 
 sizzle.fn.appendTo = function (parent) {
 	if (!this || !this.length) return this;
@@ -46,7 +56,7 @@ sizzle.fn.append = function (child) {
 
 sizzle.fn.on = function (eventName, cb) {
 	if (!this || !this.length) return this;
-	this.forEach(el => {
+	this.forEach(function (el) {
 		el.addEventListener(eventName, cb);
 	});
 	return this;
@@ -54,7 +64,7 @@ sizzle.fn.on = function (eventName, cb) {
 
 sizzle.fn.off = function (eventName, cb) {
 	if (!this || !this.length) return this;
-	this.forEach(el => {
+	this.forEach(function (el) {
 		el.removeEventListener(eventName, cb);
 	});
 	return this;
@@ -78,19 +88,32 @@ sizzle.fn.closest = function (cls) {
  * @param  {boolean} cond    [optional] true or false for toggle
  * @return {array}           same array of elements
  */
-function modElCls (el, action, cls, cond) {
+function modElCls(el, action, cls, cond) {
 	if (!el || !el.length) return el;
 	cls = ('' + cls).split(' ');
 	if (typeof cond === 'boolean') {
-		el.forEach(e => cls.forEach(c => e.classList[action](c, cond)));
-	}
-	else el.forEach(e => cls.forEach(c => e.classList[action](c)));
+		el.forEach(function (e) {
+			return cls.forEach(function (c) {
+				return e.classList[action](c, cond);
+			});
+		});
+	} else el.forEach(function (e) {
+		return cls.forEach(function (c) {
+			return e.classList[action](c);
+		});
+	});
 	return el;
 }
 
-sizzle.fn.addClass = function (cls) { return modElCls(this, 'add', cls); };
-sizzle.fn.removeClass = function (cls) { return modElCls(this, 'remove', cls); };
-sizzle.fn.toggleClass = function (cls, cond) { return modElCls(this, 'toggle', cls, cond); };
+sizzle.fn.addClass = function (cls) {
+	return modElCls(this, 'add', cls);
+};
+sizzle.fn.removeClass = function (cls) {
+	return modElCls(this, 'remove', cls);
+};
+sizzle.fn.toggleClass = function (cls, cond) {
+	return modElCls(this, 'toggle', cls, cond);
+};
 sizzle.fn.hasClass = function (cls) {
 	if (!this || !this.length) return false;
 	return this[0].classList.contains(cls);
@@ -101,32 +124,42 @@ sizzle.fn.toggle = function (cond) {
 };
 
 sizzle.fn.hide = function () {
-	this.forEach(el => { el.style.display = 'none'; });
+	this.forEach(function (el) {
+		el.style.display = 'none';
+	});
 	return this;
 };
 
 sizzle.fn.show = function () {
-	this.forEach(el => { el.style.display = 'block'; });
+	this.forEach(function (el) {
+		el.style.display = 'block';
+	});
 	return this;
 };
 
 sizzle.fn.html = function (html) {
 	if (!this || !this.length) return this;
 	if (typeof html === 'undefined') return this[0].innerHTML;
-	this.forEach(el => { el.innerHTML = html; });
+	this.forEach(function (el) {
+		el.innerHTML = html;
+	});
 	return this;
 };
 
 sizzle.fn.text = function (text) {
 	if (!this || !this.length) return this;
 	if (typeof text === 'undefined') return this[0].innerText;
-	this.forEach(el => { el.innerText = text; });
+	this.forEach(function (el) {
+		el.innerText = text;
+	});
 	return this;
 };
 
 sizzle.fn.remove = function () {
 	if (!this || !this.length) return this;
-	this.forEach(el => el.remove());
+	this.forEach(function (el) {
+		return el.remove();
+	});
 	return this;
 };
 
@@ -137,29 +170,35 @@ sizzle.fn.data = function (key) {
 	return this[0].dataset;
 };
 
-
 sizzle.fn.attr = function (attr, value) {
 	if (!this || !this.length) return false;
 	if (typeof value === 'undefined') return this[0].getAttribute(attr);
-	this.forEach(el => { el.setAttribute(attr, value); });
+	this.forEach(function (el) {
+		el.setAttribute(attr, value);
+	});
 };
 
+sizzle.fn.animate = function (from, to) {
+	var options = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+	var cb = arguments[3];
 
-sizzle.fn.animate = function (from, to, options = {}, cb) {
-	const opts = Object.assign({},  { duration: 300, easing: 'ease-out' }, options);
-	const all = this.map(el => new Promise (resolve => {
-		const anim = el.animate([from, to], opts);
-		anim.oncancel = resolve;
-		anim.onfinish = () => {
-			for (let prop in to) el.style[prop] = to[prop];	// make sure the style sticks after the animation
-			resolve();
-		};
-	}));
-	const promiseAll = Promise.all(all);
+	var opts = Object.assign({}, { duration: 300, easing: 'ease-out' }, options);
+	var all = this.map(function (el) {
+		return new Promise(function (resolve) {
+			var anim = el.animate([from, to], opts);
+			anim.oncancel = resolve;
+			anim.onfinish = function () {
+				for (var prop in to) {
+					el.style[prop] = to[prop];
+				} // make sure the style sticks after the animation
+				resolve();
+			};
+		});
+	});
+	var promiseAll = Promise.all(all);
 	if (typeof cb !== 'function') return promiseAll;
 	promiseAll.then(cb);
 	return this;
 };
-
 
 module.exports = sizzle;

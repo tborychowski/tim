@@ -1,28 +1,28 @@
-const config = require('./config');
-const EVENT = require('./events');
-const jenkins = require('./jenkins');
-const helper = require('./helper');
-const github = require('./github');
-const dialog = require('./dialog');
+'use strict';
 
-const history = require('./db.history');
-const bookmarks = require('./db.bookmarks');
-const users = require('./db.users');
+var config = require('./config');
+var EVENT = require('./events');
+var jenkins = require('./jenkins');
+var helper = require('./helper');
+var github = require('./github');
+var dialog = require('./dialog');
 
+var history = require('./db.history');
+var bookmarks = require('./db.bookmarks');
+var users = require('./db.users');
 
-const isDev = require('./isDev');
-
+var isDev = require('./isDev');
 
 module.exports = {
-	config,
-	EVENT,
-	github,
-	jenkins,
-	dialog,
+	config: config,
+	EVENT: EVENT,
+	github: github,
+	jenkins: jenkins,
+	dialog: dialog,
 
-	history,
-	bookmarks,
-	users,
-	helper,
-	isDev,
+	history: history,
+	bookmarks: bookmarks,
+	users: users,
+	helper: helper,
+	isDev: isDev
 };

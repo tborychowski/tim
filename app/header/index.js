@@ -1,75 +1,106 @@
-const { config, EVENT, helper } = require('../services');
-const $ = require('../util');
+'use strict';
 
-let isReady = false, el, starBox, btnBack, btnForw, confirmEl;
+var _require = require('../services'),
+    config = _require.config,
+    EVENT = _require.EVENT,
+    helper = _require.helper;
 
-const clickHandlers = {
-	prev () { $.trigger(EVENT.frame.goto, 'prev'); },
-	next () { $.trigger(EVENT.frame.goto, 'next'); },
-	refresh () { $.trigger(EVENT.frame.goto, 'refresh'); },
-	stop () { $.trigger(EVENT.frame.goto, 'stop'); },
-	browser () { helper.openInBrowser(config.get('state.url')); },
-	copy () { helper.copyToClipboard(config.get('state.url')); },
-	home () { $.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl')); },
-	star () { $.trigger(EVENT.bookmark.add, config.get('state.issue')); },
-	unstar () { $.trigger(EVENT.bookmark.remove, config.get('state.issue')); },
+var $ = require('../util');
+
+var isReady = false,
+    el = void 0,
+    starBox = void 0,
+    btnBack = void 0,
+    btnForw = void 0,
+    confirmEl = void 0;
+
+var clickHandlers = {
+	prev: function prev() {
+		$.trigger(EVENT.frame.goto, 'prev');
+	},
+	next: function next() {
+		$.trigger(EVENT.frame.goto, 'next');
+	},
+	refresh: function refresh() {
+		$.trigger(EVENT.frame.goto, 'refresh');
+	},
+	stop: function stop() {
+		$.trigger(EVENT.frame.goto, 'stop');
+	},
+	browser: function browser() {
+		helper.openInBrowser(config.get('state.url'));
+	},
+	copy: function copy() {
+		helper.copyToClipboard(config.get('state.url'));
+	},
+	home: function home() {
+		$.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl'));
+	},
+	star: function star() {
+		$.trigger(EVENT.bookmark.add, config.get('state.issue'));
+	},
+	unstar: function unstar() {
+		$.trigger(EVENT.bookmark.remove, config.get('state.issue'));
+	}
 };
 
-function star () {
+function star() {
 	starBox.addClass('is-starred');
 }
 
-function unstar () {
+function unstar() {
 	starBox.removeClass('is-starred');
 }
 
-function toggleStar () {
-	if (starBox.hasClass('is-starred')) clickHandlers.unstar();
-	else clickHandlers.star();
+function toggleStar() {
+	if (starBox.hasClass('is-starred')) clickHandlers.unstar();else clickHandlers.star();
 }
 
-function showConnectionError () {
+function showConnectionError() {
 	el.addClass('error');
 }
 
-function hideConnectionError () {
+function hideConnectionError() {
 	el.removeClass('error');
 }
 
-
-function onClick (e) {
-	let target = $(e.target);
+function onClick(e) {
+	var target = $(e.target);
 
 	if (target.is('.js-copy')) {
 		confirmEl.addClass('flash');
-		setTimeout(() => { confirmEl.removeClass('flash'); }, 1600);
+		setTimeout(function () {
+			confirmEl.removeClass('flash');
+		}, 1600);
 	}
 
 	if (target.is('.header-btn')) {
 		e.preventDefault();
-		const to = target.data('go');
+		var to = target.data('go');
 		if (to && clickHandlers[to]) clickHandlers[to]();
 	}
 }
 
-function onUrlChangeStart () { hideConnectionError(); el.addClass('loading'); }
-function onUrlChangeEnd () { el.removeClass('loading'); }
+function onUrlChangeStart() {
+	hideConnectionError();el.addClass('loading');
+}
+function onUrlChangeEnd() {
+	el.removeClass('loading');
+}
 
-function onUrlChanged (webview) {
+function onUrlChanged(webview) {
 	btnBack.toggleClass('disabled', !webview.canGoBack());
 	btnForw.toggleClass('disabled', !webview.canGoForward());
 }
 
-
-function init () {
+function init() {
 	if (isReady) return;
 
 	el = $('#header');
 	starBox = el.find('.star-box');
 	btnBack = el.find('.js-prev');
 	btnForw = el.find('.js-next');
-	confirmEl =  $('.copy-link-confirmation');
-
+	confirmEl = $('.copy-link-confirmation');
 
 	el.on('click', onClick);
 
@@ -85,7 +116,6 @@ function init () {
 	isReady = true;
 }
 
-
 module.exports = {
-	init
+	init: init
 };

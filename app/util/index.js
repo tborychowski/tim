@@ -1,12 +1,14 @@
-const sizzle = require('./sizzle');
-const ajax = require('./ajax');
-const form = require('./form');
-const pubsub = require('./pubsub');
-const keys = require('./keys');
-const util = require('./util');
+'use strict';
 
-let all = { ajax, form };
+var sizzle = require('./sizzle');
+var ajax = require('./ajax');
+var form = require('./form');
+var pubsub = require('./pubsub');
+var keys = require('./keys');
+var util = require('./util');
+
+var all = { ajax: ajax, form: form };
 Object.assign(all, ajax, pubsub, keys, util);
-for (let prop in all) sizzle[prop] = all[prop];
-
-module.exports = sizzle;
+for (var prop in all) {
+  sizzle[prop] = all[prop];
+}module.exports = sizzle;
