@@ -47,9 +47,10 @@
     "gulp": "^3.9.1",
     "gulp-babel": "^6.1.2",
     "gulp-concat": "^2.6.1",
+    "gulp-notify": "^3.0.0",
+    "gulp-plumber": "^1.1.0",
     "gulp-run-electron": "^3.0.1",
     "gulp-stylus": "^2.6.0",
-    "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "preact": "^8.1.0"
   }
 }
