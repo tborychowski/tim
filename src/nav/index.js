@@ -1,23 +1,11 @@
-'use strict';
+const $ = require('../util');
+const { config, EVENT } = require('../services');
 
-var $ = require('../util');
+let isReady = false, el, subnav, buttons, sections, currentSection, btnUpdate;
 
-var _require = require('../services'),
-    config = _require.config,
-    EVENT = _require.EVENT;
 
-var isReady = false,
-    el = void 0,
-    subnav = void 0,
-    buttons = void 0,
-    sections = void 0,
-    currentSection = void 0,
-    btnUpdate = void 0;
-
-function refreshSection() {
-	var section = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : currentSection;
-
-	var handlers = {
+function refreshSection (section = currentSection) {
+	const handlers = {
 		notifications: EVENT.notifications.refresh,
 		bookmarks: EVENT.bookmarks.refresh,
 		projects: EVENT.projects.refresh,
@@ -26,7 +14,7 @@ function refreshSection() {
 	$.trigger(handlers[section]);
 }
 
-function changeSection(sectionName) {
+function changeSection (sectionName) {
 	if (sectionName === currentSection) return refreshSection(sectionName);
 	buttons.removeClass('active');
 	sections.removeClass('active');
@@ -37,26 +25,18 @@ function changeSection(sectionName) {
 	config.set('state.section', sectionName);
 }
 
-function setSectionBadge(section, count) {
-	var badge = el.find('.nav-' + section + ' .badge');
+function setSectionBadge (section, count) {
+	const badge = el.find(`.nav-${section} .badge`);
 	badge.toggle(count > 0).html(count);
 }
 
-function onKeyUp(e) {
-	var handledKeys = {
+function onKeyUp (e) {
+	const handledKeys = {
 		r: refreshSection,
-		1: function _() {
-			return changeSection('notifications');
-		},
-		2: function _() {
-			return changeSection('bookmarks');
-		},
-		3: function _() {
-			return changeSection('myissues');
-		},
-		4: function _() {
-			return changeSection('projects');
-		}
+		1: () => changeSection('notifications'),
+		2: () => changeSection('bookmarks'),
+		3: () => changeSection('myissues'),
+		4: () => changeSection('projects')
 	};
 
 	if (e.key in handledKeys && !e.metaKey && !e.ctrlKey) {
@@ -68,9 +48,9 @@ function onKeyUp(e) {
 	}
 }
 
-function onClick(e) {
-	var target = $(e.target).closest('.nav-btn');
-	var go = target.length && target.data('go');
+function onClick (e) {
+	const target = $(e.target).closest('.nav-btn');
+	const go = target.length && target.data('go');
 	if (!target || !go) return;
 	e.preventDefault();
 	e.stopPropagation();
@@ -79,7 +59,8 @@ function onClick(e) {
 	changeSection(go);
 }
 
-function init() {
+
+function init () {
 	if (isReady) return;
 
 	el = $('#nav');
@@ -90,19 +71,18 @@ function init() {
 
 	el.on('click', onClick);
 
-	var sect = config.get('state.section');
+	const sect = config.get('state.section');
 	if (sect) changeSection(sect);
 
 	$.on(EVENT.section.refresh, refreshSection);
-	$.on(EVENT.updater.nav.show, function () {
-		return btnUpdate.show();
-	});
+	$.on(EVENT.updater.nav.show, () => btnUpdate.show());
 	$.on(EVENT.section.badge, setSectionBadge);
 	$.on(EVENT.document.keyup, onKeyUp);
 
 	isReady = true;
 }
 
+
 module.exports = {
-	init: init
+	init
 };
