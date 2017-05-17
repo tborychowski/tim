@@ -1,7 +1,10 @@
 node_modules/
 dist/
+app/
+_stuff/
+
 app-update.yml
-*.sublime-*
+
 .DS_Store
+*.sublime-*
 *.log
-_stuff

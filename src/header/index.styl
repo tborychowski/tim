@@ -1,0 +1,187 @@
+header
+	position absolute
+	z-index 99
+	height 38px
+	top 0
+	left 0
+	right 0
+	padding 0
+	text-align right
+	white-space nowrap
+	display flex
+	box-shadow 0 1px 1px rgba(0,0,0,0.1)
+
+
+.main-header-inner
+	padding 0 5px 0 0
+	background-color #f3f3f3
+	display flex
+	position absolute
+	width 100%
+	height 37px
+	z-index 100
+
+
+.main-header-border
+	position absolute
+	bottom 0
+	width 100%
+	border-bottom 1px solid #c2c0c2
+	z-index 99
+
+
+.header-btn
+	font-size 22px
+	color #888
+	transition color .3s
+	margin 0
+	cursor pointer
+	padding 6px 10px
+	text-align center
+
+	&:hover
+		color #4078c0
+
+	&:active
+		color black
+
+
+
+.side-header .header-btn
+	color #eee
+
+	&:hover
+		color lightblue
+
+	&:active
+		color white
+
+
+
+header
+	.disabled
+		pointer-events none
+		opacity 0.3
+
+
+	.js-sync
+	.js-error
+		position absolute
+		z-index 2
+		right 100px
+		top 0
+
+
+	.js-sync
+		opacity 0
+		transition opacity .3s ease-out
+		color #888
+		width 22px
+		height 22px
+		right 107px
+		top 8px
+		box-shadow inset 0 0 0 2px
+		transform translateZ(0)
+
+
+	.js-error
+	.js-error:hover
+		color red
+		display none
+
+
+	.js-stop
+		display none
+
+
+	.js-refresh
+	.js-stop
+		width 35px
+
+
+
+	&.loading
+		.js-sync
+			opacity 1
+
+		.js-refresh
+			display none
+
+		.js-stop
+			display block
+
+
+	&.error
+		.js-sync
+			display none
+
+		.js-error
+			display block
+
+
+
+.js-sync
+	&
+	&:before
+	&:after
+		border-radius 50%
+		background-color inherit
+		width 12px
+		height 24px
+		position absolute
+		content ''
+		top -1px
+
+
+	&:before
+		left -1px
+		transform-origin 12px 12px
+		border-radius 24px 0 0 24px
+		animation spin 2s infinite ease 1.5s
+
+	&:after
+		left 11px
+		transform-origin 0 12px
+		border-radius 0 24px 24px 0
+		animation spin 2s infinite ease
+
+
+
+
+
+
+.copy-link-confirmation
+	position absolute
+	top 40px
+	right 16px
+	background rgba(0, 0, 0, 0.6)
+	color #f5f5f5
+	padding 7px 12px
+	border-radius 5px
+	display none
+	opacity 0
+
+	&.flash
+		display block
+		animation flash 1.5s 1 ease
+
+
+
+
+@keyframes spin
+	0%
+		transform rotate(0)
+	100%
+		transform rotate(360deg)
+
+
+
+@keyframes flash
+	0%
+		opacity 0
+	50%
+		opacity 1
+	100%
+		opacity 0
+
+

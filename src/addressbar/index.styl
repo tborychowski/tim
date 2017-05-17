@@ -1,0 +1,75 @@
+.addressbar-input-wrapper
+	flex 1
+	display flex
+	position relative
+	background-color inherit
+
+
+
+
+.addr-input
+	padding 3px 10px
+	margin 0 0 0 5px
+	height 100%
+	font-size 15px
+	border 1px solid #ccc
+	border-width 0 1px
+	background-color transparent
+	color #666
+	transition background-color .3s ease-out, color .3s ease-out
+
+
+.addr-input:focus
+	outline none
+	background-color #fff
+	color #222
+
+
+.addressbar
+	flex 1
+	padding-left 32px
+	z-index 1
+
+.issue-id-bar
+	width 100px
+	margin-left 0
+	border-left 0
+	text-align center
+
+
+header.loading .addressbar
+header.error .addressbar
+	padding-right 40px
+
+
+
+/* STAR BOX */
+.star-box
+	position absolute
+	top 1px
+	left 8px
+	height 100%
+	padding 6px 0
+	z-index 2
+
+.star-box .js-star
+	display inline
+
+.star-box .js-unstar
+	color #E73528
+	display none
+
+
+
+.star-box.is-starred .js-star
+	display none
+
+.star-box.is-starred .js-unstar
+	display inline
+
+
+
+input[type="number"]::-webkit-outer-spin-button
+input[type="number"]::-webkit-inner-spin-button
+	-webkit-appearance none
+	margin 0
