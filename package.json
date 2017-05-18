@@ -34,6 +34,7 @@
     "electron-window-state": "^4.1.0",
     "ionicons": "^3.0.0",
     "jenkins-api": "^0.2.8",
+    "lodash.get": "^4.4.2",
     "request": "^2.81.0",
     "request-promise-native": "^1.0.3",
     "tingodb": "^0.5.1"

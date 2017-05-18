@@ -3,6 +3,7 @@ const {shell, app, getCurrentWindow} = remote;
 const {exec} = require('child_process');
 const config = require('./config');
 const isDev = require('./isDev');
+const _get = require('lodash.get');
 
 
 const applicationsPath = () => ({
@@ -24,12 +25,22 @@ function openInBrowser (url) {
 		if ((err || stderr) && isDev) console.log(err || stderr);
 	});
 }
+const getPackage = (key) => {
+	let pckg;
+	try { pckg = require('../../package.json'); }
+	catch (e) { pckg = {}; }
+	if (key) return _get(pckg, key, '');
+	return pckg;
+};
 
 const getUserDataFolder = () => app.getPath('userData');
 const copyToClipboard = (txt) => clipboard.writeText(txt);
 const openFolder = (path) => shell.openExternal(`file://${path}`);
 const openSettingsFolder = () => openFolder(getUserDataFolder());
-const openChangelog = ver => openInBrowser(`https://github.com/tborychowski/github-browser/releases/${ver ? `tag/v${ver}` : 'latest'}`);
+const openChangelog = ver => {
+	const repo = getPackage('repository.url').replace(/.git$/, '');
+	openInBrowser(`${repo}/releases/${ver ? `tag/v${ver}` : 'latest'}`);
+};
 
 
 function setBadge (text = 0) {
