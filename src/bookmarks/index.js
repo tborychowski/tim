@@ -4,7 +4,7 @@ const $ = require('../util');
 
 let isReady = false, el, reposEl;
 
-const DEFAULT_REPO_NAME = 'Pages';		// for ungrouped pages
+const DEFAULT_REPO_NAME = 'Pages';				// for ungrouped pages
 const DEFAULT_PROJECTS_REPO_NAME = 'Projects';	// for ungrouped projects
 
 const issueTypeCls = {
@@ -81,8 +81,6 @@ function updateBuildStatus (pr, status) {
 	const statusIcon = prBox.find('.build-status .icon');
 	const progBoxIn = prBox.find('.build-progress-inner');
 
-	// statusBox.show();
-
 	const result = status.result ? status.result : status.progress < 100 ? 'progress' : '';
 	if (result) statusBox[0].className = `build-status ${result}`;
 	if (statusIconCls[result]) statusIcon[0].className = `icon ${statusIconCls[result]}`;
@@ -93,7 +91,7 @@ function updateBuildStatus (pr, status) {
 	if (progBoxIn.length) {
 		progBoxIn[0].style.width = status.progress + '%';
 	}
-	if (!status.result) setTimeout(() => monitorPr(pr), 10000);
+	if (!status.result) setTimeout(() => monitorPr(pr), 15000);
 }
 
 

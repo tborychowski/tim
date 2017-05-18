@@ -2,20 +2,13 @@ const { session, getGlobal } = require('electron').remote;
 const ses = session.fromPartition('persist:github');
 const args = getGlobal('appArgs');
 
-const { config, EVENT, helper, isDev } = require('../services');
+const { config, EVENT, helper, isDev, WebView } = require('../services');
 
 const $ = require('../util');
 const realnames = require('../realnames');
 const swiping = require('./swiping');
 
-
-const wpjs = `file://${__dirname}/webview.js`;
-const wpcss = `${__dirname}/webview.css`;
-
-
-let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false,
-	lastURL = '',
-	urlLoading = '';
+let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false, lastURL = '', urlLoading = '';
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
@@ -34,7 +27,6 @@ const webviewHandlers = {
 		}
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
-	docReady: () => $.injectCSS(webview, wpcss),
 	domChanged: onRendered,
 };
 
@@ -67,10 +59,6 @@ function initialURL (initial) {
 	return `${config.get('baseUrl')}login`;
 }
 
-function toggleDevTools () {
-	if (webview[0].isDevToolsOpened()) webview[0].closeDevTools();
-	else webview[0].openDevTools();
-}
 
 function purge () {
 	config.clear();
@@ -139,34 +127,28 @@ function init () {
 	if (isReady) return;
 
 	frame = $('#frame');
-	const html = `<webview id="webview" preload="${wpjs}" src="${initialURL(true)}" partition="persist:github"></webview>
-		<div class="skeleton"><div class="skeleton-header"></div><div class="skeleton-sidebar"></div><div class="skeleton-main"></div><div class="skeleton-shine"></div></div>`;
+	webview = WebView({
+		url: initialURL(true),
+		renderTo: frame,
+		js: `${__dirname}/webview.js`,
+		css: `${__dirname}/webview.css`,
+		msgHandlers: webviewHandlers
+	});
 
-	frame.html(html);
-	webview = frame.find('#webview');
-	skeleton = frame.find('.skeleton');
+	skeleton = $('<div class="skeleton"><div class="skeleton-header"></div><div class="skeleton-sidebar"></div><div class="skeleton-main"></div><div class="skeleton-shine"></div></div>')
+		.appendTo(frame);
 
 
 	webview.on('focus', () => $.trigger(EVENT.frame.focused));
 	webview.on('will-navigate', gotoUrl);
 	webview.on('did-navigate-in-page', onNavigationStart);
 	webview.on('did-fail-load', onNavigationError);
-	webview.on('ipc-message', function (ev) {
-		const fn = webviewHandlers[ev.channel];
-		if (typeof fn === 'function') fn.apply(fn, ev.args);
-	});
-
-
 	webview.on('did-start-loading', loadingStart);
 	webview.on('did-stop-loading', loadingStop);
 
 
-	if (isDev) {
-		webview.on('console-message', e => { console.log('WV:', e.message); });
-	}
-
 	$.on(EVENT.frame.goto, gotoUrl);
-	$.on(EVENT.frame.devtools, toggleDevTools);
+	$.on(EVENT.frame.devtools, webview.toggleDevTools);
 	$.on(EVENT.frame.purge, purge);
 	$.on(EVENT.settings.changed, () => gotoUrl(initialURL()));
 	$.on(EVENT.frame.lookup, () => webview[0].showDefinitionForSelection());

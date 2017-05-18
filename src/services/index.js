@@ -11,6 +11,7 @@ const users = require('./db.users');
 
 
 const isDev = require('./isDev');
+const WebView = require('./webview');
 
 
 module.exports = {
@@ -25,4 +26,5 @@ module.exports = {
 	users,
 	helper,
 	isDev,
+	WebView,
 };
