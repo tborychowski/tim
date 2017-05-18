@@ -5,6 +5,10 @@ const updater = require('./app/updater/main');
 
 let win;
 
+
+// auto-handle file downloads with progressbar
+require('electron-dl')();
+
 const send = (name, val) => win.webContents.send(name, val);
 function openUrl (ev, url) {
 	if (win && win.webContents) {
