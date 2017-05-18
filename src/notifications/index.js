@@ -19,7 +19,6 @@ const webviewHandlers = {
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
 	actionClicked: () => checkNotifications(1000),
 	docReady: () => $.injectCSS(webview, wpcss),
-	// cssReady: () => setTimeout(() => { webview.removeClass('loading'); }, 100),
 	isLogged: (isit) => { isLoggedIn = isit; }
 };
 
