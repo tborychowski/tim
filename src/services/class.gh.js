@@ -38,7 +38,7 @@ module.exports = class GitHub {
 		this.reqCount++;
 		if (isDev) {
 			// console.log(url, params);
-			console.log('No of GH requests so far:', this.reqCount);
+			// console.log('No of GH requests so far:', this.reqCount);
 		}
 		const options = this.getOptions(url, params, fullResp);
 		return REQ(options)
@@ -47,7 +47,7 @@ module.exports = class GitHub {
 				return { headers: res.headers, body: res.body };
 			})
 			.catch(err => {
-				if (isDev) console.error(options.uri, err);
+				// if (isDev) console.error(options.uri, err);
 			});
 	}
 };

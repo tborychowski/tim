@@ -1,8 +1,8 @@
 const $ = require('./app/util');
-const init = c => require(`./app/${c}`).init();
 const components = [
 	// 'spellchecker',
 	'nav',
+	'nav/subnav',
 	'bookmarks',
 	'notifications',
 	'myissues',
@@ -19,7 +19,10 @@ const components = [
 	'touchbar',
 ];
 
-components.forEach(init);
+components.forEach(c => {
+	const m = require(`./app/${c}`);
+	if (m && m.init) m.init();
+});
 
 
 const ipc = require('electron').ipcRenderer;

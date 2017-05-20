@@ -1,34 +1,62 @@
+const Ractive = require('ractive');
 const $ = require('../util');
 const { config, EVENT } = require('../services');
 
-let isReady = false, el, subnav, buttons, sections, currentSection, btnUpdate;
 
+const template = `
+	{{#buttons:id}}
+		<a href="#" class="nav-btn nav-{{id}} {{activeSection === id ? 'active' : ''}}" title="{{title}}"
+			on-click="@this.onClick(event.original, id)"><i class="icon"></i>
+			{{#if (badge > 0)}}<span class="badge">{{badge}}</span>{{/if}}
+		</a>
+	{{/buttons}}
+	<div class="nav-bottom">
+		{{#bottomButtons:id}}
+			{{#if show !== false}}
+				<a href="#" class="nav-btn nav-{{id}}" data-go="{{id}}" title="{{title}}"
+					on-click="@this.onClick(event.original, id)"><i class="icon"></i>
+				</a>
+			{{/if}}
+		{{/bottomButtons}}
+	</div>
+`;
 
-function refreshSection (section = currentSection) {
-	const handlers = {
-		notifications: EVENT.notifications.refresh,
-		bookmarks: EVENT.bookmarks.refresh,
-		projects: EVENT.projects.refresh,
-		myissues: EVENT.myissues.refresh
-	};
-	$.trigger(handlers[section]);
+const data = {
+	activeSection: 'notifications',
+	buttons: {
+		notifications: { title: 'Notifications (1)', badge: 0 },
+		bookmarks: { title: 'Bookmarks (2)', badge: 0 },
+		myissues: { title: 'My Issues (3)', badge: 0 },
+		projects: { title: 'Projects (4)', badge: 0 },
+	},
+	bottomButtons: {
+		update: { title: 'Update available. Click to see details.', show: false },
+		settings: { title: 'Open preferences' },
+	}
+};
+
+function refreshSection (id = data.activeSection) {
+	if (EVENT[id].refresh) $.trigger(EVENT[id].refresh);
 }
 
-function changeSection (sectionName) {
-	if (sectionName === currentSection) return refreshSection(sectionName);
-	buttons.removeClass('active');
-	sections.removeClass('active');
-	currentSection = sectionName;
-
-	el.find('.nav-' + sectionName).addClass('active');
-	subnav.find('.subnav-' + sectionName).addClass('active');
-	config.set('state.section', sectionName);
+function setSectionBadge (id, count) {
+	data.buttons[id].badge = count;
 }
 
-function setSectionBadge (section, count) {
-	const badge = el.find(`.nav-${section} .badge`);
-	badge.toggle(count > 0).html(count);
+function changeSection (id) {
+	if (id === data.activeSection) return refreshSection(id);
+	data.activeSection = id;
+	config.set('state.section', id);
+	$.trigger(EVENT.section.change, id);
 }
+
+function onClick (e, id) {
+	e.preventDefault();
+	if (id === 'update') return $.trigger(EVENT.updater.nav.clicked);
+	if (id === 'settings') return $.trigger(EVENT.settings.show);
+	changeSection(id);
+}
+
 
 function onKeyUp (e) {
 	const handledKeys = {
@@ -38,7 +66,6 @@ function onKeyUp (e) {
 		3: () => changeSection('myissues'),
 		4: () => changeSection('projects')
 	};
-
 	if (e.key in handledKeys && !e.metaKey && !e.ctrlKey) {
 		// if real event and focused on these - ignore
 		if ($.type(e) === 'keyboardevent' && document.activeElement.matches('input,select,textarea,webview')) return;
@@ -48,41 +75,16 @@ function onKeyUp (e) {
 	}
 }
 
-function onClick (e) {
-	const target = $(e.target).closest('.nav-btn');
-	const go = target.length && target.data('go');
-	if (!target || !go) return;
-	e.preventDefault();
-	e.stopPropagation();
-	if (go === 'update') return $.trigger(EVENT.updater.nav.clicked);
-	if (go === 'settings') return $.trigger(EVENT.settings.show);
-	changeSection(go);
-}
-
-
-function init () {
-	if (isReady) return;
-
-	el = $('#nav');
-	buttons = el.find('.nav-btn');
-	btnUpdate = el.find('.nav-update');
-	subnav = $('#subnav');
-	sections = subnav.find('.subnav-section');
-
-	el.on('click', onClick);
-
-	const sect = config.get('state.section');
-	if (sect) changeSection(sect);
-
+function oninit () {
 	$.on(EVENT.section.refresh, refreshSection);
-	$.on(EVENT.updater.nav.show, () => btnUpdate.show());
 	$.on(EVENT.section.badge, setSectionBadge);
 	$.on(EVENT.document.keyup, onKeyUp);
-
-	isReady = true;
+	$.on(EVENT.updater.nav.show, () => data.bottomButtons.update.show = true);
 }
 
+function oncomplete () {
+	const lastSection = config.get('state.section');
+	if (lastSection) changeSection(lastSection);
+}
 
-module.exports = {
-	init
-};
+module.exports = new Ractive({ el: '#nav', magic: true, data, template, onClick, oninit, oncomplete });

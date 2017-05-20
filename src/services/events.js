@@ -68,6 +68,7 @@ module.exports = {
 		stop: 'stop-search'
 	},
 	section: {
+		change: 'change-section',
 		refresh: 'refresh-section',
 		badge: 'set-section-badge'
 	},
