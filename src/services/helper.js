@@ -101,6 +101,22 @@ function getPageActualTypeFromUrl (url = '') {
 }
 
 
+function groupIssues (issues) {
+	if (!issues) return {};
+	const remap = {};
+	issues.forEach(iss => {
+		remap[iss.repo] = remap[iss.repo] || {
+			name: iss.repo,
+			repoShortName: iss.repo.split('/').pop(),
+			repoUrl: `${config.get('baseUrl')}${iss.repo}/issues`,
+			hasUrl: iss.type in { project: 1, page: 1 },
+			items: []
+		};
+		if (iss.url) remap[iss.repo].items.push(iss);
+	});
+	return remap;
+}
+
 
 module.exports = {
 	openInBrowser,
@@ -113,4 +129,5 @@ module.exports = {
 	getPageTypeFromUrl,
 	getPageActualTypeFromUrl,
 	applicationsPath,
+	groupIssues
 };

@@ -1,55 +1,45 @@
+const Ractive = require('ractive');
 const $ = require('../util');
-const { EVENT, config, github } = require('../services');
+const { EVENT, github, helper } = require('../services');
 
-let isReady = false, el, listEl;
 const issueTypeCls = {
 	pr: 'ion-ios-git-pull-request',
 	issue: 'ion-ios-bug-outline',
 	default: 'ion-ios-star-outline',
 };
 
+const template = `
+	{{#issues:repo}}
+		<div class="repo-box">
+			<h2><a href="{{repoUrl}}" class="hdr" on-click="openRepo">{{repoShortName}}</a></h2>
+			<ul class="repo-box-issues">
+				{{#items}}
+					<li class="issue-box {{state}} type-{{type}}">
+						<i class="issue-icon {{issueIcon(this)}}" title="{{state}}"></i>
+						<a href="{{url}}" class="btn bookmark" title="{{number}}" on-click="openIssue">{{title}}</a>
+						<div class="issue-date">updated: {{prettyDate(updated_at)}}</div>
+					</li>
+				{{/items}}
+			</ul>
+		</div>
+	{{/issues}}
+`;
+
+const data = {
+	issues: {} ,
+	issueIcon: iss => issueTypeCls[iss.type],
+	prettyDate: d => $.prettyDate(d),
+};
 
 function refresh () {
 	github.getMyIssues().then(render);
 }
 
-
-function render (issues) {
-	if (!issues) return;
-	const remap = {};
-	issues.forEach(iss => {
-		const repo = iss.repository.owner.login + '/' + iss.repository.name;
-		remap[repo] = remap[repo] || { name: repo, items: [] };
-		remap[repo].items.push(iss);
-	});
-	const html = [];
-	for (let repo in remap) html.push(getRepoHtml(remap[repo]));
-	listEl.html(html.join(''));
-
-	$.trigger(EVENT.section.badge, 'myissues', issues.length);
-
-	return issues;
-}
-
-function getIssueHtml (issue) {
-	const updated = $.prettyDate(issue.updated_at);
-	const state = issue.state || '';
-	return `<li class="issue-box ${state}">
-		<i class="issue-icon ${issueTypeCls[issue.pull_request ? 'pr' : 'issue']}" title="${state}"></i>
-		<a href="${issue.html_url}" class="btn bookmark" title="${issue.number}">${issue.title}</a>
-		<div class="issue-date">updated: ${updated}</div>
-	</li>`;
-
-}
-
-function getRepoHtml (repo) {
-	const issuesHtml = repo.items.map(getIssueHtml).join('');
-	let repoName = repo.name.split('/').pop();
-	const url = `${config.get('baseUrl')}${repo.name}/issues`;
-	repoName = `<a href="${url}" class="hdr btn">${repoName}</a>`;
-	return `<div class="repo-box ${repo.name}"><h2>${repoName}</h2>
-		<ul class="repo-box-issues">${issuesHtml}</ul>
-	</div>`;
+function copleteIssueModel (iss) {
+	iss.repo = iss.repository.owner.login + '/' + iss.repository.name;
+	iss.url = iss.html_url;
+	iss.type = iss.pull_request ? 'pr' : 'issue';
+	return iss;
 }
 
 
@@ -59,36 +49,36 @@ const throttle = () => {
 	throttled = setTimeout(() => { throttled = null; }, 1000);
 };
 
-
-function onClick (e) {
-	e.preventDefault();
-
+function openIssue (e) {
+	e.original.preventDefault();
 	if (throttled) return throttle();	// if clicked during quiet time - throttle again
 	throttle();
-
-	let target = $(e.target);
-	if (target.is('.js-refresh')) return refresh();
-	target = target.closest('.btn');
-	if (target.length) return $.trigger(EVENT.url.change.to, target.attr('href'));
+	const iss = e.get();
+	iss.unread = false;
+	$.trigger(EVENT.url.change.to, iss.url);
 }
 
+function openRepo (e) {
+	$.trigger(EVENT.url.change.to, e.get().repoUrl);
+	return false;
+}
 
+function render (issues) {
+	issues = issues.map(copleteIssueModel);
+	data.issues = helper.groupIssues(issues);
+	$.trigger(EVENT.section.badge, 'myissues', issues.length);
+}
 
-function init () {
-	if (isReady) return;
-
-	el = $('.subnav-myissues');
-	listEl = el.find('.subnav-section-list');
-
-	el.on('click', onClick);
-	$.on(EVENT.projects.refresh, refresh);
-
+function oninit () {
+	$.on(EVENT.myissues.refresh, refresh);
+	this.on({ openIssue, openRepo });
 	refresh();
-
-	isReady = true;
 }
 
-
-module.exports = {
-	init
-};
+module.exports = new Ractive({
+	el: '#subnav .subnav-myissues .subnav-section-list',
+	magic: true,
+	data,
+	template,
+	oninit,
+});

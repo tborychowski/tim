@@ -4,18 +4,16 @@ const { config, EVENT } = require('../services');
 
 
 const template = `
-	{{#buttons:id}}
-		<a href="#" class="nav-btn nav-{{id}} {{activeSection === id ? 'active' : ''}}" title="{{title}}"
-			on-click="@this.onClick(event.original, id)"><i class="icon"></i>
+	{{#buttons}}
+		<a href="#" class="nav-btn nav-{{id}} {{activeSection === id ? 'active' : ''}}" title="{{title}}" on-click="onClick">
+			<i class="icon"></i>
 			{{#if (badge > 0)}}<span class="badge">{{badge}}</span>{{/if}}
 		</a>
 	{{/buttons}}
 	<div class="nav-bottom">
-		{{#bottomButtons:id}}
+		{{#bottomButtons}}
 			{{#if show !== false}}
-				<a href="#" class="nav-btn nav-{{id}}" data-go="{{id}}" title="{{title}}"
-					on-click="@this.onClick(event.original, id)"><i class="icon"></i>
-				</a>
+				<a href="#" class="nav-btn nav-{{id}}" data-go="{{id}}" title="{{title}}" on-click="onClick"><i class="icon"></i></a>
 			{{/if}}
 		{{/bottomButtons}}
 	</div>
@@ -23,16 +21,16 @@ const template = `
 
 const data = {
 	activeSection: 'notifications',
-	buttons: {
-		notifications: { title: 'Notifications (1)', badge: 0 },
-		bookmarks: { title: 'Bookmarks (2)', badge: 0 },
-		myissues: { title: 'My Issues (3)', badge: 0 },
-		projects: { title: 'Projects (4)', badge: 0 },
-	},
-	bottomButtons: {
-		update: { title: 'Update available. Click to see details.', show: false },
-		settings: { title: 'Open preferences' },
-	}
+	buttons: [
+		{ id: 'notifications', title: 'Notifications (1)', badge: 0 },
+		{ id: 'bookmarks', title: 'Bookmarks (2)', badge: 0 },
+		{ id: 'myissues', title: 'My Issues (3)', badge: 0 },
+		{ id: 'projects', title: 'Projects (4)', badge: 0 },
+	],
+	bottomButtons: [
+		{ id: 'update', title: 'Update available. Click to see details.', show: false },
+		{ id: 'settings', title: 'Open preferences' },
+	]
 };
 
 function refreshSection (id = data.activeSection) {
@@ -40,7 +38,8 @@ function refreshSection (id = data.activeSection) {
 }
 
 function setSectionBadge (id, count) {
-	data.buttons[id].badge = count;
+	const btn = data.buttons.filter(b => b.id === id)[0];
+	btn.badge = count;
 }
 
 function changeSection (id) {
@@ -50,11 +49,12 @@ function changeSection (id) {
 	$.trigger(EVENT.section.change, id);
 }
 
-function onClick (e, id) {
-	e.preventDefault();
-	if (id === 'update') return $.trigger(EVENT.updater.nav.clicked);
-	if (id === 'settings') return $.trigger(EVENT.settings.show);
-	changeSection(id);
+function onClick (e) {
+	const id = e.get().id;
+	if (id === 'update') $.trigger(EVENT.updater.nav.clicked);
+	else if (id === 'settings') $.trigger(EVENT.settings.show);
+	else changeSection(id);
+	return false;
 }
 
 
@@ -80,6 +80,7 @@ function oninit () {
 	$.on(EVENT.section.badge, setSectionBadge);
 	$.on(EVENT.document.keyup, onKeyUp);
 	$.on(EVENT.updater.nav.show, () => data.bottomButtons.update.show = true);
+	this.on({ onClick });
 }
 
 function oncomplete () {
@@ -87,4 +88,4 @@ function oncomplete () {
 	if (lastSection) changeSection(lastSection);
 }
 
-module.exports = new Ractive({ el: '#nav', magic: true, data, template, onClick, oninit, oncomplete });
+module.exports = new Ractive({ el: '#nav', magic: true, data, template, oninit, oncomplete });
