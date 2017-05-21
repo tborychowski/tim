@@ -39,7 +39,6 @@ function getJenkinsStatus (pr, stat) {
 	if (!stat) return;
 	const url = getCItargetUrlFromStatuses(stat && stat.statuses);
 	if (!url) return { result: stat && stat.state };
-	pr.buildUrl = url;
 	return jenkins.getStatus(url);
 }
 /**************************************************************************************************/
@@ -96,15 +95,10 @@ function checkForUnreadComments (issue) {
 	return getIssueComments(issue.repo, issue.id, params)
 		.then(res => {
 			let comments = res && res.length ? res : [];
-			if (comments && res) {
+			if (comments.length) {
 				const myId = github.user && github.user.id || null;
-				comments = res.filter(i => i.user.id !== myId);
+				if (myId) comments = res.filter(i => i.user.id !== myId);
 			}
-
-			//FIXME: github api suddenly ignores since and returns all comments
-			const since = new Date(params.since);
-			comments = comments.filter(c => new Date(c.updated_at) > since);
-
 
 			if (comments.length) issue.unread = true;
 			return issue;
@@ -112,21 +106,21 @@ function checkForUnreadComments (issue) {
 }
 
 function checkIssueState (issue) {
-	return getIssue(issue.repo, issue.id).then(res => {
-		if (res) {
-			issue.state = res.state;
-			issue.name = res.title;
-		}
-		return issue;
-	});
+	if (!(issue.type in { pr: 1, issue: 1 })) return Promise.resolve(issue);
+	return getIssue(issue.repo, issue.id)
+		.then(res => {
+			if (res) {
+				issue.state = res.state;
+				issue.name = res.title;
+			}
+			return issue;
+		})
+		.then(checkForUnreadComments);
 }
 
 
 function checkIssuesForUpdates (issues) {
-	const issuesToProcess = issues
-		.filter(i => i.type in { pr: 1, issue: 1 })
-		.map(issue => checkIssueState(issue).then(checkForUnreadComments));
-	return Promise.all(issuesToProcess);
+	return Promise.all(issues.map(checkIssueState));
 }
 
 

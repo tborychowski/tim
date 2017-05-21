@@ -27,8 +27,9 @@ function buildInfo (jenkins, item) {
 	return new Promise(resolve  => {
 		jenkins.build_info(item.jobName, item.buildId, (err, data) => {
 			if (err) return resolve();
-			item = parseBuildData(item, data);
-			resolve(item);
+			const info = parseBuildData(item, data);
+			info.url = item.url;
+			resolve(info);
 		});
 	});
 }
@@ -39,7 +40,7 @@ function getStatus (url) {
 	if (!url) return;
 	const [host, parts] = $.trim(url, '/').split('/job/');
 	const [jobName, buildId] = parts.split('/');
-	const item = { jobName, buildId };
+	const item = { jobName, buildId, url };
 	const jenkins = jenkinsApi.init(host, { strictSSL: false, proxy: null });
 	return buildInfo(jenkins, item);
 }
