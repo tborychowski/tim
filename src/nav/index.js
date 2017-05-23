@@ -5,7 +5,7 @@ const { config, EVENT } = require('../services');
 
 const template = `
 	{{#buttons}}
-		<a href="#" class="nav-btn nav-{{id}} {{activeSection === id ? 'active' : ''}}" title="{{title}}" on-click="onClick">
+		<a href="#" class="nav-btn nav-{{id}}" class-active="{{activeSection === id}}" title="{{title}}" on-click="onClick">
 			<i class="icon"></i>
 			{{#if (badge > 0)}}<span class="badge">{{badge}}</span>{{/if}}
 		</a>

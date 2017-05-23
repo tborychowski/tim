@@ -1,6 +1,7 @@
 const Ractive = require('ractive');
 const { EVENT, bookmarks, github, helper } = require('../services');
 const $ = require('../util');
+
 const BuildStatus = require('./build-status');
 
 const DEFAULT_REPO_NAME = 'Pages';				// for ungrouped pages
@@ -15,7 +16,7 @@ const issueTypeCls = {
 
 
 const template = `
-	{{#bookmarks:repo}}
+	{{#groupedBookmarks:repo}}
 		<div class="repo-box">
 			<h2>
 				{{#if hasUrl }}
@@ -34,17 +35,17 @@ const template = `
 				{{/items}}
 			</ul>
 		</div>
-	{{/bookmarks}}
+	{{/groupedBookmarks}}
 `;
 
 
 const data = {
-	bookmarks: {} ,
+	bookmarks: [],
+	issueIcon: iss => issueTypeCls[iss.type],
 	issueCls: iss => {
 		const repo = (iss.repo || '').replace(/[\/\.]/g, '-').toLowerCase();
 		return iss.id ? `issue-${repo}-${iss.id}` : '';
 	},
-	issueIcon: iss => issueTypeCls[iss.type],
 };
 
 
@@ -85,16 +86,18 @@ function removeBookmark (issue) {
 
 function onUrlChanged (wv, issue) {
 	if (!issue || !issue.url) return;
-	const repo = data.bookmarks[issue.repo];
-	if (repo) {
-		const iss = repo.items.filter(i => i.url === issue.url)[0];
-		if (iss) iss.unread = false;
-	}
+	const iss = data.bookmarks.filter(i => i.url === issue.url)[0];
+	if (iss) iss.unread = false;
 	bookmarks.setUnreadByUrl(issue.url, false);
 }
 
 
-function refresh () {
+function refresh (full) {
+	if (Module && full === true) {
+		data.bookmarks = [];
+		Module.reset(data);
+	}
+
 	bookmarks.get()
 		.then(render)
 		.then(github.checkIssuesForUpdates)
@@ -118,9 +121,11 @@ function copleteIssueModel (iss) {
 }
 
 
+
 function render (issues) {
 	issues = issues.map(copleteIssueModel);
-	data.bookmarks = helper.groupIssues(issues);
+	issues = helper.mergeArrays(issues, data.bookmarks);
+	Module.set('bookmarks', issues);
 	return issues;
 }
 
@@ -128,19 +133,23 @@ function render (issues) {
 function oninit () {
 	$.on(EVENT.bookmark.add, addBookmark);
 	$.on(EVENT.bookmark.remove, removeBookmark);
-	$.on(EVENT.bookmarks.refresh, refresh);
+	$.on(EVENT.bookmarks.refresh, () => refresh(true));
 	$.on(EVENT.url.change.done, onUrlChanged);
 	this.on({ openRepo, openIssue });
 	refresh();
 }
 
-module.exports = new Ractive({
+const Module = new Ractive({
 	el: '#subnav .subnav-bookmarks .subnav-section-list',
-	magic: true,
 	data,
 	template,
 	oninit,
-	components: {
-		BuildStatus
-	}
+	components: { BuildStatus },
+	computed: {
+		groupedBookmarks: function () {
+			return helper.groupIssues(this.get('bookmarks'));
+		}
+	},
 });
+
+module.exports = Module;

@@ -64,6 +64,7 @@ function openRepo (e) {
 }
 
 function render (issues) {
+	if (!issues || !issues.length) return;
 	issues = issues.map(copleteIssueModel);
 	data.issues = helper.groupIssues(issues);
 	$.trigger(EVENT.section.badge, 'myissues', issues.length);

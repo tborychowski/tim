@@ -4,6 +4,7 @@ const {exec} = require('child_process');
 const config = require('./config');
 const isDev = require('./isDev');
 const _get = require('lodash.get');
+const _merge = require('lodash.merge');
 
 
 const applicationsPath = () => ({
@@ -118,6 +119,14 @@ function groupIssues (issues) {
 }
 
 
+function mergeArrays (target, other) {
+	return target.map(item => {
+		const otheritem = other.filter(i => i.url === item.url)[0];
+		return _merge(otheritem || {}, item);
+	});
+}
+
+
 module.exports = {
 	openInBrowser,
 	copyToClipboard,
@@ -129,5 +138,6 @@ module.exports = {
 	getPageTypeFromUrl,
 	getPageActualTypeFromUrl,
 	applicationsPath,
-	groupIssues
+	groupIssues,
+	mergeArrays,
 };

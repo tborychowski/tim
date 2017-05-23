@@ -20,21 +20,20 @@ function openCI (e) {
 
 function updateStatus (pr, status) {
 	if (!status) return;
-	pr.build.result = status.result ? status.result : status.progress < 100 ? 'progress' : '';
-	pr.build.progress = status.progress;
-	pr.build.url = status.url;
-	this.set('issue', pr);
-	if (!status.result) {
-		if (pr.build.timer) clearTimeout(pr.build.timer);
-		pr.build.timer = setTimeout(() => monitorPr(pr), 15000);
-	}
+	pr.build = {
+		result: status.result ? status.result : status.progress < 100 ? 'progress' : '',
+		progress: status.progress,
+		url: status.url,
+	};
+	this.update();
+	if (pr.build.timer) clearTimeout(pr.build.timer);
+	if (!status.result) pr.build.timer = setTimeout(() => monitorPr(pr), 15000);
 }
 
 
 function monitorPr (pr) {
 	github.getBuildStatus(pr).then(status => this.updateStatus(pr, status));
 }
-
 
 
 const template = `
@@ -51,7 +50,7 @@ const template = `
 
 function data () {
 	return {
-		issue: { build: { url: '', result: '', progress: 0 }},
+		issue: {},
 		buildTitle: result => result ? $.ucfirst(result) : 'Open build job',
 		buildIcon: result => statusIconCls[result],
 	};
@@ -60,14 +59,15 @@ function data () {
 function oninit () {
 	this.on({ openCI });
 	this.observe('issue', function (value) {
-		//FIXME: handle updating PRs in here, not globally
-		// FIXME: merge objects instead of rewriting
-		if (this.el && value && value.build && value.build.url) this.monitorPr(value);
+		// if (this.el && value && value.build) this.monitorPr(value);
+		if (this.el && value) {
+			// this.monitorPr(value);
+		}
 	});
 }
 
 function onrender () {
-	this.monitorPr(this.get().issue);
+	this.monitorPr(this.get('issue'));
 }
 
 module.exports = Ractive.extend({ template, data, oninit, onrender, monitorPr, updateStatus });
