@@ -1,6 +1,7 @@
 const Ractive = require('ractive');
 const { EVENT, bookmarks, github, helper } = require('../services');
 const $ = require('../util');
+const BuildStatus = require('./build-status');
 
 const DEFAULT_REPO_NAME = 'Pages';				// for ungrouped pages
 const DEFAULT_PROJECTS_REPO_NAME = 'Projects';	// for ungrouped projects
@@ -10,13 +11,6 @@ const issueTypeCls = {
 	project: 'ion-ios-cube-outline',
 	page: 'ion-ios-document-outline',
 	default: 'ion-ios-document-outline',
-};
-
-const statusIconCls = {
-	failure: 'ion-md-alert',
-	aborted: 'ion-md-alert',
-	success: 'ion-md-checkmark-circle',
-	progress: 'ion-md-time'
 };
 
 
@@ -35,20 +29,14 @@ const template = `
 					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}">
 						<i class="issue-icon {{issueIcon(this)}}"></i>
 						<a href="{{url}}" class="btn bookmark" title="{{id || name}}" on-click="openIssue">{{name}}</a>
-						{{#with build}}
-							<a href="{{url}}" class="build-status {{result}}" title="{{buildTitle(result)}}" on-click="openCI">
-								<i class="icon {{buildIcon(result)}}"></i>
-								<div class="build-progress">
-									<div class="build-progress-inner" style="width:{{progress || 0}}%"></div>
-								</div>
-							</a>
-						{{/with}}
+						{{#if type === 'pr'}}<BuildStatus issue="{{this}}" />{{/if}}
 					</li>
 				{{/items}}
 			</ul>
 		</div>
 	{{/bookmarks}}
 `;
+
 
 const data = {
 	bookmarks: {} ,
@@ -57,8 +45,6 @@ const data = {
 		return iss.id ? `issue-${repo}-${iss.id}` : '';
 	},
 	issueIcon: iss => issueTypeCls[iss.type],
-	buildIcon: result => statusIconCls[result],
-	buildTitle: result => result ? $.ucfirst(result) : 'Open build job',
 };
 
 
@@ -74,40 +60,17 @@ function openIssue (e) {
 	if (throttled) return throttle();	// if clicked during quiet time - throttle again
 	throttle();
 	const iss = e.get();
-	iss.unread = false;
-	$.trigger(EVENT.url.change.to, iss.url);
+	if (iss) {
+		iss.unread = false;
+		bookmarks.setUnreadByUrl(iss.url, false);
+		$.trigger(EVENT.url.change.to, iss.url);
+	}
 }
 
-function openCI (e) {
-	const url = e.get().url;
-	if (url) helper.openInBrowser(url);
-	return false;
-}
 
 function openRepo (e) {
 	$.trigger(EVENT.url.change.to, e.get().repoUrl);
 	return false;
-}
-
-function updateBuildStatus (pr, status) {
-	if (!status) return;
-	pr.build.result = status.result ? status.result : status.progress < 100 ? 'progress' : '';
-	pr.build.progress = status.progress;
-	pr.build.url = status.url;
-
-	const idx = data.bookmarks[pr.repo].items.indexOf(pr);
-	Module.update(`bookmarks.${pr.repo}.items[${idx}].build`);
-
-	if (!status.result) setTimeout(() => monitorPr(pr), 15000);
-}
-
-
-function monitorPr (pr) {
-	github.getBuildStatus(pr).then(status => updateBuildStatus(pr, status));
-}
-
-function checkBuilds (issues) {
-	issues.filter(iss => iss.type === 'pr').forEach(monitorPr);
 }
 
 
@@ -125,7 +88,7 @@ function onUrlChanged (wv, issue) {
 	const repo = data.bookmarks[issue.repo];
 	if (repo) {
 		const iss = repo.items.filter(i => i.url === issue.url)[0];
-		iss.unread = false;
+		if (iss) iss.unread = false;
 	}
 	bookmarks.setUnreadByUrl(issue.url, false);
 }
@@ -135,8 +98,7 @@ function refresh () {
 	bookmarks.get()
 		.then(render)
 		.then(github.checkIssuesForUpdates)
-		.then(render)
-		.then(checkBuilds);
+		.then(render);
 }
 
 
@@ -168,17 +130,17 @@ function oninit () {
 	$.on(EVENT.bookmark.remove, removeBookmark);
 	$.on(EVENT.bookmarks.refresh, refresh);
 	$.on(EVENT.url.change.done, onUrlChanged);
-	this.on({ openRepo, openCI, openIssue });
+	this.on({ openRepo, openIssue });
 	refresh();
 }
 
-const Module = new Ractive({
+module.exports = new Ractive({
 	el: '#subnav .subnav-bookmarks .subnav-section-list',
 	magic: true,
 	data,
 	template,
 	oninit,
+	components: {
+		BuildStatus
+	}
 });
-
-
-module.exports = Module;

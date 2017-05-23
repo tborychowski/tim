@@ -41,10 +41,14 @@ gulp.task('electron', ['build'], () => gulp
 	.pipe(runElectron())
 );
 
-gulp.task('all', ['electron']);
 
+gulp.task('default', [], () => {
+	gulp.watch('src/**/webview.css', ['webview-css']);
+	gulp.watch('src/**/*.styl', ['css']);
+	gulp.watch('src/**/*.js', ['js']);
+});
 
-gulp.task('default', ['all'], () => {
+gulp.task('all', ['electron'], () => {
 	gulp.watch('src/**/webview.css', ['webview-css']);
 	gulp.watch('src/**/*.styl', ['css']);
 	gulp.watch('src/**/*.js', ['js']);
