@@ -27,7 +27,7 @@ function updateStatus (pr, status) {
 	};
 	this.update();
 	if (pr.build.timer) clearTimeout(pr.build.timer);
-	if (!status.result) pr.build.timer = setTimeout(() => monitorPr(pr), 15000);
+	if (!status.result) pr.build.timer = setTimeout(() => this.monitorPr(pr), 15000);
 }
 
 
