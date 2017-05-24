@@ -1,4 +1,5 @@
 const Ractive = require('ractive');
+const fade = require('ractive-transitions-fade');
 const { EVENT, bookmarks, github, helper } = require('../services');
 const $ = require('../util');
 
@@ -27,7 +28,7 @@ const template = `
 			</h2>
 			<ul class="repo-box-issues">
 				{{#items}}
-					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}">
+					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}" fade-in-out>
 						<i class="issue-icon {{issueIcon(this)}}"></i>
 						<a href="{{url}}" class="btn bookmark" title="{{id || name}}" on-click="openIssue">{{name}}</a>
 						{{#if type === 'pr'}}<BuildStatus issue="{{this}}" />{{/if}}
@@ -150,6 +151,7 @@ const Module = new Ractive({
 			return helper.groupIssues(this.get('bookmarks'));
 		}
 	},
+	transitions: { fade }
 });
 
 module.exports = Module;
