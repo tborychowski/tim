@@ -77,11 +77,18 @@ function openRepo (e) {
 
 
 function addBookmark (issue) {
-	bookmarks.add(issue).then(refresh);
+	issue = copleteIssueModel(issue);
+	bookmarks.add(issue);
+	data.bookmarks.push(issue);
+	render(data.bookmarks);
 }
 
 function removeBookmark (issue) {
-	bookmarks.remove(issue).then(refresh);
+	bookmarks.remove(issue);
+	const idx = data.bookmarks.indexOf(issue);
+	Module.splice('bookmarks', idx, 1);
+	// if (idx > -1) data.bookmarks.splice(idx, 1);
+	// render(data.bookmarks);
 }
 
 

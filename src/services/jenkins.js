@@ -1,6 +1,7 @@
 const $ = require('../util');
 const jenkinsApi = require('jenkins-api');
 
+let count = 0;
 
 function calcProgress (data) {
 	if (data.result) return 100;
@@ -26,6 +27,7 @@ function parseBuildData (item, data) {
 function buildInfo (jenkins, item) {
 	return new Promise(resolve  => {
 		jenkins.build_info(item.jobName, item.buildId, (err, data) => {
+			console.log('No of Jenkins requests so far:', ++count);
 			if (err) return resolve();
 			const info = parseBuildData(item, data);
 			info.url = item.url;

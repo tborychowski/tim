@@ -42,7 +42,7 @@ gulp.task('electron', ['build'], () => gulp
 );
 
 
-gulp.task('default', [], () => {
+gulp.task('default', ['build'], () => {
 	gulp.watch('src/**/webview.css', ['webview-css']);
 	gulp.watch('src/**/*.styl', ['css']);
 	gulp.watch('src/**/*.js', ['js']);
