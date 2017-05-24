@@ -86,8 +86,7 @@ function addBookmark (issue) {
 
 function removeBookmark (issue) {
 	bookmarks.remove(issue);
-	const idx = data.bookmarks.indexOf(issue);
-	Module.splice('bookmarks', idx - 1, 1);
+	Module.set('bookmarks', Module.get('bookmarks').filter(i => i.id !== issue.id));
 }
 
 
