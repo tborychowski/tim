@@ -6,7 +6,7 @@ const runElectron = require('gulp-run-electron');
 const notify = require('gulp-notify');
 const plumber = require('gulp-plumber');
 const sourcemaps = require('gulp-sourcemaps');
-
+// const debug = require('gulp-debug');
 // const minifyCSS = require('gulp-csso');
 
 
@@ -22,7 +22,10 @@ gulp.task('css', () => gulp
 	.src('src/**/*.styl')
 	.pipe(sourcemaps.init())
 	.pipe(plumber({errorHandler: notify.onError('Stylus: <%= error.message %>')}))
-	.pipe(stylus())
+	.pipe(stylus({
+		include: __dirname + '/src',
+		'include css': true
+	}))
 	.pipe(concat('app.css'))
 	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('app/'))
@@ -33,7 +36,12 @@ gulp.task('webview-css', () => gulp
 	.pipe(gulp.dest('app/'))
 );
 
-gulp.task('build', ['js', 'css', 'webview-css']);
+gulp.task('preview-html', () => gulp
+	.src('src/preview/index.html')
+	.pipe(gulp.dest('app/preview/'))
+);
+
+gulp.task('build', ['js', 'css', 'webview-css', 'preview-html']);
 
 
 gulp.task('electron', ['build'], () => gulp

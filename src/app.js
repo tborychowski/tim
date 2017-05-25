@@ -33,3 +33,12 @@ ipc.on(EVENT.frame.goto, (ev, url) => $.trigger(EVENT.frame.goto, url));
 
 document.addEventListener('click', e => $.trigger(EVENT.document.clicked, e));
 document.addEventListener('keyup', e => $.trigger(EVENT.document.keyup, e));
+
+window.addEventListener('blur', () => document.body.classList.add('window-inactive'));
+window.addEventListener('focus', () => document.body.classList.remove('window-inactive'));
+
+// don't handle dragging stuff around
+document.ondragover = () => { return false; };
+document.ondragleave = () => { return false; };
+document.ondragend = () => { return false; };
+document.ondrop = () => { return false; };

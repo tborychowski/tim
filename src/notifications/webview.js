@@ -75,6 +75,12 @@ function init () {
 	document.addEventListener('contextmenu', onContextMenu);
 	document.addEventListener('keyup', onKeyUp);
 
+	// don't handle dragging stuff around
+	document.ondragover = () => { return false; };
+	document.ondragleave = () => { return false; };
+	document.ondragend = () => { return false; };
+	document.ondrop = () => { return false; };
+
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');

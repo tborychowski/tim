@@ -1,9 +1,11 @@
-nav-bar-width = 64px
+@require '_lib'
+
+top-offset = (header-height - 1)
 
 #nav
 	position absolute
 	width nav-bar-width
-	top 0
+	top top-offset
 	left 0
 	bottom 0
 	background #111B2D
@@ -110,7 +112,7 @@ nav-bar-width = 64px
 #subnav
 	position absolute
 	width 300px
-	top 0
+	top top-offset
 	left nav-bar-width
 	bottom 0
 	color #eee

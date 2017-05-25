@@ -123,10 +123,7 @@ function setZoom (n) {
 }
 
 
-function init () {
-	if (isReady) return;
-
-	frame = $('#frame');
+function initWebview () {
 	webview = WebView({
 		url: initialURL(true),
 		renderTo: frame,
@@ -138,14 +135,22 @@ function init () {
 	skeleton = $('<div class="skeleton"><div class="skeleton-header"></div><div class="skeleton-sidebar"></div><div class="skeleton-main"></div><div class="skeleton-shine"></div></div>')
 		.appendTo(frame);
 
-
 	webview.on('focus', () => $.trigger(EVENT.frame.focused));
 	webview.on('will-navigate', gotoUrl);
 	webview.on('did-navigate-in-page', onNavigationStart);
 	webview.on('did-fail-load', onNavigationError);
 	webview.on('did-start-loading', loadingStart);
 	webview.on('did-stop-loading', loadingStop);
+	webview.on('crashed', initWebview);
+}
 
+
+function init () {
+	if (isReady) return;
+
+	frame = $('#frame');
+
+	initWebview();
 
 	$.on(EVENT.frame.goto, gotoUrl);
 	$.on(EVENT.frame.devtools, webview.toggleDevTools);

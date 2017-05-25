@@ -28,7 +28,7 @@ const template = `
 			</h2>
 			<ul class="repo-box-issues">
 				{{#items}}
-					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}" fade-in-out>
+					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}" fade-in>
 						<i class="issue-icon {{issueIcon(this)}}"></i>
 						<a href="{{url}}" class="btn bookmark" title="{{id || name}}" on-click="openIssue">{{name}}</a>
 						{{#if type === 'pr'}}<BuildStatus issue="{{this}}" />{{/if}}
@@ -85,8 +85,12 @@ function addBookmark (issue) {
 }
 
 function removeBookmark (issue) {
-	bookmarks.remove(issue);
-	Module.set('bookmarks', Module.get('bookmarks').filter(i => i.id !== issue.id));
+	const iss = Module.get('bookmarks').filter(i => i.url === issue.url)[0];
+	if (!iss) return;
+	$(`.${data.issueCls(iss)}`).animate({opacity: 1}, {opacity: 0}).then(() => {
+		bookmarks.remove(issue);
+		Module.set('bookmarks', Module.get('bookmarks').filter(i => i.url !== issue.url));
+	});
 }
 
 

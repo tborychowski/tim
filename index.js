@@ -11,6 +11,7 @@ require('electron-dl')();
 
 const send = (name, val) => win.webContents.send(name, val);
 function openUrl (ev, url) {
+	console.log(ev, url);
 	if (win && win.webContents) {
 		win.restore();
 		send(EVENT.frame.goto, url);
@@ -28,7 +29,7 @@ function createWindow () {
 		show: false,
 		// vibrancy: 'sidebar',
 		// transparent: true,
-		// titleBarStyle: 'hidden-inset',
+		titleBarStyle: 'hidden-inset',
 		x: mainWindowState.x,
 		y: mainWindowState.y,
 		width: mainWindowState.width,
