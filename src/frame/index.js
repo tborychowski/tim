@@ -8,7 +8,7 @@ const $ = require('../util');
 const realnames = require('../realnames');
 const swiping = require('./swiping');
 
-let frame, webview, skeleton, isReady = false, pageZoom = 0, isLoggedIn = false, lastURL = '', urlLoading = '';
+let frame, webview, isReady = false, pageZoom = 0, isLoggedIn = false, lastURL = '', urlLoading = '';
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
@@ -103,7 +103,7 @@ function loadingStart () {
 	if (!urlLoading) urlLoading = webview.attr('src');
 	const pageType = helper.getPageTypeFromUrl(urlLoading);
 
-	skeleton.attr('class', `skeleton ${pageType}`);
+	webview.skeleton.attr('class', `skeleton ${pageType}`);
 	frame.addClass('loading');
 	webview[0].focus();
 	$.trigger(EVENT.url.change.start);
@@ -123,34 +123,30 @@ function setZoom (n) {
 }
 
 
-function initWebview () {
+
+function init () {
+	if (isReady) return;
+
+	const skeletonHtml = '<div class="skeleton"><div class="skeleton-header"></div><div class="skeleton-sidebar"></div><div class="skeleton-main"></div><div class="skeleton-shine"></div></div>';
+
+	frame = $('#frame');
+
 	webview = WebView({
 		url: initialURL(true),
 		renderTo: frame,
 		js: `${__dirname}/webview.js`,
 		css: `${__dirname}/webview.css`,
-		msgHandlers: webviewHandlers
+		msgHandlers: webviewHandlers,
+		skeletonHtml,
+		events: {
+			focus: () => $.trigger(EVENT.frame.focused),
+			'will-navigate': gotoUrl,
+			'did-navigate-in-page': onNavigationStart,
+			'did-fail-load': onNavigationError,
+			'did-start-loading': loadingStart,
+			'did-stop-loading': loadingStop,
+		},
 	});
-
-	skeleton = $('<div class="skeleton"><div class="skeleton-header"></div><div class="skeleton-sidebar"></div><div class="skeleton-main"></div><div class="skeleton-shine"></div></div>')
-		.appendTo(frame);
-
-	webview.on('focus', () => $.trigger(EVENT.frame.focused));
-	webview.on('will-navigate', gotoUrl);
-	webview.on('did-navigate-in-page', onNavigationStart);
-	webview.on('did-fail-load', onNavigationError);
-	webview.on('did-start-loading', loadingStart);
-	webview.on('did-stop-loading', loadingStop);
-	webview.on('crashed', initWebview);
-}
-
-
-function init () {
-	if (isReady) return;
-
-	frame = $('#frame');
-
-	initWebview();
 
 	$.on(EVENT.frame.goto, gotoUrl);
 	$.on(EVENT.frame.devtools, webview.toggleDevTools);
