@@ -1,0 +1,116 @@
+@require '_lib'
+
+#appheader
+	height header-height
+	-webkit-app-region drag
+	position absolute
+	top 0
+	left (300px + navbar-width)
+	right 0
+	border-bottom 1px solid #c2c0c2
+	z-index 0
+	text-align center
+	line-height 40px
+	font-size 13px
+	color #666
+	background #d5d5d5
+	padding 0 5px
+	user-select none
+	transition background-color .2s ease-out, color .2s ease-out
+	z-index 100
+
+	h1
+		margin 0
+		padding 0
+		font-weight normal
+		font-size 13px
+
+	button
+		float left
+		font-size 22px
+		line-height 34px
+		transition color .3s
+		margin 0
+		cursor pointer
+		padding 2px 10px
+		text-align center
+		background none
+		border none
+		color #888
+		transition color .2s ease-out
+
+		&:hover
+			color #4078c0
+
+		&:active
+			color black
+
+	.btn-right
+		float right
+
+
+
+.window-inactive #appheader
+	background #fff
+	color #ccc
+
+	button
+		color #ccc
+
+
+
+
+
+
+#appheader .star-box
+	float left
+
+	.btn-star
+		display block
+
+	.btn-unstar
+		color #E73528
+		display none
+
+
+	&.starred
+		.btn-star
+			display none
+
+		.btn-unstar
+			display block
+
+
+
+
+
+.copy-link-confirmation
+	position absolute
+	top 40px
+	right 16px
+	background rgba(0, 0, 0, 0.8)
+	color #f5f5f5
+	padding 0 15px
+	border-radius 5px
+	display none
+	opacity 0
+
+	&.flash
+		display block
+		animation flash 1.8s 1 ease-in-out
+
+
+
+
+
+@keyframes flash
+	0%
+		opacity 0
+	20%
+		opacity 1
+	70%
+		opacity 1
+	100%
+		opacity 0
+
+

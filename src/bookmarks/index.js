@@ -98,6 +98,7 @@ function onUrlChanged (wv, issue) {
 	if (!issue || !issue.url) return;
 	const iss = data.bookmarks.filter(i => i.url === issue.url)[0];
 	if (iss) iss.unread = false;
+	Module.set('bookmarks', data.bookmarks);
 	bookmarks.setUnreadByUrl(issue.url, false);
 }
 

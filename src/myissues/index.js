@@ -17,13 +17,13 @@ const template = `
 					<li class="issue-box {{state}} type-{{type}}">
 						<i class="issue-icon {{issueIcon(this)}}" title="{{state}}"></i>
 						<a href="{{url}}" class="btn bookmark" title="{{number}}" on-click="openIssue">{{title}}</a>
-						<div class="issue-date">updated: {{prettyDate(updated_at)}}</div>
 					</li>
 				{{/items}}
 			</ul>
 		</div>
 	{{/issues}}
 `;
+						// <div class="issue-date">updated: {{prettyDate(updated_at)}}</div>
 
 const data = {
 	issues: {} ,

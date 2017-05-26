@@ -8,11 +8,11 @@ const clickHandlers = {
 	next () { $.trigger(EVENT.frame.goto, 'next'); },
 	refresh () { $.trigger(EVENT.frame.goto, 'refresh'); },
 	stop () { $.trigger(EVENT.frame.goto, 'stop'); },
-	browser () { helper.openInBrowser(config.get('state.url')); },
-	copy () { helper.copyToClipboard(config.get('state.url')); },
-	home () { $.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl')); },
-	star () { $.trigger(EVENT.bookmark.add, config.get('state.issue')); },
-	unstar () { $.trigger(EVENT.bookmark.remove, config.get('state.issue')); },
+	// home () { $.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl')); },
+	// browser () { helper.openInBrowser(config.get('state.url')); },
+	// copy () { helper.copyToClipboard(config.get('state.url')); },
+	// star () { $.trigger(EVENT.bookmark.add, config.get('state.issue')); },
+	// unstar () { $.trigger(EVENT.bookmark.remove, config.get('state.issue')); },
 };
 
 function star () {
@@ -41,8 +41,8 @@ function onClick (e) {
 	let target = $(e.target);
 
 	if (target.is('.js-copy')) {
-		confirmEl.addClass('flash');
-		setTimeout(() => { confirmEl.removeClass('flash'); }, 1600);
+		// confirmEl.addClass('flash');
+		// setTimeout(() => { confirmEl.removeClass('flash'); }, 5000);
 	}
 
 	if (target.is('.header-btn')) {

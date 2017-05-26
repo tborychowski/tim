@@ -5,22 +5,12 @@ let isReady = false,
 	el = null,
 	issueBox = null,
 	starBox,
-	lastShortUrl = '',
 	lastFullUrl = '',
-	lastIssue = '',
 	searchTerm = null;
 
 const baseUrl = $.rtrim(config.get('baseUrl'), '/');
 const repoToSearch = config.get('repoToSearch');
 
-
-function getUnfocusedText () {
-	if (searchTerm) return searchTerm;
-	if (!lastIssue || !lastIssue.name) return lastShortUrl || '';
-	const mod = lastIssue.repo ? lastIssue.repo.split('/').pop() : '';
-	let url = `${mod} / ${lastIssue.name}`;
-	return url.replace(/(^[\/\s]+)|([\/\s]+$)/g, '');
-}
 
 function getFocusedText () {
 	if (searchTerm) return searchTerm;
@@ -74,31 +64,14 @@ function onUrlChanged (webview, issue) {
 	if (issue) searchTerm = null;
 
 	lastFullUrl = config.get('state.url');
-	lastShortUrl = shortenUrl(lastFullUrl);
-	lastIssue = issue || {};
 
-	el[0].value = getUnfocusedText();
+	// el[0].value = getUnfocusedText();
+	el[0].value = issue.url;
 	issueBox[0].value = (issue && issue.id ? issue.id : '');
 
 	if (issue && issue.url) checkIfBookmarked(issue.url);
 }
 
-
-function shortenUrl (url = '') {
-	if (url.indexOf('?q=') > -1) {	// it's search url
-		return searchTerm = url
-			.split('?q=').pop()
-			.replace(/is(:|%3A)(issue|open|closed)/g, '')
-			.replace(/(%20|\+)/g, ' ')
-			.trim();
-	}
-	return url
-		.replace(config.get('baseUrl'), '')
-		.replace('pull/', '')
-		.replace('issues/', '')
-		.split('#')
-		.shift();
-}
 
 function focusAddressbar () {
 	setTimeout(() => { el[0].select(); }, 10);
@@ -111,12 +84,7 @@ function focusIssuebox () {
 
 
 function onFocus () {
-	el[0].value = getFocusedText();
 	el[0].select();
-}
-
-function onBlur () {
-	el[0].value = getUnfocusedText();
 }
 
 function onKeyPress (e) {
@@ -164,7 +132,6 @@ function init () {
 	starBox = $('header .star-box');
 
 	el.on('focus', onFocus);
-	el.on('blur', onBlur);
 	el.on('keydown', onKeyDown);
 	el.on('keypress', onKeyPress);
 	el.on('input', onInput);

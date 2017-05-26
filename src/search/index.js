@@ -2,13 +2,14 @@ const $ = require('../util');
 const {EVENT} = require('../services');
 
 let webview, el, inp, info, isReady = false, isVisible = false;
-const TOP_H = '37px';
+const TOP_H0 = '-10px';
+const TOP_H1 = '27px';
 
 
 function show () {
 	if (isVisible) return;
 	isVisible = true;
-	el.show().animate({ top: 0 }, { top: TOP_H });
+	el.show().animate({ top: TOP_H0 }, { top: TOP_H1 });
 	inp[0].focus();
 }
 
@@ -19,7 +20,7 @@ function hide () {
 	inp[0].value = '';
 	highlightFindings();
 	updateInfo();
-	el.animate({ top: TOP_H }, { top: 0 });
+	el.animate({ top: TOP_H1 }, { top: TOP_H0 });
 	$.trigger(EVENT.address.focus);
 }
 
@@ -79,7 +80,7 @@ function init () {
 	el = $('.search-bar');
 	inp = el.find('.search-input');
 	info = el.find('.search-info');
-	webview = $('#frame #webview');
+	webview = $('#frame webview');
 
 	el.on('click', onClick);
 	inp.on('input', () => highlightFindings());

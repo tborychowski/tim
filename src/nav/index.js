@@ -25,7 +25,7 @@ const data = {
 		{ id: 'notifications', title: 'Notifications (1)', badge: 0 },
 		{ id: 'bookmarks', title: 'Bookmarks (2)', badge: 0 },
 		{ id: 'myissues', title: 'My Issues (3)', badge: 0 },
-		{ id: 'projects', title: 'Projects (4)', badge: 0 },
+		// { id: 'projects', title: 'Projects (4)', badge: 0 },
 	],
 	bottomButtons: [
 		{ id: 'update', title: 'Update available. Click to see details.', show: false },

@@ -1,23 +1,22 @@
 @require '_lib'
 
-top-offset = (header-height - 1)
-
 #nav
 	position absolute
-	width nav-bar-width
-	top top-offset
+	width navbar-width
 	left 0
 	bottom 0
-	background #111B2D
 	user-select none
+	background rgba(#000, 0.5)
+	top 0
+	padding-top header-height
 
 
 .nav-btn
 	display block
-	width 40px
-	height 40px
+	width 44px
+	height 44px
 	margin 14px auto
-	border-radius 3px
+	border-radius 25px
 	background #2C384D
 	text-decoration none
 	position relative
@@ -102,98 +101,4 @@ top-offset = (header-height - 1)
 
 	&:hover
 		background #82B209
-
-
-
-
-
-
-
-#subnav
-	position absolute
-	width 300px
-	top top-offset
-	left nav-bar-width
-	bottom 0
-	color #eee
-	background #2C384D
-	box-shadow 1px 0 0 rgba(255,255,255, .1) inset
-	user-select none
-
-
-.subnav-section
-	position absolute
-	top 0
-	bottom 0
-	right 0
-	left 0
-	display none
-
-
-.subnav-section.active
-	display block
-
-
-.subnav-section a
-	color inherit
-	text-decoration none
-
-
-.subnav-section a:hover
-	text-decoration underline
-
-
-
-.subnav-section h1
-	font-size 14px
-	font-weight 300
-	line-height 12px
-	margin 0
-	color #eee
-
-
-	padding 13px 0 0
-	height 38px
-	text-transform uppercase
-	text-align center
-
-.subnav-section h2
-	font-size 14px
-	line-height 17px
-	font-weight 600
-	margin 0
-
-
-
-
-.subnav-section .nav-icon-btn
-	position absolute
-	right 5px
-	top 0
-	color #eee
-
-
-.subnav-section .nav-icon-btn:hover
-	color lightblue
-
-
-.subnav-section .nav-icon-btn:active
-	color white
-
-
-
-.subnav-section .nav-icon-btn-left
-	left 5px
-	right auto
-
-
-
-.subnav-section-list
-	position absolute
-	top 44px
-	left 0
-	right 0
-	bottom 0
-	overflow hidden
-	overflow-y auto
 
