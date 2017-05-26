@@ -4,10 +4,10 @@ const $ = require('../util');
 let isReady = false, el, starBox, btnBack, btnForw, confirmEl;
 
 const clickHandlers = {
-	prev () { $.trigger(EVENT.frame.goto, 'prev'); },
-	next () { $.trigger(EVENT.frame.goto, 'next'); },
-	refresh () { $.trigger(EVENT.frame.goto, 'refresh'); },
-	stop () { $.trigger(EVENT.frame.goto, 'stop'); },
+	// prev () { $.trigger(EVENT.frame.goto, 'prev'); },
+	// next () { $.trigger(EVENT.frame.goto, 'next'); },
+	// refresh () { $.trigger(EVENT.frame.goto, 'refresh'); },
+	// stop () { $.trigger(EVENT.frame.goto, 'stop'); },
 	// home () { $.trigger(EVENT.url.change.to, config.get('homeUrl') || config.get('baseUrl')); },
 	// browser () { helper.openInBrowser(config.get('state.url')); },
 	// copy () { helper.copyToClipboard(config.get('state.url')); },

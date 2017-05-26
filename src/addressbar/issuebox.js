@@ -7,7 +7,11 @@ const repoToSearch = config.get('repoToSearch');
 
 
 const template = `
-	<input class="issueidbox" autocomplete="on" tabindex="3"
+	<input
+		class="issueidbox"
+		autocomplete="on"
+		placeholder="#"
+		tabindex="3"
 		on-focus="onIssueboxFocus"
 		on-keypress="onIssueboxKeypress"
 		on-keyup="onIssueboxKeyup"

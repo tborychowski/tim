@@ -7,7 +7,8 @@ const baseUrl = $.rtrim(config.get('baseUrl'), '/');
 const repoToSearch = config.get('repoToSearch');
 
 const template = `
-	<input class="addressbar" autofocus tabindex="1"
+	<input class="addressbox"
+		tabindex="1"
 		on-focus="onfocus"
 		on-input="oninput"
 		on-keydown="onkeydown"

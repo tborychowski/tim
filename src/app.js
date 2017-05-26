@@ -1,11 +1,11 @@
 const $ = require('./app/util');
 const components = [
 	// 'spellchecker',
-	'appheader',
 	'nav',
 	'nav/subnav',
+	'appheader',
+	'addressbar',
 	'bookmarks',
-	'toolbar',
 
 
 	'notifications',

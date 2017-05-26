@@ -7,13 +7,12 @@
 	top 0
 	left (300px + navbar-width)
 	right 0
-	border-bottom 1px solid #c2c0c2
 	z-index 0
 	text-align center
 	line-height 40px
-	font-size 13px
-	color #666
-	background #d5d5d5
+	font-size 14px
+	color #333
+	background #fff
 	padding 0 5px
 	user-select none
 	transition background-color .2s ease-out, color .2s ease-out
@@ -23,7 +22,7 @@
 		margin 0
 		padding 0
 		font-weight normal
-		font-size 13px
+		font-size inherit
 
 	button
 		float left
@@ -36,7 +35,7 @@
 		text-align center
 		background none
 		border none
-		color #888
+		color inherit
 		transition color .2s ease-out
 
 		&:hover
@@ -45,17 +44,16 @@
 		&:active
 			color black
 
+		&:focus
+			outline none
+
 	.btn-right
 		float right
 
 
 
 .window-inactive #appheader
-	background #fff
 	color #ccc
-
-	button
-		color #ccc
 
 
 

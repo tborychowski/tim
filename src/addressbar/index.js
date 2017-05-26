@@ -1,157 +1,97 @@
+const Ractive = require('ractive');
 const $ = require('../util');
-const { config, EVENT, bookmarks } = require('../services');
+const { EVENT } = require('../services');
+const AddressBox = require('./addressbox');
+const IssueBox = require('./issuebox');
 
-let isReady = false,
-	el = null,
-	issueBox = null,
-	starBox,
-	lastFullUrl = '',
-	searchTerm = null;
+const template = `
+	<div class="addressbar-inner" class-loading="{{loading}}" class-error="{{error}}">
+		<button class="btn-prev ion-md-arrow-back" title="Back" on-click="prev"></button>
+		<button class="btn-next ion-md-arrow-forward" title="Forward" on-click="next"></button>
+		<button class="btn-refresh ion-md-refresh" title="Refresh" on-click="refresh"></button>
+		<button class="btn-stop ion-md-close" title="Stop" on-click="stop"></button>
+		<div class="addressbox-wrapper">
+			<AddressBox value={{url}} on-urlchange="addressChange" />
+			<i class="loader"></i>
+			<i class="error ion-ios-alert-outline" title="Cannot connect to github. Check your network."></i>
+		</div>
+		<IssueBox value="{{issueID}}" on-idchange="addressChange"/>
+	</div>
+`;
 
-const baseUrl = $.rtrim(config.get('baseUrl'), '/');
-const repoToSearch = config.get('repoToSearch');
+
+const data = {
+	loading: false,
+	error: false,
+	url: '',
+	issueID: ''
+};
 
 
-function getFocusedText () {
-	if (searchTerm) return searchTerm;
-	return lastFullUrl;
-}
-
-
-function gotoIssue (id) {
-	const url = [baseUrl, repoToSearch, 'issues', id].join('/');
-	gotoUrl(url);
-
-}
-
-function star (exists) {
-	starBox.toggleClass('is-starred', !!exists);
-	$.trigger(EVENT.bookmark.exists, !!exists);
-}
-
-// BaseURL/Group/RepoName/issues?q=is:open is:issue...
-function getSearchUrl (q) {
-	const query = 'issues?q=is:open is:issue ' + q;
-	return [baseUrl, repoToSearch, query].join('/');
-}
+// function star (exists) {
+// 	// starBox.toggleClass('is-starred', !!exists);
+// 	$.trigger(EVENT.bookmark.exists, !!exists);
+// }
 
 function checkIfBookmarked (url) {
 	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
-	bookmarks.getByUrl(url).then(star);
+	// bookmarks.getByUrl(url).then(star);
 }
 
 
 function gotoUrl (url) {
-	searchTerm = null;
+	if (url) this.set('url', url.trim());
+	url = this.get('url');
 
-	if (url) el[0].value = url;
-	url = el[0].value.trim();
-
-	const validUrl = $.parseUrl(url);
-
-	if (!validUrl) {	// not a URL - do search
-		searchTerm = url;
-		url = getSearchUrl(url);
-	}
-
-	star(false);
+	// star(false);
 	if (url) $.trigger(EVENT.frame.goto, url);
 	$.trigger(EVENT.address.input.end);
 }
 
 
 function onUrlChanged (webview, issue) {
-	if (issue) searchTerm = null;
-
-	lastFullUrl = config.get('state.url');
-
-	// el[0].value = getUnfocusedText();
-	el[0].value = issue.url;
-	issueBox[0].value = (issue && issue.id ? issue.id : '');
-
+	this.set('url', issue.url);
+	this.set('issueID', (issue && issue.id ? issue.id : ''));
 	if (issue && issue.url) checkIfBookmarked(issue.url);
 }
 
 
-function focusAddressbar () {
-	setTimeout(() => { el[0].select(); }, 10);
+
+function addressChange (e) {
+	gotoUrl.call(this, e.url);
 }
 
-function focusIssuebox () {
-	setTimeout(() => { issueBox[0].select(); }, 10);
+function prev () {
+	$.trigger(EVENT.frame.goto, 'prev');
 }
 
-
-
-function onFocus () {
-	el[0].select();
+function next () {
+	$.trigger(EVENT.frame.goto, 'next');
 }
 
-function onKeyPress (e) {
-	if (e.key === 'Enter') return gotoUrl();
+function refresh () {
+	$.trigger(EVENT.frame.goto, 'refresh');
 }
 
-function onKeyDown (e) {
-	if (e.key === 'ArrowDown') return $.trigger(EVENT.history.focus);
-	if (e.key === 'Escape') {
-		e.target.value = getFocusedText();
-		e.target.select();
-		$.trigger(EVENT.address.input.end);
-	}
-}
-
-function onInput (e) {
-	$.trigger(EVENT.address.input.key, e);
-}
-
-function onIssueBoxFocus(e) {
-	e.target.select();
-	$.trigger(EVENT.address.input.end);
-}
-
-function onIssueBoxKeydown (e) {
-	if (!$.isNumberField(e)) return e.preventDefault();
-}
-
-function onIssueBoxKeyup (e) {
-	const val = e.target.value;
-	if (!(/^\d*$/).test(val)) e.target.value = parseInt(val, 10) || '';
-}
-
-function onIssueBoxPaste (e) {
-	const pasteText = e.clipboardData && e.clipboardData.getData('Text');
-	if (!(/^\d*$/).test(pasteText)) e.preventDefault();
+function stop () {
+	$.trigger(EVENT.frame.goto, 'stop');
 }
 
 
-function init () {
-	if (isReady) return;
 
-	el = $('.addressbar');
-	issueBox = $('.issue-id-bar');
-	starBox = $('header .star-box');
-
-	el.on('focus', onFocus);
-	el.on('keydown', onKeyDown);
-	el.on('keypress', onKeyPress);
-	el.on('input', onInput);
-
-	issueBox.on('focus', onIssueBoxFocus);
-	issueBox.on('keypress', e => { if (e.key === 'Enter') gotoIssue(e.target.value); });
-	issueBox.on('keydown', onIssueBoxKeydown);
-	issueBox.on('keyup', onIssueBoxKeyup);
-	issueBox.on('paste', onIssueBoxPaste);
-
-
-	$.on(EVENT.url.change.to, gotoUrl);
-	$.on(EVENT.url.change.done, onUrlChanged);
-	$.on(EVENT.address.focus, focusAddressbar);
-	$.on(EVENT.address.issueFocus, focusIssuebox);
-
-	isReady = true;
+function oninit () {
+	this.on({ addressChange, prev, next, refresh, stop });
+	$.on(EVENT.url.change.start, () => this.set('loading', true));
+	$.on(EVENT.url.change.end, () => this.set('loading', false));
+	$.on(EVENT.url.change.to, gotoUrl.bind(this));
+	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
 }
 
 
-module.exports = {
-	init
-};
+module.exports = new Ractive({
+	el: '#addressbar',
+	data,
+	template,
+	oninit,
+	components: { AddressBox, IssueBox },
+});
