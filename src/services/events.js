@@ -13,9 +13,6 @@ module.exports = {
 		toggle: 'bookmark-toggle',
 		exists: 'bookmark-exists'
 	},
-	bookmarks: {
-		refresh: 'refresh-bookmarks'
-	},
 	connection: {
 		error: {
 			show: 'show-connection-error',
@@ -43,26 +40,11 @@ module.exports = {
 	history: {
 		focus: 'focus-search-results'
 	},
-	menu: {
-		click: 'menu-clicked'
-	},
-	myissues: {
-		refresh: 'refresh-my-issues'
-	},
-	nav: {
-		goto: 'nav-goto',
-	},
 	notifications: {
-		toggle: 'notifications-toggle',
 		devtools: 'notification-devtools-toggle',
-		count: 'notifications-count-updated',
-		refresh: 'refresh-notifications',
-		reload: 'reload-notifications'
+		reload: 'reload-notifications-page'
 	},
 	preview: 'show-preview',
-	projects: {
-		refresh: 'refresh-projects'
-	},
 	search: {
 		start: 'start-search',
 		stop: 'stop-search'
@@ -70,11 +52,17 @@ module.exports = {
 	section: {
 		change: 'change-section',
 		refresh: 'refresh-section',
-		badge: 'set-section-badge'
+		badge: 'set-section-badge',
 	},
 	settings: {
 		show: 'show-settings',
 		changed: 'on settings changed'
+	},
+	subsection: {
+		backbtn: {
+			click: 'subsection-back-btn-click',
+			toggle: 'subsection-back-btn-toggle',
+		}
 	},
 	swipe: {
 		start: 'swipe-start',

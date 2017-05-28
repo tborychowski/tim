@@ -103,8 +103,8 @@ function onUrlChanged (wv, issue) {
 }
 
 
-function refresh (full) {
-	if (Module && full === true) {
+function refresh (reset) {
+	if (Module && reset === true) {
 		data.bookmarks = [];
 		Module.reset(data);
 	}
@@ -144,10 +144,19 @@ function render (issues) {
 function oninit () {
 	$.on(EVENT.bookmark.add, addBookmark);
 	$.on(EVENT.bookmark.remove, removeBookmark);
-	$.on(EVENT.bookmarks.refresh, () => refresh(true));
+	$.on(EVENT.section.refresh, sectionRefresh);
+	$.on(EVENT.section.change, sectionChanged);
 	$.on(EVENT.url.change.done, onUrlChanged);
 	this.on({ openRepo, openIssue });
-	refresh();
+}
+
+
+function sectionRefresh (id) {
+	if (id === 'bookmarks') refresh(true);
+}
+
+function sectionChanged (id) {
+	if (id === 'bookmarks' && !data.bookmarks.length) refresh();
 }
 
 const Module = new Ractive({

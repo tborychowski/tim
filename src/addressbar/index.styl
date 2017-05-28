@@ -14,7 +14,6 @@
 	button
 		font-size 22px
 		line-height 1
-		transition color .3s
 		margin 0
 		width 34px
 		padding 2px 10px
@@ -33,6 +32,10 @@
 
 		&:focus
 			outline none
+
+		&.disabled
+			color #ccc
+			pointer-events none
 
 	input[type="number"]::-webkit-outer-spin-button
 	input[type="number"]::-webkit-inner-spin-button
@@ -126,6 +129,7 @@
 
 .addressbox
 	width 100%
+	background-color #eee
 
 .issueidbox
 	width 100px

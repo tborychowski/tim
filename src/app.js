@@ -6,19 +6,15 @@ const components = [
 	'appheader',
 	'addressbar',
 	'bookmarks',
-
+	'myissues',
 
 	'notifications',
-	'myissues',
-	'header',
 	'frame',
-	// 'addressbar',
 	'settings',
 	// 'history',
 	'search',
 	'mainmenu',
 	'contextmenu',
-	// 'projects',
 	'updater',
 	'touchbar',
 ];

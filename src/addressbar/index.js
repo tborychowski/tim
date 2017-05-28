@@ -6,8 +6,8 @@ const IssueBox = require('./issuebox');
 
 const template = `
 	<div class="addressbar-inner" class-loading="{{loading}}" class-error="{{error}}">
-		<button class="btn-prev ion-md-arrow-back" title="Back" on-click="prev"></button>
-		<button class="btn-next ion-md-arrow-forward" title="Forward" on-click="next"></button>
+		<button class="btn-prev ion-md-arrow-back" class-disabled="{{cantGoBack}}" title="Back" on-click="prev"></button>
+		<button class="btn-next ion-md-arrow-forward" class-disabled="{{cantGoForward}}" title="Forward" on-click="next"></button>
 		<button class="btn-refresh ion-md-refresh" title="Refresh" on-click="refresh"></button>
 		<button class="btn-stop ion-md-close" title="Stop" on-click="stop"></button>
 		<div class="addressbox-wrapper">
@@ -23,6 +23,8 @@ const template = `
 const data = {
 	loading: false,
 	error: false,
+	cantGoBack: true,
+	cantGoForward: true,
 	url: '',
 	issueID: ''
 };
@@ -53,6 +55,9 @@ function onUrlChanged (webview, issue) {
 	this.set('url', issue.url);
 	this.set('issueID', (issue && issue.id ? issue.id : ''));
 	if (issue && issue.url) checkIfBookmarked(issue.url);
+
+	this.set('cantGoBack', !webview.canGoBack());
+	this.set('cantGoForward', !webview.canGoForward());
 }
 
 
@@ -76,7 +81,6 @@ function refresh () {
 function stop () {
 	$.trigger(EVENT.frame.goto, 'stop');
 }
-
 
 
 function oninit () {

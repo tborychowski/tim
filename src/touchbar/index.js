@@ -5,6 +5,10 @@ const $ = require('../util');
 const imgPath = require('path').resolve(__dirname, '..', '..', 'assets');
 let btnBookmark;
 
+
+// new set:
+// [notifications] [bookmarks] [myissues] --- [bookmark] [open in borwser]
+
 function initBar () {
 	const btnRefreshSidebar = new TouchBarButton({
 		icon: imgPath + '/tb-refresh.png',

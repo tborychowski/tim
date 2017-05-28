@@ -12,6 +12,50 @@
 	background rgba(#2C384D, 0.3)
 
 
+
+.subnav-header
+	display flex
+
+	h1
+		font-size 14px
+		font-weight 300
+		line-height 12px
+		flex 1
+		margin 0
+		color #eee
+		background transparent
+		padding 13px 0 0
+		height 38px
+		text-transform uppercase
+		text-align center
+		-webkit-app-region drag
+
+	button
+			font-size 22px
+			line-height 1
+			margin 0
+			width 45px
+			height 38px
+			padding 2px 0
+			margin 0 0 0 -45px
+			cursor pointer
+			text-align center
+			background none
+			border none
+			color #eee
+			transition color .2s ease-out
+
+			&:hover
+				color #4078c0
+
+			&:active
+				color black
+
+			&:focus
+				outline none
+	.btn-back
+		margin 0 -45px 0 0
+
 .subnav-section
 	position absolute
 	top 0
@@ -33,20 +77,6 @@
 .subnav-section a:hover
 	text-decoration underline
 
-
-
-.subnav-section h1
-	font-size 14px
-	font-weight 300
-	line-height 12px
-	margin 0
-	color #eee
-	background transparent
-	padding 13px 0 0
-	height 38px
-	text-transform uppercase
-	text-align center
-	-webkit-app-region drag
 
 
 .subnav-section h2

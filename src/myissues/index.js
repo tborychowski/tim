@@ -71,10 +71,19 @@ function render (issues) {
 }
 
 function oninit () {
-	$.on(EVENT.myissues.refresh, refresh);
+	$.on(EVENT.section.refresh, sectionRefresh);
+	$.on(EVENT.section.change, sectionChanged);
 	this.on({ openIssue, openRepo });
-	refresh();
 }
+
+function sectionRefresh (id) {
+	if (id === 'myissues') refresh(true);
+}
+
+function sectionChanged (id) {
+	if (id === 'myissues' && !data.issues.length) refresh();
+}
+
 
 module.exports = new Ractive({
 	el: '#subnav .subnav-myissues .subnav-section-list',

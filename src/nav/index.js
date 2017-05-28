@@ -33,17 +33,13 @@ const data = {
 	]
 };
 
-function refreshSection (id = data.activeSection) {
-	if (EVENT[id].refresh) $.trigger(EVENT[id].refresh);
-}
-
 function setSectionBadge (id, count) {
 	const btn = data.buttons.filter(b => b.id === id)[0];
 	btn.badge = count;
 }
 
 function changeSection (id) {
-	if (id === data.activeSection) return refreshSection(id);
+	if (id === data.activeSection) return $.trigger(EVENT.section.refresh, id);
 	data.activeSection = id;
 	config.set('state.section', id);
 	$.trigger(EVENT.section.change, id);
@@ -60,7 +56,7 @@ function onClick (e) {
 
 function onKeyUp (e) {
 	const handledKeys = {
-		r: refreshSection,
+		r: () => $.trigger(EVENT.section.refresh, data.activeSection),
 		1: () => changeSection('notifications'),
 		2: () => changeSection('bookmarks'),
 		3: () => changeSection('myissues'),
@@ -76,7 +72,6 @@ function onKeyUp (e) {
 }
 
 function oninit () {
-	$.on(EVENT.section.refresh, refreshSection);
 	$.on(EVENT.section.badge, setSectionBadge);
 	$.on(EVENT.document.keyup, onKeyUp);
 	$.on(EVENT.updater.nav.show, () => data.bottomButtons.update.show = true);

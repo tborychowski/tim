@@ -1,7 +1,7 @@
 const $ = require('../util');
 const { config, EVENT, github, helper, isDev, WebView } = require('../services');
 
-let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer, backBtn;
+let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer;
 const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 
 const PARTICIPATING = !isDev;
@@ -41,11 +41,10 @@ function onFrameUrlChanged () {
 
 function checkIfRootUrl () {
 	const curr = webview[0].getURL();
-	backBtn.toggle(curr !== getNotificationsUrl());
+	$.trigger(EVENT.subsection.backbtn.toggle, curr !== getNotificationsUrl());
 }
 
-function backToRoot (e) {
-	e.preventDefault();
+function backToRoot () {
 	webview[0].loadURL(getNotificationsUrl());
 
 }
@@ -54,15 +53,6 @@ function refresh (fullReload) {
 	if (!webview[0] || !webview[0].send) return;
 	if (fullReload) webview[0].reload();
 	else webview[0].send('reload');
-}
-
-
-function onClick (e) {
-	let target = $(e.target);
-	if (target.is('.js-refresh')) {
-		e.preventDefault();
-		refresh();
-	}
 }
 
 
@@ -80,14 +70,20 @@ function checkNotifications (delay = 0) {
 }
 
 
+function sectionRefresh (id) {
+	if (id === 'notifications') refresh();
+}
+
+function sectionChanged (id) {
+	// if (id === 'notifications' && !data.bookmarks.length) initialise();
+}
+
 
 function init () {
 	if (isReady) return;
 
 	el = $('.subnav-notifications');
 	content = el.find('.subnav-section-list');
-	backBtn = $('.subnav-notifications .js-prev');
-
 
 	webview = WebView({
 		url: getNotificationsUrl(),
@@ -103,10 +99,10 @@ function init () {
 	webview.on('did-stop-loading', loadingStop);
 
 
-	el.on('click', onClick);
-	backBtn.on('click', backToRoot);
+	$.on(EVENT.subsection.backbtn.click, backToRoot);
 
-	$.on(EVENT.notifications.refresh, refresh);
+	$.on(EVENT.section.refresh, sectionRefresh);
+	$.on(EVENT.section.change, sectionChanged);
 	$.on(EVENT.notifications.devtools, webview.toggleDevTools);
 	$.on(EVENT.notifications.reload, () => refresh(true));
 	$.on(EVENT.settings.changed, () => refresh(true));

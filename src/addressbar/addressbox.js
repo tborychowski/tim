@@ -77,7 +77,7 @@ function oninit () {
 }
 
 function onrender () {
-	this.inputbox = this.el.querySelector('.addressbar');
+	this.inputbox = this.el.querySelector('.addressbox');
 }
 
 

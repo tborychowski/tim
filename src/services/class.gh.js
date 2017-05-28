@@ -46,7 +46,7 @@ module.exports = class GitHub {
 			.then(res => {
 				if (!fullResp) return res;
 				return { headers: res.headers, body: res.body };
-			})
+			});
 			// .catch(err => {
 			// 	if (isDev) console.error(options.uri, err);
 			// });

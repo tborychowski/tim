@@ -5,11 +5,13 @@ const { EVENT } = require('../services');
 const template = `
 	{{#sections:id}}
 		<section class="subnav-section subnav-{{id}} {{activeSection === id ? 'active' : ''}}">
-			{{#if showBackBtn}}
-				<a href="#" class="nav-icon-btn nav-icon-btn-left header-btn js-prev ion-md-arrow-back" title="Back" on-click="goback"></a>
-			{{/if}}
-			<h1>{{title}}</h1>
-			<a href="#" class="nav-icon-btn header-btn js-refresh ion-md-refresh" title="Refresh (r)" on-click="refresh"></a>
+			<header class="subnav-header">
+				{{#if showBackBtn}}
+					<button class="btn-back ion-md-arrow-back" title="Back" on-click="goback"></button>
+				{{/if}}
+				<h1>{{title}}</h1>
+				<button class="btn-refresh ion-md-refresh" title="Refresh (r)" on-click="refresh"></button>
+			</header>
 			<div class="subnav-section-list"></div>
 		</section>
 	{{/sections}}
@@ -17,8 +19,9 @@ const template = `
 
 const data = {
 	activeSection: 'notifications',
+	showBackBtn: false,
 	sections: {
-		notifications: { title: 'Notifications', showBackBtn: false },
+		notifications: { title: 'Notifications' },
 		bookmarks: { title: 'Bookmarks' },
 		myissues: { title: 'My Issues' },
 		projects: { title: 'Projects' },
@@ -27,17 +30,21 @@ const data = {
 
 
 function refresh () {
-	$.trigger(EVENT.section.refresh);
-	return false;
+	$.trigger(EVENT.section.refresh, data.activeSection);
 }
 
 function goback () {
-	return false;
+	$.trigger(EVENT.subsection.backbtn.click);
 }
 
+function onSectionChange (id) {
+	data.activeSection = id;
+	this.set('showBackBtn', false);
+}
 
 function oninit () {
-	$.on(EVENT.section.change, id => data.activeSection = id);
+	$.on(EVENT.section.change, onSectionChange);
+	$.on(EVENT.subsection.backbtn.toggle, show => this.set('showBackBtn', show));
 	this.on({ refresh, goback });
 }
 
