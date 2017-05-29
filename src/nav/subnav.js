@@ -42,9 +42,13 @@ function onSectionChange (id) {
 	this.set('showBackBtn', false);
 }
 
+function onBackBtnToggle (show) {
+	this.set('showBackBtn', show);
+}
+
 function oninit () {
-	$.on(EVENT.section.change, onSectionChange);
-	$.on(EVENT.subsection.backbtn.toggle, show => this.set('showBackBtn', show));
+	$.on(EVENT.section.change, onSectionChange.bind(this));
+	$.on(EVENT.subsection.backbtn.toggle, onBackBtnToggle.bind(this));
 	this.on({ refresh, goback });
 }
 
