@@ -11,7 +11,7 @@
 	text-align center
 	line-height 40px
 	font-size 14px
-	color #333
+	color #666
 	background #fff
 	padding 0 5px
 	user-select none
@@ -36,7 +36,7 @@
 		background none
 		border none
 		color inherit
-		transition color .2s ease-out
+		transition color 0.2s ease-out, -webkit-text-stroke .2s ease-out
 
 		&:hover
 			color #4078c0
@@ -55,7 +55,8 @@
 .window-inactive #appheader
 	color #ccc
 
-
+	.star-box .btn-star
+		-webkit-text-stroke 1px #ccc
 
 
 
@@ -65,6 +66,7 @@
 
 	.btn-star
 		display block
+		-webkit-text-stroke 1px #666
 
 	.btn-unstar
 		color #E73528

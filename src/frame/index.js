@@ -2,6 +2,7 @@ const { session, getGlobal } = require('electron').remote;
 const ses = session.fromPartition('persist:github');
 const args = getGlobal('appArgs');
 
+
 const { config, EVENT, helper, isDev, WebView } = require('../services');
 
 const $ = require('../util');
