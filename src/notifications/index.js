@@ -50,7 +50,7 @@ function backToRoot () {
 }
 
 function refresh (fullReload) {
-	if (!webview[0] || !webview[0].send) return;
+	if (!webview || !webview.length || !webview[0].send) return;
 	if (fullReload) webview[0].reload();
 	else webview[0].send('reload');
 }
@@ -69,22 +69,7 @@ function checkNotifications (delay = 0) {
 		});
 }
 
-
-function sectionRefresh (id) {
-	if (id === 'notifications') refresh();
-}
-
-function sectionChanged (id) {
-	// if (id === 'notifications' && !data.bookmarks.length) initialise();
-}
-
-
-function init () {
-	if (isReady) return;
-
-	el = $('.subnav-notifications');
-	content = el.find('.subnav-section-list');
-
+function initWebview () {
 	webview = WebView({
 		url: getNotificationsUrl(),
 		renderTo: content,
@@ -97,13 +82,30 @@ function init () {
 	webview.on('did-frame-finish-load', checkIfRootUrl);
 	webview.on('did-start-loading', loadingStart);
 	webview.on('did-stop-loading', loadingStop);
+}
+
+
+function sectionRefresh (id) {
+	if (id === 'notifications') refresh();
+}
+
+function sectionChanged (id) {
+	if (id === 'notifications' && !webview) initWebview();
+}
+
+
+function init () {
+	if (isReady) return;
+
+	el = $('.subnav-notifications');
+	content = el.find('.subnav-section-list');
 
 
 	$.on(EVENT.subsection.backbtn.click, backToRoot);
 
 	$.on(EVENT.section.refresh, sectionRefresh);
 	$.on(EVENT.section.change, sectionChanged);
-	$.on(EVENT.notifications.devtools, webview.toggleDevTools);
+	$.on(EVENT.notifications.devtools, () => webview.toggleDevTools());
 	$.on(EVENT.notifications.reload, () => refresh(true));
 	$.on(EVENT.settings.changed, () => refresh(true));
 	$.on(EVENT.url.change.end, onFrameUrlChanged);

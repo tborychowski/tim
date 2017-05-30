@@ -44,7 +44,6 @@ module.exports = {
 		devtools: 'notification-devtools-toggle',
 		reload: 'reload-notifications-page'
 	},
-	preview: 'show-preview',
 	search: {
 		start: 'start-search',
 		stop: 'stop-search'

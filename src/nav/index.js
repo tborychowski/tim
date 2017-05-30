@@ -5,7 +5,7 @@ const { config, EVENT } = require('../services');
 
 const template = `
 	{{#buttons}}
-		<a href="#" class="nav-btn nav-{{id}}" class-active="{{activeSection === id}}" title="{{title}}" on-click="onClick">
+		<a href="#" class="nav-btn nav-{{id}}" class-active="activeSection === id" title="{{title}}" on-click="onClick">
 			<i class="icon"></i>
 			{{#if (badge > 0)}}<span class="badge">{{badge}}</span>{{/if}}
 		</a>
@@ -25,7 +25,6 @@ const data = {
 		{ id: 'notifications', title: 'Notifications (1)', badge: 0 },
 		{ id: 'bookmarks', title: 'Bookmarks (2)', badge: 0 },
 		{ id: 'myissues', title: 'My Issues (3)', badge: 0 },
-		// { id: 'projects', title: 'Projects (4)', badge: 0 },
 	],
 	bottomButtons: [
 		{ id: 'update', title: 'Update available. Click to see details.', show: false },
@@ -34,13 +33,17 @@ const data = {
 };
 
 function setSectionBadge (id, count) {
-	const btn = data.buttons.filter(b => b.id === id)[0];
-	btn.badge = count;
+	data.buttons.filter(b => b.id === id)[0].badge = count;
+	this.set('buttons', data.buttons);
+}
+
+function showUpdate () {
+	this.set('bottomButtons.update.show', true);
 }
 
 function changeSection (id) {
 	if (id === data.activeSection) return $.trigger(EVENT.section.refresh, id);
-	data.activeSection = id;
+	this.set('activeSection', id);
 	config.set('state.section', id);
 	$.trigger(EVENT.section.change, id);
 }
@@ -49,7 +52,7 @@ function onClick (e) {
 	const id = e.get().id;
 	if (id === 'update') $.trigger(EVENT.updater.nav.clicked);
 	else if (id === 'settings') $.trigger(EVENT.settings.show);
-	else changeSection(id);
+	else changeSection.call(this, id);
 	return false;
 }
 
@@ -72,15 +75,17 @@ function onKeyUp (e) {
 }
 
 function oninit () {
-	$.on(EVENT.section.badge, setSectionBadge);
-	$.on(EVENT.document.keyup, onKeyUp);
-	$.on(EVENT.updater.nav.show, () => data.bottomButtons.update.show = true);
+	$.on(EVENT.section.badge, setSectionBadge.bind(this));
+	$.on(EVENT.document.keyup, onKeyUp.bind(this));
+	$.on(EVENT.updater.nav.show, showUpdate.bind(this));
 	this.on({ onClick });
+
+	const lastSection = config.get('state.section');
+	this.set('activeSection', lastSection);
 }
 
 function oncomplete () {
-	const lastSection = config.get('state.section');
-	if (lastSection) changeSection(lastSection);
+	$.trigger(EVENT.section.change, data.activeSection);
 }
 
-module.exports = new Ractive({ el: '#nav', magic: true, data, template, oninit, oncomplete });
+module.exports = new Ractive({ el: '#nav', data, template, oninit, oncomplete });

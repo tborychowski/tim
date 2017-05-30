@@ -5,9 +5,9 @@ const AddressBox = require('./addressbox');
 const IssueBox = require('./issuebox');
 
 const template = `
-	<div class="addressbar-inner" class-loading="{{loading}}" class-error="{{error}}">
-		<button class="btn-prev ion-md-arrow-back" class-disabled="{{cantGoBack}}" title="Back" on-click="prev"></button>
-		<button class="btn-next ion-md-arrow-forward" class-disabled="{{cantGoForward}}" title="Forward" on-click="next"></button>
+	<div class="addressbar-inner" class-loading="loading" class-error="error">
+		<button class="btn-prev ion-md-arrow-back" class-disabled="cantGoBack" title="Back" on-click="prev"></button>
+		<button class="btn-next ion-md-arrow-forward" class-disabled="cantGoForward" title="Forward" on-click="next"></button>
 		<button class="btn-refresh ion-md-refresh" title="Refresh" on-click="refresh"></button>
 		<button class="btn-stop ion-md-close" title="Stop" on-click="stop"></button>
 		<div class="addressbox-wrapper">

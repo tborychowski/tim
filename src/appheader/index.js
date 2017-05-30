@@ -6,8 +6,8 @@ const $ = require('../util');
 const template = `
 	<button class="btn-right ion-md-open" title="Open in browser" on-click="openBrowser"></button>
 	<button class="btn-right ion-md-link" title="Copy link" on-click="copyUrl"></button>
-	<span class="copy-link-confirmation" class-flash="{{flashing}}">Link copied!</span>
-	<div class="star-box" class-starred="{{starred}}">
+	<span class="copy-link-confirmation" class-flash="flashing">Link copied!</span>
+	<div class="star-box" class-starred="starred">
 		<button class="btn-star ion-ios-bookmark-outline" title="Bookmark" on-click="star"></button>
 		<button class="btn-unstar ion-ios-bookmark" title="Remove Bookmark" on-click="unstar"></button>
 	</div>

@@ -1,6 +1,5 @@
 const $ = require('./app/util');
 const components = [
-	// 'spellchecker',
 	'nav',
 	'nav/subnav',
 	'appheader',
@@ -14,9 +13,12 @@ const components = [
 	// 'history',
 	'search',
 	'mainmenu',
-	'contextmenu',
+	// 'contextmenu',
 	'updater',
 	'touchbar',
+
+
+	'spellchecker',
 ];
 
 components.forEach(c => {

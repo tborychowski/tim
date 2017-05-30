@@ -2,6 +2,7 @@ const Ractive = require('ractive');
 const $ = require('../util');
 const { EVENT } = require('../services');
 
+
 const template = `
 	{{#sections:id}}
 		<section class="subnav-section subnav-{{id}} {{activeSection === id ? 'active' : ''}}">
@@ -18,7 +19,7 @@ const template = `
 `;
 
 const data = {
-	activeSection: 'notifications',
+	activeSection: '',
 	showBackBtn: false,
 	sections: {
 		notifications: { title: 'Notifications' },
@@ -38,7 +39,7 @@ function goback () {
 }
 
 function onSectionChange (id) {
-	data.activeSection = id;
+	this.set('activeSection', id);
 	this.set('showBackBtn', false);
 }
 
@@ -53,4 +54,4 @@ function oninit () {
 }
 
 
-module.exports = new Ractive({ el: '#subnav', magic: true, data, template, oninit });
+module.exports = new Ractive({ el: '#subnav', data, template, oninit });

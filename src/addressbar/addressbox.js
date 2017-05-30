@@ -35,6 +35,10 @@ function getSearchUrl (q) {
 	return [baseUrl, repoToSearch, query].join('/');
 }
 
+function onUrlChanged (webview) {
+	lastFullUrl = webview.getURL();
+}
+
 
 function onfocus () {
 	setTimeout(() => { this.inputbox.select(); }, 10);
@@ -74,6 +78,7 @@ function oninput (e) {
 function oninit () {
 	this.on({ onfocus, oninput, onkeydown, onkeypress });
 	$.on(EVENT.address.focus, onfocus.bind(this));
+	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
 }
 
 function onrender () {

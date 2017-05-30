@@ -31,8 +31,16 @@ const data = {
 	prettyDate: d => $.prettyDate(d),
 };
 
+function getIssues () {
+	return github.getMyIssues()
+		.then(issues => {
+			$.trigger(EVENT.section.badge, 'myissues', issues.length);
+			return issues;
+		});
+}
+
 function refresh () {
-	github.getMyIssues().then(render);
+	getIssues().then(render.bind(this));
 }
 
 function copleteIssueModel (iss) {
@@ -66,28 +74,27 @@ function openRepo (e) {
 function render (issues) {
 	if (!issues || !issues.length) return;
 	issues = issues.map(copleteIssueModel);
-	data.issues = helper.groupIssues(issues);
-	$.trigger(EVENT.section.badge, 'myissues', issues.length);
+	this.set('issues', helper.groupIssues(issues));
 }
 
 function oninit () {
-	$.on(EVENT.section.refresh, sectionRefresh);
-	$.on(EVENT.section.change, sectionChanged);
+	$.on(EVENT.section.refresh, sectionRefresh.bind(this));
+	$.on(EVENT.section.change, sectionChanged.bind(this));
 	this.on({ openIssue, openRepo });
 }
 
 function sectionRefresh (id) {
-	if (id === 'myissues') refresh(true);
+	if (id === 'myissues') refresh.call(this, true);
 }
 
 function sectionChanged (id) {
-	if (id === 'myissues' && !data.issues.length) refresh();
+	if (id === 'myissues' && !data.issues.length) refresh.call(this);
+	else getIssues.call(this);
 }
 
 
 module.exports = new Ractive({
 	el: '#subnav .subnav-myissues .subnav-section-list',
-	magic: true,
 	data,
 	template,
 	oninit,

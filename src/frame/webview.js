@@ -3,6 +3,8 @@ const msg = ipc.sendToHost;
 const realnames = require('../realnames/realnames-webview');
 const helper = require('./webview-helper');
 
+const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
+
 
 let isScrolling = false, isWheeling = false;
 
@@ -75,15 +77,6 @@ function onClick (e) {
 }
 
 
-function onContextMenu (e) {
-	if (e.target.matches('img')) return msg('showImgMenu', e.target.getAttribute('src'));
-	if (e.target.matches('a')) return msg('showLinkMenu', e.target.getAttribute('href'));
-	const selText = helper.getSelectionText(document);
-	if (selText) return msg('showSelectionMenu', selText);
-}
-
-
-
 function onKeyUp (e) {
 	if (document.activeElement.matches('input,select,iframe,textarea')) return;
 	const ev = {
@@ -115,7 +108,6 @@ function init () {
 	ipc.on('swipe-end', onSwipeEnd);
 
 	document.addEventListener('click', onClick);
-	document.addEventListener('contextmenu', onContextMenu);
 	document.addEventListener('wheel', onWheel);
 	document.addEventListener('keyup', onKeyUp);
 
@@ -132,6 +124,13 @@ function init () {
 	scrollToLastComment(issue);
 
 	onDomChange();
+
+
+	window.spellCheckHandler = new SpellCheckHandler();
+	window.spellCheckHandler.attachToInput();
+	window.spellCheckHandler.switchLanguage('en-US');
+	let contextMenuBuilder = new ContextMenuBuilder(window.spellCheckHandler);
+	new ContextMenuListener(info => { contextMenuBuilder.showPopupMenu(info); });
 }
 
 
