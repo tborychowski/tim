@@ -42,7 +42,7 @@ function unstar () {
 }
 
 function onUrlChanged (webview, issue) {
-	this.set('title', issue.name || 'Github Browser');
+	this.set('title', issue && issue.name || 'Github Browser');
 }
 
 
