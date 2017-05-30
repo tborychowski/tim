@@ -1,6 +1,6 @@
 const Ractive = require('ractive');
 const fade = require('ractive-transitions-fade');
-const { EVENT, bookmarks, github, helper } = require('../services');
+const { EVENT, bookmarks, github, helper, config } = require('../services');
 const $ = require('../util');
 
 const BuildStatus = require('./build-status');
@@ -21,9 +21,9 @@ const template = `
 		<div class="repo-box">
 			<h2>
 				{{#if hasUrl }}
-					<span class="hdr">{{repoShortName}}</span>
-				{{else}}
 					<a href="{{repoUrl}}" class="hdr" on-click="openRepo">{{repoShortName}}</a>
+				{{else}}
+					<span class="hdr">{{repoShortName}}</span>
 				{{/if}}
 			</h2>
 			<ul class="repo-box-issues">
@@ -45,10 +45,27 @@ const data = {
 	issueIcon: iss => issueTypeCls[iss.type],
 	issueCls: iss => {
 		const repo = (iss.repo || '').replace(/[\/\.]/g, '-').toLowerCase();
-		return iss.id ? `issue-${repo}-${iss.id}` : '';
+		const id = iss.id ? iss.id : iss.url.split('/').pop();
+		return `issue-${repo}-${id}`;
 	},
 };
 
+const computed = {
+	groupedBookmarks: function () {
+		const groups = helper.groupIssues(this.get('bookmarks'));
+		if (!groups[DEFAULT_PROJECTS_REPO_NAME]) {
+			const repo = `${config.get('repoToSearch')}/projects`;
+			groups[DEFAULT_PROJECTS_REPO_NAME] = {
+				name: DEFAULT_PROJECTS_REPO_NAME,
+				repo,
+				repoShortName: DEFAULT_PROJECTS_REPO_NAME,
+				repoUrl: `${config.get('baseUrl')}${repo}`,
+				hasUrl: true,
+			};
+		}
+		return groups;
+	}
+};
 
 
 let throttled = null;
@@ -77,7 +94,7 @@ function openRepo (e) {
 
 
 function addBookmark (issue) {
-	issue = copleteIssueModel(issue);
+	issue = completeIssueModel(issue);
 	bookmarks.add(issue);
 	data.bookmarks.push(issue);
 	render(data.bookmarks);
@@ -100,6 +117,12 @@ function onUrlChanged (wv, issue) {
 	if (iss) iss.unread = false;
 	Module.set('bookmarks', data.bookmarks);
 	bookmarks.setUnreadByUrl(issue.url, false);
+	checkIfBookmarked(issue.url);
+}
+
+function checkIfBookmarked (url) {
+	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
+	bookmarks.getByUrl(url).then(exists => { $.trigger(EVENT.bookmark.exists, !!exists); });
 }
 
 
@@ -116,7 +139,7 @@ function refresh (reset) {
 }
 
 
-function copleteIssueModel (iss) {
+function completeIssueModel (iss) {
 	if (!iss.repo) {
 		if (helper.getPageActualTypeFromUrl(iss.url) === 'project') {
 			iss.repo = DEFAULT_PROJECTS_REPO_NAME;
@@ -134,7 +157,7 @@ function copleteIssueModel (iss) {
 
 
 function render (issues) {
-	issues = issues.map(copleteIssueModel);
+	issues = issues.map(completeIssueModel);
 	issues = helper.mergeArrays(issues, data.bookmarks);
 	Module.set('bookmarks', issues);
 	return issues;
@@ -165,11 +188,7 @@ const Module = new Ractive({
 	template,
 	oninit,
 	components: { BuildStatus },
-	computed: {
-		groupedBookmarks: function () {
-			return helper.groupIssues(this.get('bookmarks'));
-		}
-	},
+	computed,
 	transitions: { fade }
 });
 

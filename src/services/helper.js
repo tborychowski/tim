@@ -106,11 +106,13 @@ function groupIssues (issues) {
 	if (!issues) return {};
 	const remap = {};
 	issues.forEach(iss => {
+		let repoUrl = `${config.get('baseUrl')}${iss.repo}/issues`;
+		if (iss.type === 'project') repoUrl = `${config.get('baseUrl')}${config.get('repoToSearch')}/projects`;
 		remap[iss.repo] = remap[iss.repo] || {
 			name: iss.repo,
 			repoShortName: iss.repo.split('/').pop(),
-			repoUrl: `${config.get('baseUrl')}${iss.repo}/issues`,
-			hasUrl: iss.type in { project: 1, page: 1 },
+			repoUrl,
+			hasUrl: (iss.type !== 'page'),
 			items: []
 		};
 		if (iss.url) remap[iss.repo].items.push(iss);

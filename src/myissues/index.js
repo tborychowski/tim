@@ -23,12 +23,10 @@ const template = `
 		</div>
 	{{/issues}}
 `;
-						// <div class="issue-date">updated: {{prettyDate(updated_at)}}</div>
 
 const data = {
 	issues: {} ,
-	issueIcon: iss => issueTypeCls[iss.type],
-	prettyDate: d => $.prettyDate(d),
+	issueIcon: iss => issueTypeCls[iss.type]
 };
 
 function getIssues () {
@@ -77,11 +75,6 @@ function render (issues) {
 	this.set('issues', helper.groupIssues(issues));
 }
 
-function oninit () {
-	$.on(EVENT.section.refresh, sectionRefresh.bind(this));
-	$.on(EVENT.section.change, sectionChanged.bind(this));
-	this.on({ openIssue, openRepo });
-}
 
 function sectionRefresh (id) {
 	if (id === 'myissues') refresh.call(this, true);
@@ -92,6 +85,12 @@ function sectionChanged (id) {
 	else getIssues.call(this);
 }
 
+
+function oninit () {
+	$.on(EVENT.section.refresh, sectionRefresh.bind(this));
+	$.on(EVENT.section.change, sectionChanged.bind(this));
+	this.on({ openIssue, openRepo });
+}
 
 module.exports = new Ractive({
 	el: '#subnav .subnav-myissues .subnav-section-list',

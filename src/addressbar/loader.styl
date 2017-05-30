@@ -1,27 +1,32 @@
 loader-size = 20px
 loader-thickness = 2px
-loader-color = #fff
+loader-color = #666
 
 
 .loader
-	animation spin1 1.5s linear infinite
 	clip rect(0, loader-size, loader-size, loader-size / 2)
 	height loader-size
 	width loader-size
-	position absolute
-	left calc(50% - loader-size / 2)
-	top calc(50% - loader-size / 2)
+	transform translateZ(0)
 
 
-.loader:after
-	position absolute
-	animation spin2 1.5s ease-in-out infinite
-	clip rect(0, loader-size, loader-size, loader-size / 2)
-	content ''
-	border-radius 50%
-	height loader-size
-	width loader-size
-	box-shadow inset loader-color 0 0 0 loader-thickness
+	&:after
+		content ''
+		position absolute
+		clip rect(0, loader-size, loader-size, loader-size / 2)
+		height loader-size
+		width loader-size
+		border-radius 50%
+		box-shadow inset loader-color 0 0 0 loader-thickness
+
+
+.loading
+	.loader
+		animation spin1 1.5s linear infinite
+		opacity 1
+
+		&:after
+			animation spin2 1.5s ease-in-out infinite
 
 
 @keyframes spin1

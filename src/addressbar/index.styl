@@ -61,7 +61,6 @@
 	.loader
 		opacity 0
 		top 5px
-		transform translateZ(0)
 
 	.error
 		z-index 2
@@ -92,9 +91,6 @@
 
 
 	&.loading
-		.loader
-			opacity 1
-
 		.btn-refresh
 			display none
 
@@ -120,7 +116,7 @@
 	background-color transparent
 	border none
 	color inherit
-	transition background-color .3s ease-out, color .3s ease-out
+	transition background-color .3s ease-out, color .3s ease-out, padding .3s ease-out
 
 	&:focus
 		outline none

@@ -41,6 +41,12 @@ function unstar () {
 	this.set('starred', false);
 }
 
+
+function isBookmarked (isIt) {
+	this.set('starred', isIt);
+}
+
+
 function onUrlChanged (webview, issue) {
 	this.set('title', issue && issue.name || 'Github Browser');
 }
@@ -49,6 +55,7 @@ function onUrlChanged (webview, issue) {
 function oninit () {
 	this.on({ openBrowser, copyUrl, star, unstar });
 	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
+	$.on(EVENT.bookmark.exists, isBookmarked.bind(this));
 }
 
 module.exports = new Ractive({

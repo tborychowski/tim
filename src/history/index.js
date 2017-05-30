@@ -1,22 +1,33 @@
+const Ractive = require('ractive');
 const $ = require('../util');
 const { EVENT, history } = require('../services');
 
 
-let el, listEl, isVisible = false, isReady = false;
+const template = `
+	<div class="history" class-visible="visible" style-height="{{items.length * 27 + 20}}px">
+		<select class="history-list" size="2" tabindex="2"
+				on-blur="hide"
+				on-keypress="onKeyPress"
+				on-keydown="onKeyDown"
+				on-click="onKeyPress">
+			{{#items:i}}
+				<option {{i === 0 ? 'selected="selected"' : ''}} value="{{_id}}">{{text(this)}}</option>
+			{{/items}}
+		</select>
+	</div>
+`;
 
 
-function hide () {
-	if (!isVisible) return;
-	isVisible = false;
-	el.animate({ opacity: 1 }, { opacity: 0 }).then(el.hide.bind(el));
-}
-
-
-function show () {
-	if (isVisible) return;
-	isVisible = true;
-	el.show().animate({ opacity: 0 }, { opacity: 1 });
-}
+const data = {
+	visible: false,
+	items: [],
+	text: item => {
+		const repo = (item.repo ? item.repo.split('/').pop() : null);
+		const mod = (repo ? ` | ${repo}` : '');
+		const id = item.id ? `#${item.id} | ` : '';
+		return `${id}${item.name}${mod}`;
+	}
+};
 
 
 
@@ -27,82 +38,81 @@ function onUrlChanged (webview, issue) {
 }
 
 
-function getItemHtml (item, i) {
-	const repo = (item.repo ? item.repo.split('/').pop() : null);
-	const mod = (repo ? ` | ${repo}` : '');
-	const selected = (i === 0 ? 'selected="selected"' : '');
-	const id = item.id ? `#${item.id} | ` : '';
-	return `<option ${selected} value="${item._id}">${id}${item.name}${mod}</option>`;
+function hide () {
+	if (!data.visible) return;
+	$(this.el).animate({ opacity: 1 }, { opacity: 0 }).then(() => {
+		this.set('visible', false);
+	});
 }
 
 
-function render (items) {
-	if (items.length) show();
-	else hide();
-	items = items.slice(0, 20);
-	listEl.html(items.map(getItemHtml).join(''));
-	el[0].style.height = `${items.length * 27 + 20}px`;
+function show () {
+	if (data.visible) return;
+	this.set('visible', true);
+	$(this.el).show().animate({ opacity: 0 }, { opacity: 1 });
 }
 
 function onAddressInput (e) {
-	const txt = $.trim(e.target.value, '#');
-	history.find(txt).then(render);
+	const txt = $.trim(e.node.value, '#');
+	history.find(txt).then(items => {
+		items = items.slice(0, 20);
+		if (items.length) show.call(this);
+		else hide.call(this);
+		this.set('items', items);
+	});
+}
+
+
+function focusResults () {
+	if (!data.visible && data.items.length) show.call(this);
+	this.listEl.focus();
+}
+
+function onDocumentClick (e) {
+	if (e && e.target && $(e.target).closest('.history-list')) return;
+	hide.call(this);
 }
 
 
 
-function onKeyPress (e) {
+function onKeyPress (ev) {
+	const e = ev.original;
 	if (e.key === 'Enter' || (e.type === 'click' && e.target.tagName === 'OPTION')) {
 		history.getById(e.target.value).then(item => $.trigger(EVENT.url.change.to, item.url));
 	}
 }
 
 function onKeyDown (e) {
-	if (e.key === 'ArrowUp' && listEl[0].selectedIndex === 0) {
+	const key = e.original.key;
+	if (key === 'ArrowUp' && this.listEl.selectedIndex === 0) {
 		$.trigger(EVENT.address.focus);
 	}
-	else if (e.key === 'Escape') {
-		hide();
+	else if (key === 'Escape') {
+		hide.call(this);
 		$.trigger(EVENT.address.focus);
 	}
 }
 
 
-function focusResults () {
-	if (!isVisible && listEl[0].options.length) show();
-	listEl[0].focus();
+function onrender () {
+	this.listEl = this.el.querySelector('.history-list');
 }
 
-
-function onDocumentClick (e) {
-	if (e && e.target && $(e.target).closest('.history-list')) return;
-	hide();
-}
-
-
-function init () {
-	if (isReady) return;
-
-	el = $('.history');
-	listEl = el.find('.history-list');
-
-	listEl.on('blur', hide);
-	listEl.on('keypress', onKeyPress);
-	listEl.on('keydown', onKeyDown);
-	listEl.on('click', onKeyPress);
-
-
+function oninit () {
+	this.on({ hide, onKeyPress, onKeyDown });
 	$.on(EVENT.url.change.done, onUrlChanged);
-	$.on(EVENT.address.input.key, onAddressInput);
-	$.on(EVENT.address.input.end, hide);
-	$.on(EVENT.history.focus, focusResults);
-	$.on(EVENT.document.clicked, onDocumentClick);
-	$.on(EVENT.frame.focused, hide);
-
-	isReady = true;
+	$.on(EVENT.address.input.end, hide.bind(this));
+	$.on(EVENT.frame.focused, hide.bind(this));
+	$.on(EVENT.address.input.key, onAddressInput.bind(this));
+	$.on(EVENT.history.focus, focusResults.bind(this));
+	$.on(EVENT.document.clicked, onDocumentClick.bind(this));
 }
 
 
-module.exports = {
-	init
-};
+module.exports = new Ractive({
+	el: '#history',
+	data,
+	template,
+	oninit,
+	onrender,
+});

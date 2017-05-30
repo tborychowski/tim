@@ -30,32 +30,18 @@ const data = {
 };
 
 
-// function star (exists) {
-// 	// starBox.toggleClass('is-starred', !!exists);
-// 	$.trigger(EVENT.bookmark.exists, !!exists);
-// }
-
-function checkIfBookmarked (url) {
-	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
-	// bookmarks.getByUrl(url).then(star);
-}
-
-
 function gotoUrl (url) {
 	if (url) this.set('url', url.trim());
 	url = this.get('url');
-
-	// star(false);
 	if (url) $.trigger(EVENT.frame.goto, url);
 	$.trigger(EVENT.address.input.end);
 }
 
 
 function onUrlChanged (webview, issue) {
-	this.set('url', issue.url);
+	const url = (issue && issue.url ? issue.url : webview.getURL());
+	this.set('url', url);
 	this.set('issueID', (issue && issue.id ? issue.id : ''));
-	if (issue && issue.url) checkIfBookmarked(issue.url);
-
 	this.set('cantGoBack', !webview.canGoBack());
 	this.set('cantGoForward', !webview.canGoForward());
 }
