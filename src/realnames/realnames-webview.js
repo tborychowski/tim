@@ -14,7 +14,7 @@ const elementSelectors = [
 ];
 
 const tooltipSelectors = [
-	`.reaction-summary-item.tooltipped${notRealName}`
+	`.reaction-summary-item.tooltipped.user-has-reacted${notRealName}`
 ];
 
 
@@ -47,7 +47,6 @@ function updateUserNames (document, users) {
 		}
 	});
 	getTooltipsWithUserId(document).forEach(el => {
-		if (el.classList.contains(REAL_NAME_CLS)) return;
 		let lbl = el.getAttribute('aria-label');
 		for (let id in users) lbl = lbl.replace(id, users[id].name);
 		el.setAttribute('aria-label', lbl);

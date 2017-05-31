@@ -32,18 +32,11 @@ function copyUrl () {
 }
 
 function star () {
-	$.trigger(EVENT.bookmark.add, config.get('state.issue'));
-	this.set('starred', true);
+	$.trigger(EVENT.bookmark.add);
 }
 
 function unstar () {
-	$.trigger(EVENT.bookmark.remove, config.get('state.issue'));
-	this.set('starred', false);
-}
-
-
-function isBookmarked (isIt) {
-	this.set('starred', isIt);
+	$.trigger(EVENT.bookmark.remove);
 }
 
 
@@ -55,7 +48,9 @@ function onUrlChanged (webview, issue) {
 function oninit () {
 	this.on({ openBrowser, copyUrl, star, unstar });
 	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
-	$.on(EVENT.bookmark.exists, isBookmarked.bind(this));
+	$.on(EVENT.bookmark.exists, isIt => this.set('starred', isIt));
+	$.on(EVENT.bookmark.add, () => this.set('starred', true));
+	$.on(EVENT.bookmark.remove, () => this.set('starred', false));
 }
 
 module.exports = new Ractive({

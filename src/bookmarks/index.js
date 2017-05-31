@@ -94,6 +94,7 @@ function openRepo (e) {
 
 
 function addBookmark (issue) {
+	if (!issue) issue = config.get('state.issue');
 	issue = completeIssueModel(issue);
 	bookmarks.add(issue);
 	data.bookmarks.push(issue);
@@ -102,6 +103,7 @@ function addBookmark (issue) {
 }
 
 function removeBookmark (issue) {
+	if (!issue) issue = config.get('state.issue');
 	const iss = Module.get('bookmarks').filter(i => i.url === issue.url)[0];
 	if (!iss) return;
 	$(`.${data.issueCls(iss)}`).animate({opacity: 1}, {opacity: 0}).then(() => {
@@ -111,18 +113,26 @@ function removeBookmark (issue) {
 }
 
 
+function toggleBookmark () {
+	checkIfBookmarked().then(exists => {
+		if (exists) $.trigger(EVENT.bookmark.remove);
+		else $.trigger(EVENT.bookmark.add);
+	});
+}
+
 function onUrlChanged (wv, issue) {
 	if (!issue || !issue.url) return;
 	const iss = data.bookmarks.filter(i => i.url === issue.url)[0];
 	if (iss) iss.unread = false;
 	Module.set('bookmarks', data.bookmarks);
 	bookmarks.setUnreadByUrl(issue.url, false);
-	checkIfBookmarked(issue.url);
+	checkIfBookmarked(issue.url).then(exists => $.trigger(EVENT.bookmark.exists, !!exists));
 }
 
 function checkIfBookmarked (url) {
+	if (!url) url = config.get('state.url');
 	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
-	bookmarks.getByUrl(url).then(exists => { $.trigger(EVENT.bookmark.exists, !!exists); });
+	return bookmarks.getByUrl(url);
 }
 
 
@@ -167,6 +177,8 @@ function render (issues) {
 function oninit () {
 	$.on(EVENT.bookmark.add, addBookmark);
 	$.on(EVENT.bookmark.remove, removeBookmark);
+	$.on(EVENT.bookmark.toggle, toggleBookmark);
+
 	$.on(EVENT.section.refresh, sectionRefresh);
 	$.on(EVENT.section.change, sectionChanged);
 	$.on(EVENT.url.change.done, onUrlChanged);

@@ -13,30 +13,38 @@ function uato (userList) {
 	return uobj || [];
 }
 
-function matchIdsWithNames (idList, userList) {
-	const uobj = uato(userList);
-	const newUsers = idList.map(id => {
-		if (uobj[id]) return Promise.resolve(uobj[id]);
-		return github.getUserById(id)
-			.then(usr => {
-				if (usr.name) users.add(usr);
-				return usr;
-			});
+function getNewUser (id) {
+	return github.getUserById(id)
+		.then(usr => {
+			if (usr.name) users.add(usr);
+			return usr;
+		});
+}
+
+function matchIdsWithNames (inPageIds, allUsers) {
+	allUsers = uato(allUsers);
+	const newUsersPromises = inPageIds.map(id => {
+		if (allUsers[id]) return Promise.resolve(allUsers[id]);
+		return getNewUser(id);
 	});
-	return Promise.all(newUsers).then(uato);
+	return Promise.all(newUsersPromises)
+		.then(newUsers => {
+			newUsers = uato(newUsers);
+			return Object.assign(allUsers, newUsers);
+		});
 }
 
 
-function getAll (idList) {
+function getAllUsers (inPageIds) {
 	return users.get()
-		.then(userList => matchIdsWithNames(idList, userList))
+		.then(allUsers => matchIdsWithNames(inPageIds, allUsers))
 		.then(res => webview.send('userIdsAndNames', res));
 }
 
 function onMessage (ev) {
 	if (ev.channel === 'userIdsGathered') {
 		const ids = ev.args[0];
-		if (Array.isArray(ids)) getAll(ids);
+		if (Array.isArray(ids)) getAllUsers(ids);
 		webview.removeEventListener('ipc-message', onMessage);
 	}
 }

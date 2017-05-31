@@ -78,6 +78,7 @@ function oninit () {
 	$.on(EVENT.section.badge, setSectionBadge.bind(this));
 	$.on(EVENT.document.keyup, onKeyUp.bind(this));
 	$.on(EVENT.updater.nav.show, showUpdate.bind(this));
+	$.on(EVENT.section.change, changeSection.bind(this));
 	this.on({ onClick });
 
 	const lastSection = config.get('state.section');
