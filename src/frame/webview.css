@@ -90,6 +90,7 @@ body { min-width: auto !important;
 	padding: 0;
     width: 50px;
     height: 50px;
+    z-index: 999;
 }
 .clearfix.mb-3 .float-right .btn.btn-primary:after,													/* in projects view */
 .issues-listing .btn.btn-primary.float-right:after {
