@@ -35,19 +35,6 @@ body { min-width: auto !important;
 .readme { margin: 0 20px 20px; }
 
 
-/* projects view */
-.project-columns-container { height: 100%; }
-.project-header { margin-top: 7px; }
-.new-project-column { margin-right: 10px; }
-
-.project-columns { width: auto; height: calc(100vh - 70px); margin-right: -30px; }
-.project-column { height: calc(100vh - 130px); }
-
-.project-full-screen .project-columns { height: calc(100vh - 62px); }
-.project-full-screen .project-column { height: calc(100vh - 120px); }
-
-
-
 /* notifications full view */
 .notification-center { margin: -19px -15px -15px; }
 .notifications-list .boxed-group-inner { border-width: 1px 0; }
@@ -66,16 +53,57 @@ body { min-width: auto !important;
 
 
 
+/* projects view */
+.project-columns-container { height: 100%; }
+.project-header { margin-top: 7px; }
+.new-project-column { margin-right: 10px; }
+
+.project-columns { width: auto; height: calc(100vh - 70px); margin-right: -30px; }
+.project-column { height: calc(100vh - 130px); }
+
+.project-full-screen .project-columns { height: calc(100vh - 62px); }
+.project-full-screen .project-column { height: calc(100vh - 120px); }
+
+
+
+
 /* issues list view */
 .issues-listing .border-right,
 .issues-listing .border-bottom,
 .issues-listing .border-left { border: none !important; }
 
-.issues-listing .subnav { display: none; }
 .issues-listing .table-list-header { border-width: 0 0 1px; border-radius: 0; margin: 0; }
 .issues-reset-query-wrapper { display: none; }
 
 .js-navigation-item.js-issue-row.unread { box-shadow: 1px 0 0 #ccc inset, 6px 0 0 #0366d6 inset; }
+
+.clearfix.mb-3,      																				/* in projects view */
+.issues-listing .subnav { height: 0; overflow: hidden; padding: 0; margin: 0 !important; }
+
+.clearfix.mb-3 .float-right .btn.btn-primary,														/* in projects view */
+.issues-listing .btn.btn-primary.float-right {
+	position: fixed;
+	bottom: 30px;
+	right: 30px;
+	border-radius: 30px;
+	font-size: 0;
+	padding: 0;
+    width: 50px;
+    height: 50px;
+}
+.clearfix.mb-3 .float-right .btn.btn-primary:after,													/* in projects view */
+.issues-listing .btn.btn-primary.float-right:after {
+	display: block;
+	content: '+';
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	text-align: center;
+	font-size: 40px;
+	font-weight: 200;
+	top: 0;
+	line-height: 40px;
+}
 
 
 /* issue timeline */
