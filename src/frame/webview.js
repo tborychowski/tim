@@ -59,19 +59,18 @@ function onClick (e) {
 	const el = e.target;
 
 	if (e.metaKey || e.ctrlKey) {
-		const a = el.closest('a');
-		if (el.tagName === 'IMG') msg('showPreview', e.target.src);
-		else if (a) msg('showPreview', a.href);
-		if (a) {
-			e.stopPropagation();
-			e.preventDefault();
-		}
-		return;
+		let a = el.closest('a'), url;
+		if (a) { e.stopPropagation(); e.preventDefault(); }
+
+		if (el.tagName === 'IMG') url = e.target.src;
+		else if (a) url = a.href;
+
+		return msg('openInBrowser', url);
 	}
 	if (el.tagName === 'A') {
 		if (helper.isExternal(el.href)) {
 			e.preventDefault();
-			msg('externalLinkClicked', el.href);
+			msg('openInBrowser', el.href);
 		}
 	}
 }

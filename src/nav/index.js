@@ -41,18 +41,17 @@ function showUpdate () {
 	this.set('bottomButtons.update.show', true);
 }
 
-function changeSection (id) {
+function onSectionChange (id) {
 	if (id === data.activeSection) return $.trigger(EVENT.section.refresh, id);
 	this.set('activeSection', id);
 	config.set('state.section', id);
-	$.trigger(EVENT.section.change, id);
 }
 
 function onClick (e) {
 	const id = e.get().id;
 	if (id === 'update') $.trigger(EVENT.updater.nav.clicked);
 	else if (id === 'settings') $.trigger(EVENT.settings.show);
-	else changeSection.call(this, id);
+	else $.trigger(EVENT.section.change, id);
 	return false;
 }
 
@@ -60,10 +59,10 @@ function onClick (e) {
 function onKeyUp (e) {
 	const handledKeys = {
 		r: () => $.trigger(EVENT.section.refresh, data.activeSection),
-		1: () => changeSection('notifications'),
-		2: () => changeSection('bookmarks'),
-		3: () => changeSection('myissues'),
-		4: () => changeSection('projects')
+		1: () => $.trigger(EVENT.section.change, 'notifications'),
+		2: () => $.trigger(EVENT.section.change, 'bookmarks'),
+		3: () => $.trigger(EVENT.section.change, 'myissues'),
+		4: () => $.trigger(EVENT.section.change, 'projects')
 	};
 	if (e.key in handledKeys && !e.metaKey && !e.ctrlKey) {
 		// if real event and focused on these - ignore
@@ -78,7 +77,7 @@ function oninit () {
 	$.on(EVENT.section.badge, setSectionBadge.bind(this));
 	$.on(EVENT.document.keyup, onKeyUp.bind(this));
 	$.on(EVENT.updater.nav.show, showUpdate.bind(this));
-	$.on(EVENT.section.change, changeSection.bind(this));
+	$.on(EVENT.section.change, onSectionChange.bind(this));
 	this.on({ onClick });
 
 	const lastSection = config.get('state.section');

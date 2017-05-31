@@ -81,8 +81,7 @@ function sectionRefresh (id) {
 }
 
 function sectionChanged (id) {
-	if (id === 'myissues' && !data.issues.length) refresh.call(this);
-	else getIssues.call(this);
+	if (id === 'myissues' && !Object.keys(data.issues).length) refresh.call(this);
 }
 
 
@@ -90,6 +89,7 @@ function oninit () {
 	$.on(EVENT.section.refresh, sectionRefresh.bind(this));
 	$.on(EVENT.section.change, sectionChanged.bind(this));
 	this.on({ openIssue, openRepo });
+	getIssues.call(this);
 }
 
 module.exports = new Ractive({

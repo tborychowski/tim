@@ -13,14 +13,8 @@ let frame, webview, isReady = false, pageZoom = 0, isLoggedIn = false, lastURL =
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
-	externalLinkClicked: url => helper.openInBrowser(url),
 	keyup: e => $.trigger(EVENT.document.keyup, e),
-
-	showPreview: url => helper.openInBrowser(url),
-	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
-	showImgMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'img' }),
-	showSelectionMenu: txt => $.trigger(EVENT.contextmenu.show, { txt, type: 'selection' }),
-
+	openInBrowser: url => helper.openInBrowser(url),
 	isLogged: itIs => {
 		if (itIs && !isLoggedIn) {
 			isLoggedIn = true;
