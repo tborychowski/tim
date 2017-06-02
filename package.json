@@ -2,7 +2,7 @@
   "name": "github-browser",
   "productName": "Github Browser",
   "description": "Github browser.",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "electron-config": "^1.0.0",
+    "electron-context-menu": "^0.9.1",
     "electron-dl": "^1.9.0",
     "electron-log": "^2.0.0",
     "electron-spellchecker": "^1.0.8",

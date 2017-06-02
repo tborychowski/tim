@@ -1170,7 +1170,14 @@ electron-config@^1.0.0:
   dependencies:
     conf "^1.0.0"
 
-electron-dl@^1.9.0:
+electron-context-menu@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/electron-context-menu/-/electron-context-menu-0.9.1.tgz#ed4df20c080491c3c996abfcb363159946a38058"
+  dependencies:
+    electron-dl "^1.2.0"
+    electron-is-dev "^0.1.1"
+
+electron-dl@^1.2.0, electron-dl@^1.9.0:
   version "1.9.0"
   resolved "https://registry.yarnpkg.com/electron-dl/-/electron-dl-1.9.0.tgz#1f306e30b6e590b296ce284ffab14f1a544497c7"
   dependencies:
@@ -1205,7 +1212,7 @@ electron-download@^3.0.1:
     semver "^5.3.0"
     sumchecker "^1.2.0"
 
-electron-is-dev@^0.1.2:
+electron-is-dev@^0.1.1, electron-is-dev@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/electron-is-dev/-/electron-is-dev-0.1.2.tgz#8a1043e32b3a1da1c3f553dce28ce764246167e3"
 

@@ -90,6 +90,15 @@ function onKeyUp (e) {
 }
 
 
+function initSpellchecker () {
+	window.spellCheckHandler = new SpellCheckHandler();
+	window.spellCheckHandler.attachToInput();
+	window.spellCheckHandler.switchLanguage('en-US');
+	let contextMenuBuilder = new ContextMenuBuilder(window.spellCheckHandler);
+	return new ContextMenuListener(info => { contextMenuBuilder.showPopupMenu(info); });
+}
+
+
 function init () {
 	observeChanges();
 
@@ -124,12 +133,7 @@ function init () {
 
 	onDomChange();
 
-
-	window.spellCheckHandler = new SpellCheckHandler();
-	window.spellCheckHandler.attachToInput();
-	window.spellCheckHandler.switchLanguage('en-US');
-	let contextMenuBuilder = new ContextMenuBuilder(window.spellCheckHandler);
-	new ContextMenuListener(info => { contextMenuBuilder.showPopupMenu(info); });
+	initSpellchecker();
 }
 
 

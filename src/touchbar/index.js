@@ -54,7 +54,7 @@ function init () {
 
 	$.on(EVENT.bookmark.exists, bookmarkExists);
 	$.on(EVENT.bookmark.add, () => bookmarkExists(true));
-	$.on(EVENT.bookmark.remove, () => bookmarkExists(false));
+	$.on(EVENT.bookmark.remove, iss => { if (!iss) bookmarkExists(false); });
 	$.on(EVENT.section.change, onSectionChange);
 }
 

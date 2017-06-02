@@ -44,13 +44,25 @@ function onUrlChanged (webview, issue) {
 	this.set('title', issue && issue.name || 'Github Browser');
 }
 
+function isItCurrentlyOpen (url) {
+	let curr = config.get('state.url');
+	if (url.indexOf('#') > -1) url = url.substr(0, url.indexOf('#'));
+	if (curr.indexOf('#') > -1) curr = curr.substr(0, url.indexOf('#'));
+	return url === curr;
+}
+
+
+function removeBookmark (iss) {
+	if (!iss || (iss && iss.url && isItCurrentlyOpen(iss.url))) this.set('starred', false);
+
+}
 
 function oninit () {
 	this.on({ openBrowser, copyUrl, star, unstar });
 	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
 	$.on(EVENT.bookmark.exists, isIt => this.set('starred', isIt));
 	$.on(EVENT.bookmark.add, () => this.set('starred', true));
-	$.on(EVENT.bookmark.remove, () => this.set('starred', false));
+	$.on(EVENT.bookmark.remove, removeBookmark.bind(this));
 	$.on(EVENT.address.copy, copyUrl.bind(this));
 }
 

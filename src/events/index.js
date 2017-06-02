@@ -11,9 +11,9 @@ function onDocumentClick (e) {
 	if (e.metaKey || e.ctrlKey) {
 		const a = e.target.closest('a');
 		if (a && a.matches('#subnav a')) {
-			helper.openInBrowser(a.getAttribute('href'));
 			e.stopPropagation();
 			e.preventDefault();
+			helper.openInBrowser(a.getAttribute('href'));
 			return;
 		}
 	}

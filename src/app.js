@@ -16,7 +16,7 @@ const components = [
 	'updater',
 	'touchbar',
 
-	'spellchecker',
+	'contextmenu',
 ];
 
 components.forEach(c => {

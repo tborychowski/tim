@@ -76,6 +76,7 @@ const throttle = () => {
 
 function openIssue (e) {
 	e.original.preventDefault();
+	if (e.original.metaKey || e.original.ctrlKey) return;
 	if (throttled) return throttle();	// if clicked during quiet time - throttle again
 	throttle();
 	const iss = e.get();
@@ -88,6 +89,7 @@ function openIssue (e) {
 
 
 function openRepo (e) {
+	if (e.original.metaKey || e.original.ctrlKey) return;
 	$.trigger(EVENT.url.change.to, e.get().repoUrl);
 	return false;
 }
