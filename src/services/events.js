@@ -6,6 +6,7 @@ module.exports = {
 		},
 		focus: 'focus-address',
 		issueFocus: 'focus-issue-box',
+		copy: 'copy-url-to-clipboard'
 	},
 	bookmark: {
 		add: 'add-bookmark',

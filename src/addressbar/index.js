@@ -48,8 +48,8 @@ function onUrlChanged (webview, issue) {
 
 
 
-function addressChange (e) {
-	gotoUrl.call(this, e.url);
+function addressChange (e, context, url) {
+	gotoUrl.call(this, url);
 }
 
 function prev () {

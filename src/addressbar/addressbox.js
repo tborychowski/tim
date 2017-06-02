@@ -55,7 +55,7 @@ function onkeypress (e) {
 			url = getSearchUrl(url);
 		}
 		lastFullUrl = url;
-		this.fire('urlchange', { url });
+		this.fire('urlchange', {}, url);
 	}
 }
 

@@ -41,7 +41,7 @@ function onFocus (e) {
 function onKeypress (e) {
 	if (e.original.key === 'Enter') {
 		const url = [baseUrl, repoToSearch, 'issues', e.node.value].join('/');
-		this.fire('idchange', { url });
+		this.fire('idchange', {}, url);
 	}
 }
 

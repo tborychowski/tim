@@ -56,26 +56,8 @@ function onClick (e) {
 }
 
 
-function onKeyUp (e) {
-	const handledKeys = {
-		r: () => $.trigger(EVENT.section.refresh, data.activeSection),
-		1: () => $.trigger(EVENT.section.change, 'notifications'),
-		2: () => $.trigger(EVENT.section.change, 'bookmarks'),
-		3: () => $.trigger(EVENT.section.change, 'myissues'),
-		4: () => $.trigger(EVENT.section.change, 'projects')
-	};
-	if (e.key in handledKeys && !e.metaKey && !e.ctrlKey) {
-		// if real event and focused on these - ignore
-		if ($.type(e) === 'keyboardevent' && document.activeElement.matches('input,select,textarea,webview')) return;
-
-		// if not input or event passed from webview:
-		handledKeys[e.key]();
-	}
-}
-
 function oninit () {
 	$.on(EVENT.section.badge, setSectionBadge.bind(this));
-	$.on(EVENT.document.keyup, onKeyUp.bind(this));
 	$.on(EVENT.updater.nav.show, showUpdate.bind(this));
 	$.on(EVENT.section.change, onSectionChange.bind(this));
 	this.on({ onClick });

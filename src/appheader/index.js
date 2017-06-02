@@ -51,6 +51,7 @@ function oninit () {
 	$.on(EVENT.bookmark.exists, isIt => this.set('starred', isIt));
 	$.on(EVENT.bookmark.add, () => this.set('starred', true));
 	$.on(EVENT.bookmark.remove, () => this.set('starred', false));
+	$.on(EVENT.address.copy, copyUrl.bind(this));
 }
 
 module.exports = new Ractive({
