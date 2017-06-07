@@ -32,7 +32,7 @@ const data = {
 function getIssues () {
 	return github.getMyIssues()
 		.then(issues => {
-			$.trigger(EVENT.section.badge, 'myissues', issues.length);
+			$.trigger(EVENT.section.badge, 'myissues', issues && issues.length || 0);
 			return issues;
 		});
 }

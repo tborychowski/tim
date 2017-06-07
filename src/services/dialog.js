@@ -19,7 +19,7 @@ function info ({ title = '', message = '', detail = '' }) {
 
 
 function question ({ title, message, detail, buttons}) {
-	return new Promise((resolve, reject) => {
+	return new Promise(resolve => {
 		dialog.showMessageBox({
 			type: 'question',
 			title,
@@ -27,7 +27,7 @@ function question ({ title, message, detail, buttons}) {
 			detail,
 			buttons,
 			defaultId: 1,
-		}, res => { if (res > 0) resolve(res); else reject(); });
+		}, res => { resolve(res); });
 	});
 }
 

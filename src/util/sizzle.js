@@ -146,12 +146,14 @@ sizzle.fn.attr = function (attr, value) {
 
 
 sizzle.fn.animate = function (from, to, options = {}, cb) {
-	const opts = Object.assign({},  { duration: 300, easing: 'ease-out' }, options);
+	const opts = Object.assign({},  { duration: 300, easing: 'ease-out', setPropsAfter: true }, options);
 	const all = this.map(el => new Promise (resolve => {
 		const anim = el.animate([from, to], opts);
 		anim.oncancel = resolve;
 		anim.onfinish = () => {
-			for (let prop in to) el.style[prop] = to[prop];	// make sure the style sticks after the animation
+			if (options.setPropsAfter) {
+				for (let prop in to) el.style[prop] = to[prop];	// make sure the style sticks after the animation
+			}
 			resolve();
 		};
 	}));

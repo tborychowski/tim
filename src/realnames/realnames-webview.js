@@ -14,9 +14,8 @@ const elementSelectors = [
 ];
 
 const tooltipSelectors = [
-	`.reaction-summary-item.tooltipped.user-has-reacted${notRealName}`
+	`.reaction-summary-item.tooltipped${notRealName}`
 ];
-
 
 function getElementsWithUserId (document) {
 	let els = document.querySelectorAll(elementSelectors.join(','));

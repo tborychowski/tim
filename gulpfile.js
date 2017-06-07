@@ -1,5 +1,5 @@
 const gulp = require('gulp');
-const babel = require('gulp-babel');
+// const babel = require('gulp-babel');
 const stylus = require('gulp-stylus');
 const concat = require('gulp-concat');
 const runElectron = require('gulp-run-electron');
@@ -13,7 +13,7 @@ const sourcemaps = require('gulp-sourcemaps');
 gulp.task('js', () => gulp
 	.src('src/**/*.js')
 	.pipe(plumber({errorHandler: notify.onError('JS: <%= error.message %>')}))
-	.pipe(babel({ presets: ['es2015'] }))
+	// .pipe(babel({ presets: ['es2015'] }))
 	.pipe(gulp.dest('app/'))
 );
 
@@ -22,10 +22,7 @@ gulp.task('css', () => gulp
 	.src('src/**/*.styl')
 	.pipe(sourcemaps.init())
 	.pipe(plumber({errorHandler: notify.onError('Stylus: <%= error.message %>')}))
-	.pipe(stylus({
-		include: __dirname + '/src',
-		'include css': true
-	}))
+	.pipe(stylus({ include: __dirname + '/src'}))
 	.pipe(concat('app.css'))
 	.pipe(sourcemaps.write())
 	.pipe(gulp.dest('app/'))

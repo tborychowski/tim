@@ -108,7 +108,9 @@ function removeBookmark (issue) {
 	if (!issue) issue = config.get('state.issue');
 	const iss = Module.get('bookmarks').filter(i => i.url === issue.url)[0];
 	if (!iss) return;
-	$(`.${data.issueCls(iss)}`).animate({opacity: 1}, {opacity: 0}).then(() => {
+	const el = $(`.${data.issueCls(iss)}`);
+	el.animate({opacity: 1}, {opacity: 0}, { setPropsAfter: false }).then(() => {
+		el.opacity = 0;				// manually set opacity after due to a chrome bug
 		bookmarks.remove(issue);
 		Module.set('bookmarks', Module.get('bookmarks').filter(i => i.url !== issue.url));
 	});

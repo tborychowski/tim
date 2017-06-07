@@ -20,7 +20,7 @@ const template = `
 `;
 
 const data = {
-	activeSection: 'notifications',
+	activeSection: '',
 	buttons: [
 		{ id: 'notifications', title: 'Notifications (1)', badge: 0 },
 		{ id: 'bookmarks', title: 'Bookmarks (2)', badge: 0 },
@@ -61,13 +61,11 @@ function oninit () {
 	$.on(EVENT.updater.nav.show, showUpdate.bind(this));
 	$.on(EVENT.section.change, onSectionChange.bind(this));
 	this.on({ onClick });
-
-	const lastSection = config.get('state.section');
-	this.set('activeSection', lastSection);
 }
 
 function oncomplete () {
-	$.trigger(EVENT.section.change, data.activeSection);
+	const lastSection = config.get('state.section') || 'notifications';
+	$.trigger(EVENT.section.change, lastSection);
 }
 
 module.exports = new Ractive({ el: '#nav', data, template, oninit, oncomplete });

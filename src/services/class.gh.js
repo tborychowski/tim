@@ -30,7 +30,6 @@ module.exports = class GitHub {
 		const headers = { 'User-Agent': 'GithubBrowser' };
 		if (url.indexOf('projects') > -1) headers.Accept = 'application/vnd.github.inertia-preview+json';
 		if (this.token) qs.access_token = this.token;
-
 		return { uri, qs, headers, json: true, resolveWithFullResponse: fullResp, strictSSL: false };
 	}
 
@@ -38,17 +37,16 @@ module.exports = class GitHub {
 		this.reqCount++;
 		if (isDev) {
 			// console.log(url, params);
-			// console.log('No of GH requests so far:', this.reqCount);
+			console.log('No of GH requests so far:', this.reqCount);
 		}
-		console.log('No of GH requests so far:', this.reqCount);
 		const options = this.getOptions(url, params, fullResp);
 		return REQ(options)
 			.then(res => {
 				if (!fullResp) return res;
 				return { headers: res.headers, body: res.body };
+			})
+			.catch(err => {
+				// if (isDev) console.error(options.uri, err);
 			});
-			// .catch(err => {
-			// 	if (isDev) console.error(options.uri, err);
-			// });
 	}
 };

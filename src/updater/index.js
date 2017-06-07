@@ -1,3 +1,12 @@
+/**
+ * Handles update in the renderer process
+ *
+ * Uses electron-builder/updater
+ * API docs: https://github.com/electron-userland/electron-builder/wiki/Auto-Update
+ *
+ */
+
+
 const { ipcRenderer, remote } = require('electron');
 const { EVENT, helper, isDev, dialog } = require('../services');
 const $ = require('../util');
@@ -6,7 +15,7 @@ const appName = remote.app.getName();
 const appVersion = remote.app.getVersion();
 let availableVersion = null;
 
-let SILENT = false;
+let SILENT = true;
 let IS_DOWNLOADING = false;
 
 const send = (name, value) => ipcRenderer.send('updater', name, value);
@@ -17,13 +26,19 @@ const events = {
 	'checking-for-update': () => log('Checking for update...'),
 	'update-available': updateAvailable,
 	'update-not-available': updateNotAvailable,
-	'download-progress': () => log('Downloading update...'),
+	'download-progress': updateProgress,
 	'update-downloaded': updateDownloaded,
-	'update-error': (err) => {
+	'update-error': err => {
 		if (SILENT || isDev) log('Update error', err);
 		else dialog.error('There was an error with the update.\nPlease try again later.');
 	},
 };
+
+
+// bytesPerSecond, percent, total, transferred
+function updateProgress (prog) {
+	console.log(prog);
+}
 
 
 function showChangelog () {
@@ -32,15 +47,13 @@ function showChangelog () {
 
 
 function checkForUpdates (silent) {
-	if (IS_DOWNLOADING) {
-		dialog.info({
-			title: 'Update',
-			message: 'An update was found and is downloading.',
-			detail: 'Thanks for your patience!'
-		});
-	}
 	SILENT = (silent === true);
-	send('checkForUpdates');
+	if (!IS_DOWNLOADING) return send('checkForUpdates');
+	if (!SILENT) dialog.info({
+		title: 'Update',
+		message: 'An update was found and is downloading.',
+		detail: 'Thanks for your patience!'
+	});
 }
 
 function updateNotAvailable () {
@@ -103,7 +116,10 @@ function init () {
 	});
 	$.on(EVENT.updater.check, checkForUpdates);
 	$.on(EVENT.updater.nav.clicked, updateDownloadedInstall);
-	if (!isDev) setTimeout(() => checkForUpdates(true), 5000);
+
+	if (!isDev) setTimeout(() => {
+		if (SILENT === true) checkForUpdates(true);
+	}, 5000);
 }
 
 
