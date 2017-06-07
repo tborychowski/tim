@@ -31,6 +31,7 @@ const data = {
 
 
 function gotoUrl (url) {
+	this.set('error', false);
 	if (url) this.set('url', url.trim());
 	url = this.get('url');
 	if (url) $.trigger(EVENT.frame.goto, url);
@@ -47,6 +48,9 @@ function onUrlChanged (webview, issue) {
 }
 
 
+function showError () {
+	this.set('error', true);
+}
 
 function addressChange (e, context, url) {
 	gotoUrl.call(this, url);
@@ -75,6 +79,7 @@ function oninit () {
 	$.on(EVENT.url.change.end, () => this.set('loading', false));
 	$.on(EVENT.url.change.to, gotoUrl.bind(this));
 	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
+	$.on(EVENT.connection.error.show, showError.bind(this));
 }
 
 

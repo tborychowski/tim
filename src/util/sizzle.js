@@ -145,22 +145,28 @@ sizzle.fn.attr = function (attr, value) {
 };
 
 
-sizzle.fn.animate = function (from, to, options = {}, cb) {
-	const opts = Object.assign({},  { duration: 300, easing: 'ease-out', setPropsAfter: true }, options);
-	const all = this.map(el => new Promise (resolve => {
-		const anim = el.animate([from, to], opts);
-		anim.oncancel = resolve;
-		anim.onfinish = () => {
-			if (options.setPropsAfter) {
+function animateElement (from, to, opts) {
+	return el => {
+		let promise = new Promise (resolve => {
+			const anim = el.animate([from, to], opts);
+			anim.oncancel = resolve;
+			anim.onfinish = resolve;
+		});
+
+		if (opts.setPropsAfter) {
+			return promise.then(() => {
 				for (let prop in to) el.style[prop] = to[prop];	// make sure the style sticks after the animation
-			}
-			resolve();
-		};
-	}));
-	const promiseAll = Promise.all(all);
-	if (typeof cb !== 'function') return promiseAll;
-	promiseAll.then(cb);
-	return this;
+			});
+		}
+
+		return promise;
+	};
+}
+
+sizzle.fn.animate = function (from, to, options = {}) {
+	const opts = Object.assign({},  { duration: 300, easing: 'ease-out', setPropsAfter: true }, options);
+	const all = this.map(animateElement(from, to, opts));
+	return Promise.all(all);
 };
 
 
