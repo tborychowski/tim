@@ -1,101 +1,54 @@
-.search-bar
-	position absolute
-	top -10px
-	right 6px
-	z-index 99
-	padding 5px 0
-	background-color #f3f3f3
-	border 1px solid #c2c0c2
-	border-top-width 0
-	border-radius 0 0 6px 6px
-	box-shadow 0 1px 1px rgba(0,0,0,0.1)
-	font-size 13px
+#search-bar
+	transition width .3s ease-out
+	width 286px
+	overflow hidden
 
+	&.hidden
+		pointer-events none
+		width 0;
 
-	&:before
-	&:after
-		content ''
-		position absolute
-		width 6px
-		height 6px
-		top 0
-		border 1px solid #c2c0c2
-
-	&:before
-		left -7px
-		border-top-right-radius 6px
-		border-width 1px 1px 0 0
-		box-shadow 2px -2px 0 #F9F9F9
-
-	&:after
-		right -7px
-		border-top-left-radius 6px
-		border-width 1px 0 0 1px
-		box-shadow -2px -2px 0 #F9F9F9
-
-
-	.search-btn
+	button
 		font-size 20px
 		line-height 1
 		padding 2px 0 0
-		display inline-block
-		vertical-align top
-		height 24px
+		height 100%
 		width 26px
 		color #888
 		float left
 		text-align center
 		cursor pointer
 		transition background-color .2s
+		background-color #eee
+		margin-left 1px
 
 		&:hover
+		&:focus
 			color #000
 
 		&:active
 			background-color #999
 			color #000
 
-
-	.btn-prev
-	.btn-next
-		border 1px solid #ccc
-		margin-left -1px
-
-
-	.btn-next
-		border-radius 0 5px 5px 0
+		&[disabled]
+		&[disabled]:hover
+			color #ccc
+			cursor default
 
 
-	.btn-close
-		height 23px
-		width 24px
-		font-size 22px
-		margin 1px 3px 0 4px
-		padding-top 1px
-		border-radius 20px
+	.search-input
+		width 200px
+		float left
+		z-index 9
+		background-color rgba(#000, 0.1)
+		color #000
 
 
-
-
-.search-input
-	width 250px
-	height 24px
-	padding 0 70px 0 5px
-	margin-left 6px
-	float left
-	font-size inherit
-	border 1px solid #ccc
-	border-radius 5px 0 0 5px
-	position relative
-	z-index 9
-
-
-.search-info
-	position absolute
-	right 90px
-	top 9px
-	color #aaa
-	background-color #fff
-	z-index 10
+	.search-info
+		position absolute
+		font-size 13px
+		right 90px
+		top 7px
+		color #aaa
+		z-index 10
 
 

@@ -11,7 +11,7 @@ const components = [
 	'frame',
 	'settings',
 	'history',
-	'search',
+	// 'search',
 	'mainmenu',
 	'updater',
 	'touchbar',

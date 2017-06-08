@@ -1,99 +1,101 @@
+/**
+ * Search Box component
+ *
+ * it's included in the main addressbar component
+ *
+ */
+
+const Ractive = require('ractive');
+const { EVENT } = require('../services');
 const $ = require('../util');
-const {EVENT} = require('../services');
-
-let webview, el, inp, info, isReady = false, isVisible = false;
-const TOP_H0 = '-10px';
-const TOP_H1 = '27px';
 
 
-function show () {
-	if (isVisible) return;
-	isVisible = true;
-	el.show().animate({ top: TOP_H0 }, { top: TOP_H1 });
-	inp[0].focus();
-}
+const template = `
+	<div id="search-bar" class-hidden="!visible">
+		<input class="search-input" value="{{term}}" on-keyup="onkeyup" tabindex="4" />
+		<span class="search-info">{{info()}}</span>
+		<button {{#if !total}}disabled{{/if}} class="btn-prev ion-ios-arrow-up" title="Previous" on-click="findPrev" tabindex="5"></button>
+		<button {{#if !total}}disabled{{/if}} class="btn-next ion-ios-arrow-down" title="Next" on-click="findNext" tabindex="6"></button>
+		<button class="btn-close ion-md-close" title="Close" on-click="hide" tabindex="7"></button>
+	</div>
+`;
 
 
-function hide () {
-	if (!isReady || !isVisible) return;
-	isVisible = false;
-	inp[0].value = '';
-	highlightFindings();
-	updateInfo();
-	el.animate({ top: TOP_H1 }, { top: TOP_H0 });
-	$.trigger(EVENT.address.focus);
-}
-
-
-function updateInfo (no, total) {
-	let txt = `${no} of ${total}`;
-	if (!total) {
-		if (!inp[0].value) txt = '';
-		else txt = 'no results';
-	}
-	info.html(txt);
+function data () {
+	return {
+		term: '',
+		no: 0,
+		total: 0,
+		visible: false,
+		info: () => {
+			if (!this.get('term')) return '';
+			if (!this.get('total')) return 'no results';
+			return `${this.get('no')} of ${this.get('total')}`;
+		},
+	};
 }
 
 
 function highlightFindings (options = { findNext: false, forward: true }) {
-	const text = inp[0].value;
-	if (!text) webview[0].stopFindInPage('clearSelection');
-	else webview[0].findInPage(text, options);
-}
-
-function findNext () { highlightFindings({ findNext: true }); }
-
-function findPrev () { highlightFindings({ findNext: true, forward: false }); }
-
-
-function onKeyUp (ev) {
-	if (ev.key === 'Escape') hide();
-	else if (ev.key === 'Enter') {
-		if (ev.shiftKey) findPrev();
-		else findNext();
+	if (!this.webview) return;
+	const text = this.get('term');
+	if (text) this.webview.findInPage(text, options);
+	else {
+		this.webview.stopFindInPage('clearSelection');
+		this.set('total', 0);
 	}
 }
 
+function findNext () { highlightFindings.call(this, { findNext: true }); }
+
+function findPrev () { highlightFindings.call(this, { findNext: true, forward: false }); }
 
 function foundInPage (ev) {
-	if (!ev.result || !ev.result.finalUpdate) return;
-	const no = ev.result.activeMatchOrdinal || 0;
 	const total = ev.result.matches || 0;
-	updateInfo(no, total);
+	this.set('no', ev.result.activeMatchOrdinal || 0);
+	this.set('total', total);
 }
 
 
-function onClick (e) {
-	const target = $(e.target);
-	const go = target.data('go');
-	if (target.is('.search-btn')) {
-		e.preventDefault();
-		if (go === 'close') hide();
-		else if (go === 'prev') findPrev();
-		else if (go === 'next') findNext();
+function show () {
+	if (!this.get('visible')) this.set('visible', true);
+	this.input.focus();
+}
+
+
+function hide () {
+	if (!this.get('visible')) return;
+	this.set('visible', false);
+	this.set('term', '');
+	highlightFindings.call(this);
+	$.trigger(EVENT.address.focus);
+}
+
+
+function onkeyup (e) {
+	const key = e.original.key;
+	const shift = e.original.shiftKey;
+	if (key === 'Escape') hide.call(this);
+	else if (key === 'Enter') {
+		if (shift) findPrev.call(this);
+		else findNext.call(this);
 	}
 }
 
 
-function init () {
-	if (isReady) return;
-	el = $('.search-bar');
-	inp = el.find('.search-input');
-	info = el.find('.search-info');
-	webview = $('#frame webview');
+function oninit () {
+	this.on({ hide, findPrev, findNext, onkeyup });
+	this.observe('term', () => { highlightFindings.call(this); });
+	$.on(EVENT.search.start, show.bind(this));
+	$.on(EVENT.search.stop, hide.bind(this));
 
-	el.on('click', onClick);
-	inp.on('input', () => highlightFindings());
-	inp.on('keyup', onKeyUp);
-	webview.on('found-in-page', foundInPage);
-
-	$.on(EVENT.search.start, show);
-	$.on(EVENT.search.stop, hide);
-
-	isReady = true;
 }
 
+function oncomplete () {
+	this.webview = document.querySelector('#frame webview');
+	this.webview.addEventListener('found-in-page', foundInPage.bind(this));
+	this.input = this.el.querySelector('.search-input');
 
-module.exports = {
-	init
-};
+}
+
+module.exports = Ractive.extend({ template, data, oninit, oncomplete });

@@ -3,6 +3,7 @@ const $ = require('../util');
 const { EVENT } = require('../services');
 const AddressBox = require('./addressbox');
 const IssueBox = require('./issuebox');
+const SearchBox = require('../search');
 
 const template = `
 	<div class="addressbar-inner" class-loading="loading" class-error="error">
@@ -16,6 +17,7 @@ const template = `
 			<i class="error ion-ios-alert-outline" title="Cannot connect to github. Check your network."></i>
 		</div>
 		<IssueBox value="{{issueID}}" on-idchange="addressChange"/>
+		<SearchBox />
 	</div>
 `;
 
@@ -88,5 +90,5 @@ module.exports = new Ractive({
 	data,
 	template,
 	oninit,
-	components: { AddressBox, IssueBox },
+	components: { AddressBox, IssueBox, SearchBox },
 });
