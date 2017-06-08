@@ -35,7 +35,11 @@ const events = {
 };
 
 
-// bytesPerSecond, percent, total, transferred
+// bytesPerSecond: 830708
+// delta: 1357824
+// percent: 2.4468280819444064
+// total: 102598095
+// transferred: 2510399
 function updateProgress (prog) {
 	console.log(prog);
 }

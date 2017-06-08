@@ -41,8 +41,8 @@ function highlightFindings (options = { findNext: false, forward: true }) {
 	const text = this.get('term');
 	if (text) this.webview.findInPage(text, options);
 	else {
-		this.webview.stopFindInPage('clearSelection');
 		this.set('total', 0);
+		this.webview.stopFindInPage('keepSelection');
 	}
 }
 
@@ -65,10 +65,12 @@ function show () {
 
 function hide () {
 	if (!this.get('visible')) return;
+	const term = this.get('term');
 	this.set('visible', false);
 	this.set('term', '');
 	highlightFindings.call(this);
-	$.trigger(EVENT.address.focus);
+	if (term) this.webview.focus();
+	else $.trigger(EVENT.address.focus);
 }
 
 
