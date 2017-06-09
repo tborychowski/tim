@@ -35,13 +35,10 @@ const events = {
 };
 
 
-// bytesPerSecond: 830708
-// delta: 1357824
-// percent: 2.4468280819444064
-// total: 102598095
-// transferred: 2510399
+// bytesPerSecond, delta, percent, total, transferred
 function updateProgress (prog) {
-	console.log(prog);
+	const per = Math.round(prog.percent);
+	$.trigger(EVENT.updater.nav.progress, per);
 }
 
 
@@ -50,31 +47,41 @@ function showChangelog () {
 }
 
 
-function checkForUpdates (silent) {
-	SILENT = (silent === true);
-	if (!IS_DOWNLOADING) return send('checkForUpdates');
-	if (!SILENT) dialog.info({
-		title: 'Update',
-		message: 'An update was found and is downloading.',
-		detail: 'Thanks for your patience!'
-	});
+// 1
+function checkForUpdates () {
+	if (IS_DOWNLOADING) {
+		if (!SILENT) {
+			dialog.info({
+				title: 'Update',
+				message: 'An update was found and is downloading.',
+				detail: 'Thanks for your patience!'
+			});
+		}
+	}
+	else {
+		$.trigger(EVENT.updater.nav.progress);	// reset to 0
+		send('checkForUpdates');
+	}
 }
 
+// 2a
 function updateNotAvailable () {
 	log('Update not available');
-	if (!SILENT) dialog.info({
+	if (SILENT) return;
+	dialog.info({
 		title: 'Update',
 		message: `You have the latest version of\n${appName} ${appVersion}`,
 		detail: 'There are no new updates at this time.'
 	});
 }
 
+// 2b
 function updateAvailable (resp) {
 	log('Update available');
 	availableVersion = resp.version;
 	if (SILENT) return download();
 
-	$.trigger(EVENT.updater.nav.show);
+	// $.trigger(EVENT.updater.nav.show);
 	dialog.question({
 		title: 'Update',
 		message: 'There is a newer version available.',
@@ -87,21 +94,23 @@ function updateAvailable (resp) {
 	});
 }
 
-
+// 3
 function download () {
 	IS_DOWNLOADING = true;
 	send('downloadUpdate');
 }
 
+// 4
 function updateDownloaded () {
 	log('Update downloaded');
-	if (SILENT) return $.trigger(EVENT.updater.nav.show);
+	$.trigger(EVENT.updater.nav.progress);
+	$.trigger(EVENT.updater.nav.show);
 
-	updateDownloadedInstall();
+	if (!SILENT) quitAndInstall();
 }
 
-
-function updateDownloadedInstall () {
+// 5
+function quitAndInstall () {
 	dialog.question({
 		title: 'Update',
 		message: 'Update downloaded.\nDo you want to install it now or next time you start the app?',
@@ -118,12 +127,13 @@ function init () {
 	ipcRenderer.on('updater', (ev, name, params) => {
 		if (typeof events[name] === 'function') events[name](params);
 	});
-	$.on(EVENT.updater.check, checkForUpdates);
-	$.on(EVENT.updater.nav.clicked, updateDownloadedInstall);
+	$.on(EVENT.updater.check, () => {
+		SILENT = false;
+		checkForUpdates();
+	});
+	$.on(EVENT.updater.nav.clicked, quitAndInstall);
 
-	if (!isDev) setTimeout(() => {
-		if (SILENT === true) checkForUpdates(true);
-	}, 5000);
+	setTimeout(() => { if (SILENT) checkForUpdates(); }, 5000);
 }
 
 

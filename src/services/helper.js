@@ -77,7 +77,10 @@ function setBadge (text = 0) {
 	}
 }
 
-
+function setDockProgress (percent = -1) {
+	const win = getCurrentWindow();
+	win.setProgressBar(percent > 0 ? percent / 100 : percent);
+}
 
 const pageTypes = [
 	{ reg: /\/issues\/\d+/, 		type: 'timeline',	actualType: 'issue',		desc: 'issue' },
@@ -136,6 +139,7 @@ module.exports = {
 	openSettingsFolder,
 	getUserDataFolder,
 	setBadge,
+	setDockProgress,
 	openChangelog,
 	getPageTypeFromUrl,
 	getPageActualTypeFromUrl,

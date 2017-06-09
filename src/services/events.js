@@ -72,6 +72,7 @@ module.exports = {
 		check: 'check-for-updates',
 		nav: {
 			show: 'update-nav-show',
+			progress: 'update-nav-progress',
 			clicked: 'update-nav-clicked',
 		}
 	},

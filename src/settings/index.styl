@@ -12,7 +12,7 @@
 	border-radius 3px
 	display none
 	opacity 0
-	transform scale(0.8)
+	transform scale(0.8) translate3d(0, 0, 0)
 	transition all .3s ease-out
 	overflow hidden
 
@@ -141,18 +141,23 @@
 #main
 #nav
 #subnav
+#frame
+#addressbar
+#appheader
 	transition filter .3s ease-out
 
 
 .show-settings
 	#header
-	#main
+	#frame
 	#nav
 	#subnav
+	#addressbar
+	#appheader
 		filter brightness(0.4)
 		pointer-events none
 
 	.settings
 		opacity 1
-		transform scale(1)
+		transform scale(1) translate3d(0, 0, 0)
 

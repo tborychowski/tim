@@ -38,23 +38,27 @@ gulp.task('preview-html', () => gulp
 	.pipe(gulp.dest('app/preview/'))
 );
 
-gulp.task('build', ['js', 'css', 'webview-css', 'preview-html']);
-
 
 gulp.task('electron', ['build'], () => gulp
 	.src('./')
 	.pipe(runElectron())
 );
 
+gulp.task('build', ['js', 'css', 'webview-css', 'preview-html']);
 
-gulp.task('default', ['build'], () => {
+
+gulp.task('w', ['build'], () => {
 	gulp.watch('src/**/webview.css', ['webview-css']);
 	gulp.watch('src/**/*.styl', ['css']);
 	gulp.watch('src/**/*.js', ['js']);
 });
 
-gulp.task('all', ['electron'], () => {
+gulp.task('a', ['electron'], () => {
 	gulp.watch('src/**/webview.css', ['webview-css']);
 	gulp.watch('src/**/*.styl', ['css']);
 	gulp.watch('src/**/*.js', ['js']);
 });
+
+
+gulp.task('default', ['build']);
+

@@ -22,6 +22,9 @@
 	position relative
 	transition background-color .3s ease-out
 
+	&.hidden
+		display none
+
 	.icon
 		display block
 		width 100%
@@ -29,6 +32,7 @@
 		background-color #fff
 		-webkit-mask-repeat no-repeat
 		-webkit-mask-position center
+		margin-bottom -100%
 
 
 	&:hover
@@ -92,13 +96,11 @@
 	bottom 0
 
 .nav-update
-	border-radius 20px
 	background #4D7321
-	display none
-
-	.icon
-		border-radius 20px
 
 	&:hover
 		background #82B209
 
+	&.progress
+		background #2C384D
+		cursor default
