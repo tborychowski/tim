@@ -58,12 +58,9 @@ function data () {
 
 function oninit () {
 	this.on({ openCI });
-	this.observe('issue', function (value) {
-		// if (this.el && value && value.build) this.monitorPr(value);
-		if (this.el && value) {
-			// this.monitorPr(value);
-		}
-	});
+	// this.observe('issue', function (value) {
+	// 	if (this.el && value) this.monitorPr(value);
+	// });
 }
 
 function onrender () {

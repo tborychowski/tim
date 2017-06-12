@@ -17,14 +17,14 @@ function reload () {
 let throttled = null;
 const throttle = () => {
 	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 1000);
+	throttled = setTimeout(() => { throttled = null; }, 500);
 };
 
 
 function onClick (e) {
 	if (throttled) {
 		e.preventDefault();
-		return throttle();	// if clicked during quiet time - throttle again
+		return throttle();	// clicked during quiet time
 	}
 	throttle();
 

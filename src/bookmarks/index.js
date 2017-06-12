@@ -71,13 +71,14 @@ const computed = {
 let throttled = null;
 const throttle = () => {
 	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 1000);
+	throttled = setTimeout(() => { throttled = null; }, 500);
 };
 
 function openIssue (e) {
 	e.original.preventDefault();
+	if (throttled) return throttle();	// clicked during quiet time
 	if (e.original.metaKey || e.original.ctrlKey) return;
-	if (throttled) return throttle();	// if clicked during quiet time - throttle again
+	console.log('clicking');
 	throttle();
 	const iss = e.get();
 	if (iss) {

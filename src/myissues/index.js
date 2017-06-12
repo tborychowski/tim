@@ -52,12 +52,12 @@ function copleteIssueModel (iss) {
 let throttled = null;
 const throttle = () => {
 	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 1000);
+	throttled = setTimeout(() => { throttled = null; }, 500);
 };
 
 function openIssue (e) {
 	e.original.preventDefault();
-	if (throttled) return throttle();	// if clicked during quiet time - throttle again
+	if (throttled) return throttle();	// clicked during quiet time
 	throttle();
 	const iss = e.get();
 	iss.unread = false;
