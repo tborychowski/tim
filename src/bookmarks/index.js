@@ -2,9 +2,9 @@ const Ractive = require('ractive');
 const fade = require('ractive-transitions-fade');
 const { EVENT, bookmarks, github, helper, config } = require('../services');
 const $ = require('../util');
-
 const BuildStatus = require('./build-status');
 
+let Module;
 const DEFAULT_REPO_NAME = 'Pages';				// for ungrouped pages
 const DEFAULT_PROJECTS_REPO_NAME = 'Projects';	// for ungrouped projects
 const issueTypeCls = {
@@ -106,12 +106,12 @@ function addBookmark (issue) {
 
 function removeBookmark (issue) {
 	if (!issue) issue = config.get('state.issue');
-	const iss = Module.get('bookmarks').filter(i => i.url === issue.url)[0];
+	const iss = this.get('bookmarks').filter(i => i.url === issue.url)[0];
 	if (!iss) return;
 	const el = $(`.${data.issueCls(iss)}`);
 	el.animate({opacity: 1}, {opacity: 0}, { setPropsAfter: false }).then(() => {
 		bookmarks.remove(issue);
-		Module.set('bookmarks', Module.get('bookmarks').filter(i => i.url !== issue.url));
+		this.set('bookmarks', this.get('bookmarks').filter(i => i.url !== issue.url));
 	});
 }
 
@@ -127,7 +127,7 @@ function onUrlChanged (wv, issue) {
 	if (!issue || !issue.url) return;
 	const iss = data.bookmarks.filter(i => i.url === issue.url)[0];
 	if (iss) iss.unread = false;
-	Module.set('bookmarks', data.bookmarks);
+	this.set('bookmarks', data.bookmarks);
 	bookmarks.setUnreadByUrl(issue.url, false);
 	checkIfBookmarked(issue.url).then(exists => $.trigger(EVENT.bookmark.exists, !!exists));
 }
@@ -179,13 +179,14 @@ function render (issues) {
 
 function oninit () {
 	$.on(EVENT.bookmark.add, addBookmark);
-	$.on(EVENT.bookmark.remove, removeBookmark);
+	$.on(EVENT.bookmark.remove, removeBookmark.bind(this));
 	$.on(EVENT.bookmark.toggle, toggleBookmark);
 
 	$.on(EVENT.section.refresh, sectionRefresh);
 	$.on(EVENT.section.change, sectionChanged);
-	$.on(EVENT.url.change.done, onUrlChanged);
+	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
 	this.on({ openRepo, openIssue });
+	refresh();
 }
 
 
@@ -197,7 +198,7 @@ function sectionChanged (id) {
 	if (id === 'bookmarks' && !data.bookmarks.length) refresh();
 }
 
-const Module = new Ractive({
+Module = new Ractive({
 	el: '#subnav .subnav-bookmarks .subnav-section-list',
 	data,
 	template,

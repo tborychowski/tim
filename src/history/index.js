@@ -4,7 +4,7 @@ const { EVENT, history } = require('../services');
 
 
 const template = `
-	<div class="history" class-visible="visible" style-height="{{items.length * 27 + 20}}px">
+	<div class="history" class-visible="visible" style-max-height="{{height(items.length)}}px">
 		<select class="history-list" size="2" tabindex="2"
 				on-blur="hide"
 				on-keypress="onKeyPress"
@@ -21,6 +21,7 @@ const template = `
 const data = {
 	visible: false,
 	items: [],
+	height: len => len * 27 + (len > 0 ? 20 : 0),
 	text: item => {
 		const repo = (item.repo ? item.repo.split('/').pop() : null);
 		const mod = (repo ? ` | ${repo}` : '');
@@ -40,16 +41,14 @@ function onUrlChanged (webview, issue) {
 
 function hide () {
 	if (!data.visible) return;
-	$(this.el).animate({ opacity: 1 }, { opacity: 0 }).then(() => {
-		this.set('visible', false);
-	});
+	this.$el.animate({ opacity: 1 }, { opacity: 0 }).then(() => { this.set('visible', false); });
 }
 
 
 function show () {
 	if (data.visible) return;
 	this.set('visible', true);
-	$(this.el).show().animate({ opacity: 0 }, { opacity: 1 });
+	this.$el.animate({ opacity: 0 }, { opacity: 1 });
 }
 
 function onAddressInput (e) {
@@ -95,6 +94,7 @@ function onKeyDown (e) {
 
 
 function onrender () {
+	this.$el = $(this.el.querySelector('.history'));
 	this.listEl = this.el.querySelector('.history-list');
 }
 
