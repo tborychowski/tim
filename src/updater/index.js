@@ -133,7 +133,7 @@ function init () {
 	});
 	$.on(EVENT.updater.nav.clicked, quitAndInstall);
 
-	setTimeout(() => { if (SILENT) checkForUpdates(); }, 5000);
+	if (!isDev) setTimeout(() => { if (SILENT) checkForUpdates(); }, 5000);
 }
 
 
