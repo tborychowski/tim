@@ -26,9 +26,9 @@ const template = `
 const data = {
 	activeSection: '',
 	buttons: [
-		{ id: 'notifications', title: 'Notifications (1)', badge: 0 },
-		{ id: 'bookmarks', title: 'Bookmarks (2)', badge: 0 },
-		{ id: 'myissues', title: 'My Issues (3)', badge: 0 },
+		{ id: 'notifications', title: 'Notifications', badge: 0 },
+		{ id: 'bookmarks', title: 'Bookmarks', badge: 0 },
+		{ id: 'myissues', title: 'My Issues', badge: 0 },
 	],
 	update: { show: false, progress: 0 },
 };

@@ -11,7 +11,7 @@ const template = `
 					<button class="btn-back ion-md-arrow-back" title="Back" on-click="goback"></button>
 				{{/if}}
 				<h1>{{title}}</h1>
-				<button class="btn-refresh ion-md-refresh" title="Refresh (r)" on-click="refresh"></button>
+				<button class="btn-refresh ion-md-refresh" title="Refresh" on-click="refresh"></button>
 			</header>
 			<div class="subnav-section-list"></div>
 		</section>
