@@ -80,19 +80,6 @@ function onClick (e) {
 }
 
 
-function onKeyUp (e) {
-	if (document.activeElement.matches('input,select,iframe,textarea')) return;
-	const ev = {
-		key: e.key,
-		keyCode: e.keyCode,
-		metaKey: e.metaKey,
-		ctrlKey: e.ctrlKey,
-		shiftKey: e.shiftKey,
-		type: e.type
-	};
-	msg('keyup', ev);
-}
-
 function onWindowFocus () {
 	if (lastFocusedTextarea) lastFocusedTextarea.focus();
 	else document.documentElement.focus();
@@ -130,7 +117,6 @@ function init () {
 
 	document.addEventListener('click', onClick);
 	document.addEventListener('wheel', onWheel);
-	document.addEventListener('keyup', onKeyUp);
 
 	// don't handle dragging stuff around
 	document.addEventListener('dragover', ignoreEvent);

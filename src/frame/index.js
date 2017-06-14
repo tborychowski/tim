@@ -13,7 +13,6 @@ let frame, webview, isReady = false, pageZoom = 0, isLoggedIn = false, lastURL =
 
 const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
-	keyup: e => $.trigger(EVENT.document.keyup, e),
 	openInBrowser: url => helper.openInBrowser(url),
 	isLogged: itIs => {
 		if (itIs && !isLoggedIn) {

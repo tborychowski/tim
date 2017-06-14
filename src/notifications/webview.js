@@ -1,6 +1,10 @@
 const ipc = require('electron').ipcRenderer;
 const msg = ipc.sendToHost;
 
+function ignoreEvent (e) {
+	e.preventDefault();
+	return false;
+}
 
 function injectCss (ev, css) {
 	const style = document.createElement('style');
@@ -50,19 +54,6 @@ function onContextMenu (e) {
 	if (e.target.matches('a')) msg('showLinkMenu', e.target.getAttribute('href'));
 }
 
-function onKeyUp (e) {
-	if (document.activeElement.matches('input,select,textarea,iframe')) return;
-	const ev = {
-		key: e.key,
-		keyCode: e.keyCode,
-		metaKey: e.metaKey,
-		ctrlKey: e.ctrlKey,
-		shiftKey: e.shiftKey,
-		type: e.type
-	};
-	msg('keyup', ev);
-}
-
 
 function init () {
 	const aid = document.querySelector('.accessibility-aid');
@@ -73,13 +64,12 @@ function init () {
 	ipc.on('injectCss', injectCss);
 	document.addEventListener('click', onClick, true);
 	document.addEventListener('contextmenu', onContextMenu);
-	document.addEventListener('keyup', onKeyUp);
 
 	// don't handle dragging stuff around
-	document.ondragover = () => { return false; };
-	document.ondragleave = () => { return false; };
-	document.ondragend = () => { return false; };
-	document.ondrop = () => { return false; };
+	document.addEventListener('dragover', ignoreEvent);
+	document.addEventListener('dragleave', ignoreEvent);
+	document.addEventListener('dragend', ignoreEvent);
+	document.addEventListener('drop', ignoreEvent);
 
 
 	msg('isLogged', document.body.classList.contains('logged-in'));

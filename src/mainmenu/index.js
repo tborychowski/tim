@@ -1,5 +1,5 @@
 const { Menu, app } = require('electron').remote;
-const { EVENT, helper } = require('../services');
+const { EVENT, helper, config } = require('../services');
 const $ = require('../util');
 const name = app.getName();
 const ver = app.getVersion();
@@ -62,6 +62,11 @@ const menuTemplate = [
 				click: () => $.trigger(EVENT.frame.goto, 'refresh')
 			},
 			{
+				label: 'Reload sidebar',
+				accelerator: 'CmdOrCtrl+E',
+				click: () => $.trigger(EVENT.section.refresh, config.get('state.section'))
+			},
+			{
 				label: 'Focus address bar',
 				accelerator: 'CmdOrCtrl+L',
 				click: () => $.trigger(EVENT.address.focus)
@@ -84,6 +89,46 @@ const menuTemplate = [
 			},
 			{ type: 'separator' },
 			{ role: 'togglefullscreen' }
+		]
+	},
+	{
+		label: 'Goto',
+		submenu: [
+			{
+				label: 'Notifications',
+				accelerator: 'CmdOrCtrl+1',
+				click: () => $.trigger(EVENT.section.change, 'notifications')
+			},
+			{
+				label: 'Bookmarks',
+				accelerator: 'CmdOrCtrl+2',
+				click: () => $.trigger(EVENT.section.change, 'bookmarks')
+			},
+			{
+				label: 'My Issues',
+				accelerator: 'CmdOrCtrl+3',
+				click: () => $.trigger(EVENT.section.change, 'myissues')
+			},
+		]
+	},
+	{
+		label: 'Page',
+		submenu: [
+			{
+				label: 'Copy Link',
+				accelerator: 'CmdOrCtrl+P',
+				click: () => $.trigger(EVENT.address.copy)
+			},
+			{
+				label: 'Open in browser',
+				accelerator: 'CmdOrCtrl+O',
+				click: () => helper.openInBrowser(config.get('state.url')),
+			},
+			{
+				label: 'Toggle bookmark',
+				accelerator: 'CmdOrCtrl+Shift+B',
+				click: () => $.trigger(EVENT.bookmark.toggle)
+			},
 		]
 	},
 	{

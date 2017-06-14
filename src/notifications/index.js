@@ -10,7 +10,6 @@ const PARTICIPATING = !isDev;
 const getNotificationsUrl = () => `${config.get('baseUrl')}notifications${PARTICIPATING ? '/participating' : ''}`;
 
 const webviewHandlers = {
-	keyup: e => $.trigger(EVENT.document.keyup, e),
 	gotoRepo: repo => $.trigger(EVENT.url.change.to, $.trim(repo, '/') + '/issues'),
 	goto: url => $.trigger(EVENT.url.change.to, url),
 	showLinkMenu: url => $.trigger(EVENT.contextmenu.show, { url, type: 'link' }),
