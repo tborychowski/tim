@@ -110,7 +110,7 @@ function removeBookmark (issue) {
 	const iss = this.get('bookmarks').filter(i => i.url === issue.url)[0];
 	if (!iss) return;
 	const el = $(`.${data.issueCls(iss)}`);
-	el.animate({opacity: 1}, {opacity: 0}, { setPropsAfter: false }).then(() => {
+	el.animate({opacity: 1}, {opacity: 0}, {fill: 'none'}).then(() => {
 		bookmarks.remove(issue);
 		this.set('bookmarks', this.get('bookmarks').filter(i => i.url !== issue.url));
 	});

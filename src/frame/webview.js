@@ -6,8 +6,12 @@ const helper = require('./webview-helper');
 const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
 
 
-let isScrolling = false, isWheeling = false;
+let isScrolling = false, isWheeling = false, lastFocusedTextarea = null;
 
+function ignoreEvent (e) {
+	e.preventDefault();
+	return false;
+}
 
 // Throttle
 let domChangeTimer;
@@ -89,6 +93,15 @@ function onKeyUp (e) {
 	msg('keyup', ev);
 }
 
+function onWindowFocus () {
+	if (lastFocusedTextarea) lastFocusedTextarea.focus();
+	else document.documentElement.focus();
+}
+
+function onElementFocus (e) {
+	if (e.target.matches('textarea')) lastFocusedTextarea = e.target;
+	else lastFocusedTextarea = null;
+}
 
 function initSpellchecker () {
 	window.spellCheckHandler = new SpellCheckHandler();
@@ -120,10 +133,13 @@ function init () {
 	document.addEventListener('keyup', onKeyUp);
 
 	// don't handle dragging stuff around
-	document.ondragover = () => { return false; };
-	document.ondragleave = () => { return false; };
-	document.ondragend = () => { return false; };
-	document.ondrop = () => { return false; };
+	document.addEventListener('dragover', ignoreEvent);
+	document.addEventListener('dragleave', ignoreEvent);
+	document.addEventListener('dragend', ignoreEvent);
+	document.addEventListener('drop', ignoreEvent);
+
+	window.addEventListener('focus', onWindowFocus);
+	document.addEventListener('focus', onElementFocus, true);
 
 	msg('isLogged', document.body.classList.contains('logged-in'));
 	msg('docReady');

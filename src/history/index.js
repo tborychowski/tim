@@ -41,14 +41,14 @@ function onUrlChanged (webview, issue) {
 
 function hide () {
 	if (!data.visible) return;
-	this.$el.animate({ opacity: 1 }, { opacity: 0 }).then(() => { this.set('visible', false); });
+	this.$el.animate({opacity: 1}, {opacity: 0}).then(() => { this.set('visible', false); });
 }
 
 
 function show () {
 	if (data.visible) return;
 	this.set('visible', true);
-	this.$el.animate({ opacity: 0 }, { opacity: 1 });
+	this.$el.animate({opacity: 0}, {opacity: 1});
 }
 
 function onAddressInput (e) {

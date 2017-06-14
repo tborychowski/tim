@@ -146,25 +146,15 @@ sizzle.fn.attr = function (attr, value) {
 
 
 function animateElement (from, to, opts) {
-	return el => {
-		let promise = new Promise (resolve => {
-			const anim = el.animate([from, to], opts);
-			anim.oncancel = resolve;
-			anim.onfinish = resolve;
-		});
-
-		if (opts.setPropsAfter) {
-			return promise.then(() => {
-				for (let prop in to) el.style[prop] = to[prop];	// make sure the style sticks after the animation
-			});
-		}
-
-		return promise;
-	};
+	return el => new Promise (resolve => {
+		const anim = el.animate([from, to], opts);
+		anim.oncancel = resolve;
+		anim.onfinish = resolve;
+	});
 }
 
 sizzle.fn.animate = function (from, to, options = {}) {
-	const opts = Object.assign({},  { duration: 300, easing: 'ease-out', setPropsAfter: true }, options);
+	const opts = Object.assign({},  { duration: 300, easing: 'ease-out', fill: 'forwards' }, options);
 	const all = this.map(animateElement(from, to, opts));
 	return Promise.all(all);
 };

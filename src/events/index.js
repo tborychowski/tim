@@ -42,6 +42,15 @@ function onDocumentKeyUp (e) {
 	}
 }
 
+function windowFocus () {
+	document.body.classList.add('window-inactive');
+	$.trigger(EVENT.window.focus);
+}
+
+function windowBlur () {
+	document.body.classList.remove('window-inactive');
+	$.trigger(EVENT.window.blur);
+}
 
 function init () {
 	ipc.on('event', (ev, name) => $.trigger(name));
@@ -56,8 +65,8 @@ function init () {
 	document.addEventListener('dragend', ignoreEvent);
 	document.addEventListener('drop', ignoreEvent);
 
-	window.addEventListener('blur', () => document.body.classList.add('window-inactive'));
-	window.addEventListener('focus', () => document.body.classList.remove('window-inactive'));
+	window.addEventListener('focus', windowFocus);
+	window.addEventListener('blur', windowBlur);
 
 	$.on(EVENT.document.keyup, onDocumentKeyUp);
 }

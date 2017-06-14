@@ -83,5 +83,9 @@ module.exports = {
 			end: 'url-change-end',
 			to: 'change-url',
 		}
+	},
+	window: {
+		focus: 'window-focus',
+		blur: 'window-blur'
 	}
 };

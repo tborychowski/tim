@@ -100,7 +100,7 @@ function loadingStart () {
 
 	webview.skeleton.attr('class', `skeleton ${pageType}`);
 	frame.addClass('loading');
-	webview[0].focus();
+	// webview[0].focus();
 	$.trigger(EVENT.url.change.start);
 }
 
@@ -152,6 +152,7 @@ function init () {
 	$.on(EVENT.frame.zoomout, () => setZoom(-1));
 	$.on(EVENT.frame.zoomin, () => setZoom(1));
 	$.on(EVENT.frame.resetzoom, () => setZoom(0));
+	$.on(EVENT.window.focus, () => webview[0].focus());
 
 
 	swiping(frame, webview);

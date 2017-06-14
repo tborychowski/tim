@@ -46,13 +46,13 @@ function onWheel (e) {
 }
 
 function revert (fade) {
-	if (!fade) return webview.animate({ left: left + 'px' }, { left: 0 });
+	if (!fade) return webview.animate({left: left + 'px'}, {left: 0});
 
 	// triggering action
 	const moreLeft = left + (trackingLeft < 0 ? -100 : 100);
 	webview
 		.addClass('loading')
-		.animate({ left: left + 'px' }, { left: moreLeft + 'px' }, 'ease-out')
+		.animate({left: left + 'px'}, {left: moreLeft + 'px'})
 		.then(() => webview[0].style.left = 0);
 }
 
