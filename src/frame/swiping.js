@@ -18,9 +18,19 @@ function hasNoHistory () {
 	return false;
 }
 
+function setLeft (lft) {
+	// webview[0].style.left = `${left}px`;
+	webview[0].style.transform = `translateX(${lft}px)`;
+}
+
+function getLeftObj(lft) {
+	// return { left: `${lft}px` };
+	return { transform: `translateX(${lft}px)` };
+}
+
 
 function onWheel (e) {
-	if (!trackingStartLeft) trackingLeft = trackingStartLeft = webview[0].offsetLeft;
+	if (trackingStartLeft === null) trackingLeft = trackingStartLeft = webview[0].offsetLeft;
 	if (trackSwipe) {
 		const trackingVelocity = e.wheelDeltaX / 10;
 		trackingLeft = trackingLeft + trackingVelocity;
@@ -41,19 +51,19 @@ function onWheel (e) {
 			const resist =  Math.min(resistanceFunction(diff / threshold) * Math.min(maxX, diff), threshold);
 			left += left < 0 ? -resist : resist;
 		}
-		webview[0].style.left = left + 'px';
+		setLeft(left);
 	}
 }
 
 function revert (fade) {
-	if (!fade) return webview.animate({left: left + 'px'}, {left: 0});
+	if (!fade) return webview.animate(getLeftObj(left), getLeftObj(0));
 
 	// triggering action
 	const moreLeft = left + (trackingLeft < 0 ? -100 : 100);
 	webview
 		.addClass('loading')
-		.animate({left: left + 'px'}, {left: moreLeft + 'px'})
-		.then(() => webview[0].style.left = 0);
+		.animate(getLeftObj(left), getLeftObj(moreLeft))
+		.then(() => setLeft(0));
 }
 
 

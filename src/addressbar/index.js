@@ -3,7 +3,7 @@ const $ = require('../util');
 const { EVENT } = require('../services');
 const AddressBox = require('./addressbox');
 const IssueBox = require('./issuebox');
-const SearchBox = require('../search');
+const SearchBox = require('./search');
 
 const template = `
 	<div class="addressbar-inner" class-loading="loading" class-error="error">

@@ -6,7 +6,6 @@
  *
  */
 
-
 const { ipcRenderer, remote } = require('electron');
 const { EVENT, helper, isDev, dialog } = require('../services');
 const $ = require('../util');

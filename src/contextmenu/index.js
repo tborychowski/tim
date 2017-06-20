@@ -1,10 +1,10 @@
-// const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
 const { EVENT } = require('../services');
 const $ = require('../util');
 const menu = require('electron-context-menu');
 
 
 // function initSpellchecker () {
+// const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
 // 	window.spellCheckHandler = new SpellCheckHandler();
 // 	window.spellCheckHandler.attachToInput();
 // 	window.spellCheckHandler.switchLanguage('en-US');

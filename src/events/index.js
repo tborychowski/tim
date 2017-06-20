@@ -22,12 +22,12 @@ function onDocumentClick (e) {
 
 
 function windowFocus () {
-	document.body.classList.add('window-inactive');
+	document.body.classList.remove('window-inactive');
 	$.trigger(EVENT.window.focus);
 }
 
 function windowBlur () {
-	document.body.classList.remove('window-inactive');
+	document.body.classList.add('window-inactive');
 	$.trigger(EVENT.window.blur);
 }
 
