@@ -4,7 +4,7 @@ const { EVENT, history } = require('../services');
 
 
 const template = `
-	<div class="history" class-visible="visible" style-max-height="{{height(items.length)}}px">
+	<div class="history" class-visible="visible" style-height="{{height(items.length)}}px">
 		<select class="history-list" size="2" tabindex="2"
 				on-blur="hide"
 				on-keypress="onKeyPress"
@@ -21,7 +21,7 @@ const template = `
 const data = {
 	visible: false,
 	items: [],
-	height: len => len * 27 + (len > 0 ? 20 : 0),
+	height: len => len * 26 + (len > 0 ? 20 : 0),
 	text: item => {
 		const repo = (item.repo ? item.repo.split('/').pop() : null);
 		const mod = (repo ? ` | ${repo}` : '');

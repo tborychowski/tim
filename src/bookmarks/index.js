@@ -44,7 +44,7 @@ const data = {
 	bookmarks: [],
 	issueIcon: iss => issueTypeCls[iss.type],
 	issueCls: iss => {
-		const repo = (iss.repo || '').replace(/[\/\.]/g, '-').toLowerCase();
+		const repo = (iss.repo || '').replace(/[/.]/g, '-').toLowerCase();
 		const id = iss.id ? iss.id : iss.url.split('/').pop();
 		return `issue-${repo}-${id}`;
 	},
@@ -78,7 +78,6 @@ function openIssue (e) {
 	e.original.preventDefault();
 	if (throttled) return throttle();	// clicked during quiet time
 	if (e.original.metaKey || e.original.ctrlKey) return;
-	console.log('clicking');
 	throttle();
 	const iss = e.get();
 	if (iss) {
