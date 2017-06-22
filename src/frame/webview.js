@@ -105,9 +105,7 @@ function init () {
 	const aid = document.querySelector('.accessibility-aid');
 	if (aid) aid.remove();
 
-	ipc.on('gatherUserIds', () => msg('userIdsGathered', realnames.gatherUserIds(document)));
-	ipc.on('userIdsAndNames', (ev, users) => realnames.updateUserNames(document, users));
-
+	realnames();
 
 	ipc.on('injectCss', (ev, css) => helper.injectCss(document, css));
 	ipc.on('zoom', (ev, zoom) => { document.body.style.zoom = zoom * 0.1 + 1; });

@@ -1,8 +1,12 @@
+const ipc = require('electron').ipcRenderer;
+const msg = ipc.sendToHost;
 
 const trim = (str, chars = '\\s') => str.replace(new RegExp(`(^${chars}+)|(${chars}+$)`, 'g'), '');
 
 const REAL_NAME_CLS = 'real-name-replaced';
 const notRealName = `:not(.${REAL_NAME_CLS})`;
+
+let READY = false;
 
 const elementSelectors = [
 	`.issues-listing .author${notRealName}`,
@@ -54,8 +58,12 @@ function updateUserNames (document, users) {
 }
 
 
-module.exports = {
-	gatherUserIds,
-	updateUserNames,
-};
+function init () {
+	if (READY) return;
+	ipc.on('gatherUserIds', () => msg('userIdsGathered', gatherUserIds(document)));
+	ipc.on('userIdsAndNames', (ev, users) => updateUserNames(document, users));
+	READY = true;
+}
+
+module.exports = init;
 

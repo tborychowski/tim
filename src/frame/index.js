@@ -83,12 +83,12 @@ function onNavigationError (er) {
 
 function onRendered (url, issue) {
 	if (issue.url.indexOf('#') > -1) issue.url = issue.url.substr(0, issue.url.indexOf('#'));
-	issue.url = $.rtrim(issue.url, '\/files');
-	issue.url = $.rtrim(issue.url, '\/commits');
+	issue.url = $.rtrim(issue.url, '/files');
+	issue.url = $.rtrim(issue.url, '/commits');
 
 	config.set('state.url', url);
 	config.set('state.issue', issue);
-	realnames.replace(webview[0]);
+	realnames(webview[0]);
 	if (lastURL !== url) $.trigger(EVENT.url.change.done, webview[0], issue);
 	lastURL = url;
 }

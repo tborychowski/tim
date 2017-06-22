@@ -1,6 +1,6 @@
 const { users, github } = require('../services');
 
-let webview;
+let webview, READY = false;
 
 /**
  * Convert an array of users to object, e.g.
@@ -45,17 +45,16 @@ function onMessage (ev) {
 	if (ev.channel === 'userIdsGathered') {
 		const ids = ev.args[0];
 		if (Array.isArray(ids)) getAllUsers(ids);
-		webview.removeEventListener('ipc-message', onMessage);
 	}
 }
 
 function replace (wv) {
-	webview = wv;
-	webview.addEventListener('ipc-message', onMessage);
+	if (!READY) {
+		webview = wv;
+		webview.addEventListener('ipc-message', onMessage);
+		READY = true;
+	}
 	webview.send('gatherUserIds');
 }
 
-
-module.exports = {
-	replace
-};
+module.exports = replace;
