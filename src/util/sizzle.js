@@ -1,3 +1,5 @@
+const Velocity = require('velocity-animate');
+
 const type = obj => obj ? Object.prototype.toString.call(obj).slice(8, -1).toLowerCase() : 'undefined';
 const isNodeList = nodes => (typeof nodes === 'object') &&
 		/^(htmlcollection|nodelist|object)$/.test(type(nodes)) &&
@@ -145,16 +147,24 @@ sizzle.fn.attr = function (attr, value) {
 };
 
 
+// FIXME: this has bugs in chrome, so using velocity instead for now
+// function animateElement (from, to, opts) {
+// 	return el => new Promise (resolve => {
+// 		const anim = el.animate([from, to], opts);
+// 		anim.oncancel = resolve;
+// 		anim.onfinish = resolve;
+// 	});
+// }
+
+
 function animateElement (from, to, opts) {
-	return el => new Promise (resolve => {
-		const anim = el.animate([from, to], opts);
-		anim.oncancel = resolve;
-		anim.onfinish = resolve;
-	});
+	const fromTo = {};
+	for (let key in from) fromTo[key] = [ to[key], from[key] ];
+	return el => Velocity(el, fromTo, opts);
 }
 
 sizzle.fn.animate = function (from, to, options = {}) {
-	const opts = Object.assign({},  { duration: 300, easing: 'ease-out', fill: 'forwards' }, options);
+	const opts = Object.assign({}, {duration: 300, easing: 'ease-out', fill: 'forwards'}, options);
 	const all = this.map(animateElement(from, to, opts));
 	return Promise.all(all);
 };

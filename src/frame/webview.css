@@ -12,6 +12,7 @@ body { min-width: auto !important;
 .notification-actions .mute,
 .notification-center .tabnav,
 .header,
+.js-header-wrapper,
 .site-footer,
 .protip,
 .site-footer-container,
@@ -45,10 +46,10 @@ body { min-width: auto !important;
 .notifications .list-group-item-name { max-width: 100%; margin-right: 220px; }
 .notifications .list-group-item-name a { max-width: 100%; }
 
-.gut-md { width: auto; margin: 0; }
-.gut-md>.col-3 { display: none; }
-.gut-md>.col-9 { float: none !important; width: 100%; }
-.gut-md>.col-9 .blankslate { background: none; box-shadow: none; border: 0; }
+.gutter { width: auto; margin: 0; }
+.gutter>.col-3 { display: none; }
+.gutter>.col-9 { float: none !important; width: 100%; }
+.gutter>.col-9 .blankslate { background: none; box-shadow: none; border: 0; }
 
 
 

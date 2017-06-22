@@ -2,8 +2,8 @@ const Ractive = require('ractive');
 
 
 const outerRadius = 22;
-const innerRadius = 18;
-const color = 'rgba(150,255,70,0.2)';
+const innerRadius = 20;
+const color = '#82B209';
 
 const template = `<svg width="100%" height="100%"><path stroke="${color}" stroke-width="${outerRadius - innerRadius}" d="{{arc(progress)}}" fill="none" /></svg>`;
 
