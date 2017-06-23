@@ -156,17 +156,19 @@ sizzle.fn.attr = function (attr, value) {
 // 	});
 // }
 
+// sizzle.fn.animate = function (from, to, options = {}) {
+// 	const dflt = {duration: 300, easing: 'ease-out', fill: 'forwards'};
+// 	const opts = Object.assign({}, dflt, options);
+// 	const all = this.map(animateElement(from, to, opts));
+// 	return Promise.all(all);
+// };
 
-function animateElement (from, to, opts) {
-	const fromTo = {};
-	for (let key in from) fromTo[key] = [ to[key], from[key] ];
-	return el => Velocity(el, fromTo, opts);
-}
 
 sizzle.fn.animate = function (from, to, options = {}) {
-	const opts = Object.assign({}, {duration: 300, easing: 'ease-out', fill: 'forwards'}, options);
-	const all = this.map(animateElement(from, to, opts));
-	return Promise.all(all);
+	const opts = Object.assign({}, {duration: 300, easing: 'ease-out'}, options);
+	const fromTo = {};
+	for (let key in from) fromTo[key] = [ to[key], from[key] ];
+	return Velocity(this, fromTo, opts);
 };
 
 

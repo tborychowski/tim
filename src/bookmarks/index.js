@@ -28,7 +28,7 @@ const template = `
 			</h2>
 			<ul class="repo-box-issues">
 				{{#items}}
-					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}" fade-in>
+					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}" fade-in-out>
 						<i class="issue-icon {{issueIcon(this)}}"></i>
 						<a href="{{url}}" class="btn bookmark" title="{{id || name}}" on-click="openIssue">{{name}}</a>
 						{{#if type === 'pr'}}<BuildStatus issue="{{this}}" />{{/if}}
@@ -106,13 +106,10 @@ function addBookmark (issue) {
 
 function removeBookmark (issue) {
 	if (!issue) issue = config.get('state.issue');
-	const iss = this.get('bookmarks').filter(i => i.url === issue.url)[0];
+	const iss = data.bookmarks.filter(i => i.url === issue.url)[0];
 	if (!iss) return;
-	const el = $(`.${data.issueCls(iss)}`);
-	el.animate({opacity: 1}, {opacity: 0}, {fill: 'none'}).then(() => {
-		bookmarks.remove(issue);
-		this.set('bookmarks', this.get('bookmarks').filter(i => i.url !== issue.url));
-	});
+	this.splice('bookmarks', data.bookmarks.indexOf(iss), 1);
+	bookmarks.remove(issue);
 }
 
 
@@ -140,9 +137,13 @@ function checkIfBookmarked (url) {
 
 
 function refresh (reset) {
-	if (Module && reset === true) {
-		data.bookmarks = [];
-		Module.reset(data);
+	if (Module) {
+		Module.transitionsEnabled = false;
+		if (reset === true) {
+			data.bookmarks = [];
+			Module.reset(data);
+		}
+		Module.transitionsEnabled = true;
 	}
 
 	bookmarks.get()
@@ -205,7 +206,8 @@ Module = new Ractive({
 	oninit,
 	components: { BuildStatus },
 	computed,
-	transitions: { fade }
+	transitions: { fade },
+	transitionsEnabled: false
 });
 
 module.exports = Module;

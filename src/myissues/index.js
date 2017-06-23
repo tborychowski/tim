@@ -1,4 +1,5 @@
 const Ractive = require('ractive');
+const fade = require('ractive-transitions-fade');
 const $ = require('../util');
 const { EVENT, github, helper } = require('../services');
 
@@ -14,7 +15,7 @@ const template = `
 			<h2><a href="{{repoUrl}}" class="hdr" on-click="openRepo">{{repoShortName}}</a></h2>
 			<ul class="repo-box-issues">
 				{{#items}}
-					<li class="issue-box {{state}} type-{{type}}">
+					<li class="issue-box {{state}} type-{{type}}" fade-in-out>
 						<i class="issue-icon {{issueIcon(this)}}" title="{{state}}"></i>
 						<a href="{{url}}" class="btn bookmark" title="{{number}}" on-click="openIssue">{{title}}</a>
 					</li>
@@ -97,4 +98,6 @@ module.exports = new Ractive({
 	data,
 	template,
 	oninit,
+	transitions: { fade },
+	transitionsEnabled: false
 });
