@@ -14,44 +14,6 @@
 	<div id="addressbar"></div>
 	<div id="history"></div>
 	<section id="frame"></section>
-
-	<section class="settings">
-		<form class="settings-form">
-			<h1>Preferences</h1>
-			<div class="settings-scroller">
-				<h2>Essentials</h2>
-
-				<label>Base URL: <input name="baseUrl" required></label>
-
-				<label>Github Token: <input name="ghToken" placeholder="token ID">
-					<button class="btn token-link" data-go="link" type="button">Generate</button>
-				</label>
-				<span class="settings-info-text">(make sure to select: <b>"repo/public_repo"</b> and <b>"notifications"</b> scopes)</span>
-
-				<label>Default repo: <input name="repoToSearch" placeholder="owner/repo-name"></label>
-				<span class="settings-info-text">e.g. facebook/react</span>
-				<span class="settings-info-text">this will be used for Projects tab, searching, etc.</span>
-
-
-				<h2>Optional</h2>
-
-				<label>CI URL: <input name="ciUrl" placeholder="e.g. Travis or Jenkins base URL"></label>
-				<span class="settings-info-text">This will allow to monitor job build status on bookmarked PRs</span>
-
-				<label>Home button URL: <input name="homeUrl" placeholder="Defaults to Base URL"></label>
-
-				<label>Default Browser: <input name="browser" placeholder="use the OS default browser or select">
-					<button class="btn settings-form-button" data-go="findBrowser" type="button">...</button>
-				</label>
-				<span class="settings-info-text">This will allow to open pages in another browser</span>
-			</div>
-			<div class="settings-buttons">
-				<a href="#" class="btn btn-left btn-folder" data-go="folder">Open settings folder</a>
-				<button class="btn btn-cancel" data-go="cancel" type="button">Cancel</button>
-				<button class="btn btn-save" data-go="save" type="submit">Save</button>
-			</div>
-		</form>
-	</section>
-
+	<section class="settings"></section>
 	<script src="app.js"></script>
 </body>

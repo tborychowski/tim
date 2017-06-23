@@ -54,10 +54,10 @@ function onSectionChange (id) {
 }
 
 function onClick (e) {
+	e.original.preventDefault();
 	if (e.node.matches('.nav-update') && this.get('update.show')) $.trigger(EVENT.updater.nav.clicked);
 	else if (e.node.matches('.nav-settings')) $.trigger(EVENT.settings.show);
 	else $.trigger(EVENT.section.change, e.get().id);
-	return false;
 }
 
 

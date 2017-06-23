@@ -1,4 +1,22 @@
 .settings
+.settings-overlay
+	position fixed
+	left 0
+	top 0
+	bottom 0
+	right 0
+
+.settings
+	display none
+	z-index 101
+
+.settings-overlay
+	opacity 0
+	transition opacity .3s ease-out
+	background-color rgba(#000, .6)
+
+
+.settings-window
 	position absolute
 	z-index 200
 	top 100px
@@ -10,7 +28,6 @@
 	padding 0
 	box-shadow 0 2px 30px #000
 	border-radius 3px
-	display none
 	opacity 0
 	transform scale(0.8) translate3d(0, 0, 0)
 	transition all .3s ease-out
@@ -23,8 +40,12 @@
 		background-color #f3f3f3
 		border-bottom 1px solid #ccc
 
+	h2
+		font-size 16px
+		margin 0
+		padding 20px 0 0
 
-	.btn
+	button
 		font-size 14px
 		background-color #f1f1f1
 		border-radius 3px
@@ -35,17 +56,6 @@
 		color #333
 		display inline-block
 
-
-
-.settings-form
-	display flex
-	flex-direction column
-	height 100%
-
-	h2
-		font-size 16px
-		margin 0
-		padding 20px 0 0
 
 	label
 		padding 20px 5px 5px
@@ -75,14 +85,19 @@
 		height 5em
 
 
-	input[name="browser"]
+	.input-browser
 		width calc(100% - 176px)
 		margin-right -18px
 
-	input[name="ghToken"]
+	.input-token
 		width calc(100% - 224px)
 		margin-right -34px
 
+
+.settings-form
+	display flex
+	flex-direction column
+	height 100%
 
 
 .settings-scroller
@@ -94,10 +109,6 @@
 	min-height 100px
 
 
-.settings-info-text .btn
-	margin 10px 0
-
-
 .settings-buttons
 	border-top 1px solid #ccc
 	margin 0
@@ -107,7 +118,7 @@
 	background-color #f3f3f3
 
 
-	.btn
+	button
 		padding 10px 30px
 		background-color #fff
 
@@ -117,7 +128,7 @@
 	.btn-left
 		float left
 
-	.btn-save
+	.btn-main
 		font-weight bold
 		margin-left 10px
 		background-color rgba(0, 180, 255, 0.2)
@@ -132,32 +143,10 @@
 
 
 
-
-
-
-
-/* SHOW SETTINGS */
-
-#main
-#nav
-#subnav
-#frame
-#addressbar
-#appheader
-	transition filter .3s ease-out
-
-
 .show-settings
-	#header
-	#frame
-	#nav
-	#subnav
-	#addressbar
-	#appheader
-		filter brightness(0.4)
-		pointer-events none
-
-	.settings
+	.settings-overlay
+		opacity 1
+	.settings-window
 		opacity 1
 		transform scale(1) translate3d(0, 0, 0)
 
