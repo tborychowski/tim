@@ -12,7 +12,7 @@ const $ = require('../util');
 
 const template = `
 	<div id="search-bar" class-hidden="!visible">
-		<input class="search-input" value="{{term}}" on-keyup="onkeyup" tabindex="4" />
+		<input class="search-input" value="{{term}}" on-keyup="onkeyup" tabindex="4" placeholder="Find in page" />
 		<span class="search-info">{{info()}}</span>
 		<button {{#if !total}}disabled{{/if}} class="btn-prev ion-ios-arrow-up" title="Previous" on-click="findPrev" tabindex="5"></button>
 		<button {{#if !total}}disabled{{/if}} class="btn-next ion-ios-arrow-down" title="Next" on-click="findNext" tabindex="6"></button>
