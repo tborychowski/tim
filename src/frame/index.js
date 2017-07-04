@@ -90,6 +90,7 @@ function onRendered (url, issue) {
 	config.set('state.issue', issue);
 	realnames(webview[0]);
 	if (lastURL !== url) $.trigger(EVENT.url.change.done, webview[0], issue);
+	else $.trigger(EVENT.frame.domchanged, issue);
 	lastURL = url;
 }
 

@@ -37,6 +37,7 @@ module.exports = {
 		zoomin: 'frame-zoom-in',
 		zoomout: 'frame-zoom-out',
 		resetzoom: 'frame-zoom-reset',
+		domchanged: 'frame-dom-changed'
 	},
 	history: {
 		focus: 'focus-search-results'

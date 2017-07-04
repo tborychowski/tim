@@ -120,13 +120,19 @@ function toggleBookmark () {
 	});
 }
 
-function onUrlChanged (wv, issue) {
+function onUrlChanged (issue) {
 	if (!issue || !issue.url) return;
 	const iss = data.bookmarks.filter(i => i.url === issue.url)[0];
-	if (iss) iss.unread = false;
+	if (iss) {
+		iss.unread = false;
+		iss.name = issue.name;
+	}
 	this.set('bookmarks', data.bookmarks);
 	bookmarks.setUnreadByUrl(issue.url, false);
-	checkIfBookmarked(issue.url).then(exists => $.trigger(EVENT.bookmark.exists, !!exists));
+	checkIfBookmarked(issue.url).then(i => {
+		$.trigger(EVENT.bookmark.exists, !!i);
+		if (i && i.name !== issue.name) bookmarks.update(i.id, { name: issue.name });
+	});
 }
 
 function checkIfBookmarked (url) {
@@ -173,6 +179,13 @@ function completeIssueModel (iss) {
 function render (issues) {
 	issues = issues.map(completeIssueModel);
 	issues = helper.mergeArrays(issues, data.bookmarks);
+
+	if (issues.length) {
+		issues.forEach(is => {
+			bookmarks.update(is.id, { name: is.name, state: is.state });
+		});
+	}
+
 	Module.set('bookmarks', issues);
 	return issues;
 }
@@ -185,9 +198,11 @@ function oninit () {
 
 	$.on(EVENT.section.refresh, sectionRefresh);
 	$.on(EVENT.section.change, sectionChanged);
-	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
+	$.on(EVENT.url.change.done, (wv, i) => onUrlChanged.call(this, i));
+	$.on(EVENT.frame.domchanged, onUrlChanged.bind(this));
+
 	this.on({ openRepo, openIssue });
-	refresh();
+	// refresh();
 }
 
 

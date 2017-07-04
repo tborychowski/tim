@@ -2,7 +2,7 @@
   "name": "github-browser",
   "productName": "Github Browser",
   "description": "Github browser.",
-  "version": "2.2.4",
+  "version": "2.2.6",
   "main": "index.js",
   "repository": {
     "type": "git",
