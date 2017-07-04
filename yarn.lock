@@ -1298,9 +1298,9 @@ electron-window-state@^4.1.0:
     jsonfile "^2.2.3"
     mkdirp "^0.5.1"
 
-electron@^1.7.3:
-  version "1.7.3"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.3.tgz#839cab0a0598835a100dceede215988ba99c325b"
+electron@1.7.4:
+  version "1.7.4"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.4.tgz#db8b85ae98dffb7a82938e5ea6eed3cb66f62a65"
   dependencies:
     "@types/node" "^7.0.18"
     electron-download "^3.0.1"

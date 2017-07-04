@@ -82,9 +82,17 @@ function getCommitStatuses (repo, sha) {
 
 
 function getBuildStatus (pr) {
+	let merged = false;
 	return github(`/repos/${pr.repo}/pulls/${pr.id}`)
-		.then(res => getCommitStatuses(pr.repo, res && res.head && res.head.sha))
-		.then(res => getJenkinsStatus(pr, res));
+		.then(res => {
+			if (res.merged) merged = true;
+			return getCommitStatuses(pr.repo, res && res.head && res.head.sha);
+		})
+		.then(stats => getJenkinsStatus(pr, stats))
+		.then(status => {
+			status.merged = merged;
+			return status;
+		});
 }
 
 
@@ -110,7 +118,7 @@ function checkIssueState (issue) {
 	return getIssue(issue.repo, issue.id)
 		.then(res => {
 			if (res) {
-				issue.state = res.state;
+				if (issue.state !== 'merged') issue.state = res.state;
 				issue.name = res.title;
 			}
 			return issue;
