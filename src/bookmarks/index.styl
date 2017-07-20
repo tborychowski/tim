@@ -1,3 +1,6 @@
+@require '_lib'
+
+
 .repo-box-issues
 	list-style none
 	margin 0
@@ -37,7 +40,7 @@
 			position absolute
 			left 7px
 			top 11px
-			background-color red
+			background-color unread-dot-color
 			border-radius 50%
 			width 5px
 			height 5px
@@ -52,16 +55,16 @@
 		transition color .3s ease-out
 
 	&.open .issue-icon
-		color #28a745
-		-webkit-text-stroke 0.5px #28a745
+		color ico-col-open
+		-webkit-text-stroke 0.5px ico-col-open
 
 	&.closed .issue-icon
-		color #cb2431
-		-webkit-text-stroke 0.5px #cb2431
+		color ico-col-closed
+		-webkit-text-stroke 0.5px ico-col-closed
 
 	&.merged .issue-icon
-		color #7D60AC
-		-webkit-text-stroke 0.5px #7D60AC
+		color ico-col-merged
+		-webkit-text-stroke 0.5px ico-col-merged
 
 
 
@@ -78,11 +81,11 @@
 
 	&.success
 	&.merged
-		color yellowgreen
+		color ico-col-success
 
 	&.aborted
 	&.failure
-		color firebrick
+		color ico-col-failure
 
 	&.progress
 		color rgba(255, 255, 255, 0.5)
@@ -109,7 +112,7 @@
 
 .build-progress-inner
 	height 100%
-	background greenyellow
+	background progressbar-color
 	border-radius 5px
 	width 0
 	transition width .5s ease-out

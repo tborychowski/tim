@@ -10,7 +10,7 @@ function add (item) {
 
 
 function get () {
-	return db.find({ _id: -1 });
+	return db.find({ visited: -1 });
 }
 
 

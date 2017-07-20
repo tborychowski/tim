@@ -1,15 +1,22 @@
+@require '_lib'
+
+
 .issue-box
 	flex-wrap wrap
 
 
 	&.open .issue-icon
-		color #28a745
-		-webkit-text-stroke 0.5px #28a745
+		color ico-col-open
+		-webkit-text-stroke 0.5px ico-col-open
 
 
 	&.closed .issue-icon
-		color #cb2431
-		-webkit-text-stroke 0.5px #cb2431
+		color ico-col-closed
+		-webkit-text-stroke 0.5px ico-col-closed
+
+	&.merged .issue-icon
+		color ico-col-merged
+		-webkit-text-stroke 0.5px ico-col-merged
 
 
 	.issue-date

@@ -8,6 +8,7 @@ const { config, EVENT, helper, isDev, WebView } = require('../services');
 const $ = require('../util');
 const realnames = require('../realnames');
 const swiping = require('./swiping');
+const loginUrl = () => `${config.get('baseUrl')}login`;
 
 let frame, webview, isReady = false, pageZoom = 0, isLoggedIn = false, lastURL = '', urlLoading = '';
 
@@ -15,9 +16,12 @@ const webviewHandlers = {
 	documentClicked: () => $.trigger(EVENT.document.clicked),
 	openInBrowser: url => helper.openInBrowser(url),
 	isLogged: itIs => {
-		if (itIs && !isLoggedIn) {
+		if (itIs && !isLoggedIn) {				// wasn't but now it is!
 			isLoggedIn = true;
 			$.trigger(EVENT.notifications.reload);
+		}
+		else if (!itIs && !isLoggedIn) {		// wasn't and still isn't!
+			if (urlLoading !== loginUrl()) gotoUrl(loginUrl());
 		}
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
@@ -50,7 +54,7 @@ function initialURL (initial) {
 		if (url) return url;
 	}
 	if (initial && config.get('state.url')) return config.get('state.url');
-	return `${config.get('baseUrl')}login`;
+	return loginUrl();
 }
 
 

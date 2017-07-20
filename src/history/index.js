@@ -6,7 +6,6 @@ const { EVENT, history } = require('../services');
 const template = `
 	<div class="history" class-visible="visible" style-height="{{height(items.length)}}px">
 		<select class="history-list" size="2" tabindex="2"
-				on-blur="hide"
 				on-keypress="onKeyPress"
 				on-keydown="onKeyDown"
 				on-click="onKeyPress">
@@ -23,10 +22,12 @@ const data = {
 	items: [],
 	height: len => len * 26 + (len > 0 ? 20 : 0),
 	text: item => {
-		const repo = (item.repo ? item.repo.split('/').pop() : null);
-		const mod = (repo ? ` | ${repo}` : '');
-		const id = item.id ? `#${item.id} | ` : '';
-		return `${id}${item.name}${mod}`;
+		const text = [];
+		if (item.id) text.push(`#${item.id}`);
+		text.push(item.name);
+		if (item.repo) text.push(item.repo.split('/').pop());
+		text.push(item.url);
+		return text.join(' | ');
 	}
 };
 
@@ -41,12 +42,15 @@ function onUrlChanged (webview, issue) {
 
 function hide () {
 	if (!data.visible) return;
-	this.$el.animate({opacity: 1}, {opacity: 0}).then(() => { this.set('visible', false); });
+	this.$el.animate({opacity: 1}, {opacity: 0}).then(() => {
+		this.set('visible', false);
+	});
 }
 
 
 function show () {
 	if (data.visible) return;
+	this.listEl.selectedIndex = 0;
 	this.set('visible', true);
 	this.$el.animate({opacity: 0}, {opacity: 1});
 }
@@ -68,7 +72,7 @@ function focusResults () {
 }
 
 function onDocumentClick (e) {
-	if (e && e.target && $(e.target).closest('.history-list')) return;
+	if (e && e.target && $(e.target).closest('.history-list').length) return;
 	hide.call(this);
 }
 
@@ -101,9 +105,11 @@ function onrender () {
 function oninit () {
 	this.on({ hide, onKeyPress, onKeyDown });
 	$.on(EVENT.url.change.done, onUrlChanged);
+
 	$.on(EVENT.address.input.end, hide.bind(this));
-	$.on(EVENT.frame.focused, hide.bind(this));
 	$.on(EVENT.address.input.key, onAddressInput.bind(this));
+
+	$.on(EVENT.frame.focused, hide.bind(this));
 	$.on(EVENT.history.focus, focusResults.bind(this));
 	$.on(EVENT.document.clicked, onDocumentClick.bind(this));
 }

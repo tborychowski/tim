@@ -46,6 +46,9 @@ body { min-width: auto !important;
 .notifications .list-group-item-name { max-width: 100%; margin-right: 220px; }
 .notifications .list-group-item-name a { max-width: 100%; }
 
+.type-icon-state-merged { color: #a476f9; }
+
+
 /* old */
 .gut-md { width: auto; margin: 0; }
 .gut-md>.col-3 { display: none; }
