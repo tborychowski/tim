@@ -4,6 +4,8 @@ const isDev = require('./isDev');
 
 let count = 0;
 
+// process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0';
+
 function calcProgress (data) {
 	if (data.result) return 100;
 	const now = +new Date(), progress = (now - data.timestamp) * 100 / data.estimatedDuration;
@@ -29,7 +31,7 @@ function buildInfo (jenkins, item) {
 	return new Promise(resolve  => {
 		jenkins.build_info(item.jobName, item.buildId, (err, data) => {
 			if (isDev) console.log('No of Jenkins requests so far:', ++count);
-			if (err) return resolve();
+			if (err) return resolve({});
 			const info = parseBuildData(item, data);
 			info.url = item.url;
 			resolve(info);
@@ -44,7 +46,7 @@ function getStatus (url) {
 	const [host, parts] = $.trim(url, '/').split('/job/');
 	const [jobName, buildId] = parts.split('/');
 	const item = { jobName, buildId, url };
-	const jenkins = jenkinsApi.init(host, { strictSSL: false, proxy: null });
+	const jenkins = jenkinsApi.init(host, { request: { strictSSL: false, rejectUnauthorized: false, proxy: null }});
 	return buildInfo(jenkins, item);
 }
 
