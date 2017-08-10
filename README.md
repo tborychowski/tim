@@ -1,5 +1,5 @@
-# Github Browser
-Browse github orderly.
+# TIM
+Tom's Issue Manager.
 
 ![Screenshot](screens/0-screenshot.png)
 
@@ -19,7 +19,7 @@ Browse github orderly.
 
 
 ## Download
-Check the [Releases](https://github.com/tborychowski/github-browser/releases) for the latest version.
+Check the [Releases](https://github.com/tborychowski/tim/releases) for the latest version.
 
 
 
@@ -64,8 +64,8 @@ Check the [Releases](https://github.com/tborychowski/github-browser/releases) fo
 
 ## Dev install
 ```sh
-git clone https://github.com/tborychowski/github-browser.git
-cd github-browser
+git clone https://github.com/tborychowski/tim.git
+cd tim
 npm i
 npm start
 ```

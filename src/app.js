@@ -1,3 +1,5 @@
+document.title = require('./app/util/helper').appName;
+
 const components = [
 	'events',
 	'nav',
@@ -22,3 +24,4 @@ components.forEach(c => {
 	const m = require(`./app/${c}`);
 	if (m && m.init) m.init();
 });
+

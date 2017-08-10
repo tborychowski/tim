@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const EVENT = require('./app/services/events');
+const helper = require('./app/services/helper');
 const updater = require('./app/updater/main');
 
 let win;
@@ -24,7 +25,7 @@ function createWindow () {
 	const mainWindowState = windowStateKeeper({ defaultWidth: 1000, defaultHeight: 800 });
 
 	win = new BrowserWindow({
-		title: 'Github Browser',
+		title: helper.appName,
 		icon: __dirname + '/assets/icon.png',
 		show: false,
 		vibrancy: 'dark',
