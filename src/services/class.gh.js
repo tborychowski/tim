@@ -1,11 +1,12 @@
 const REQ = require('request-promise-native');
 const isDev = require('./isDev');
+const { helper } = require('../services');
 
 
 module.exports = class GitHub {
 
 	constructor () {
-		this.user_agent = 'GithubBrowser';
+		this.user_agent = helper.appName;
 		this.reqCount = 0;
 		this.fetchingUser = false;
 	}
@@ -27,7 +28,7 @@ module.exports = class GitHub {
 
 	getOptions (url, qs = {}, fullResp = false) {
 		const uri = `${this.host}${url}`;
-		const headers = { 'User-Agent': 'GithubBrowser' };
+		const headers = { 'User-Agent': helper.appName };
 		if (url.indexOf('projects') > -1) headers.Accept = 'application/vnd.github.inertia-preview+json';
 		if (this.token) qs.access_token = this.token;
 		return { uri, qs, headers, json: true, resolveWithFullResponse: fullResp, strictSSL: false };

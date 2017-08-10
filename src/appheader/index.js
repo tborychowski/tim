@@ -15,7 +15,7 @@ const template = `
 `;
 
 const data = {
-	title: 'Github Browser',
+	title: helper.appName,
 	starred: false,
 	flashing: false
 };
@@ -41,7 +41,7 @@ function unstar () {
 
 
 function onUrlChanged (webview, issue) {
-	this.set('title', issue && issue.name || 'Github Browser');
+	this.set('title', issue && issue.name || helper.appName);
 }
 
 function isItCurrentlyOpen (url) {

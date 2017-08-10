@@ -1,12 +1,12 @@
 {
-  "name": "github-browser",
-  "productName": "Github Browser",
-  "description": "Github browser.",
+  "name": "tim",
+  "productName": "TIM",
+  "description": "Tom's Issue Manager helps you browse, and keep track of your Github issues.",
   "version": "2.2.6",
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tborychowski/github-browser.git"
+    "url": "https://github.com/tborychowski/tim.git"
   },
   "scripts": {
     "postinstall": "electron-builder install-app-deps",
@@ -17,15 +17,16 @@
   "author": "Tom",
   "license": "MIT",
   "build": {
-    "appId": "com.electron.github-browser",
+    "appId": "com.electron.tim",
     "mac": {
       "category": "public.app-category.developer-tools"
     },
     "publish": [
-      "github"
+      "tim"
     ]
   },
   "dependencies": {
+    "electron": "^1.7.6",
     "electron-config": "^1.0.0",
     "electron-context-menu": "^0.9.1",
     "electron-dl": "^1.9.0",
@@ -34,7 +35,7 @@
     "electron-updater": "^2.0.0",
     "electron-window-state": "^4.1.0",
     "ionicons": "^3.0.0",
-    "jenkins-api": "^0.2.8",
+    "jenkins-api": "^0.3.1",
     "lodash.get": "^4.4.2",
     "lodash.merge": "^4.6.0",
     "ractive": "^0.9.0",
@@ -51,7 +52,7 @@
     "electron": "1.7.5",
     "electron-builder": "^19.5.1",
     "gulp": "^3.9.1",
-    "gulp-babel": "^6.1.2",
+    "gulp-babel": "^7.0.0",
     "gulp-concat": "^2.6.1",
     "gulp-debug": "^3.1.0",
     "gulp-notify": "^3.0.0",

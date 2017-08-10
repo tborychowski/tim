@@ -6,7 +6,7 @@ const ver = app.getVersion();
 
 const menuTemplate = [
 	{
-		label: 'GithubBrowser',
+		label: helper.appName,
 		submenu: [
 			{ role: 'about' },
 			{ type: 'separator' },
@@ -164,8 +164,8 @@ const menuTemplate = [
 		role: 'help',
 		submenu: [
 			{
-				label: 'Github Page',
-				click: () => helper.openInBrowser('https://github.com/tborychowski/github-browser')
+				label: 'Github Repository',
+				click: () => helper.openInBrowser(helper.appRepoUrl)
 			}
 		]
 	}
