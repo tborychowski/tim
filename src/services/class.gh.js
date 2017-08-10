@@ -1,6 +1,6 @@
 const REQ = require('request-promise-native');
 const isDev = require('./isDev');
-const { helper } = require('../services');
+const helper = require('./helper');
 
 
 module.exports = class GitHub {

@@ -5,7 +5,8 @@ const config = require('./config');
 const isDev = require('./isDev');
 const _get = require('lodash.get');
 const _merge = require('lodash.merge');
-const pkg = require(__dirname +  '/package.json');
+const PATH = require('path');
+const pkg = require(PATH.resolve(__dirname, '..', '..', 'package.json'));
 
 const appName = pkg.productName || 'TIM';
 const appRepoUrl = pkg.repository.url;

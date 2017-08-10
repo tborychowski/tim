@@ -6,7 +6,7 @@ Tom's Issue Manager.
 
 
 ## Features
-- Gives you **only 1 page** (no tabs, no clutter. just focus). If you really, really must see a link in another window you can use "Preview" feature (cmd+click or right-click on a link/image) or open it in your designated browser (chrome by default)
+- Gives you **only 1 page** (no tabs, no clutter. just focus). If you really, really must see a link in another window you can open link or a page in your selected browser (cmd+click or right-click on a link/image)
 - Minimalist & extremely functional design
 - Dock **badge** shows the number of unread notifications
 - Tweaked github css to make it responsive and hide unimportant blocks (headers, footers)
@@ -51,13 +51,8 @@ Check the [Releases](https://github.com/tborychowski/tim/releases) for the lates
 ![My Issues](screens/3-myissues.png)
 
 
-#### Projects
-- a view of all projects for the default repository (provided in Settings)
-
-![Projects](screens/4-projects.png)
-
 #### Settings
-![Settings](screens/5-settings.png)
+![Settings](screens/4-settings.png)
 
 
 

@@ -261,7 +261,7 @@ babel-code-frame@^6.22.0:
     esutils "^2.0.2"
     js-tokens "^3.0.0"
 
-babel-core@^6.0.2, babel-core@^6.24.1:
+babel-core@^6.24.1:
   version "6.24.1"
   resolved "https://registry.yarnpkg.com/babel-core/-/babel-core-6.24.1.tgz#8c428564dce1e1f41fb337ec34f4c3b022b5ad83"
   dependencies:
@@ -1298,9 +1298,9 @@ electron-window-state@^4.1.0:
     jsonfile "^2.2.3"
     mkdirp "^0.5.1"
 
-electron@1.7.5:
-  version "1.7.5"
-  resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.5.tgz#065a3102bf8b87102df50c50985fefe6c569045b"
+electron@^1.7.6:
+  version "1.7.6"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-1.7.6.tgz#fb69ea31bd03df0eff247f26f0b538bd29b6ee72"
   dependencies:
     "@types/node" "^7.0.18"
     electron-download "^3.0.1"
@@ -1838,13 +1838,11 @@ growly@^1.3.0:
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
 
-gulp-babel@^6.1.2:
-  version "6.1.2"
-  resolved "https://registry.yarnpkg.com/gulp-babel/-/gulp-babel-6.1.2.tgz#7c0176e4ba3f244c60588a0c4b320a45d1adefce"
+gulp-babel@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/gulp-babel/-/gulp-babel-7.0.0.tgz#7b93c975159f7a0553e4263b4a55100ccc239b28"
   dependencies:
-    babel-core "^6.0.2"
     gulp-util "^3.0.0"
-    object-assign "^4.0.1"
     replace-ext "0.0.1"
     through2 "^2.0.0"
     vinyl-sourcemaps-apply "^0.2.0"
@@ -2265,11 +2263,11 @@ isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
 
-jenkins-api@^0.2.8:
-  version "0.2.8"
-  resolved "https://registry.yarnpkg.com/jenkins-api/-/jenkins-api-0.2.8.tgz#174e154151d16a9a5fda2f4fa479f2b4bb2b020b"
+jenkins-api@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/jenkins-api/-/jenkins-api-0.3.1.tgz#32fc3d892c6f22a51faa2ef47b3c9eb6745d3fff"
   dependencies:
-    request ">= 2.2.9"
+    request "^2.81.0"
 
 jodid25519@^1.0.0:
   version "1.0.2"
@@ -3378,7 +3376,7 @@ request-promise-native@^1.0.3:
     stealthy-require "^1.1.0"
     tough-cookie ">=2.3.0"
 
-"request@>= 2.2.9", request@^2.45.0, request@^2.81.0:
+request@^2.45.0, request@^2.81.0:
   version "2.81.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.81.0.tgz#c6928946a0e06c5f8d6f8a9333469ffda46298a0"
   dependencies:

@@ -1,4 +1,4 @@
-document.title = require('./app/util/helper').appName;
+document.title = require('./app/services/helper').appName;
 
 const components = [
 	'events',
