@@ -1,5 +1,6 @@
-const {clipboard, remote, nativeImage} = require('electron');
-const {shell, app, getCurrentWindow} = remote;
+const electron = require('electron');
+const {clipboard, nativeImage } = electron;
+const {shell, app, getCurrentWindow} = electron.remote || electron;
 const {exec} = require('child_process');
 const config = require('./config');
 const isDev = require('./isDev');
