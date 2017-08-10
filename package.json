@@ -22,7 +22,7 @@
       "category": "public.app-category.developer-tools"
     },
     "publish": [
-      "tim"
+      "github"
     ]
   },
   "dependencies": {
