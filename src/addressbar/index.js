@@ -54,7 +54,7 @@ function showError () {
 	this.set('error', true);
 }
 
-function addressChange (e, context, url) {
+function addressChange (e, url) {
 	gotoUrl.call(this, url);
 }
 

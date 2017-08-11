@@ -50,8 +50,10 @@ function onKeydown (e) {
 	if (key === 'Escape') {
 		e.node.value = lastID;
 		e.node.select();
+		return;
 	}
-	else if (!$.isNumberField(e.original)) return e.original.preventDefault();
+	if (key === 'Enter') return;
+	if (!$.isNumberField(e.original)) return e.original.preventDefault();
 }
 
 function onKeyup (e) {
