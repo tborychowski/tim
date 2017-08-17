@@ -49,6 +49,7 @@ function backToRoot () {
 }
 
 function refresh (fullReload) {
+	checkNotifications();
 	if (!webview || !webview.length || !webview[0].send) return;
 	if (fullReload) webview[0].reload();
 	else webview[0].send('reload');
