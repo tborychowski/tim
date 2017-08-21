@@ -35,7 +35,6 @@ function onUrlChanged (webview, issue) {
 
 function onFocus (e) {
 	e.node.select();
-	$.trigger(EVENT.address.input.end);
 }
 
 function onKeypress (e) {

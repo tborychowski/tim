@@ -104,14 +104,13 @@ function loadingStart () {
 
 	webview.skeleton.attr('class', `skeleton ${pageType}`);
 	frame.addClass('loading');
-	// webview[0].focus();
+	webview[0].focus();
 	$.trigger(EVENT.url.change.start);
 }
 
 function loadingStop () {
 	frame.removeClass('loading');
 	$.trigger(EVENT.url.change.end);
-	webview[0].focus();
 	urlLoading = '';
 }
 
