@@ -12,11 +12,9 @@ const components = [
 	'notifications',
 	'frame',
 	'settings',
-	// 'history',
 	'mainmenu',
 	'updater',
 	'touchbar',
-
 	'contextmenu',
 ];
 

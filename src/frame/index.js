@@ -111,7 +111,6 @@ function loadingStart () {
 function loadingStop () {
 	frame.removeClass('loading');
 	$.trigger(EVENT.url.change.end);
-	// webview[0].focus();
 	urlLoading = '';
 }
 
