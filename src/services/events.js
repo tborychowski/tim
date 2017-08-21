@@ -1,9 +1,5 @@
 module.exports = {
 	address: {
-		input: {
-			key: 'address-input',
-			end: 'address-input-end'
-		},
 		focus: 'focus-address',
 		issueFocus: 'focus-issue-box',
 		copy: 'copy-url-to-clipboard'

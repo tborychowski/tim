@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="361px" height="361px" viewBox="0 0 361 361" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
-    <title>flower</title>
+    <title>icon</title>
     <desc>Created with Sketch.</desc>
     <defs>
         <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-1">
@@ -9,10 +9,11 @@
             <stop stop-color="#BEBEBE" offset="100%"></stop>
         </linearGradient>
         <circle id="path-2" cx="180.5" cy="180.5" r="158.5"></circle>
-        <filter x="-4.3%" y="-3.3%" width="108.5%" height="108.5%" filterUnits="objectBoundingBox" id="filter-3">
-            <feOffset dx="0" dy="3" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
-            <feGaussianBlur stdDeviation="4" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
-            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.394389719 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
+        <filter x="-2.7%" y="-2.1%" width="105.4%" height="105.4%" filterUnits="objectBoundingBox" id="filter-3">
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="2.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feComposite in="shadowBlurOuter1" in2="SourceAlpha" operator="out" result="shadowBlurOuter1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.399399909 0" type="matrix" in="shadowBlurOuter1"></feColorMatrix>
         </filter>
         <linearGradient x1="0%" y1="64.7544688%" x2="100%" y2="43.7243332%" id="linearGradient-4">
             <stop stop-color="#7392DB" offset="0%"></stop>
@@ -91,6 +92,7 @@
         <g id="Oval-2">
             <use fill="black" fill-opacity="1" filter="url(#filter-3)" xlink:href="#path-2"></use>
             <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-2"></use>
+            <circle stroke-opacity="0.401409647" stroke="#DCDCDC" stroke-width="1" cx="180.5" cy="180.5" r="158"></circle>
         </g>
         <g id="Combined-Shape" transform="translate(242.640724, 217.575263) rotate(120.000000) translate(-242.640724, -217.575263) ">
             <use fill="url(#linearGradient-4)" fill-rule="evenodd" xlink:href="#path-5"></use>

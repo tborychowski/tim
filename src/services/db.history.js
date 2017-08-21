@@ -9,8 +9,8 @@ function add (item) {
 }
 
 
-function get () {
-	return db.find({ visited: -1 });
+function get (lim) {
+	return db.find({ visited: -1 }, {}, lim);
 }
 
 
@@ -20,13 +20,13 @@ function getById (_id) {
 }
 
 
-function find (txt) {
+function find (txt, lim) {
 	txt = '.*' + ('' + txt).split(' ').join('.*') + '.*';
 	const where = { $or: [
 		{id: { $regex: txt, $options: 'i' }},
 		{name: { $regex: txt, $options: 'i' }},
 	]};
-	return db.find({ visited: -1 }, where);
+	return db.find({ visited: -1 }, where, lim);
 }
 
 

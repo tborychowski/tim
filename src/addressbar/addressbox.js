@@ -1,33 +1,38 @@
 const Ractive = require('ractive');
-const { EVENT, config } = require('../services');
+const { EVENT, config, history } = require('../services');
 const $ = require('../util');
+const Drops = require('./drops');
 
-let lastFullUrl = '', searchTerm = null;
 const baseUrl = $.rtrim(config.get('baseUrl'), '/');
 const repoToSearch = config.get('repoToSearch');
 
-const template = `
-	<input class="addressbox"
-		tabindex="1"
-		on-focus="onfocus"
-		on-input="oninput"
-		on-keydown="onkeydown"
-		on-keypress="onkeypress"
-		value="{{value}}"
-	/>
-`;
-
+const template = '<div class="addressbox" value="{{value}}"></div>';
+const issueTypeCls = {
+	pr: 'ion-ios-git-pull-request',
+	issue: 'ion-ios-bug-outline',
+	project: 'ion-ios-cube-outline',
+	page: 'ion-ios-document-outline',
+	default: 'ion-ios-document-outline',
+};
 
 function data () {
-	return {
-		value: ''
-	};
+	return { value: '' };
 }
 
-function getFocusedText () {
-	if (searchTerm) return searchTerm;
-	return lastFullUrl;
+function dataSrc (val) {
+	return history.find(val, 20);
 }
+
+
+function itemRenderer (item) {
+	const name = item.highlighted ? item.highlighted.name : item.name;
+	const url = item.highlighted ? item.highlighted.url : item.url;
+	const icon = issueTypeCls[item.type] || issueTypeCls.default;
+	return `<i class="issue-icon ${icon}"></i>
+		<div class="item-name">${name}</div>
+		<span class="item-url">${url}</span>`;
+}
+
 
 // BaseURL/Group/RepoName/issues?q=is:open is:issue...
 function getSearchUrl (q) {
@@ -35,54 +40,44 @@ function getSearchUrl (q) {
 	return [baseUrl, repoToSearch, query].join('/');
 }
 
-function onUrlChanged (webview) {
-	lastFullUrl = webview.getURL();
-}
-
-
-function onfocus () {
-	setTimeout(() => { this.inputbox.select(); }, 10);
-}
-
-function onkeypress (e) {
-	if (e.original.key === 'Enter') {
-		let url = e.node.value;
-		searchTerm = null;
-		const validUrl = $.parseUrl(url);
-
-		if (!validUrl) {	// not a URL - do search
-			searchTerm = url;
-			url = getSearchUrl(url);
-		}
-		lastFullUrl = url;
-		this.fire('urlchange', {}, url);
+function onUrlChanged (webview, issue) {
+	this.drops.value = webview.getURL();
+	if (issue) {
+		issue.visited = new Date();
+		history.add(issue);
 	}
 }
 
-function onkeydown (e) {
-	const key = e.original.key;
-	if (key === 'ArrowDown') return $.trigger(EVENT.history.focus);
-	if (key === 'Escape') {
-		e.node.value = getFocusedText();
-		e.node.select();
-		$.trigger(EVENT.address.input.end);
-	}
+
+function onSelect (item) {
+	onSearch.call(this, item.url);
 }
 
-function oninput (e) {
-	searchTerm = null;
-	$.trigger(EVENT.address.input.key, e);
+function onSearch (url) {
+	const validUrl = $.parseUrl(url);
+	// not a URL - do search
+	if (!validUrl) url = getSearchUrl(url);
+	this.fire('urlchange', {}, url);
 }
 
 
 function oninit () {
-	this.on({ onfocus, oninput, onkeydown, onkeypress });
-	$.on(EVENT.address.focus, onfocus.bind(this));
+	// this.on({ onfocus, oninput, onkeydown, onkeypress });
 	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
+	$.on(EVENT.address.focus, () => this.drops.select());
 }
 
 function onrender () {
-	this.inputbox = this.el.querySelector('.addressbox');
+	this.drops = new Drops('.addressbox', {
+		dataSrc,
+		valueField: 'url',
+		itemRenderer,
+		searchInFields: ['name', 'url'],
+		maxHeight: 10,
+	});
+
+	this.drops.on('select', onSelect.bind(this));
+	this.drops.on('search', onSearch.bind(this));
 }
 
 

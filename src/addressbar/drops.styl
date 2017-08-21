@@ -1,0 +1,56 @@
+@require '_lib'
+
+.drops
+	flex 1
+	display flex
+	*
+		box-sizing border-box
+
+	.drops-input
+		font inherit
+		width 100%
+
+	.drops-list
+		position fixed
+		left (navbar-width + subnavbar-width)
+		top (header-height + addressbar-height)
+		right 0
+		width 100%
+
+		display none
+		overflow-y auto
+		z-index 99
+		padding 10px 0
+		background-color #fff
+		box-shadow 0 5px 5px rgba(0, 0, 0, 0.4)
+
+
+	.drops-list-item
+		padding 5px 0 5px 117px
+		color #333;
+
+		.item-name
+			font-size 14px
+
+		.item-url
+			color #888
+
+		.issue-icon
+			position absolute
+			left 76px
+			font-size 19px
+			margin-top 5px
+			width 20px
+			text-align center
+
+	.drops-list-item.selected
+		background-color #2E69E2
+		color #fff
+
+		.item-url
+			color #ccc
+
+
+	.drops-list-item:hover
+		background-color #eee
+

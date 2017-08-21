@@ -4,7 +4,8 @@ body { min-width: auto !important; background: none; user-select: none; }
 .main-content { padding: 0; }
 
 .header,
-.site-footer,
+.site-footer,			/* deprecated: old css */
+.footer,
 .flash-full.js-notice,
 .notification-actions .mute,
 .notification-center .tabnav,

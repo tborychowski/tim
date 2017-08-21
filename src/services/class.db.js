@@ -39,15 +39,18 @@ module.exports = class DB {
 	}
 
 
-	find (sort = {id: 1}, where = {}) {
+	find (sort = {id: 1}, where = {}, lim = 0) {
 		return new Promise ((resolve, reject) => {
-			this.collection
+			let cur = this.collection
 				.find(where, {})
-				.sort(sort)
-				.toArray((err, items) => {
-					if (err) return reject(err);
-					resolve(items || []);
-				});
+				.sort(sort);
+
+			if (lim) cur = cur.limit(lim);
+
+			cur.toArray((err, items) => {
+				if (err) return reject(err);
+				resolve(items || []);
+			});
 		});
 	}
 

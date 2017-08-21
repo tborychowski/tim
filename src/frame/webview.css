@@ -13,7 +13,8 @@ body { min-width: auto !important;
 .notification-center .tabnav,
 .header,
 .js-header-wrapper,
-.site-footer,
+.site-footer,			/* deprecated: old css */
+.footer,
 .protip,
 .site-footer-container,
 .repository-content .overall-summary,
