@@ -42,6 +42,7 @@ function getSearchUrl (q) {
 
 function onUrlChanged (webview, issue) {
 	this.drops.value = webview.getURL();
+	this.set('value', this.drops.value);
 	if (issue) {
 		issue.visited = new Date();
 		history.add(issue);
@@ -57,6 +58,8 @@ function onSearch (url) {
 	const validUrl = $.parseUrl(url);
 	// not a URL - do search
 	if (!validUrl) url = getSearchUrl(url);
+	if (this.get('value') === url) return;
+	this.set('value', url);
 	this.fire('urlchange', {}, url);
 }
 
