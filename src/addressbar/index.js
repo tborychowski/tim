@@ -37,7 +37,6 @@ function gotoUrl (url) {
 	if (url) this.set('url', url.trim());
 	url = this.get('url');
 	if (url) $.trigger(EVENT.frame.goto, url);
-	$.trigger(EVENT.address.input.end);
 }
 
 

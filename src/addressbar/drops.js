@@ -48,9 +48,8 @@ Drops.prototype.load = function () {
 
 Drops.prototype.getItemHtml = function (i) {
 	if (!i) return '';
-	let name = i.name, id = i.id;
+	let name = i.name, id = i[this.config.valueField] || '';
 	if (typeof this.config.itemRenderer === 'function') name = this.config.itemRenderer(i);
-	if (typeof id === 'undefined') id = i.name;
 	return `<div class="drops-list-item" data-id="${id}">${name}</div>`;
 };
 
@@ -107,24 +106,33 @@ Drops.prototype.updateList = function () {
 Drops.prototype.initEvents = function () {
 	if (!this.input) return this;
 	this.input.addEventListener('focus', this.onFocus.bind(this));
-	this.input.addEventListener('blur', this.onBlur.bind(this));
 	this.input.addEventListener('input', this.onInput.bind(this));
 	this.input.addEventListener('keydown', this.onKeydown.bind(this));
 	this.input.addEventListener('keypress', this.onKeypress.bind(this));
+	this.target.addEventListener('click', this.onClick.bind(this));
+	document.addEventListener('mousedown', this.onDocumentClick.bind(this));
 };
 
+
+Drops.prototype.onDocumentClick = function (e) {
+	if (e.target.closest('.drops') || !this.state.open) return;
+	this.state.focused = false;
+	this.close();
+};
+
+
+Drops.prototype.onClick = function (e) {
+	const target = e.target.closest('.drops-list-item');
+	if (!target) return;
+	this.input.value = target.dataset.id;
+	return this.selectItem();
+};
 
 Drops.prototype.onFocus = function () {
 	this.input.select();
 	this.state.oldValue = this.input.value;
 	this.state.focused = true;
 	return this;
-};
-
-
-Drops.prototype.onBlur = function () {
-	this.state.focused = false;
-	return this.close();
 };
 
 
@@ -316,6 +324,7 @@ Object.defineProperties(Drops.prototype, {
 			if (this.state.focused) {
 				this.state.oldValue = val;
 				this.input.select();
+				this.close();
 			}
 			return this.filter().updateList();
 		}
