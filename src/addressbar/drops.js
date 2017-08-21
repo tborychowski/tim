@@ -17,6 +17,7 @@ function Drops (target, config = { valueField: 'name' }) {
 	this.state = {
 		rendered: false,
 		open: false,
+		focused: false,
 		selectedIndex: -1,
 		selectedItem: null,
 		oldValue: ''
@@ -116,11 +117,13 @@ Drops.prototype.initEvents = function () {
 Drops.prototype.onFocus = function () {
 	this.input.select();
 	this.state.oldValue = this.input.value;
+	this.state.focused = true;
 	return this;
 };
 
 
 Drops.prototype.onBlur = function () {
+	this.state.focused = false;
 	return this.close();
 };
 
@@ -172,7 +175,6 @@ Drops.prototype.triggerEvent = function (eventName, params) {
 Drops.prototype.clear = function () {
 	if (this.input.value === this.state.oldValue || this.state.oldValue === null) return this;
 	this.input.value = this.state.oldValue || '';
-	this.state.oldValue = null;
 	this.input.select();
 	return this.filter().updateList();
 };
@@ -283,7 +285,6 @@ Drops.prototype.open = function () {
 
 
 Drops.prototype.close = function () {
-	console.log('closing');
 	if (!this.state.open) return this;
 	this.list.style.display = 'none';
 	this.state.open = false;
@@ -312,6 +313,10 @@ Object.defineProperties(Drops.prototype, {
 		set (val) {
 			if (!this.input) return;
 			this.input.value = val;
+			if (this.state.focused) {
+				this.state.oldValue = val;
+				this.input.select();
+			}
 			return this.filter().updateList();
 		}
 	},
