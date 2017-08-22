@@ -59,6 +59,7 @@ function onSearch (url) {
 	// not a URL - do search
 	if (!validUrl) url = getSearchUrl(url);
 	if (this.get('value') === url) return;
+	this.drops.blur();	// make sure it won't steal the focus on value change
 	this.set('value', url);
 	this.fire('urlchange', {}, url);
 }

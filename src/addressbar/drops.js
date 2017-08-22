@@ -313,19 +313,23 @@ Object.defineProperties(Drops.prototype, {
 		}
 	},
 
+	blur: {
+		value () {
+			this.state.focused = false;
+		}
+	},
+
 	value: {
 		enumerable: true,
 		get () {
 			return this.input ? this.input.value : null;
 		},
 		set (val) {
-			if (!this.input) return;
+			if (!this.input) return this;
 			this.input.value = val;
-			if (this.state.focused) {
-				this.state.oldValue = val;
-				this.input.select();
-				this.close();
-			}
+			this.state.oldValue = val;
+			this.close();
+			if (this.state.focused) this.input.select();
 			return this.filter().updateList();
 		}
 	},
