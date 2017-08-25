@@ -62,7 +62,13 @@ Check the [Releases](https://github.com/tborychowski/tim/releases) for the lates
 git clone https://github.com/tborychowski/tim.git
 cd tim
 npm i
+gulp
 npm start
+```
+
+* make sure you have gulp installed globally:
+```sh
+npm i -g gulp
 ```
 
 
