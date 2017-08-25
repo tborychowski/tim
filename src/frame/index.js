@@ -9,6 +9,7 @@ const $ = require('../util');
 const realnames = require('../realnames');
 const swiping = require('./swiping');
 const loginUrl = () => `${config.get('baseUrl')}login`;
+const login2Url = () => `${config.get('baseUrl')}sessions/two-factor`;
 
 let frame, webview, isReady = false, pageZoom = 0, isLoggedIn = false, lastURL = '', urlLoading = '';
 
@@ -21,7 +22,7 @@ const webviewHandlers = {
 			$.trigger(EVENT.notifications.reload);
 		}
 		else if (!itIs && !isLoggedIn) {		// wasn't and still isn't!
-			if (urlLoading !== loginUrl()) gotoUrl(loginUrl());
+			if (urlLoading !== loginUrl() && urlLoading !== login2Url()) gotoUrl(loginUrl());
 		}
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},

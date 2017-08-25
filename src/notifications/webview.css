@@ -4,6 +4,7 @@ body { min-width: auto !important; background: none; user-select: none; }
 .main-content { padding: 0; }
 
 .header,
+.Header,
 .site-footer,			/* deprecated: old css */
 .footer,
 .flash-full.js-notice,
