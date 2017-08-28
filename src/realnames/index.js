@@ -38,10 +38,10 @@ async function getAllUsers (inPageIds) {
 	webview.send('userIdsAndNames', res);
 }
 
-function onMessage (ev) {
+async function onMessage (ev) {
 	if (ev.channel === 'userIdsGathered') {
 		const ids = ev.args[0];
-		if (Array.isArray(ids)) getAllUsers(ids);
+		if (Array.isArray(ids)) await getAllUsers(ids);
 	}
 }
 
