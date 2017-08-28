@@ -57,17 +57,16 @@ function refresh (fullReload) {
 
 
 
-function checkNotifications (delay = 0) {
+async function checkNotifications (delay = 0) {
 	if (notificationsTimer) clearTimeout(notificationsTimer);
 	if (delay) return notificationsTimer = setTimeout(checkNotifications, delay);
 
-	github.getNotificationsCount(PARTICIPATING)
-		.then((count = 0) => {
-			helper.setBadge(count);
-			$.trigger(EVENT.section.badge, 'notifications', count);
-			notificationsTimer = setTimeout(checkNotifications, refreshDelay);
-		});
+	const count = await github.getNotificationsCount(PARTICIPATING) || 0;
+	helper.setBadge(count);
+	$.trigger(EVENT.section.badge, 'notifications', count);
+	notificationsTimer = setTimeout(checkNotifications, refreshDelay);
 }
+
 
 function initWebview () {
 	webview = WebView({

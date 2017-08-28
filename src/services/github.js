@@ -46,14 +46,15 @@ function getJenkinsStatus (pr, stat) {
 
 
 
-function getUserById (id) {
-	return github(`/users/${id}`).then(res => res ? { id, name: res.name } : { id });
+async function getUserById (id) {
+	const res = await github(`/users/${id}`);
+	return res ? { id, name: res.name } : { id };
 }
 
 
-function getNotificationsCount (participating = true) {
-	return github('/notifications', { participating, per_page: 1 }, true)
-		.then(res => res && getTotalFromNotificationsHeader(res.headers));
+async function getNotificationsCount (participating = true) {
+	const res = await github('/notifications', { participating, per_page: 1 }, true);
+	return res && getTotalFromNotificationsHeader(res.headers);
 }
 
 
@@ -81,49 +82,39 @@ function getCommitStatuses (repo, sha) {
 }
 
 
-function getBuildStatus (pr) {
-	let merged = false;
-	return github(`/repos/${pr.repo}/pulls/${pr.id}`)
-		.then(res => {
-			if (res.merged) merged = true;
-			return getCommitStatuses(pr.repo, res && res.head && res.head.sha);
-		})
-		.then(stats => getJenkinsStatus(pr, stats))
-		.then(status => {
-			status.merged = merged;
-			return status;
-		});
+async function getBuildStatus (pr) {
+	const res = await github(`/repos/${pr.repo}/pulls/${pr.id}`);
+	const stats = await getCommitStatuses(pr.repo, res && res.head && res.head.sha);
+	const status = await getJenkinsStatus(pr, stats);
+	status.merged = res.merged || false;
+	return status;
 }
 
 
-function checkForUnreadComments (issue) {
+async function checkForUnreadComments (issue) {
 	if (issue.unread) return issue;
 	let params = {};
 	if (issue.updated_at) params.since = new Date(issue.updated_at).toISOString();
-	return getIssueComments(issue.repo, issue.id, params)
-		.then(res => {
-			let comments = res && res.length ? res : [];
-			if (comments.length) {
-				const myId = github.user && github.user.id || null;
-				if (myId) comments = res.filter(i => i.user.id !== myId);
-			}
+	const res = await getIssueComments(issue.repo, issue.id, params);
 
-			if (comments.length) issue.unread = true;
-			return issue;
-		});
+	let comments = res && res.length ? res : [];
+	if (comments.length) {
+		const myId = github.user && github.user.id || null;
+		if (myId) comments = res.filter(i => i.user.id !== myId);
+	}
+
+	if (comments.length) issue.unread = true;
+	return issue;
 }
 
-function checkIssueState (issue) {
+async function checkIssueState (issue) {
 	if (!(issue.type in { pr: 1, issue: 1 })) return Promise.resolve(issue);
-	return getIssue(issue.repo, issue.id)
-		.then(res => {
-			if (res) {
-				if (issue.state !== 'merged') issue.state = res.state;
-				issue.name = res.title;
-			}
-			return issue;
-		})
-		.then(checkForUnreadComments);
+	const res = await getIssue(issue.repo, issue.id);
+	if (res) {
+		if (issue.state !== 'merged') issue.state = res.state;
+		issue.name = res.title;
+	}
+	return checkForUnreadComments(issue);
 }
 
 

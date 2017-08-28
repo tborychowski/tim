@@ -11,13 +11,12 @@ module.exports = class GitHub {
 		this.fetchingUser = false;
 	}
 
-	fetchUser () {
+	async fetchUser () {
 		if (this.user || this.fetchingUser) return;
 		this.fetchingUser = true;
-		this.get('/user').then(res => {
-			this.user = res;
-			this.fetchingUser = false;
-		});
+		const res = await this.get('/user');
+		this.user = res;
+		this.fetchingUser = false;
 	}
 
 	setOptions (token, host = 'https://api.github.com') {
@@ -34,20 +33,21 @@ module.exports = class GitHub {
 		return { uri, qs, headers, json: true, resolveWithFullResponse: fullResp, strictSSL: false };
 	}
 
-	get (url, params, fullResp = false) {
+	async get (url, params, fullResp = false) {
 		this.reqCount++;
 		if (isDev) {
 			// console.log(url, params);
 			console.log('No of GH requests so far:', this.reqCount);
 		}
 		const options = this.getOptions(url, params, fullResp);
-		return REQ(options)
-			.then(res => {
-				if (!fullResp) return res;
-				return { headers: res.headers, body: res.body };
-			})
-			.catch(err => {
-				// if (isDev) console.error(options.uri, err);
-			});
+
+		try {
+			const res = await REQ(options);
+			if (!fullResp) return res;
+			return { headers: res.headers, body: res.body };
+		}
+		catch (err) {
+			// if (isDev) console.error(options.uri, err);
+		}
 	}
 };

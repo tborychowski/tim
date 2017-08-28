@@ -95,13 +95,15 @@ function openRepo (e) {
 }
 
 
-function addBookmark (issue) {
+async function addBookmark (issue) {
 	if (!issue) issue = config.get('state.issue');
 	issue = completeIssueModel(issue);
 	bookmarks.add(issue);
 	data.bookmarks.push(issue);
 	render(data.bookmarks);
-	github.checkIssuesForUpdates([issue]).then(() => render(data.bookmarks));
+
+	await github.checkIssuesForUpdates([issue]);
+	render(data.bookmarks);
 }
 
 function removeBookmark (issue) {
@@ -113,14 +115,13 @@ function removeBookmark (issue) {
 }
 
 
-function toggleBookmark () {
-	checkIfBookmarked().then(exists => {
-		if (exists) $.trigger(EVENT.bookmark.remove);
-		else $.trigger(EVENT.bookmark.add);
-	});
+async function toggleBookmark () {
+	const exists = await checkIfBookmarked();
+	if (exists) $.trigger(EVENT.bookmark.remove);
+	else $.trigger(EVENT.bookmark.add);
 }
 
-function onUrlChanged (issue) {
+async function onUrlChanged (issue) {
 	if (!issue || !issue.url) return;
 	const iss = data.bookmarks.filter(i => i.url === issue.url)[0];
 	if (iss) {
@@ -129,10 +130,10 @@ function onUrlChanged (issue) {
 	}
 	this.set('bookmarks', data.bookmarks);
 	bookmarks.setUnreadByUrl(issue.url, false);
-	checkIfBookmarked(issue.url).then(i => {
-		$.trigger(EVENT.bookmark.exists, !!i);
-		if (i && i.name !== issue.name) bookmarks.update(i.id, { name: issue.name });
-	});
+
+	const book = await checkIfBookmarked(issue.url);
+	$.trigger(EVENT.bookmark.exists, !!book);
+	if (book && book.name !== issue.name) bookmarks.update(book.id, { name: issue.name });
 }
 
 function checkIfBookmarked (url) {
@@ -142,7 +143,7 @@ function checkIfBookmarked (url) {
 }
 
 
-function refresh (reset) {
+async function refresh (reset) {
 	if (Module) {
 		Module.transitionsEnabled = false;
 		if (reset === true) {
@@ -152,10 +153,10 @@ function refresh (reset) {
 		Module.transitionsEnabled = true;
 	}
 
-	bookmarks.get()
-		.then(render)
-		.then(github.checkIssuesForUpdates)
-		.then(render);
+	let issues = await bookmarks.get();
+	render(issues);
+	issues = await github.checkIssuesForUpdates(issues);
+	render(issues);
 }
 
 
@@ -202,7 +203,6 @@ function oninit () {
 	$.on(EVENT.frame.domchanged, onUrlChanged.bind(this));
 
 	this.on({ openRepo, openIssue });
-	// refresh();
 }
 
 

@@ -30,16 +30,15 @@ const data = {
 	issueIcon: iss => issueTypeCls[iss.type]
 };
 
-function getIssues () {
-	return github.getMyIssues()
-		.then(issues => {
-			$.trigger(EVENT.section.badge, 'myissues', issues && issues.length || 0);
-			return issues;
-		});
+async function getIssues () {
+	const issues = await github.getMyIssues();
+	$.trigger(EVENT.section.badge, 'myissues', issues && issues.length || 0);
+	return issues;
 }
 
-function refresh () {
-	getIssues().then(render.bind(this));
+async function refresh () {
+	const issues = await getIssues();
+	render.call(this, issues);
 }
 
 function copleteIssueModel (iss) {
