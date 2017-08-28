@@ -75,22 +75,21 @@ function updateNotAvailable () {
 }
 
 // 2b
-function updateAvailable (resp) {
+async function updateAvailable (resp) {
 	log('Update available');
 	availableVersion = resp.version;
 	if (SILENT) return download();
 
 	// $.trigger(EVENT.updater.nav.show);
-	dialog.question({
+	const res = await dialog.question({
 		title: 'Update',
 		message: 'There is a newer version available.',
 		detail: `You have: ${appVersion}\nAvailable: ${availableVersion}`,
 		buttons: [ 'Cancel', 'Update', 'Changelog' ]
-	})
-	.then(res => {
-		if (res === 1) return download();
-		if (res === 2) return showChangelog();
 	});
+
+	if (res === 1) return download();
+	if (res === 2) return showChangelog();
 }
 
 // 3
@@ -109,16 +108,14 @@ function updateDownloaded () {
 }
 
 // 5
-function quitAndInstall () {
-	dialog.question({
+async function quitAndInstall () {
+	const res = await dialog.question({
 		title: 'Update',
 		message: 'Update downloaded.\nDo you want to install it now or next time you start the app?',
 		buttons: [ 'Install later', 'Quit and install', 'Changelog' ]
-	})
-	.then(res => {
-		if (res === 1) return send('quitAndInstall');
-		if (res === 2) return showChangelog();
 	});
+	if (res === 1) return send('quitAndInstall');
+	if (res === 2) return showChangelog();
 }
 
 

@@ -13,38 +13,35 @@ function uato (userList) {
 	return uobj || [];
 }
 
-function getNewUser (id) {
-	return github.getUserById(id)
-		.then(usr => {
-			if (usr.name) users.add(usr);
-			return usr;
-		});
+async function getNewUser (id) {
+	const usr = await github.getUserById(id);
+	if (usr.name) users.add(usr);
+	return usr;
 }
 
-function matchIdsWithNames (inPageIds, allUsers) {
+async function matchIdsWithNames (inPageIds, allUsers) {
 	allUsers = uato(allUsers);
 	const newUsersPromises = inPageIds.map(id => {
 		if (allUsers[id]) return Promise.resolve(allUsers[id]);
 		return getNewUser(id);
 	});
-	return Promise.all(newUsersPromises)
-		.then(newUsers => {
-			newUsers = uato(newUsers);
-			return Object.assign(allUsers, newUsers);
-		});
+
+	let newUsers = await Promise.all(newUsersPromises);
+	newUsers = uato(newUsers);
+	return Object.assign(allUsers, newUsers);
 }
 
 
-function getAllUsers (inPageIds) {
-	return users.get()
-		.then(allUsers => matchIdsWithNames(inPageIds, allUsers))
-		.then(res => webview.send('userIdsAndNames', res));
+async function getAllUsers (inPageIds) {
+	const allUsers = await users.get();
+	const res = await matchIdsWithNames(inPageIds, allUsers);
+	webview.send('userIdsAndNames', res);
 }
 
-function onMessage (ev) {
+async function onMessage (ev) {
 	if (ev.channel === 'userIdsGathered') {
 		const ids = ev.args[0];
-		if (Array.isArray(ids)) getAllUsers(ids);
+		if (Array.isArray(ids)) await getAllUsers(ids);
 	}
 }
 

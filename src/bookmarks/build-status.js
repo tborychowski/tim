@@ -36,8 +36,9 @@ function updateStatus (pr, status) {
 }
 
 
-function monitorPr (pr) {
-	github.getBuildStatus(pr).then(status => updateStatus.call(this, pr, status));
+async function monitorPr (pr) {
+	const status = await github.getBuildStatus(pr)
+	updateStatus.call(this, pr, status);
 }
 
 
