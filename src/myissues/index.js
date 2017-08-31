@@ -1,33 +1,22 @@
 const Ractive = require('ractive');
-const fade = require('ractive-transitions-fade');
+const IssueBox = require('../bookmarks/issue-box');
+const RepoTitle = require('../bookmarks/repo-title');
 const $ = require('../util');
 const { EVENT, github, helper } = require('../services');
-
-const issueTypeCls = {
-	pr: 'ion-ios-git-pull-request',
-	issue: 'ion-ios-bug-outline',
-	default: 'ion-ios-star-outline',
-};
 
 const template = `
 	{{#issues:repo}}
 		<div class="repo-box">
-			<h2><a href="{{repoUrl}}" class="hdr" on-click="openRepo">{{repoShortName}}</a></h2>
+			<RepoTitle url="{{repoUrl}}" title="{{repoShortName}}" />
 			<ul class="repo-box-issues">
-				{{#items}}
-					<li class="issue-box {{state}} type-{{type}}" fade-in-out>
-						<i class="issue-icon {{issueIcon(this)}}" title="{{state}}"></i>
-						<a href="{{url}}" class="btn bookmark" title="{{number}}" on-click="openIssue">{{title}}</a>
-					</li>
-				{{/items}}
+				{{#items}}<IssueBox issue="{{this}}" />{{/items}}
 			</ul>
 		</div>
 	{{/issues}}
 `;
 
 const data = {
-	issues: {} ,
-	issueIcon: iss => issueTypeCls[iss.type]
+	issues: {}
 };
 
 async function getIssues () {
@@ -49,26 +38,6 @@ function copleteIssueModel (iss) {
 }
 
 
-let throttled = null;
-const throttle = () => {
-	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 500);
-};
-
-function openIssue (e) {
-	e.original.preventDefault();
-	if (throttled) return throttle();	// clicked during quiet time
-	throttle();
-	const iss = e.get();
-	iss.unread = false;
-	$.trigger(EVENT.url.change.to, iss.url);
-}
-
-function openRepo (e) {
-	$.trigger(EVENT.url.change.to, e.get().repoUrl);
-	return false;
-}
-
 function render (issues) {
 	if (!issues || !issues.length) return;
 	issues = issues.map(copleteIssueModel);
@@ -84,11 +53,9 @@ function sectionChanged (id) {
 	if (id === 'myissues' && !Object.keys(data.issues).length) refresh.call(this);
 }
 
-
 function oninit () {
 	$.on(EVENT.section.refresh, sectionRefresh.bind(this));
 	$.on(EVENT.section.change, sectionChanged.bind(this));
-	this.on({ openIssue, openRepo });
 	getIssues.call(this);
 }
 
@@ -97,6 +64,5 @@ module.exports = new Ractive({
 	data,
 	template,
 	oninit,
-	transitions: { fade },
-	transitionsEnabled: false
+	components: { RepoTitle, IssueBox },
 });

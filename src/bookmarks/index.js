@@ -1,39 +1,20 @@
 const Ractive = require('ractive');
-const fade = require('ractive-transitions-fade');
 const { EVENT, bookmarks, github, helper, config } = require('../services');
 const $ = require('../util');
-const BuildStatus = require('./build-status');
+const IssueBox = require('./issue-box');
+const RepoTitle = require('./repo-title');
 
 let Module;
 const DEFAULT_REPO_NAME = 'Pages';				// for ungrouped pages
 const DEFAULT_PROJECTS_REPO_NAME = 'Projects';	// for ungrouped projects
-const issueTypeCls = {
-	pr: 'ion-ios-git-pull-request',
-	issue: 'ion-ios-bug-outline',
-	project: 'ion-ios-cube-outline',
-	page: 'ion-ios-document-outline',
-	default: 'ion-ios-document-outline',
-};
 
 
 const template = `
 	{{#groupedBookmarks:repo}}
 		<div class="repo-box">
-			<h2>
-				{{#if hasUrl }}
-					<a href="{{repoUrl}}" class="hdr" on-click="openRepo">{{repoShortName}}</a>
-				{{else}}
-					<span class="hdr">{{repoShortName}}</span>
-				{{/if}}
-			</h2>
+			<RepoTitle url="{{repoUrl}}" title="{{repoShortName}}" />
 			<ul class="repo-box-issues">
-				{{#items}}
-					<li class="issue-box {{issueCls(this)}} {{state}} type-{{type}} {{unread ? 'unread' : ''}}" fade-in-out>
-						<i class="issue-icon {{issueIcon(this)}}"></i>
-						<a href="{{url}}" class="btn bookmark" title="{{id || name}}" on-click="openIssue">{{name}}</a>
-						{{#if type === 'pr'}}<BuildStatus issue="{{this}}" />{{/if}}
-					</li>
-				{{/items}}
+				{{#items}}<IssueBox issue="{{this}}" />{{/items}}
 			</ul>
 		</div>
 	{{/groupedBookmarks}}
@@ -42,12 +23,6 @@ const template = `
 
 const data = {
 	bookmarks: [],
-	issueIcon: iss => issueTypeCls[iss.type],
-	issueCls: iss => {
-		const repo = (iss.repo || '').replace(/[/.]/g, '-').toLowerCase();
-		const id = iss.id ? iss.id : iss.url.split('/').pop();
-		return `issue-${repo}-${id}`;
-	},
 };
 
 const computed = {
@@ -60,39 +35,11 @@ const computed = {
 				repo,
 				repoShortName: DEFAULT_PROJECTS_REPO_NAME,
 				repoUrl: `${config.get('baseUrl')}${repo}`,
-				hasUrl: true,
 			};
 		}
 		return groups;
 	}
 };
-
-
-let throttled = null;
-const throttle = () => {
-	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 500);
-};
-
-function openIssue (e) {
-	e.original.preventDefault();
-	if (throttled) return throttle();	// clicked during quiet time
-	if (e.original.metaKey || e.original.ctrlKey) return;
-	throttle();
-	const iss = e.get();
-	if (iss) {
-		iss.unread = false;
-		bookmarks.setUnreadByUrl(iss.url, false);
-		$.trigger(EVENT.url.change.to, iss.url);
-	}
-}
-
-
-function openRepo (e) {
-	if (e.original.metaKey || e.original.ctrlKey) return;
-	$.trigger(EVENT.url.change.to, e.get().repoUrl);
-	return false;
-}
 
 
 async function addBookmark (issue) {
@@ -152,7 +99,6 @@ async function refresh (reset) {
 		}
 		Module.transitionsEnabled = true;
 	}
-
 	let issues = await bookmarks.get();
 	render(issues);
 	issues = await github.checkIssuesForUpdates(issues);
@@ -186,7 +132,6 @@ function render (issues) {
 			bookmarks.update(is.id, { name: is.name, state: is.state });
 		});
 	}
-
 	Module.set('bookmarks', issues);
 	return issues;
 }
@@ -201,8 +146,6 @@ function oninit () {
 	$.on(EVENT.section.change, sectionChanged);
 	$.on(EVENT.url.change.done, (wv, i) => onUrlChanged.call(this, i));
 	$.on(EVENT.frame.domchanged, onUrlChanged.bind(this));
-
-	this.on({ openRepo, openIssue });
 }
 
 
@@ -219,9 +162,8 @@ Module = new Ractive({
 	data,
 	template,
 	oninit,
-	components: { BuildStatus },
+	components: { RepoTitle, IssueBox },
 	computed,
-	transitions: { fade },
 	transitionsEnabled: false
 });
 

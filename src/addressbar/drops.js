@@ -115,9 +115,9 @@ Drops.prototype.initEvents = function () {
 
 
 Drops.prototype.onDocumentClick = function (e) {
-	if (e.target.closest('.drops') || !this.state.open) return;
+	if (e.target.closest('.drops')) return;
 	this.state.focused = false;
-	this.close();
+	if (this.state.open) this.close();
 };
 
 
