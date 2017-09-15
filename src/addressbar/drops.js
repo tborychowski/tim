@@ -98,7 +98,7 @@ Drops.prototype.updateList = function () {
 	const h = itemH * maxH + 20;
 	this.list.style.height = `${h}px`;
 
-	return this.highlight(this.state.selectedIndex);
+	return this.highlight();
 };
 
 
@@ -145,6 +145,16 @@ Drops.prototype.onInput = function (e) {
 };
 
 
+Drops.prototype.onEsc = function () {
+	if (this.state.selectedIndex > -1) {
+		this.state.selectedIndex = -1;
+		return this.highlight();
+	}
+	if (this.state.open) return this.close();
+	return this.clear();
+};
+
+
 Drops.prototype.onKeydown = function (e) {
 	let key = e.key;
 	if (key === 'Tab' && e.shiftKey) key = 'ShiftTab';
@@ -153,7 +163,7 @@ Drops.prototype.onKeydown = function (e) {
 		ShiftTab: this.state.open ? this.up.bind(this) : null,
 		ArrowDown: this.down.bind(this),
 		ArrowUp: this.up.bind(this),
-		Escape: this.state.open ? this.close.bind(this) : this.clear.bind(this),
+		Escape: this.onEsc.bind(this),
 	};
 	const fn = fnmap[key];
 	if (typeof fn === 'function') {
@@ -240,18 +250,19 @@ Drops.prototype.filter = function () {
 Drops.prototype.up = function () {
 	this.open();
 	if (this.state.selectedIndex > 0) this.state.selectedIndex--;
-	return this.highlight(this.state.selectedIndex);
+	return this.highlight();
 };
 
 
 Drops.prototype.down = function () {
 	this.open();
 	if (this.state.selectedIndex < this.filteredData.length - 1) this.state.selectedIndex++;
-	return this.highlight(this.state.selectedIndex);
+	return this.highlight();
 };
 
 
-Drops.prototype.highlight = function (idx = -1) {
+Drops.prototype.highlight = function () {
+	const idx = this.state.selectedIndex;
 	this.list
 		.querySelectorAll('.drops-list-item')
 		.forEach(i => { i.classList.remove('selected'); });
@@ -261,6 +272,9 @@ Drops.prototype.highlight = function (idx = -1) {
 		selected.classList.add('selected');
 		selected.scrollIntoViewIfNeeded();
 	}
+
+	if (idx > -1) this.input.value = this.filteredData[idx][this.config.valueField];
+
 	return this;
 };
 
