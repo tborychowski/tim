@@ -3,7 +3,6 @@ const msg = ipc.sendToHost;
 const realnames = require('../realnames/realnames-webview');
 const helper = require('./webview-helper');
 
-const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
 
 
 let isScrolling = false, isWheeling = false, lastFocusedTextarea = null;
@@ -91,10 +90,12 @@ function onElementFocus (e) {
 }
 
 function initSpellchecker () {
-	window.spellCheckHandler = new SpellCheckHandler();
-	window.spellCheckHandler.attachToInput();
-	window.spellCheckHandler.switchLanguage('en-US');
-	let contextMenuBuilder = new ContextMenuBuilder(window.spellCheckHandler);
+	const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
+
+	const spellCheckHandler = new SpellCheckHandler();
+	spellCheckHandler.attachToInput();
+	spellCheckHandler.switchLanguage('en-US');
+	let contextMenuBuilder = new ContextMenuBuilder(spellCheckHandler);
 	return new ContextMenuListener(info => { contextMenuBuilder.showPopupMenu(info); });
 }
 
@@ -133,7 +134,12 @@ function init () {
 
 	onDomChange();
 
-	initSpellchecker();
+	try {
+		initSpellchecker();
+	}
+	catch (e) {
+		console.log('Spellchecker not installed.');
+	}
 }
 
 

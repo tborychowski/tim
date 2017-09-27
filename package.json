@@ -25,13 +25,15 @@
       "github"
     ]
   },
+  "temporarilyDisabledDependencies": {
+    "electron-spellchecker": "^1.2.0"
+  },
   "dependencies": {
     "electron-config": "^1.0.0",
     "electron-context-menu": "^0.9.1",
     "electron-dl": "^1.10.0",
     "electron-log": "^2.2.9",
-    "electron-spellchecker": "^1.2.0",
-    "electron-updater": "2.8.9",
+    "electron-updater": "^2.10.0",
     "electron-window-state": "^4.1.1",
     "ionicons": "^3.0.0",
     "jenkins-api": "^0.3.1",
@@ -39,14 +41,14 @@
     "lodash.merge": "^4.6.0",
     "ractive": "^0.9.3",
     "ractive-transitions-fade": "^0.3.1",
-    "request": "^2.81.0",
-    "request-promise-native": "^1.0.4",
+    "request": "^2.83.0",
+    "request-promise-native": "^1.0.5",
     "tingodb": "^0.5.1",
     "velocity-animate": "^1.5.0"
   },
   "devDependencies": {
-    "electron": "1.7.7",
-    "electron-builder": "^19.28.4",
+    "electron": "^1.7.8",
+    "electron-builder": "^19.31.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-debug": "^3.1.0",
