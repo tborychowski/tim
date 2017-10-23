@@ -2,7 +2,7 @@
   "name": "tim",
   "productName": "TIM",
   "description": "Tom's Issue Manager helps you browse, and keep track of your Github issues.",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -25,21 +25,19 @@
       "github"
     ]
   },
-  "temporarilyDisabledDependencies": {
-    "electron-spellchecker": "^1.2.0"
-  },
   "dependencies": {
     "electron-config": "^1.0.0",
     "electron-context-menu": "^0.9.1",
     "electron-dl": "^1.10.0",
     "electron-log": "^2.2.9",
-    "electron-updater": "^2.10.1",
+    "electron-spellchecker": "^1.2.0",
+    "electron-updater": "^2.14.1",
     "electron-window-state": "^4.1.1",
     "ionicons": "^3.0.0",
     "jenkins-api": "^0.3.1",
     "lodash.get": "^4.4.2",
     "lodash.merge": "^4.6.0",
-    "ractive": "^0.9.3",
+    "ractive": "^0.9.5",
     "ractive-transitions-fade": "^0.3.1",
     "request": "^2.83.0",
     "request-promise-native": "^1.0.5",
@@ -47,8 +45,8 @@
     "velocity-animate": "^1.5.0"
   },
   "devDependencies": {
-    "electron": "1.8.1",
-    "electron-builder": "19.31.1",
+    "electron": "1.8.2-beta.1",
+    "electron-builder": "~19.37.2",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
     "gulp-debug": "^3.1.0",
