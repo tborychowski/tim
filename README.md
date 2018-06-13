@@ -72,7 +72,3 @@ npm start
 ```sh
 npm i -g gulp
 ```
-
-
-## License
-*MIT*
