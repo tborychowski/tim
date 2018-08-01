@@ -36,17 +36,10 @@ function data () {
 	};
 }
 
-let throttled = null;
-const throttle = () => {
-	if (throttled) clearTimeout(throttled);
-	throttled = setTimeout(() => { throttled = null; }, 500);
-};
 
 function openIssue (e) {
 	e.original.preventDefault();
-	if (throttled) return throttle();	// clicked during quiet time
 	if (e.original.metaKey || e.original.ctrlKey) return;
-	throttle();
 	const iss = e.get();
 	if (iss) {
 		iss.unread = false;

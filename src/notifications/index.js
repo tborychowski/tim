@@ -1,10 +1,10 @@
 const $ = require('../util');
-const { config, EVENT, github, helper, isDev, WebView } = require('../services');
+const { config, EVENT, github, helper, WebView } = require('../services');
 
 let webview, isReady = false, el, content, isLoggedIn, loginTimer, notificationsTimer;
 const refreshDelay = 5 * 60 * 1000; // every 5 minutes
 
-const PARTICIPATING = !isDev;
+const PARTICIPATING = true;
 
 
 const getNotificationsUrl = () => `${config.get('baseUrl')}notifications${PARTICIPATING ? '/participating' : ''}`;

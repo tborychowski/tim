@@ -6,9 +6,10 @@
         "node": true,
         "browser": true
     },
-    "parserOptions": {
-        "sourceType": "module"
-    },
+	"parserOptions": {
+		"sourceType": "module",
+		"ecmaVersion": 8
+	},
     "rules": {
         "indent": [2, "tab"],
         "quotes": [2, "single", "avoid-escape"],

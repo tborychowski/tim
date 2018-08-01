@@ -2,7 +2,7 @@
   "name": "tim",
   "productName": "TIM",
   "description": "Tom's Issue Manager helps you browse, and keep track of your Github issues.",
-  "version": "3.2.1",
+  "version": "3.3.0",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -27,33 +27,33 @@
   },
   "dependencies": {
     "electron-config": "^1.0.0",
-    "electron-context-menu": "^0.9.1",
-    "electron-dl": "^1.10.0",
-    "electron-log": "^2.2.9",
+    "electron-context-menu": "^0.10.0",
+    "electron-dl": "^1.12.0",
+    "electron-log": "^2.2.16",
     "electron-spellchecker": "^1.2.0",
     "electron-updater": "^2.14.1",
     "electron-window-state": "^4.1.1",
     "ionicons": "^3.0.0",
     "jenkins-api": "^0.3.1",
     "lodash.get": "^4.4.2",
-    "lodash.merge": "^4.6.0",
-    "ractive": "^0.9.5",
+    "lodash.merge": "^4.6.1",
+    "ractive": "^0.10.6",
     "ractive-transitions-fade": "^0.3.1",
-    "request": "^2.83.0",
+    "request": "^2.87.0",
     "request-promise-native": "^1.0.5",
-    "tingodb": "^0.5.1",
-    "velocity-animate": "^1.5.0"
+    "tingodb": "^0.6.1",
+    "velocity-animate": "^1.5.2"
   },
   "devDependencies": {
-    "electron": "^1.7.9",
-    "electron-builder": "~19.36.0",
+    "electron": "^2.0.6",
+    "electron-builder": "^20.26.1",
     "gulp": "^3.9.1",
     "gulp-concat": "^2.6.1",
-    "gulp-debug": "^3.1.0",
-    "gulp-notify": "^3.0.0",
-    "gulp-plumber": "^1.1.0",
-    "gulp-run-electron": "^3.0.1",
-    "gulp-sourcemaps": "^2.6.1",
-    "gulp-stylus": "^2.6.0"
+    "gulp-debug": "^4.0.0",
+    "gulp-notify": "^3.2.0",
+    "gulp-plumber": "^1.2.0",
+    "gulp-run-electron": "^3.0.2",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-stylus": "^2.7.0"
   }
 }
