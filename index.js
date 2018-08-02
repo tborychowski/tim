@@ -1,6 +1,7 @@
 const {app, BrowserWindow} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const EVENT = require('./app/services/events');
+const config = require('./app/services/config');
 const helper = require('./app/services/helper');
 const updater = require('./app/updater/main');
 
@@ -53,5 +54,11 @@ function createWindow () {
 app.on('window-all-closed', app.quit);
 app.on('ready', createWindow);
 app.on('open-url', openUrl);			// opening URL in GHB
+
+const dontAsk = config.get('defaultBrowser-dont-ask');
+if (!app.isDefaultProtocolClient('http') && !dontAsk) {
+	app.setAsDefaultProtocolClient('http');
+	config.set('defaultBrowser-dont-ask', true);
+}
 
 global.appArgs = process.argv;			// opening URL from CLI
