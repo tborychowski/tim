@@ -81,6 +81,7 @@ function init (frm, wbv) {
 	frame = frm;
 	webview = wbv;
 	webview0 = wbv[0];
+	console.log(webview0);
 
 	if (isReady) return;
 

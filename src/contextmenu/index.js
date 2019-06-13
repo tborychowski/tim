@@ -5,7 +5,7 @@ const menu = require('electron-context-menu');
 
 function init () {
 	menu({
-		prepend: (params) => {
+		prepend: (defaultActions, params) => {
 			const node = document.elementFromPoint(params.x, params.y);
 			const isBookmark = node.matches('.bookmark');
 			return [

@@ -1,4 +1,5 @@
-const gulp = require('gulp');
+const { series, parallel, src, dest, watch } = require('gulp');
+
 const stylus = require('gulp-stylus');
 const concat = require('gulp-concat');
 const runElectron = require('gulp-run-electron');
@@ -9,54 +10,52 @@ const sourcemaps = require('gulp-sourcemaps');
 // const minifyCSS = require('gulp-csso');
 
 
-gulp.task('js', () => gulp
-	.src('src/**/*.js')
-	.pipe(plumber({errorHandler: notify.onError('JS: <%= error.message %>')}))
-	.pipe(gulp.dest('app/'))
-);
+function js () {
+	return src('src/**/*.js')
+		.pipe(plumber({errorHandler: notify.onError('JS: <%= error.message %>')}))
+		.pipe(dest('app/'));
+
+}
 
 
-gulp.task('css', () => gulp
-	.src('src/**/*.styl')
-	.pipe(sourcemaps.init())
-	.pipe(plumber({errorHandler: notify.onError('Stylus: <%= error.message %>')}))
-	.pipe(stylus({ include: __dirname + '/src'}))
-	.pipe(concat('app.css'))
-	.pipe(sourcemaps.write())
-	.pipe(gulp.dest('app/'))
-);
-
-gulp.task('webview-css', () => gulp
-	.src('src/**/webview.css')
-	.pipe(gulp.dest('app/'))
-);
-
-gulp.task('preview-html', () => gulp
-	.src('src/preview/index.html')
-	.pipe(gulp.dest('app/preview/'))
-);
+function css () {
+	return src('src/**/*.styl')
+		.pipe(sourcemaps.init())
+		.pipe(plumber({errorHandler: notify.onError('Stylus: <%= error.message %>')}))
+		.pipe(stylus({ include: __dirname + '/src'}))
+		.pipe(concat('app.css'))
+		.pipe(sourcemaps.write())
+		.pipe(dest('app/'));
+}
 
 
-gulp.task('electron', ['build'], () => gulp
-	.src('./')
-	.pipe(runElectron())
-);
 
-gulp.task('build', ['js', 'css', 'webview-css', 'preview-html']);
+function webviewCss () {
+	return src('src/**/webview.css').pipe(dest('app/'));
+}
 
 
-gulp.task('w', ['build'], () => {
-	gulp.watch('src/**/webview.css', ['webview-css']);
-	gulp.watch('src/**/*.styl', ['css']);
-	gulp.watch('src/**/*.js', ['js']);
-});
-
-gulp.task('a', ['electron'], () => {
-	gulp.watch('src/**/webview.css', ['webview-css']);
-	gulp.watch('src/**/*.styl', ['css']);
-	gulp.watch('src/**/*.js', ['js']);
-});
+// function previewHtml () {
+// 	return src('src/preview/index.html').pipe(dest('app/preview/'));
+// }
 
 
-gulp.task('default', ['build']);
+function electron () {
+	return src('./').pipe(runElectron());
+}
 
+
+// build
+function watchTask () {
+	watch('src/**/webview.css', webviewCss);
+	watch('src/**/*.styl', css);
+	watch('src/**/*.js', js);
+}
+
+const defaultTask = parallel(js, css, webviewCss, /*previewHtml*/);
+
+exports.js = js;
+exports.css = css;
+exports.dev = series(defaultTask, parallel(electron, watchTask));
+exports.watch = series(defaultTask, watchTask);
+exports.default = defaultTask;

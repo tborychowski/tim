@@ -35,6 +35,10 @@ function createWindow () {
 		y: mainWindowState.y,
 		width: mainWindowState.width,
 		height: mainWindowState.height,
+		webPreferences: {
+			nodeIntegration: true,
+			webviewTag: true,
+		}
 	});
 	win.on('closed', () => win = null);
 	win.on('scroll-touch-begin', () => send('event', EVENT.swipe.start));

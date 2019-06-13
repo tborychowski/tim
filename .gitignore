@@ -8,3 +8,4 @@ app-update.yml
 .DS_Store
 *.sublime-*
 *.log
+package-lock.json
