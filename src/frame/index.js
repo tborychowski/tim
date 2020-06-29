@@ -22,7 +22,9 @@ const webviewHandlers = {
 			$.trigger(EVENT.notifications.reload);
 		}
 		else if (!itIs && !isLoggedIn) {		// wasn't and still isn't!
-			if (urlLoading !== loginUrl() && urlLoading !== login2Url()) gotoUrl(loginUrl());
+			if (urlLoading === loginUrl() || urlLoading === login2Url()) return;
+			if (urlLoading.includes('/saml2/') || urlLoading.includes('/sso/')) return;
+			gotoUrl(loginUrl());
 		}
 		if (!config.get('baseUrl')) $.trigger(EVENT.settings.show);
 	},
