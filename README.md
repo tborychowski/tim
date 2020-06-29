@@ -23,7 +23,10 @@ This is mac-first app. It should be cross-platform, because it's using Electron,
 ## Download
 Check the [Releases](https://github.com/tborychowski/tim/releases) for the latest version.
 
-
+**NOTE**: This is not signed with Apple's dev cert, so you may need to allow installation of apps from "All Sources" on your mac.
+```sh
+sudo spctl --master-disable
+```
 
 
 ## More Screenshots
