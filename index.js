@@ -3,7 +3,7 @@ const windowStateKeeper = require('electron-window-state');
 const EVENT = require('./app/services/events');
 const config = require('./app/services/config');
 const helper = require('./app/services/helper');
-require('update-electron-app')();
+// require('update-electron-app')();
 
 let win;
 
