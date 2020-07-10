@@ -29,7 +29,7 @@ function createWindow () {
 		title: helper.appName,
 		icon: __dirname + '/assets/icon.png',
 		show: false,
-		vibrancy: 'dark',
+		// vibrancy: 'dark',
 		titleBarStyle: 'hiddenInset',
 		x: mainWindowState.x,
 		y: mainWindowState.y,

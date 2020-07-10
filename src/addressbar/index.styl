@@ -7,9 +7,9 @@
 	left (navbar-width + subnavbar-width)
 	right 0
 	height addressbar-height
-	background-color #fff;
-	color #aaa;
-	border-bottom 1px solid #ccc
+	background-color #222;
+	color #ccc;
+	border-bottom 1px solid #333
 
 
 	button
@@ -22,20 +22,17 @@
 		text-align center
 		background none
 		border none
-		color #666
+		color #ccc
 		transition color .2s ease-out
 
-		&:hover
-			color #4078c0
-
 		&:active
-			color black
+			color #666
 
 		&:focus
 			outline none
 
 		&.disabled
-			color #ccc
+			color #666
 			pointer-events none
 
 	input[type="number"]::-webkit-outer-spin-button
@@ -56,8 +53,8 @@
 
 		&:focus
 			outline none
-			background-color rgba(#000, 0.1)
-			color #000
+			background-color rgba(#fff, 0.2)
+			color #fff
 
 
 

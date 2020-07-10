@@ -88,9 +88,8 @@ body { min-width: auto !important; background: none; user-select: none; }
 
 /* name and checkbox */
 @media (max-width: 450px) {
-	.notifications .list-group-item-name { margin-right: 25px; font-size: 12px; line-height: 1.2; }
-	.list-group-item-name .type-icon { margin-top: -2px; }
+	.notifications .list-group-item-name { margin-right: 25px; line-height: 1.2; }
+	.list-group-item-name .type-icon { margin-top: -1px; }
 	.notification-actions { top: 4px; }
-	.notifications-more { font-size: 12px; }
 	.notification-actions>li.age { display: none; }
 }
