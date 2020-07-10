@@ -11,7 +11,7 @@ const menuTemplate = [
 			{ role: 'about' },
 			{ type: 'separator' },
 
-			{ label: 'Check for Updates...', click: () => $.trigger(EVENT.updater.check) },
+			// { label: 'Check for Updates...', click: () => $.trigger(EVENT.updater.check) },
 			{ label: 'Changelog', click: () => helper.openChangelog(ver) },
 			{ type: 'separator' },
 

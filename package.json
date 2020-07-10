@@ -2,7 +2,7 @@
   "name": "tim",
   "productName": "TIM",
   "description": "Tom's Issue Manager helps you browse, and keep track of your Github issues.",
-  "version": "3.5.0",
+  "version": "3.5.1",
   "main": "index.js",
   "repository": {
     "type": "git",
@@ -30,7 +30,6 @@
     "electron-context-menu": "^0.12.1",
     "electron-dl": "^1.14.0",
     "electron-log": "^3.0.9",
-    "electron-updater": "^4.0.6",
     "electron-window-state": "^5.0.3",
     "ionicons": "4.5.8",
     "jenkins-api": "^0.3.1",
@@ -41,6 +40,7 @@
     "request": "^2.88.2",
     "request-promise-native": "^1.0.8",
     "tingodb": "^0.6.1",
+    "update-electron-app": "^1.5.0",
     "velocity-animate": "^1.5.2"
   },
   "devDependencies": {

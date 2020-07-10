@@ -3,7 +3,7 @@ const windowStateKeeper = require('electron-window-state');
 const EVENT = require('./app/services/events');
 const config = require('./app/services/config');
 const helper = require('./app/services/helper');
-const updater = require('./app/updater/main');
+require('update-electron-app')();
 
 let win;
 
@@ -38,7 +38,7 @@ function createWindow () {
 		webPreferences: {
 			nodeIntegration: true,
 			webviewTag: true,
-			spellcheck: true,
+			spellcheck: true
 		}
 	});
 	win.on('closed', () => win = null);
@@ -64,7 +64,7 @@ function createWindow () {
 
 	// win.webContents.openDevTools();
 
-	updater.init(win);
+//	updater.init(win);
 }
 
 app.on('window-all-closed', app.quit);
