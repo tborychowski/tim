@@ -42,7 +42,7 @@ function buildInfo (jenkins, item) {
 
 
 function getStatus (url) {
-	if (!url) return;
+	if (!url) return Promise.resolve({});
 	const [host, parts] = $.trim(url, '/').split('/job/');
 	const [jobName, buildId] = parts.split('/');
 	const item = { jobName, buildId, url };

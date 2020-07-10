@@ -36,7 +36,7 @@ function getCItargetUrlFromStatuses (statuses) {
 
 
 function getJenkinsStatus (pr, stat) {
-	if (!stat) return;
+	if (!stat) return Promise.resolve({});
 	const url = getCItargetUrlFromStatuses(stat && stat.statuses);
 	if (!url) return { result: stat && stat.state };
 	return jenkins.getStatus(url);

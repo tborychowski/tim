@@ -48,6 +48,7 @@ module.exports = class GitHub {
 		}
 		catch (err) {
 			// if (isDev) console.error(options.uri, err);
+			return {};
 		}
 	}
 };

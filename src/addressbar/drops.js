@@ -270,7 +270,7 @@ Drops.prototype.highlight = function () {
 	if (idx > -1) selected = this.list.querySelector(`.drops-list-item:nth-child(${idx + 1})`);
 	if (selected) {
 		selected.classList.add('selected');
-		selected.scrollIntoViewIfNeeded();
+		selected.scrollIntoView({ block: 'nearest' });
 	}
 
 	if (idx > -1) this.input.value = this.filteredData[idx][this.config.valueField];
@@ -378,4 +378,3 @@ Object.defineProperties(Drops.prototype, {
 
 
 if (typeof module === 'object') module.exports = Drops;
-

@@ -1,4 +1,4 @@
-const {app, BrowserWindow} = require('electron');
+const {app, BrowserWindow, Menu, MenuItem} = require('electron');
 const windowStateKeeper = require('electron-window-state');
 const EVENT = require('./app/services/events');
 const config = require('./app/services/config');
@@ -29,7 +29,7 @@ function createWindow () {
 		title: helper.appName,
 		icon: __dirname + '/assets/icon.png',
 		show: false,
-		// vibrancy: 'dark',
+		backgroundColor: '#222',
 		titleBarStyle: 'hiddenInset',
 		x: mainWindowState.x,
 		y: mainWindowState.y,
@@ -38,12 +38,24 @@ function createWindow () {
 		webPreferences: {
 			nodeIntegration: true,
 			webviewTag: true,
+			spellcheck: true,
 		}
 	});
 	win.on('closed', () => win = null);
 	win.on('scroll-touch-begin', () => send('event', EVENT.swipe.start));
 	win.on('scroll-touch-end', () => send('event', EVENT.swipe.end));
 	win.webContents.on('crashed', () => { win.destroy(); createWindow(); });
+
+	win.webContents.on('context-menu', (event, params) => {
+		const menu = new Menu();
+		for (const label of params.dictionarySuggestions) {
+			menu.append(new MenuItem({ label, click: () => win.webContents.replaceMisspelling(label)}));
+		}
+		if (params.misspelledWord) {
+			menu.append(new MenuItem({ label: 'Add to dictionary', click: () => win.webContents.session.addWordToSpellCheckerDictionary(params.misspelledWord) }));
+		}
+		menu.popup();
+	});
 
 	mainWindowState.manage(win);
 

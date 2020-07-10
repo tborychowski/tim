@@ -9,10 +9,10 @@ const repoToSearch = config.get('repoToSearch');
 const template = '<div class="addressbox" value="{{value}}"></div>';
 const issueTypeCls = {
 	pr: 'ion-ios-git-pull-request',
-	issue: 'ion-ios-bug-outline',
-	project: 'ion-ios-cube-outline',
-	page: 'ion-ios-document-outline',
-	default: 'ion-ios-document-outline',
+	issue: 'ion-ios-bug',
+	project: 'ion-ios-cube',
+	page: 'ion-ios-document',
+	default: 'ion-ios-document',
 };
 
 function data () {

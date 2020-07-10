@@ -89,17 +89,6 @@ function onElementFocus (e) {
 	else lastFocusedTextarea = null;
 }
 
-function initSpellchecker () {
-	const {SpellCheckHandler, ContextMenuListener, ContextMenuBuilder} = require('electron-spellchecker');
-
-	const spellCheckHandler = new SpellCheckHandler();
-	spellCheckHandler.attachToInput();
-	spellCheckHandler.switchLanguage('en-US');
-	let contextMenuBuilder = new ContextMenuBuilder(spellCheckHandler);
-	return new ContextMenuListener(info => { contextMenuBuilder.showPopupMenu(info); });
-}
-
-
 function init () {
 	observeChanges();
 
@@ -133,13 +122,6 @@ function init () {
 	scrollToLastComment(issue);
 
 	onDomChange();
-
-	try {
-		initSpellchecker();
-	}
-	catch (e) {
-		console.log('Spellchecker not installed.');
-	}
 }
 
 
