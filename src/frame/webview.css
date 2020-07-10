@@ -1,6 +1,8 @@
 body { min-width: auto !important;
 	/* this is required as macos lookup has an offset bug */
 	/*margin-left: 364px;		*/
+	background-color: #333;
+	color: #eee;
 }
 
 
@@ -21,12 +23,100 @@ body { min-width: auto !important;
 .repository-content .repository-lang-stats-graph { display: none; }
 
 
+.gh-header { background-color: #333; }
+.gh-header-meta { color: #ccc; }
+.gh-header .gh-header-sticky.is-stuck+.gh-header-shadow { background: #222; }
+
+.thread-subscription-status,
+.link-gray,
+.link-gray-dark { color: #ccc !important; }
+.text-gray-dark,
+.team-mention,
+.user-mention { color: #fff !important; }
+
+.TimelineItem-body { color: #999; }
+.Box,
+.timeline-comment { background: #222; color: #eee; }
+.timeline-comment-header { color: #eee; background-color: #222; border-bottom: 1px solid #666; }
+.timeline-comment-wrapper { border: 0; }
+.discussion-timeline-actions { background-color: #333; border-top: 1px solid #eee; }
+.thread-subscription-status { background: transparent; }
+
+.text-gray,
+.discussion-sidebar-heading,
+.discussion-sidebar-item { color: #eee !important; }
+
+.bg-gray-light,
+.input-contrast,
+.page-responsive .previewable-comment-form .comment-form-head.tabnav .toolbar-commenting,
+.previewable-comment-form .comment-form-head.tabnav { background: #222 !important; }
+
+.toolbar-item { color: #eee; }
+.drag-and-drop { background-color: #222; color: #eee; }
+.tabnav-tab.selected, .tabnav-tab[aria-selected=true] { background-color: #333; color: #eee; }
+
+.form-control, .form-select { color: #fff; background: #222; }
+
+
+.suggester li { border-color: #666;}
+.SelectMenu-modal,
+.select-menu-modal,
+.suggester-container { background-color: #222; }
+.suggester-container,
+.suggester-container small { color: #eee !important; }
+
+.select-menu-modal { border-color: #eee; color: #eee; }
+.select-menu-item-text .description { color: #ccc; }
+
+.dropdown-menu,
+.select-menu-divider,
+.select-menu-header,
+.SelectMenu-item,
+.select-menu-item { background-color: #222; border-color: #666; color: #eee; }
+.select-menu-filters { background: transparent; }
+
+.dropdown-divider { border-color: #666; }
+.dropdown-item { color: #eee; }
+.dropdown-menu:before { border-bottom-color: #666; }
+.dropdown-menu:after { border-bottom-color: #222;  }
+.dropdown-menu-ne:before { border-top-color: #666; }
+.dropdown-menu-ne:after { border-top-color: #222; }
+
+.select-menu-divider,
+.select-menu-header .select-menu-title { color: #eee; }
 .main-content { padding: 0; }
 .container { width: auto; }
 
+.comment-reactions .user-has-reacted { background: #333; }
 
-/* position: sticky causes some rendering issues on retina screens */
-/* .discussion-sidebar-item.sidebar-labels { transform: translate3d(0,0,0); position: relative; } */
+.Box-row--focus-gray.navigation-focus { background: #333; }
+
+.subnav-item, .Counter { color: #eee; }
+.SelectMenu-item:hover,
+body:not(.intent-mouse) .SelectMenu-item:focus,
+.subnav-item:focus,
+.subnav-item:hover { background: #666; }
+
+.Box-header { background: #222; }
+.muted-link,
+.task-progress,
+.table-list-header-toggle .btn-link { color: #999 !important; }
+.select-menu-tabs .select-menu-tab-nav:hover, .select-menu-tabs a:hover,
+.table-list-header-toggle .btn-link.selected,
+.table-list-header-toggle .btn-link.selected:hover { color: #fff; }
+
+.select-menu-item.selected, details-menu .select-menu-item[aria-checked=true], details-menu .select-menu-item[aria-selected=true],
+.subnav-search-context .btn { color: #eee; }
+.btn { background: #222; border-color: #eee; color: #eee; }
+
+.select-menu-tabs .select-menu-tab-nav.selected, .select-menu-tabs .select-menu-tab-nav[aria-selected=true], .select-menu-tabs a.selected, .select-menu-tabs a[aria-selected=true],
+.label-select-menu .select-menu-item.navigation-focus, .label-select-menu .select-menu-item:focus, .label-select-menu .select-menu-item:hover, .label-select-menu .select-menu-item[aria-selected=true],
+.btn.hover,
+.btn:hover { background: #666; border-color: #eee; color: #eee;}
+.btn.selected,
+.btn:active,
+[open]>.btn { background: #222; border-color: #eee; }
+
 
 
 /* files */
@@ -46,6 +136,7 @@ body { min-width: auto !important;
 
 .notifications .list-group-item-name { max-width: 100%; margin-right: 220px; }
 .notifications .list-group-item-name a { max-width: 100%; }
+.notifications .read.list-group-item { background-color: transparent !important; }
 
 .type-icon-state-merged { color: #a476f9; }
 
@@ -123,12 +214,42 @@ body { min-width: auto !important;
 .discussion-timeline { width: calc(100% - 220px); }
 .timeline-new-comment { max-width: initial; }
 .previewable-comment-form textarea { max-height: none; min-height: 240px; }
+.TimelineItem-break { background-color: transparent; border-top: 2px solid #eee; }
+
+.markdown-body .highlight pre,
+.markdown-body pre { background: #333; }
+.timeline-comment.current-user .timeline-comment-header { background-color: #666; }
+
+.pagination-loader-container { background: #222; border: 2px dotted #eee; padding: 0 !important; }
+.pagination-loader-container .Box { border: 0; }
+.bg-white { background-color: #222!important;}
 
 
 /* PR tabs: commits & files */
 .files-bucket { padding: 20px 0; }
 .js-issues-results { padding: 20px; }
+.tabnav-pr .tabnav-tab.selected { color: #fff; }
+.pr-toolbar, .diffbar { background: #333; }
+.file-header { background: #222; }
+.pl-s .pl-s1,
+.pl-smi,
+.blob-code-inner { color: #eee; }
+.pl-c1, .pl-s .pl-v { color: #5ea9ff; }
 
+.blob-num-expandable, .blob-num-hunk,
+.blob-code-hunk { background-color: #6a7580; color: #eee; }
+.blob-num { color: #eee; }
+
+.blob-num-addition,
+.blob-code-addition { background-color: #12401f;}
+
+.blob-num-deletion,
+.blob-code-deletion { background-color: #46181e; }
+
+.bg-blue-2 { background-color: #222!important; }
+.border-blue-light { border-color: #eee!important; }
+
+.blob-expanded .blob-code, .blob-expanded .blob-num { background-color: #666; }
 
 
 /* maing gh landing page*/

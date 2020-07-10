@@ -9,6 +9,7 @@ const notRealName = `:not(.${REAL_NAME_CLS})`;
 let READY = false;
 
 const elementSelectors = [
+	`#show_issue .author${notRealName}`,
 	`.issues-listing .author${notRealName}`,
 	`.sidebar-assignee .assignee${notRealName}`,
 	`.user-mention${notRealName}`,
@@ -66,4 +67,3 @@ function init () {
 }
 
 module.exports = init;
-
