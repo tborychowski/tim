@@ -28,6 +28,7 @@ function parseBuildData (item, data) {
 
 
 function buildInfo (jenkins, item) {
+	if (!item.buildId) return Promise.resolve({});
 	return new Promise(resolve  => {
 		jenkins.build_info(item.jobName, item.buildId, (err, data) => {
 			if (isDev) console.log('No of Jenkins requests so far:', ++count);
@@ -43,13 +44,13 @@ function buildInfo (jenkins, item) {
 
 function getStatus (url) {
 	if (!url) return Promise.resolve({});
-	const [host, parts] = $.trim(url, '/').split('/job/');
+	const [host, parts] = decodeURIComponent($.trim(url, '/')).split('/job/');
+	if (!parts) return Promise.resolve({});
 	const [jobName, buildId] = parts.split('/');
 	const item = { jobName, buildId, url };
 	const jenkins = jenkinsApi.init(host, { request: { strictSSL: false, rejectUnauthorized: false, proxy: null }});
 	return buildInfo(jenkins, item);
 }
-
 
 
 module.exports = {

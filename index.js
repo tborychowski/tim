@@ -47,6 +47,7 @@ function createWindow () {
 	win.webContents.on('crashed', () => { win.destroy(); createWindow(); });
 
 	win.webContents.on('context-menu', (event, params) => {
+		if (!Array.isArray(params.dictionarySuggestions)) return;
 		const menu = new Menu();
 		for (const label of params.dictionarySuggestions) {
 			menu.append(new MenuItem({ label, click: () => win.webContents.replaceMisspelling(label)}));

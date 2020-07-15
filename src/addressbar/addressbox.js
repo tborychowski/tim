@@ -67,7 +67,7 @@ function onSearch (url) {
 
 function oninit () {
 	$.on(EVENT.url.change.done, onUrlChanged.bind(this));
-	$.on(EVENT.address.focus, () => this.drops.select());
+	$.on(EVENT.address.focus, () => this.drops.input.select());
 }
 
 function onrender () {

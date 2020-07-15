@@ -52,6 +52,7 @@ body { min-width: auto !important; background: none; user-select: none; }
 .notifications .read.navigation-focus,
 .list-group-item.navigation-focus,
 .notifications-list .boxed-group>h3,
+.notifications .read.list-group-item,
 .boxed-group-inner { background: none; color: #eee; border: none; }
 .list-group-item-link { color: #ddd; }
 
